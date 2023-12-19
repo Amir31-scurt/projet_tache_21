@@ -1,5 +1,5 @@
 import React from 'react';
 
-export default function template() {
+export default function Template() {
   return <div></div>;
 }
