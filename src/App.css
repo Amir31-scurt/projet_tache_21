@@ -1,15 +1,34 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* Mariama CSS */
+.contain-connect{
+    height: 100vh !important;
 }
-/* Cheikh CSS */
-.DashboardApprenant-contener{
-    height: 100vh;
-    background-color: #6c757d;;
+.height-img{
+    height: 100vh !important;
+    width: 50% !important;
+    padding:15px
+
 }
-.icon{
-    width: 50px;
-    height: 37px;
+.height-img img{
+    height: 100%;
+    border-radius: 5%;
+    width: 100%;
+    padding: 15px;
+   
+
 }
-/* Fin Cheikh CSS */
+.height-form{
+    width: 40% !important;
+    margin: 5px auto;
+}
+.bouton-switch{
+    border: 1px solid greenyellow;
+    display: flex;
+    justify-content: space-around;
+    border-radius: 20px !important;
+    padding:5px ;
+    width: 70%;
+    margin: auto;
+}
+.tir{
+    border-radius: 20px !important;
+}
