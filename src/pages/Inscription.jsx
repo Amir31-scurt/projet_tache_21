@@ -9,7 +9,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { auth, db, storage } from "../config/firebase-config";
 
-const Register = () => {
+const Inscription = () => {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(false);
 
