@@ -1,20 +1,22 @@
 /* Mariama CSS */
-.contain-connect{
+.contain-connect {
     height: 100vh !important;
 }
-.height-img{
+
+.height-img {
     height: 100vh !important;
     width: 50% !important;
-    padding:15px
-
+    padding: 15px
 }
-.height-img img{
+
+.height-img img {
     height: 100%;
     border-radius: 5%;
     width: 100%;
     padding: 15px;
 }
-.height-form{
+
+.height-form {
     width: 40% !important;
     margin: 15px auto;
 }
