@@ -4,7 +4,12 @@
   padding: 0;
   box-sizing: 0;
   font-family: 'Montserrat', sans-serif;
+ 
+}
+
+body{
   background-color: #d4f1f4;
+
 }
 
 /* cartes : Navy Blue */
@@ -12,3 +17,43 @@
 /*  Button : Blue Green */
 /* Button:hover : Grotto Blue */
 /* Background: baby blue */
+
+
+                /* Quizzs CSS */
+
+
+                .module-container {
+                  display: flex;
+                }
+                
+                .sidebar {
+                  width: 20%;
+                  background-color: #f0f2f5;
+                  padding: 20px;
+                }
+                
+                .main-content {
+                  width: 80%;
+                  padding: 20px;
+                }
+                
+                .lesson-item {
+                  background-color: white;
+                  margin-bottom: 10px;
+                  padding: 10px;
+                  border-left: 5px solid #007bff; /* Blue border for active item */
+                }
+                
+                .content-block {
+                  background-color: white;
+                  margin-bottom: 10px;
+                  padding: 20px;
+                  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* subtle shadow */
+                }
+                
+                .introduction {
+                  font-size: 18px;
+                  margin-bottom: 20px;
+                }
+                
+                /* Add responsive design, animations, and interactive JS as needed */
