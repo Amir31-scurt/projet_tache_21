@@ -1,13 +1,14 @@
-import { useState } from "react";
+// import { useState } from "react";
 import "./App.css";
 import {
   createBrowserRouter,
   RouterProvider,
-  Navigate,
+  // Navigate,
 } from "react-router-dom";
 
 import Connexion from "./pages/Connexion";
 import Inscription from "./pages/Inscription"
+import DashboardApprenant from "./pages/DashboardApprenant";
 
 export default function App() {
 
@@ -24,10 +25,10 @@ export default function App() {
       path: "/dashboardapprenant",
       element: <DashboardApprenant />,
       children: [
-        {
-          path: "/dashboardapprenant/home",
-          element: <nomComposantHome/>,
-        },
+        // {
+          // path: "/dashboardapprenant/",
+          // element: <nomComposantHome/>,
+        // },
       ],
     },
   ]);

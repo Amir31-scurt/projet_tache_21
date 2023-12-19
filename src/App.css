@@ -1,0 +1,15 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Cheikh CSS */
+.DashboardApprenant-contener{
+    height: 100vh;
+    background-color: #6c757d;;
+}
+.icon{
+    width: 50px;
+    height: 37px;
+}
+/* Fin Cheikh CSS */
