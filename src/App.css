@@ -13,16 +13,29 @@
 /* Background: baby blue #D4F1F4 */
 
 /* Cheikh CSS */
-.DashboardApprenant-contener {
-    height: 100vh;
-    background-color: #6c757d;
+.containerApprenant {
+    width: 50%;
+    height: 100%;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
-.CardAppenant{
-    background-color: white;
+.rowAppenant{
+
+}
+.colApprenant{
+    
+}
+.cardSpan{
+    flex-wrap: wrap;
 }
 .icon {
     width: 50px;
     height: 37px;
+}
+
+.publication{
+    width: 100%;
+    height: 100%;
+    /* padding: 10% 10%; */
 }
 
 /* Fin Cheikh CSS */
