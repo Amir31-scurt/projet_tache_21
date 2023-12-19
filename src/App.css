@@ -9,6 +9,50 @@ body {
   background-color: #d4f1f4;
 }
 
+.cardpcc {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cardpcc .card-img-top {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  object-fit: cover;
+}
+.img-container {
+  width: 100%;
+  height: 180px; /* Set a fixed height */
+  overflow: hidden; /* Hide any overflow */
+  display: flex; /* Use flexbox to center the image */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.img-container img {
+  height: 100%; /* Set image height to fill the container */
+  width: auto; /* Set width to auto to maintain aspect ratio */
+  min-width: 100%; /* Ensure it covers the width */
+  object-fit: cover; /* Cover the container without stretching the image */
+}
+
+.cardpcc .card-body {
+  padding: 1rem;
+}
+
+.cardpcc .card-title {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.cardpcc .progress {
+  background-color: #f5f5f5;
+  margin-top: 0.5rem;
+}
+
+.cardpcc .progress-bar {
+  background-color: #6c5ce7;
+}
+
 /* programmes */
 .program-card {
   border: 1px solid #ccc;
@@ -98,3 +142,35 @@ body {
 /*  Button : Blue Green  #189AB4 */
 /* Button:hover : Grotto Blue #189AB4 */
 /* Background: baby blue #D4F1F4 */
+
+/* Suivi du programme */
+.category-card {
+  border-radius: 16px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 200px; /* Adjust width as needed */
+  margin: 10px;
+}
+
+.category-icon {
+  /* Assuming you are using an icon library like Font Awesome */
+  font-size: 2rem; /* Adjust size as needed */
+  color: #4c9aff; /* Adjust icon color as needed */
+  margin-bottom: 10px;
+}
+
+.category-title {
+  color: #333333;
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.category-description {
+  color: #666666;
+  font-size: 0.875rem;
+}
