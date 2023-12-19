@@ -72,42 +72,41 @@ const Inscription = () => {
   };
 
   return (
-    <div className="container">
-      Connexion
-      <div className="row d-flex ">
-        <div className="col-md-6 ">
-          <div>
-            <img src={affiche} alt="" className="img-fluid" />
-          </div>
-        </div>
-        <div className="col-md-6 justify-content-center">
-          <form className="justify-content-center" onSubmit={handleSubmit}>
-            <div className="my-5">les deux bouttons</div>
-            <div className="mb-3">
-              <input
-                // required
-                type="text"
-                className="form-control"
-                placeholder="display name"
-              />
-            </div>
-            <div className="mb-3">
-              <input
-                // required
-                type="email"
-                className="form-control"
-                placeholder="email"
-              />
-            </div>
-            <div className="mb-3 ps-0 form-check">
-              <input
-                // required
-                type="password"
-                className="form-control"
-                placeholder="password"
-              />
-            </div>
-            {/* <div className="mb-3 ps-0 form-check">
+    // <div className="container">
+    //   Connexion
+    //   <div className="row d-flex ">
+    //     <div className="col-md-6 ">
+    //       <div>
+    //         <img src={affiche} alt="" className="img-fluid" />
+    //       </div>
+    //     </div>
+    //     <div className="col-md-6 justify-content-center">
+    <form className="justify-content-center" onSubmit={handleSubmit}>
+      <div className="mb-3">
+        <input
+          // required
+          type="text"
+          className="form-control"
+          placeholder="display name"
+        />
+      </div>
+      <div className="mb-3">
+        <input
+          // required
+          type="email"
+          className="form-control"
+          placeholder="email"
+        />
+      </div>
+      <div className="mb-3 ps-0 form-check">
+        <input
+          // required
+          type="password"
+          className="form-control"
+          placeholder="password"
+        />
+      </div>
+      {/* <div className="mb-3 ps-0 form-check">
               <input
                 required
                 type="password"
@@ -115,33 +114,27 @@ const Inscription = () => {
                 placeholder="Confirm password"
               />
             </div> */}
-            <div className="mb-3 ps-0 form-check">
-              <input
-                // required
-                style={{ display: "none" }}
-                type="file"
-                id="file"
-              />
-              <label htmlFor="file">
-                {/* <img src={Add} alt="" /> */}
-                <i className="bi bi-card-image me-3"></i>
-                <span>Choisir l'image de profil</span>
-              </label>
-            </div>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={loading}
-            >
-              Sign In
-            </button>
-            {err && (
-              <span style={{ color: "red" }}>Quelque chose d'anormale</span>
-            )}
-          </form>
-        </div>
+      <div className="mb-3 ps-0 form-check">
+        <input
+          // required
+          style={{ display: "none" }}
+          type="file"
+          id="file"
+        />
+        <label htmlFor="file">
+          {/* <img src={Add} alt="" /> */}
+          <i className="bi bi-card-image me-3"></i>
+          <span>Choisir l'image de profil</span>
+        </label>
       </div>
-    </div>
+      <button type="submit" className="btn btn-primary" disabled={loading}>
+        Sign In
+      </button>
+      {err && <span style={{ color: "red" }}>Quelque chose d'anormale</span>}
+    </form>
+    //     </div>
+    //   </div>
+    // </div>
   );
 };
 export default Inscription;

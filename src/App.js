@@ -8,6 +8,7 @@ import {
 import Connexion from "./pages/Connexion";
 import Inscription from "./pages/Inscription"
 import DashboardApprenant from "./pages/DashboardApprenant";
+import OubliMoPass from './pages/OubliMoPass';
 
 export default function App() {
 
@@ -19,6 +20,10 @@ export default function App() {
     {
       path: "/Inscription",
       element: <Inscription />,
+    },
+    {
+      path: "/modal",
+      element: <OubliMoPass/>
     },
     {
       path: "/dashboardapprenant",
