@@ -5,14 +5,16 @@ import {
   RouterProvider,
   Navigate,
 } from "react-router-dom";
+
 import Connexion from "./pages/Connexion";
+import Inscription from "./pages/Inscription"
 
 export default function App() {
 
   const rooter = createBrowserRouter([
     {
       path: "/",
-      element: <Inscription />,
+      element: <Inscription/>,
     },
     {
       path: "/connecxion",

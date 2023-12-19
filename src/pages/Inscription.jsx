@@ -5,7 +5,7 @@ import React from "react";
 // import { doc, setDoc } from "firebase/firestore";
 // import { useNavigate, Link } from "react-router-dom";
 
-const Register = () => {
+const Inscription = () => {
   return (
     <div className="formContainer">
       <div className="formWrapper">
@@ -42,4 +42,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Inscription;
