@@ -1,5 +1,8 @@
 import React from 'react';
+import Quizzs from '../components/quizzs/quizzs';
 
 export default function template() {
-  return <div></div>;
+  return <div>
+    <Quizzs/>
+  </div>;
 }
