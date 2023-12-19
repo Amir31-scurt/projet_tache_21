@@ -8,10 +8,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { auth, db, storage } from "../config/firebase-config";
+import { useNavigate } from "react-router";
 
 const Inscription = () => {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -53,6 +56,7 @@ const Inscription = () => {
             await setDoc(doc(db, "userChats", res.user.uid), {});
 
             // On navigue
+            navigate("/dashboardapprenant");
           } catch (err) {
             setErr(true);
             setLoading(false);
