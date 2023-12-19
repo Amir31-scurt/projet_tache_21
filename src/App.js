@@ -15,19 +15,19 @@ export default function App() {
   const rooter = createBrowserRouter([
     {
       path: "/",
-      element: <Inscription/>,
+      element: <Connexion/>,
     },
     {
-      path: "/connecxion",
-      element: <Connexion/>
+      path: "/Inscription",
+      element: <Inscription />,
     },
     {
       path: "/dashboardapprenant",
       element: <DashboardApprenant />,
       children: [
         // {
-          // path: "/dashboardapprenant/",
-          // element: <nomComposantHome/>,
+        // path: "/dashboardapprenant/",
+        // element: <nomComposantHome/>,
         // },
       ],
     },
