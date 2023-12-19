@@ -10,13 +10,12 @@ import Connexion from "./pages/Connexion";
 export default function App() {
 
   const rooter = createBrowserRouter([
-    // {
-    //   path: "/",
-    //   element: <Inscription />,
-    // },
     {
-      // path: "/connection",
       path: "/",
+      element: <Inscription />,
+    },
+    {
+      path: "/connecxion",
       element: <Connexion/>
     },
     {
