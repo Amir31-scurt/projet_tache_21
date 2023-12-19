@@ -1,8 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 
-function App() {
-  return <div className="App"></div>;
+
+export default function App() {
+
+  const rooter = createBrowserRouter([
+    {
+      path: "/",
+      element: <Inscription />,
+    },
+    {
+      path: "/connection",
+      element: <Connection />,
+    },
+    {
+      path: "/dashboardapprenant",
+      element: <DashboardApprenant />,
+      children: [
+        {
+          path: "/dashboardapprenant/home",
+          element: <nomComposantHome/>,
+        },
+      ],
+    },
+  ]);
+  return (
+    <RouterProvider router={rooter} />
+  );
 }
-
-export default App;
