@@ -130,4 +130,4 @@ const Inscription = () => {
     </div>
   );
 };
-export default Register;
+export default Inscription;
