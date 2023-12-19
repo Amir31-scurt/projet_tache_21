@@ -1,52 +1,69 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: 0;
+  font-family: 'Montserrat', sans-serif;
 }
 
+/* cartes : Navy Blue #05445E */
+/*  Navbar : Blue Grotto  #189AB4 */
+/*  Button : Blue Green  #189AB4 */
+/* Button:hover : Grotto Blue #189AB4 */
+/* Background: baby blue #D4F1F4 */
+
 /* Cheikh CSS */
-.DashboardApprenant-contener{
+.DashboardApprenant-contener {
     height: 100vh;
-    background-color: #6c757d;;
+    background-color: #6c757d;
 }
-.icon{
+.CardAppenant{
+    background-color: white;
+}
+.icon {
     width: 50px;
     height: 37px;
 }
+
 /* Fin Cheikh CSS */
 
 /* Mariama CSS */
-.contain-connect{
+.contain-connect {
     height: 100vh !important;
 }
-.height-img{
+
+.height-img {
     height: 100vh !important;
     width: 50% !important;
-    padding:15px
-
+    padding: 15px
 }
-.height-img img{
+
+.height-img img {
     height: 100%;
     border-radius: 5%;
     width: 100%;
     padding: 15px;
-   
+
 
 }
-.height-form{
+
+.height-form {
     width: 40% !important;
     margin: 5px auto;
 }
-.bouton-switch{
+
+.bouton-switch {
     border: 1px solid greenyellow;
     display: flex;
     justify-content: space-around;
     border-radius: 20px !important;
-    padding:5px ;
+    padding: 5px;
     width: 70%;
     margin: auto;
 }
-.tir{
+
+.tir {
     border-radius: 20px !important;
 }
+
 /* Fin Mariama CSS */

@@ -39,7 +39,7 @@ export default function Connexion() {
 
                   <Link
                       to="/Modal"
-                      onClick={handleShowModal}
+                      // onClick={handleShowModal}
                       className="text-decoration-none"
                     >
                       <p className="m-0 p-0">Mot de passe oublié?</p>
