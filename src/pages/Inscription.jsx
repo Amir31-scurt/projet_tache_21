@@ -13,6 +13,7 @@ import { useNavigate } from "react-router";
 const Inscription = () => {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(false);
+  // const [actived, setActived] = useState(true);
 
   const navigate = useNavigate();
 
@@ -24,6 +25,7 @@ const Inscription = () => {
     const displayName = e.target[0].value;
     const email = e.target[1].value;
     const password = e.target[2].value;
+    // const confirmPassword = e.target[3].value;
     const file = e.target[3].value;
 
     try {
@@ -83,7 +85,7 @@ const Inscription = () => {
             <div className="my-5">les deux bouttons</div>
             <div className="mb-3">
               <input
-                required
+                // required
                 type="text"
                 className="form-control"
                 placeholder="display name"
@@ -91,23 +93,31 @@ const Inscription = () => {
             </div>
             <div className="mb-3">
               <input
-                required
+                // required
                 type="email"
                 className="form-control"
                 placeholder="email"
               />
             </div>
-            <div className="mb-3 form-check">
+            <div className="mb-3 ps-0 form-check">
               <input
-                required
+                // required
                 type="password"
                 className="form-control"
                 placeholder="password"
               />
             </div>
-            <div className="mb-3 form-check">
+            {/* <div className="mb-3 ps-0 form-check">
               <input
                 required
+                type="password"
+                className="form-control"
+                placeholder="Confirm password"
+              />
+            </div> */}
+            <div className="mb-3 ps-0 form-check">
+              <input
+                // required
                 style={{ display: "none" }}
                 type="file"
                 id="file"
