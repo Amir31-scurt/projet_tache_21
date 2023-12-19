@@ -72,15 +72,6 @@ const Inscription = () => {
   };
 
   return (
-    // <div className="container">
-    //   Connexion
-    //   <div className="row d-flex ">
-    //     <div className="col-md-6 ">
-    //       <div>
-    //         <img src={affiche} alt="" className="img-fluid" />
-    //       </div>
-    //     </div>
-    //     <div className="col-md-6 justify-content-center">
     <form className="justify-content-center" onSubmit={handleSubmit}>
       <div className="mb-3">
         <input
@@ -132,9 +123,6 @@ const Inscription = () => {
       </button>
       {err && <span style={{ color: "red" }}>Quelque chose d'anormale</span>}
     </form>
-    //     </div>
-    //   </div>
-    // </div>
   );
 };
 export default Inscription;
