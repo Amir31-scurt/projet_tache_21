@@ -6,6 +6,8 @@ import React from "react";
 // import { useNavigate, Link } from "react-router-dom";
 
 const Register = () => {
+  const handleSubmit = () => {};
+
   return (
     <div className="formContainer">
       <div className="formWrapper">
