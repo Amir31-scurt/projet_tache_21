@@ -14,22 +14,37 @@
 
 /* Cheikh CSS */
 .containerApprenant {
-    width: 50%;
-    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 25px;
 }
 .rowAppenant{
-
+    width: 100%;
+    height: 100%;
 }
 .colApprenant{
-    
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: center; */
+    align-items: center;
 }
 .cardSpan{
     flex-wrap: wrap;
 }
+.mySpan{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+}
 .icon {
-    width: 50px;
-    height: 37px;
+    width: 65px;
+    height: 100%;
+    border-radius: 100%;
 }
 
 .publication{
@@ -38,6 +53,9 @@
     /* padding: 10% 10%; */
 }
 
+.textarea{
+    border-radius: 25px;
+}
 /* Fin Cheikh CSS */
 
 /* Mariama CSS */
@@ -56,8 +74,6 @@
     border-radius: 5%;
     width: 100%;
     padding: 15px;
-
-
 }
 
 .height-form {
@@ -104,7 +120,7 @@
 .oubli{
     color: #189AB4;
 }
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 * {
   margin: 0;
   padding: 0;

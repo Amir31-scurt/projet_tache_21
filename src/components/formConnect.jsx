@@ -54,27 +54,10 @@ export default function FormConnect() {
 
   return (
     <>
-      {/* Conteneur pour les notifications toast */}
-      <ToastContainer />
-      {/* Section du formulaire */}
-      <div className="card-body justify-content-center  p-lg-5 text-black">
-        {/* Boutons pour basculer entre connexion et inscription */}
-        <div className="d-flex  mb-5 justtify-content-center   bouton-switch  ">
-          <button type="button" className="btn  tir text-white ">
-            Login
-          </button>
-          <Link to="Inscription">
-            <button type="button" className="btn  tir text-white ">
-              Register
-            </button>
-          </Link>
-        </div>
+
         {/* Formulaire de connexion */}
         <form onSubmit={handleLogin}>
-          <p>
-            {/* Placeholder text */}
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat recusandae
-          </p>
+         
           {/* Champ email avec icône */}
           <div className=" tire mb-4">
             <div className="input-group  flex-nowrap">
@@ -131,7 +114,7 @@ export default function FormConnect() {
             </button>
           </div>
         </form>
-      </div>
+    
     </>
   );
 }
