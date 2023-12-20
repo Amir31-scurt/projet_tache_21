@@ -33,7 +33,7 @@ export const NavBarCompo = () => {
               <h3 className=" d-none d-lg-block text-white ms-2">TechGenius</h3>
             </div>
           </div>
-          {/*=====================SECOND PARTIE DU NavBar============= */}
+          {/*=====================SECOND PARTIE DU NavBar Debut============= */}
           <div className="SecRightNav">
             <div className="MessageIcone d-flex align-items-center justify-content-center">
               <MdMessage className="fs-2" />
@@ -88,7 +88,7 @@ export const NavBarCompo = () => {
 
             {/*================Fin du Modal========= */}
           </div>
-          {/*=====================SECOND PARTIE DU NavBar============= */}
+          {/*=====================SECOND PARTIE DU NavBar Fin============= */}
         </div>
       </div>
     </div>

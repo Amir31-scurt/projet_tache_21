@@ -9,7 +9,6 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: 0;
-  /* background-color: #d4f4d9; */
 }
 
 /* cartes : Navy Blue #05445E */
@@ -38,7 +37,6 @@ body {
   justify-content: center;
    height: 100%;
   width: 100px;
-  /* background-color: red; */
 }
 .SecRightNav {
   width: 80%;
@@ -66,10 +64,6 @@ body {
 .Mod{
   cursor: pointer;
 }
-/* .LOGONAV{
-  height: 200px;
-  width: 200px;
-} */
 
 /* =============== Je crée ici le CSS que je vais Utilisé Fin =============== */
 
