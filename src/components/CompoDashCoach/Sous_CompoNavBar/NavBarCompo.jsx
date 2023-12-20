@@ -1,7 +1,7 @@
 import React from "react";
 import "bootstrap/dist/js/bootstrap.bundle";
 import "bootstrap/dist/css/bootstrap.min.css"; // Importer le fichier CSS de Bootstrap
-import LogoTech from "../../../../src/assets/images/logo_transparent.png";
+import LogoTech from "../../../../src/assets/images/Logo.png";
 import UserProfil from "../../../../src/assets/images/user.png";
 import { MdMessage } from "react-icons/md";
 import { IoNotifications } from "react-icons/io5";
@@ -20,12 +20,13 @@ export const NavBarCompo = () => {
 
   return (
     <div>
-      <div className="">
+      <div className="mt-">
         {/*============NavBar============= */}
         <div className="NavBarContainer d-flex">
           <div className="LogoConta d-flex align-items-center justify-content-center ">
-            <div className="LogoConta2">
-              <img src={LogoTech} alt="Le Logo" className="img-fluid" />
+            <div className="LogoConta2 pt-3">
+              <img src={LogoTech} alt="Le Logo" className="img-fluid LOGONAV" />
+              <h3 className="text-white">Schoolmb</h3>
             </div>
           </div>
           {/*=====================SECOND PARTIE DU NavBar============= */}
