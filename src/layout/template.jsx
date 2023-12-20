@@ -13,7 +13,7 @@ export default function Template() {
           <SideBar />
         </div>
         <div className="bodyContent">
-          <h1 className="text-dark">
+          <h5 className="text-dark">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
@@ -61,7 +61,7 @@ export default function Template() {
             which looks reasonable. The generated Lorem Ipsum is therefore
             always free from repetition, injected humour, or non-characteristic
             words etc.
-          </h1>
+          </h5>
           {/* Outlet Position */}
         </div>
       </div>

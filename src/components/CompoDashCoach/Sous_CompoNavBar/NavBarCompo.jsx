@@ -1,21 +1,35 @@
 import React from 'react';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importer le fichier CSS de Bootstrap
-import LogoTech from '../../../assets/images/logo.png';
+import LogoTech from '../../../assets/images/Logo.png';
 import UserProfil from '../../../../src/assets/images/user.png';
 import { MdMessage } from 'react-icons/md';
 import { IoNotifications } from 'react-icons/io5';
-import { Modal, ButtonToolbar, Button, Loader, Placeholder } from 'rsuite';
+import { Modal, Button, ButtonToolbar, Placeholder } from "rsuite";
+import { FaUserEdit } from "react-icons/fa";
+import { Input, InputGroup } from "rsuite";
+import AvatarIcon from "@rsuite/icons/legacy/Avatar";
+import { MdAlternateEmail, MdOutlinePassword } from "react-icons/md";
+
+import EyeIcon from "@rsuite/icons/legacy/Eye";
+import EyeSlashIcon from "@rsuite/icons/legacy/EyeSlash";
+
+
+
+
 
 export const NavBarCompo = () => {
-  const [open, setOpen] = React.useState(false);
-  const [rows, setRows] = React.useState(0);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  //L'etatat de l'ouverture et de Fermeture du Modal__debut
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+  //L'etatat de l'ouverture et de Fermeture du Modal__Fin
 
-  const handleEntered = () => {
-    setTimeout(() => setRows(80), 2000);
-  };
+    const [visible, setVisible] = React.useState(false);
+
+    const handleChange = () => {
+      setVisible(!visible);
+    };
 
   return (
     <div>
@@ -51,33 +65,76 @@ export const NavBarCompo = () => {
 
             {/*================Debut du Modal========= */}
 
-            <Modal
-              open={open}
-              onClose={handleClose}
-              onEntered={handleEntered}
-              onExited={() => {
-                setRows(0);
-              }}
-            >
+            <Modal open={open} onClose={handleClose}>
               <Modal.Header>
-                <Modal.Title>Modal Title</Modal.Title>
+                <Modal.Title className="text-center fw-bold text-secondary fst-italic">
+                  Modifier le Profile
+                </Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                {rows ? (
-                  <Placeholder.Paragraph rows={rows} />
-                ) : (
-                  <div style={{ textAlign: 'center' }}>
-                    <Loader size="md" />
+                <div className="d-flex justify-content-center w-100">
+                  <div className="ProfilSpace2">
+                    <input
+                      type="image"
+                      src={UserProfil}
+                      className="ProfilUser img-fluid"
+                    />
                   </div>
-                )}
+                  {/*===============Bouton Modifier le Profil debut========= */}
+                  <button
+                    className="EditBtn"
+                    onClick={() => alert("On Modifie Le profile ")}
+                  >
+                    <FaUserEdit className="fs-5 EditUser " />
+                  </button>
+                  {/*===============Bouton Modifier le Profil Fin========= */}
+                </div>
+
+                <div className="w-100 mt-2">
+                  <h4 className="PrenomUser fs-5 text-center  text-secondary fst-italic">
+                    Prenom Nom
+                  </h4>
+                  <h4 className="EmailUser fs-6 text-center text-secondary fst-italic">
+                    Email@gmail.com
+                  </h4>
+                </div>
+
+                <div className="my-3 ContImputUser">
+                  <InputGroup className="mb-2 order border-3">
+                    <InputGroup.Addon>
+                      <MdAlternateEmail className="IcoColor" />
+                    </InputGroup.Addon>
+                    <Input className="" />
+                  </InputGroup>
+
+                  <InputGroup className="mb-2 order border-3">
+                    <InputGroup.Addon>
+                      <AvatarIcon className="IcoColor" />
+                    </InputGroup.Addon>
+                    <Input className="border border-0" />
+                  </InputGroup>
+
+                  <InputGroup className="mb-2 order border-3">
+                    <InputGroup.Addon>
+                      <MdOutlinePassword className="IcoColor" />
+                    </InputGroup.Addon>
+                    <Input
+                      className="border border-0"
+                      type={visible ? "text" : "password"}
+                    />
+                    <InputGroup.Button onClick={handleChange}>
+                      {visible ? <EyeIcon /> : <EyeSlashIcon />}
+                    </InputGroup.Button>
+                  </InputGroup>
+                </div>
               </Modal.Body>
               <Modal.Footer>
-                <Button onClick={handleClose} appearance="primary">
-                  Ok
-                </Button>
-                <Button onClick={handleClose} appearance="subtle">
-                  Cancel
-                </Button>
+                <button onClick={handleClose} className="SaveModifBtn py-2 px-3 me-2">
+                  Modifier
+                </button>
+                <button onClick={handleClose} className="CancelModifBtn py-2 px-3">
+                  Annuler
+                </button>
               </Modal.Footer>
             </Modal>
 

@@ -49,6 +49,36 @@ body {
   border-radius: 50%;
   cursor: pointer;
 }
+
+.ProfilSpace2 {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+.EditUser{
+  color: #f67505;
+}
+.EditBtn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: #e7e2e2;
+    margin-top: 50px;
+  margin-left: -20px;
+}
+
+.IcoColor{
+  color: #fc7b09;
+  font-size: 20px;
+}
+.ContImputUser{
+  width: 80%;
+  margin: auto;
+}
+
 .NotifIcone {
   width: 90px;
   color: #d4f1f4;
@@ -64,6 +94,24 @@ body {
   cursor: pointer;
 }
 
+.SaveModifBtn{
+  border-radius: 20px;
+  background-color: #da6f11;
+  color: #FFF;
+}
+.CancelModifBtn{
+  border-radius: 20px;
+  color: #FFF;
+  background-color: #666;
+}
+.SaveModifBtn:hover{
+  background-color: #c58d5994;
+  color: #000000;
+}
+.CancelModifBtn:hover{
+  background-color: #502906db;
+  color: #FFF;
+}
 /* =============== Je crée ici le CSS que je vais Utilisé Fin =============== */
 
 /* Buttons :  #6B240C */
