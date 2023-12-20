@@ -1,89 +1,208 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-*{
+* {
   font-family: 'Montserrat', sans-serif;
 }
 
-body{
+body {
   margin: 0;
   padding: 0;
   box-sizing: 0;
   background-color: #fff;
 }
 
-/* cartes : Navy Blue */
-/*  Navbar : Blue Grotto */
-/*  Button : Blue Green */
-/* Button:hover : Grotto Blue */
-/* Background: baby blue */
+/* cartes : Navy Blue #05445E */
+/*  Navbar : Blue Grotto  #189AB4 */
+/*  Button : Blue Green  #189AB4 */
+/* Button:hover : Grotto Blue #189AB4 */
+/* Background: baby Blue #D4F1F4 */
 
-/*----------Sidebar---------*/
-.sidebar{
+/* =============== Je crée ici le CSS que je vais Utilisé Début =============== */
+
+.NavBarContainer {
+  width: 100%;
+  background-color: #432705;
+  height: 80px;
+  border-radius: 2px;
+}
+
+.LogoConta {
+  width: 25%;
+  height: auto;
+}
+.LogoConta2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100px;
+}
+.SecRightNav {
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+.ProfilSpace {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.NotifIcone {
+  width: 90px;
+  color: #d4f1f4;
+}
+.MessageIcone {
+  color: #d4f1f4;
+  width: 90px;
+}
+.ProfilUser {
+  border-radius: 50%;
+}
+.Mod {
+  cursor: pointer;
+}
+
+/* =============== Je crée ici le CSS que je vais Utilisé Fin =============== */
+
+/* Buttons :  #6B240C */
+/*  Navbar :   #994D1C */
+/*  Button :   #E48F45 */
+/* Cartes :  #F5CCA0 */
+.program-card {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  width: 300px; /* or any desired width */
+  margin: 8px;
+}
+
+.program-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.program-card h3 {
+  font-size: 1.2rem;
+  margin-top: 8px;
+}
+
+.program-card p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.program-card button {
+  background-color: #e16d07;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.program-card button:hover {
+  background-color: #ca6206;
+}
+
+.program-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.sidebar {
   height: 100vh;
   padding: 1%;
 }
-.sidebar .list-group-item:hover{
-  background-color: #189AB4 !important;
+.sidebar .list-group-item:hover {
+  background-color: #ca6206 !important;
   color: #fff;
 }
 
-.sidebar .list-group-item{
+.sidebar .list-group-item {
   padding: 7% 0 7%;
   font-size: 17px;
   font-weight: 500;
 }
 
-.sidebar .icon{
+.sidebar .icon {
   font-size: 25px !important;
 }
 
-#contentSidebar{
-  background-color: #D4F1F4;
+#contentSidebar {
+  background-color: #8b510a;
   border-radius: 20px 20px 20px 20px;
+  position: fixed;
+  width: 18%;
+  color: white;
 }
 
 .modal-dialog{
   max-width: 60% !important;
 }
 
-@media screen and (max-width: 689px){
-  .sidebar .list-group-item .title{
+@media (max-width: 1024px) {
+  .sidebar .list-group-item .title {
     display: none;
   }
 
-  .sidebar .list-group-item:hover{
+  .sidebar .list-group-item:hover {
     border-radius: 10%;
     transform: scale(1.1);
     transition: 1s;
   }
 
-  .sidebar .list-group-item{
+  .sidebar .list-group-item {
     padding-top: 0 !important;
     padding-bottom: 1.5% !important;
-
   }
 
-  .sidebar{
+  .sidebar {
     margin-top: 0 !important;
     height: 100%;
     padding: 0 !important;
   }
 
-  .sidebar .icon{
+  .sidebar .icon {
     font-size: 30px !important;
     padding-left: 0 !important;
   }
 
-  .sidebar .brand-name{
+  .sidebar .brand-name {
     display: none;
   }
 
-  .sidebar #contentSidebar{
+  .sidebar #contentSidebar {
     border-radius: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    justify-content: space-around;
+    position: fixed;
+    bottom: 0;
   }
 
-  .sidebar .linkSidebar{
+  .sidebar .linkSidebar {
     display: flex;
     margin-left: 4px;
+  }
+}
+
+/*       A ne pas toucher       */
+.Side_Content {
+  margin-top: 6em;
+  display: flex;
+}
+.bodyContent {
+  margin-left: 20%;
+  margin-right: 20px;
+}
+@media (max-width: 1024px) {
+  .bodyContent {
+    margin-left: 0px;
+    margin: 0 40px;
+    margin-bottom: 30px;
   }
 }

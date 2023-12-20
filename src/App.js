@@ -1,16 +1,14 @@
 import './App.css';
-import CardLivraison from './components/CompoDashCoach/CardLivraison';
-import CarouselCard from './components/CompoDashCoach/CarouselCard';
-import SideBar from './components/CompoDashCoach/Sous_CompoSideBar/SideBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'rsuite/dist/rsuite-no-reset.min.css';
+import Template from './layout/template';
+import 'rsuite/dist/rsuite.min.css';
 
 function App() {
-  return <div className="">
-{/*<SideBar />*/}
-    <CardLivraison />
-  </div>;
-
+  return (
+    <div className="">
+      <Template />
+    </div>
+  );
 }
 
 export default App;
