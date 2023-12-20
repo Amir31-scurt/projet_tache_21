@@ -22,13 +22,14 @@ body {
 
 .NavBarContainer {
   width: 100%;
-   background-color: #dd782c;
+   background-color: #432705;
   height: 80px;
   border-radius:2px;
 
 }
+
 .LogoConta {
-  width: 30%;
+  width: 25%;
   height: auto;
 }
 .LogoConta2 {
@@ -36,7 +37,7 @@ body {
   align-items: center;
   justify-content: center;
    height: 100%;
-  width: 140px;
+  width: 100px;
   /* background-color: red; */
 }
 .SecRightNav {

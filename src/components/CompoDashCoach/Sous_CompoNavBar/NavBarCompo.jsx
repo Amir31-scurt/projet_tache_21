@@ -23,10 +23,14 @@ export const NavBarCompo = () => {
       <div className="mt-">
         {/*============NavBar============= */}
         <div className="NavBarContainer d-flex">
-          <div className="LogoConta d-flex align-items-center justify-content-center ">
-            <div className="LogoConta2 pt-3">
-              <img src={LogoTech} alt="Le Logo" className="img-fluid LOGONAV" />
-              <h3 className="text-white">Schoolmb</h3>
+          <div className="LogoConta d-flex align-items-center justify-content-center">
+            <div className="LogoConta2">
+              <img
+                src={LogoTech}
+                alt="Le Logo"
+                className="img-fluid LOGONAV"
+              />
+              <h3 className=" d-none d-lg-block text-white ms-2">TechGenius</h3>
             </div>
           </div>
           {/*=====================SECOND PARTIE DU NavBar============= */}
@@ -42,10 +46,7 @@ export const NavBarCompo = () => {
 
             {/*================Icone du Profil========= */}
 
-            <div
-              className="ProfilSpace me-5"
-              onClick={handleOpen}
-            >
+            <div className="ProfilSpace me-5" onClick={handleOpen}>
               <input
                 type="image"
                 src={UserProfil}
