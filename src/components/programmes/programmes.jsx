@@ -100,31 +100,31 @@ const ProgramList = () => {
         'Learn the principles of user experience and user interface design.',
       imageUrl:
         'https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg',
-      buttonText: 'Start Learning',
+      buttonText: 'Commencer à apprendre',
     },
     {
-      title: 'UX/UI Design',
+      title: 'Bureautique',
       description:
         'Learn the principles of user experience and user interface design.',
       imageUrl:
         'https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg',
-      buttonText: 'Start Learning',
+      buttonText: 'Commencer à apprendre',
     },
     {
-      title: 'UX/UI Design',
+      title: 'Programmation',
       description:
         'Learn the principles of user experience and user interface design.',
       imageUrl:
         'https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg',
-      buttonText: 'Start Learning',
+      buttonText: 'Commencer à apprendre',
     },
     {
-      title: 'UX/UI Design',
+      title: 'Marketing Digital',
       description:
         'Learn the principles of user experience and user interface design.',
       imageUrl:
         'https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg',
-      buttonText: 'Start Learning',
+      buttonText: 'Commencer à apprendre',
     },
     // ...other programs
   ];
