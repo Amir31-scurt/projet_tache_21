@@ -298,6 +298,7 @@ body {
   position: fixed;
   width: 18%;
   color: white;
+  z-index: 100;
 }
 
 @media (max-width: 1024px) {
@@ -354,12 +355,22 @@ body {
 }
 .bodyContent {
   margin-left: 20%;
-  margin-right: 20px;
+}
+.car {
+  width: 25%;
 }
 @media (max-width: 1024px) {
   .bodyContent {
     margin-left: 0px;
     margin: 0 40px;
     margin-bottom: 30px;
+  }
+  .car {
+    width: 50%;
+  }
+}
+@media (max-width: 726px) {
+  .car {
+    width: 100%;
   }
 }

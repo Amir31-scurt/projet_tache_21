@@ -2,15 +2,6 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import CategoryList from './Domaines';
 import { Link } from 'react-router-dom';
-import {
-  ButtonGroup,
-  Button,
-  Whisper,
-  Popover,
-  Dropdown,
-  IconButton,
-} from 'rsuite';
-import ArrowDownIcon from '@rsuite/icons/ArrowDown';
 
 // Define a reusable ProgramCard component
 const ProgramCard = ({ title, description, imageUrl, buttonText }) => {
@@ -18,7 +9,7 @@ const ProgramCard = ({ title, description, imageUrl, buttonText }) => {
     <div className="program-card bg-light">
       <img src={imageUrl} alt={title} />
       <h3>{title}</h3>
-      <p>{description}</p>
+      <p className="mb-3">{description}</p>
       <button>
         <Link to="/specific-cour" className="text-light text-decoration-none">
           {buttonText}
@@ -44,15 +35,20 @@ const CourseCard = ({
         <h5 className="card-title">{title}</h5>
         <h6 className="text-muted">{category.name}</h6>
         <p className="card-text">{author}</p>
-        <div className="progress" style={{ height: '5px' }}>
-          <div
-            className="progress-bar"
-            role="progressbar"
-            style={{ width: `${progress}%`, backgroundColor: progressColor }}
-            aria-valuenow={progress}
-            aria-valuemin="0"
-            aria-valuemax="100"
-          ></div>
+        <div className="d-flex align-items-center">
+          <div className="progress col-10" style={{ height: '10px' }}>
+            <div
+              className="progress-bar"
+              role="progressbar"
+              style={{ width: `${progress}%`, backgroundColor: progressColor }}
+              aria-valuenow={progress}
+              aria-valuemin="0"
+              aria-valuemax="100"
+            ></div>
+          </div>
+          <div className="col-2">
+            <p>{progress} %</p>
+          </div>
         </div>
       </div>
     </div>
@@ -95,12 +91,12 @@ const ProgramList = () => {
   // Example data that would be fetched from an API or defined in your application
   const programs = [
     {
-      title: 'UX/UI Design',
+      title: 'Design',
       description:
         'Learn the principles of user experience and user interface design.',
       imageUrl:
         'https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg',
-      buttonText: 'Commencer à apprendre',
+      buttonText: 'Les cours',
     },
     {
       title: 'Bureautique',
@@ -108,7 +104,7 @@ const ProgramList = () => {
         'Learn the principles of user experience and user interface design.',
       imageUrl:
         'https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg',
-      buttonText: 'Commencer à apprendre',
+      buttonText: 'Les cours',
     },
     {
       title: 'Programmation',
@@ -116,7 +112,7 @@ const ProgramList = () => {
         'Learn the principles of user experience and user interface design.',
       imageUrl:
         'https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg',
-      buttonText: 'Commencer à apprendre',
+      buttonText: 'Les cours',
     },
     {
       title: 'Marketing Digital',
@@ -124,7 +120,7 @@ const ProgramList = () => {
         'Learn the principles of user experience and user interface design.',
       imageUrl:
         'https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg',
-      buttonText: 'Commencer à apprendre',
+      buttonText: 'Les cours',
     },
     // ...other programs
   ];
@@ -133,7 +129,7 @@ const ProgramList = () => {
       category: { name: 'UX Design', color: '#FFB572' },
       title: 'UX & Web Design Master Course A-Z',
       author: 'Sheikh Ali',
-      progress: 88,
+      progress: 79,
       progressColor: '#189AB4', // Use a color that matches the progress bar color
       imageUrl:
         'https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg',
@@ -182,12 +178,12 @@ const ProgramList = () => {
 
   return (
     <div className="containerProgramme d-flex flex-column justify-content-center align-items-center">
-      <div className="contain1 bg-info bg-opacity-25 w-100 py-5">
+      <div className="contain1 py-5">
         <h2 className="mb-5 text-center">Programmes</h2>
         <div className="d-flex flex-wrap justify-content-center">
           {programs.map((program, index) => (
             <div
-              className="d-flex flex-wrap gap-2  justify-content-center"
+              className="d-flex flex-wrap gap-2  justify-content-center car"
               key={index}
             >
               <ProgramCard
@@ -224,38 +220,6 @@ const ProgramList = () => {
         <CategoryList />
         {/* ... other components */}
       </div>
-      <ButtonGroup>
-        <Button appearance="primary">{options[action]}</Button>
-        <Whisper
-          placement="bottomEnd"
-          trigger="click"
-          speaker={({ onClose, left, top, className }, ref) => {
-            const handleSelect = (eventKey) => {
-              onClose();
-              setAction(eventKey);
-              console.log(eventKey);
-            };
-            return (
-              <Popover
-                ref={ref}
-                className={className}
-                style={{ left, top }}
-                full
-              >
-                <Dropdown.Menu onSelect={handleSelect}>
-                  {options.map((item, index) => (
-                    <Dropdown.Item key={index} eventKey={index}>
-                      {item}
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Popover>
-            );
-          }}
-        >
-          <IconButton appearance="primary" icon={<ArrowDownIcon />} />
-        </Whisper>
-      </ButtonGroup>
     </div>
   );
 };

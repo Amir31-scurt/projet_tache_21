@@ -4,10 +4,33 @@ import '../../../assets/css/single-program.css'; // This is where you'd put your
 const SpecificPro = () => {
   return (
     <div className="main-container">
-      <section className="header-section">
-        <h1>Why Swift UI Should Be on the Radar of Every Mobile Developer</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-        <button className="learn-more-btn">Start Learning Now</button>
+      <section className="header-section d-flex align-items-center flex-column flex-lg-row gap-4 gap-lg-0">
+        <div className="">
+          <h1>Pourquoi le developpement Web ?!</h1>
+          <p>
+            Le développement web est un domaine dynamique et en constante
+            évolution, offrant de nombreuses opportunités de carrière, une
+            flexibilité professionnelle, et la satisfaction de créer des
+            produits utilisés par des millions de personnes.
+          </p>
+          <h5 className="mb-3">Ajouter des cours</h5>
+          <div className="d-flex gap-2">
+            <input
+              type="text"
+              name="coursAjout"
+              id="coursAjout"
+              placeholder="Le lien des cours"
+            />
+            <button className="learn-more-btn">Ajouter</button>
+          </div>
+        </div>
+        <div>
+          <img
+            src="https://cdn.arstechnica.net/wp-content/uploads/2019/03/codersTOP-800x534.jpg"
+            alt="#"
+            className="img-fluid img-centered"
+          />
+        </div>
       </section>
 
       <section className="reading-blog-list d-flex flex-wrap">

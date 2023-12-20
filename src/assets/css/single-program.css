@@ -1,7 +1,10 @@
 .main-container {
-  max-width: 1200px;
+  max-width: 100%;
   margin: auto;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .header-section h1 {
@@ -14,12 +17,19 @@
 }
 
 .learn-more-btn {
-  background-color: #007bff;
+  background-color: #e16d07;
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+.learn-more-btn:hover {
+  background-color: #ca6206;
+}
+.img-centered {
+  height: 100vh;
+  width: 180em;
 }
 
 .reading-blog-list {
