@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import userProfile from "../assets/images/userProfile.png";
 import livraison from "../assets/images/livraison.jpg";
+import envoi from "../assets/images/envoi.png";
+import commenter from "../assets/images/commenter.png";
 
 export default function DashboardApprenant() {
   const [nom, setNom] = useState("Cheikh Ahmed Tidiane Gueye");
@@ -9,6 +11,11 @@ export default function DashboardApprenant() {
   const [comment, setComment] = useState("Good job (:-)");
   const [role, setRole] = useState("Coach");
 
+  function handleSend() {
+    console.log("Cliqué sur l'image send");
+    alert("message envoyé");
+  }
+
   return (
     <>
       <div className="container containerApprenant w-50 my-5">
@@ -16,40 +23,59 @@ export default function DashboardApprenant() {
           <div className="col-md-12 d-flex flex-sm-column colApprenant my-3">
             <img src={userProfile} alt="" className="icon" />
             <div className="mySpan">
-              <h6 className=" px-3 pt-2">{nom}</h6>
-              <p className=" m-0 ">{date}</p>
+              <h6 className=" px-3 pt-2" style={{ color: "#e16b07" }}>
+                {nom}
+              </h6>
+              <p className="m-0" style={{ color: "#e16b07" }}>
+                {date}
+              </p>
             </div>
           </div>
 
           <div className="col-12 my-2">
             <img src={livraison} alt="" className="publication rounded-2" />
           </div>
+          <div className="row comment border rounded-2 w-100 m-0 my-2">
+            <div className="col-12 py-1">
+              <p className=" d-flex">
+                <span className="fw-bolder">Coach Kalika Ba</span>
+                <span className="coach bg-success text-light rounded-2 px-2 mx-3 pb-0">
+                  {role}
+                </span>
+                <span>il y a {days} jour</span>
+              </p>
+            </div>
+            <div className="col-12">
+              <p>{comment}</p>
+            </div>
+          </div>
 
-          <div className="col-12">
-            <div className="row comment border rounded-2 w-100 m-0 my-2">
-              <div className="col-12 py-1">
-                <p className="">
-                  <span className="fw-bolder">Coach Kalika Ba</span>
-                  <span className="coach bg-success text-light rounded-2 px-2 mx-3">
-                    {role}
-                  </span>
-                  <span>il y a {days} jour</span>
-                </p>
-              </div>
-              <div className="col-12">
-                <p>{comment}</p>
-              </div>
+          <div className="col-12 py-1">
+            <div className="comment d-flex align-items-center">
+              <img
+                src={commenter}
+                alt=""
+                className=""
+                style={{ width: "30px", height: "30px" }}
+              />
+              <p className="px-2 m-0" style={{fontSize: "12px"}}>Plus de commentaires</p>
             </div>
 
-            <div class="form-floating my-3">
+            <div className="form-floating my-3">
               <input
                 className="form-control textarea"
                 placeholder="Leave a comment here"
                 id="floatingTextarea2"
                 style={{}}
               ></input>
-              <label for="floatingTextarea2">Ajouter un commentaire</label>
-              {/* <i class="bi bi-send"></i> */}
+              <label htmlFor="floatingTextarea2">Ajouter un commentaire</label>
+              <span className="send" onClick={handleSend}>
+                <img
+                  src={envoi}
+                  alt="send"
+                  style={{ width: "30px", height: "30px" }}
+                />
+              </span>
             </div>
           </div>
         </div>

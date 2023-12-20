@@ -59,6 +59,22 @@
     border-radius: 25px;
 }
 
+.send {
+    display: none;
+    position: absolute;
+    top: 18px;
+    right: 20px;
+}
+.send:hover {
+    display: block; 
+}
+
+/* Pour afficher l'icône par défaut, si le champ textarea est déjà en focus au chargement de la page */
+#floatingTextarea2:focus+label+.send {
+    display: block;
+}
+
+
 /* Fin Cheikh CSS */
 
 /* Mariama CSS */
