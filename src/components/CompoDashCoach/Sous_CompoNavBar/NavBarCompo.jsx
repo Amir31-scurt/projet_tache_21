@@ -1,12 +1,23 @@
 import React from "react";
+import "bootstrap/dist/js/bootstrap.bundle";
 import "bootstrap/dist/css/bootstrap.min.css"; // Importer le fichier CSS de Bootstrap
 import LogoTech from "../../../../src/assets/images/logo_transparent.png";
 import UserProfil from "../../../../src/assets/images/user.png";
 import { MdMessage } from "react-icons/md";
 import { IoNotifications } from "react-icons/io5";
-// import "bootstrap/dist/js/bootstrap.bundle";
+import { Modal, ButtonToolbar, Button, Loader, Placeholder } from "rsuite";
 
 export const NavBarCompo = () => {
+
+   const [open, setOpen] = React.useState(false);
+   const [rows, setRows] = React.useState(0);
+   const handleOpen = () => setOpen(true);
+   const handleClose = () => setOpen(false);
+
+   const handleEntered = () => {
+     setTimeout(() => setRows(80), 2000);
+   };
+
   return (
     <div>
       <div className="">
@@ -32,8 +43,7 @@ export const NavBarCompo = () => {
 
             <div
               className="ProfilSpace me-5"
-              data-bs-toggle="modal"
-              data-bs-target="#staticBackdrop"
+              onClick={handleOpen}
             >
               <input
                 type="image"
@@ -44,50 +54,35 @@ export const NavBarCompo = () => {
 
             {/*================Debut du Modal========= */}
 
-            <div
-              class="modal fade"
-              id="staticBackdrop"
-              data-bs-backdrop="static"
-              data-bs-keyboard="false"
-              tabindex="-1"
-              aria-labelledby="staticBackdropLabel"
-              aria-hidden="true"
+            <Modal
+              open={open}
+              onClose={handleClose}
+              onEntered={handleEntered}
+              onExited={() => {
+                setRows(0);
+              }}
             >
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">
-                      Le Titre Du modal
-                    </h1>
-                    <button
-                      type="button"
-                      class="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    ></button>
+              <Modal.Header>
+                <Modal.Title>Modal Title</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                {rows ? (
+                  <Placeholder.Paragraph rows={rows} />
+                ) : (
+                  <div style={{ textAlign: "center" }}>
+                    <Loader size="md" />
                   </div>
-
-                  {/*================Le Contenu du Modal Debut========= */}
-
-                  <div class="modal-body">...</div>
-
-                  {/*================Le Contenu du Modal FIN========= */}
-
-                  <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      Fermer
-                    </button>
-                    <button type="button" class="btn btn-primary">
-                      Sauvegarder
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+                )}
+              </Modal.Body>
+              <Modal.Footer>
+                <Button onClick={handleClose} appearance="primary">
+                  Ok
+                </Button>
+                <Button onClick={handleClose} appearance="subtle">
+                  Cancel
+                </Button>
+              </Modal.Footer>
+            </Modal>
 
             {/*================Fin du Modal========= */}
           </div>
