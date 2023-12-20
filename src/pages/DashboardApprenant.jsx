@@ -29,11 +29,11 @@ export default function DashboardApprenant() {
               ></textarea>
               <label for="floatingTextarea2">Ajouter un commentaire</label>
             </div>
-            <div className="w-100 d-flex jutify-content-end">
+            {/* <div className="w-100 d-flex jutify-content-end">
               <button type="button" class="btn btn-success mb-3">
-                Success
+                Envoyer
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
