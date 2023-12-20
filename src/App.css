@@ -6,13 +6,8 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: 0;
-  background-color: #d4f1f4;
+  background-color: #fff;
 }
-
-/* Buttons :  #6B240C */
-/*  Navbar :   #994D1C */
-/*  Button :   #E48F45 */
-/* Cartes :  #F5CCA0 */
 
 .program-card {
   border: 1px solid #ccc;
@@ -55,4 +50,68 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+.sidebar {
+  height: 100vh;
+  padding: 1%;
+}
+.sidebar .list-group-item:hover {
+  background-color: #189ab4 !important;
+  color: #fff;
+}
+
+.sidebar .list-group-item {
+  padding: 7% 0 7%;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.sidebar .icon {
+  font-size: 25px !important;
+}
+
+#contentSidebar {
+  background-color: #d4f1f4;
+  border-radius: 20px 20px 20px 20px;
+}
+
+@media screen and (max-width: 689px) {
+  .sidebar .list-group-item .title {
+    display: none;
+  }
+
+  .sidebar .list-group-item:hover {
+    border-radius: 10%;
+    transform: scale(1.1);
+    transition: 1s;
+  }
+
+  .sidebar .list-group-item {
+    padding-top: 0 !important;
+    padding-bottom: 1.5% !important;
+  }
+
+  .sidebar {
+    margin-top: 0 !important;
+    height: 100%;
+    padding: 0 !important;
+  }
+
+  .sidebar .icon {
+    font-size: 30px !important;
+    padding-left: 0 !important;
+  }
+
+  .sidebar .brand-name {
+    display: none;
+  }
+
+  .sidebar #contentSidebar {
+    border-radius: 0;
+  }
+
+  .sidebar .linkSidebar {
+    display: flex;
+    margin-left: 4px;
+  }
 }

@@ -1,10 +1,11 @@
 import './App.css';
-import Cards from './components/cards';
+import SideBar from './components/CompoDashCoach/Sous_CompoSideBar/SideBar';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Hello World</h1>
+    <div className="">
+      <SideBar />
     </div>
   );
 }
