@@ -16,8 +16,8 @@ export default function FormConnect() {
   // render login
   return (
     <form>
-      <div class=" tire mb-4">
-        <div class="input-group  flex-nowrap">
+      <div className=" tire mb-4">
+        <div className="input-group  flex-nowrap">
           <span class="input-group-text" id="addon-wrapping">
             <CiMail />
           </span>
@@ -31,8 +31,8 @@ export default function FormConnect() {
         </div>
       </div>
 
-      <div class=" tire ">
-        <div class="input-group mb-3  flex-nowrap">
+      <div className=" tire ">
+        <div className="input-group mb-3  flex-nowrap">
           <span class="input-group-text" id="addon-wrapping">
             <RiLockPasswordFill />
           </span>
@@ -44,20 +44,20 @@ export default function FormConnect() {
             aria-describedby="addon-wrapping"
           />
         </div>
-      </div>
-      <Link
-        to="/Modal"
-        onClick={handleShowModal}
-        className="text-decoration-none"
-      >
-        <p className="m-0 p-0 text-start oubli">Mot de passe oublié?</p>
-      </Link>
+        <Link
+            to="/Modal"
+            onClick={handleShowModal}
+            className="text-decoration-none"
+          >
+            <p className="m-0 p-0 text-end oubli">Mot de passe oublié?</p>
+          </Link>
 
-      <div class="pt-1 mt-4 text-end ">
-        <button class="btn  btn-lg btn-block text-white  log" type="button">
-          Login
-        </button>
-      </div>
+        <div className="pt-1 mt-4 text-end">
+          <center>
+          <button class="btn  d-flex justify-content-center align-items-center fs-6 btn-lg btn-block text-white  log" type="button">Connecter</button>
+          </center>
+        </div>
+    </div>
     </form>
-  );
+  )
 }

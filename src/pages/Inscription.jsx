@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 // import { useNavigate, Link } from "react-router-dom";
-import affiche from "../assets/images/affiche.jpg";
+// import affiche from "../assets/images/affiche.jpg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -119,9 +119,12 @@ const Inscription = () => {
           <span>Choisir l'image de profil</span>
         </label>
       </div>
-      <button type="submit" className="btn btn-primary" disabled={loading}>
+      <center>
+          <button class="btn  d-flex justify-content-center align-items-center fs-6 btn-lg btn-block text-white  log" type="button">S'inscrire</button>
+          </center>
+      {/* <button type="submit" className="btn btn-primary" disabled={loading}>
         Sign In
-      </button>
+      </button> */}
       {err && <span style={{ color: "red" }}>Quelque chose d'anormale</span>}
     </form>
   );

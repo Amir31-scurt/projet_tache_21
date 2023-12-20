@@ -6,25 +6,29 @@ import {
 } from "react-router-dom";
 
 import Connexion from "./pages/Connexion";
-import Inscription from "./pages/Inscription"
+// import Inscription from "./pages/Inscription"
 import DashboardApprenant from "./pages/DashboardApprenant";
 import OubliMoPass from './pages/OubliMoPass';
+<<<<<<< HEAD
 import ChatHome from "./components/chatComponent/ChatHome";
+=======
+import Programme from "./components/Programme";
+>>>>>>> 2fa79db052fa1c7a96b731863895a0110bbf4a32
 
 export default function App() {
 
   const rooter = createBrowserRouter([
     {
       path: "/",
-      element: <Connexion/>,
+      element: <Connexion />,
     },
     {
-      path: "/Inscription",
-      element: <Inscription />,
+      path: "/dashboardapprenant/programme",
+      element: <Programme />,
     },
     {
       path: "/modal",
-      element: <OubliMoPass/>
+      element: <OubliMoPass />,
     },
     {
       path: "/chatHome",
@@ -35,8 +39,8 @@ export default function App() {
       element: <DashboardApprenant />,
       children: [
         // {
-        // path: "/dashboardapprenant/",
-        // element: <nomComposantHome/>,
+        // path: "/dashboardapprenant/programme",
+        // element: <Programme/>,
         // },
       ],
     },
