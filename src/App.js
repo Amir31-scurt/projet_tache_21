@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Template from './layout/template';
 import "rsuite/dist/rsuite.min.css";

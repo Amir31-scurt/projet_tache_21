@@ -75,3 +75,51 @@ body {
 
 
 
+/* Buttons :  #6B240C */
+/*  Navbar :   #994D1C */
+/*  Button :   #E48F45 */
+/* Cartes :  #F5CCA0 */
+
+.program-card {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  width: 300px; /* or any desired width */
+  margin: 8px;
+}
+
+.program-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.program-card h3 {
+  font-size: 1.2rem;
+  margin-top: 8px;
+}
+
+.program-card p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.program-card button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.program-card button:hover {
+  background-color: #0056b3;
+}
+
+.program-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
