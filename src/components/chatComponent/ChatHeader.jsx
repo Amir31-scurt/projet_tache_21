@@ -6,7 +6,7 @@ import Search from "./Search";
 export default function ChatHeader() {
   return (
     <div className="chatHeader">
-      <ChatNavbar />
+      {/* <ChatNavbar /> */}
       <Search />
       <Chats />
     </div>
