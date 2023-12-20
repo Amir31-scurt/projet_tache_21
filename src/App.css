@@ -95,7 +95,7 @@ body {
 }
 
 .program-card button {
-  background-color: #007bff;
+  background-color: #e16d07;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -104,7 +104,7 @@ body {
 }
 
 .program-card button:hover {
-  background-color: #0056b3;
+  background-color: #ca6206;
 }
 
 .program-list {
@@ -117,7 +117,7 @@ body {
   padding: 1%;
 }
 .sidebar .list-group-item:hover {
-  background-color: #189ab4 !important;
+  background-color: #ca6206 !important;
   color: #fff;
 }
 
@@ -132,11 +132,14 @@ body {
 }
 
 #contentSidebar {
-  background-color: #d4f1f4;
+  background-color: #8b510a;
   border-radius: 20px 20px 20px 20px;
+  position: fixed;
+  width: 18%;
+  color: white;
 }
 
-@media screen and (max-width: 689px) {
+@media (max-width: 1024px) {
   .sidebar .list-group-item .title {
     display: none;
   }
@@ -169,10 +172,33 @@ body {
 
   .sidebar #contentSidebar {
     border-radius: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    justify-content: space-around;
+    position: fixed;
+    bottom: 0;
   }
 
   .sidebar .linkSidebar {
     display: flex;
     margin-left: 4px;
+  }
+}
+
+/*       A ne pas toucher       */
+.Side_Content {
+  margin-top: 6em;
+  display: flex;
+}
+.bodyContent {
+  margin-left: 20%;
+  margin-right: 20px;
+}
+@media (max-width: 1024px) {
+  .bodyContent {
+    margin-left: 0px;
+    margin: 0 40px;
+    margin-bottom: 30px;
   }
 }
