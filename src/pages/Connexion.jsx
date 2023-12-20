@@ -17,15 +17,15 @@ export default function Connexion() {
               className="img-fluid rounded-6"
             /> */}
           </div>
-          <div class="col-lg-7 height-form d-flex justify-content-center">
-            <div class="card-body justify-content-center p-lg-5 text-black">
+          <div className="col-lg-7 height-form d-flex justify-content-center">
+            <div className="card-body justify-content-center p-lg-5 text-black">
               <div
-                class="d-flex  mb-5 justtify-content-center   bouton-switch border border-dark p-2 rounded-pill "
+                className="d-flex  mb-5 justtify-content-center   bouton-switch border border-light p-2 rounded-pill "
                 style={{ background: "rgba(73, 187, 189, 0.6)" }}
               >
                 <button
                   type="button"
-                  class="btn  tir text-white"
+                  className="btn  tir text-white"
                   onClick={() => {
                     setConnected(true);
                   }}
@@ -34,7 +34,7 @@ export default function Connexion() {
                 </button>
                 <button
                   type="button"
-                  class="btn  tir text-white"
+                  className="btn  tir text-white"
                   onClick={() => {
                     setConnected(false);
                   }}
