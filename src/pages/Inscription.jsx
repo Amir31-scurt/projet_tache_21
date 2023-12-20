@@ -1,33 +1,40 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
-// import { useNavigate, Link } from "react-router-dom";
-// import affiche from "../assets/images/affiche.jpg";
+import { FaUser } from "react-icons/fa";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { IoMdMail } from "react-icons/io";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { auth, db, storage } from "../config/firebase-config";
 import { useNavigate } from "react-router";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Inscription = () => {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(false);
-  // const [actived, setActived] = useState(true);
+  const [actived, setActived] = useState(true);
 
   const navigate = useNavigate();
+  const formRegister = useRef();
 
   const handleSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
 
     // Récupération des informations entrées par l'utilisateur
-    const displayName = e.target[0].value;
-    const email = e.target[1].value;
-    const password = e.target[2].value;
-    // const confirmPassword = e.target[3].value;
-    const file = e.target[3].value;
-    console.log(displayName, file, email, password);
+    const displayName = formRegister.current.nom.value;
+    const email = formRegister.current.mail.value;
+    const password = formRegister.current.mdpass.value;
+    // // const confirmPassword = e.target[3].value;
+    const file = formRegister.current.fichier.value;
+    console.log(displayName);
+    console.log(email);
+    console.log(password);
+    console.log(file);
 
     try {
       // Création de l'utilisateur
@@ -58,11 +65,32 @@ const Inscription = () => {
             //Créer un userChats (discussion de l'utilisateur) vide dans firestore
             await setDoc(doc(db, "userChats", res.user.uid), {});
 
+            // Toast
+            toast.success("Inscription réussie!", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+            });
             // On navigue
             navigate("/dashboardapprenant");
           } catch (err) {
             setErr(true);
             setLoading(false);
+            toast.error("Erreur lors de l'inscription!", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+            });
           }
         });
       });
@@ -73,29 +101,41 @@ const Inscription = () => {
   };
 
   return (
-    <form className="justify-content-center" onSubmit={handleSubmit}>
-      <div className="mb-3">
+    <form className="justify-content-center" ref={formRegister}>
+      <div className="mb-3 input-group flex-nowrap">
+        <span className="input-group-text">
+          <FaUser />
+        </span>
         <input
-          // required
+          required
+          name="nom"
           type="text"
           className="form-control"
-          placeholder="display name"
+          placeholder="Votre nom"
         />
       </div>
-      <div className="mb-3">
+      <div className="mb-3 input-group flex-nowrap">
+        <span className="input-group-text">
+          <IoMdMail />
+        </span>
         <input
-          // required
+          required
           type="email"
+          name="mail"
           className="form-control"
-          placeholder="email"
+          placeholder="Votre email"
         />
       </div>
-      <div className="mb-3 ps-0 form-check">
+      <div className="mb-3 input-group flex-nowrap ps-0 form-check">
+        <span className="input-group-text">
+          <RiLockPasswordFill />
+        </span>
         <input
-          // required
+          required
           type="password"
+          name="mdpass"
           className="form-control"
-          placeholder="password"
+          placeholder="Votre mot de passe"
         />
       </div>
       {/* <div className="mb-3 ps-0 form-check">
@@ -106,10 +146,11 @@ const Inscription = () => {
                 placeholder="Confirm password"
               />
             </div> */}
-      <div className="mb-3 ps-0 form-check">
+      <div className="mb-3 input-group flex-nowrap ps-0 form-check">
         <input
           // required
           style={{ display: "none" }}
+          name="fichier"
           type="file"
           id="file"
         />
@@ -119,13 +160,18 @@ const Inscription = () => {
           <span>Choisir l'image de profil</span>
         </label>
       </div>
-      <center>
-          <button class="btn  d-flex justify-content-center align-items-center fs-6 btn-lg btn-block text-white  log" type="button">S'inscrire</button>
-          </center>
+      <button
+        onClick={handleSubmit}
+        className="btn d-flex justify-content-center align-items-center fs-6 btn-lg btn-block text-white log"
+        type="button"
+      >
+        S'inscrire
+      </button>
+      <ToastContainer />
       {/* <button type="submit" className="btn btn-primary" disabled={loading}>
         Sign In
       </button> */}
-      {err && <span style={{ color: "red" }}>Quelque chose d'anormale</span>}
+      {/* {err && <span style={{ color: "red" }}>Quelque chose d'anormale</span>} */}
     </form>
   );
 };
