@@ -2,6 +2,7 @@
 
 * {
   font-family: "Montserrat", sans-serif;
+
 }
 
 body {
@@ -11,11 +12,11 @@ body {
   /* background-color: #d4f4d9; */
 }
 
-/* cartes : Navy Blue */
-/*  Navbar : Blue Grotto */
-/*  Button : Blue Green */
-/* Button:hover : Grotto Blue */
-/* Background: baby Blue */
+/* cartes : Navy Blue #05445E */
+/*  Navbar : Blue Grotto  #189AB4 */
+/*  Button : Blue Green  #189AB4 */
+/* Button:hover : Grotto Blue #189AB4 */
+/* Background: baby Blue #D4F1F4 */
 
 /* =============== Je crée ici le CSS que je vais Utilisé Début =============== */
 
@@ -65,5 +66,7 @@ body {
 }
 
 /* =============== Je crée ici le CSS que je vais Utilisé Fin =============== */
+
+
 
 

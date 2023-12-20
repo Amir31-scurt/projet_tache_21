@@ -9,7 +9,6 @@ function App() {
       {/*====== Le Template Debut======*/}
       <Template />
       {/*====== Le Template Fin======*/}
-
     </div>
   );
 }
