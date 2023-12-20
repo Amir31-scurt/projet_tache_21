@@ -27,15 +27,25 @@ body {
 }
 
 .LogoConta {
-  width: 25%;
+  width: 20%;
   height: auto;
+}
+@media screen and (max-width:1444px) {
+  .LogoConta {
+  width: 24%;
+}
+}
+@media screen and (max-width:1444px) {
+  .LogoConta {
+  width: 30%;
+}
 }
 .LogoConta2 {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-  width: 100px;
+  width: 90px;
 }
 .SecRightNav {
   width: 80%;
@@ -80,12 +90,12 @@ body {
 }
 
 .NotifIcone {
-  width: 90px;
+  width: 80px;
   color: #d4f1f4;
 }
 .MessageIcone {
   color: #d4f1f4;
-  width: 90px;
+  width: 50px;
 }
 .ProfilUser {
   border-radius: 50%;
@@ -165,14 +175,24 @@ body {
   padding: 1%;
 }
 .sidebar .list-group-item:hover {
-  background-color: #ca6206 !important;
+  background-color: #ff7700 !important;
   color: #fff;
+  text-decoration: none;
 }
 
 .sidebar .list-group-item {
   padding: 7% 0 7%;
   font-size: 17px;
   font-weight: 500;
+  text-decoration: none;
+  color: #fff;
+}
+.sidebar .list-group-item:focus{
+  background-color:#ff7700!important;
+  color: #552704;
+  font-weight: bold;
+  border-right: 15px solid #5a2a00;
+  transition: 1s;
 }
 
 .sidebar .icon {
@@ -181,10 +201,12 @@ body {
 
 #contentSidebar {
   background-color: #8b510a;
-  border-radius: 20px 20px 20px 20px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   position: fixed;
   width: 18%;
   color: white;
+  height: 90vh;
 }
 
 @media (max-width: 1024px) {
@@ -226,6 +248,8 @@ body {
     justify-content: space-around;
     position: fixed;
     bottom: 0;
+    height: auto;
+
   }
 
   .sidebar .linkSidebar {
@@ -234,9 +258,9 @@ body {
   }
 }
 
-/*       A ne pas toucher       */
+/*============ A ne pas toucher============*/
 .Side_Content {
-  margin-top: 6em;
+  margin-top: 5.7em;
   display: flex;
 }
 .bodyContent {

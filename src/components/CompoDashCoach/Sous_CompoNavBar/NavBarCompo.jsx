@@ -10,9 +10,10 @@ import { FaUserEdit } from "react-icons/fa";
 import { Input, InputGroup } from "rsuite";
 import AvatarIcon from "@rsuite/icons/legacy/Avatar";
 import { MdAlternateEmail, MdOutlinePassword } from "react-icons/md";
-
+import { Dropdown } from "rsuite";
 import EyeIcon from "@rsuite/icons/legacy/Eye";
 import EyeSlashIcon from "@rsuite/icons/legacy/EyeSlash";
+import { TbTriangleInvertedFilled } from "react-icons/tb";
 
 
 
@@ -45,11 +46,11 @@ export const NavBarCompo = () => {
           {/*=====================SECOND PARTIE DU NavBar Debut============= */}
           <div className="SecRightNav">
             <div className="MessageIcone d-flex align-items-center justify-content-center">
-              <MdMessage className="fs-2" />
+              <MdMessage className="fs-4" />
             </div>
             <div className="NotifIcone d-flex align-items-center justify-content-center me-3">
               <div className="">
-                <IoNotifications className="fs-2" />
+                <IoNotifications className="fs-4" />
               </div>
             </div>
 
@@ -62,6 +63,14 @@ export const NavBarCompo = () => {
                 className="ProfilUser img-fluid"
               />
             </div>
+            <Dropdown
+              title={<TbTriangleInvertedFilled/>}
+              placement="bottomEnd"
+              noCaret
+            >
+              <Dropdown.Item>Settings</Dropdown.Item>
+              <Dropdown.Item>About</Dropdown.Item>
+            </Dropdown>
 
             {/*================Debut du Modal========= */}
 
@@ -129,10 +138,16 @@ export const NavBarCompo = () => {
                 </div>
               </Modal.Body>
               <Modal.Footer>
-                <button onClick={handleClose} className="SaveModifBtn py-2 px-3 me-2">
+                <button
+                  onClick={handleClose}
+                  className="SaveModifBtn py-2 px-3 me-2"
+                >
                   Modifier
                 </button>
-                <button onClick={handleClose} className="CancelModifBtn py-2 px-3">
+                <button
+                  onClick={handleClose}
+                  className="CancelModifBtn py-2 px-3"
+                >
                   Annuler
                 </button>
               </Modal.Footer>
