@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import affiche from "../assets/images/affiche.jpg";
+// import affiche from "../assets/images/affiche.jpg";
 import FormConnect from "../components/formConnect";
 import Inscription from "./Inscription";
 

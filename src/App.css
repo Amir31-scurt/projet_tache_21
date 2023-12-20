@@ -27,7 +27,8 @@
 }
 .colApprenant{
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    /* flex-wrap: wrap; */
     /* justify-content: center; */
     align-items: center;
 }
@@ -39,7 +40,8 @@
     flex-wrap: wrap;
     flex-direction: column;
     justify-content: center;
-    /* align-items: center; */
+    align-items: center;
+    justify-content: space-around;
 }
 .icon {
     width: 65px;
@@ -56,6 +58,12 @@
 .textarea{
     border-radius: 25px;
 }
+
+.comment{
+    /* padding: 50px 50px; */
+    /* margin: 5px 5px; */
+}
+
 /* Fin Cheikh CSS */
 
 /* Mariama CSS */
