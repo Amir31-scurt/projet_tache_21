@@ -77,7 +77,7 @@ const Inscription = () => {
               theme: "dark",
             });
             // On navigue
-            navigate("/dashboardapprenant");
+            navigate("/");
           } catch (err) {
             setErr(true);
             setLoading(false);
