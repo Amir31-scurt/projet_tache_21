@@ -1,22 +1,32 @@
+import { MdOutlineLibraryBooks } from "react-icons/md";
+import { PiFilesBold } from "react-icons/pi";
+import { MdOutlineAssignment } from "react-icons/md";
+import { TbCertificate } from "react-icons/tb";
+import { PiStudentBold } from "react-icons/pi";
 export const menuSidebar = [
     {
       title: "Programme",
-      icon: "bi bi-clipboard-data fs-5 me-3",
-      path: "",
+      icon: <MdOutlineLibraryBooks />,
+      id: "link1",
     },
     {
-      title: "Livraison",
-      icon: "bi bi-folder-symlink fs-5 me-3",
-      path: "",
+      title: "Livrable",
+      icon: <PiFilesBold />,
+      id: "link2",
     },
     {
       title: "Assignation",
-      icon: "bi bi-bookmark-check fs-5 me-3",
-      path: "",
+      icon: <MdOutlineAssignment />,
+      id: "link3",
+    },
+    {
+      title: "Etudiants",
+      icon: <PiStudentBold />,
+      id: "link4",
     },
     {
       title: "Certificats",
-      icon: "bi bi-bookmark-check fs-5 me-3",
-      path: "",
+      icon: <TbCertificate />,
+      id: "link5",
     },
   ];
