@@ -11,15 +11,18 @@ export default function Connexion() {
       <div class="row d-flex justify-content-center align-items-center ">
         <div class="row g-0 justify-content-arround">
           <div class=" height-img   col-lg-5 d-none d-md-block ">
-            <img
+            {/* <img
               src={affiche}
               alt="login form"
               className="img-fluid rounded-6"
-            />
+            /> */}
           </div>
           <div class="col-lg-7 height-form d-flex justify-content-center">
-            <div class="card-body justify-content-center  p-lg-5 text-black">
-              <div class="d-flex  mb-5 justtify-content-center   bouton-switch  ">
+            <div class="card-body justify-content-center p-lg-5 text-black">
+              <div
+                class="d-flex  mb-5 justtify-content-center   bouton-switch border border-dark p-2 rounded-pill "
+                style={{ background: "rgba(73, 187, 189, 0.6)" }}
+              >
                 <button
                   type="button"
                   class="btn  tir text-white"

@@ -44,20 +44,20 @@ export default function FormConnect() {
             aria-describedby="addon-wrapping"
           />
         </div>
-      </div>
-      <Link
-        to="/Modal"
-        onClick={handleShowModal}
-        className="text-decoration-none"
-      >
-        <p className="m-0 p-0 text-start oubli">Mot de passe oublié?</p>
-      </Link>
+        <Link
+            to="/Modal"
+            onClick={handleShowModal}
+            className="text-decoration-none"
+          >
+            <p className="m-0 p-0 text-end oubli">Mot de passe oublié?</p>
+          </Link>
 
-      <div class="pt-1 mt-4 text-end ">
-        <button class="btn  btn-lg btn-block text-white  log" type="button">
-          Login
-        </button>
-      </div>
+        <div class="pt-1 mt-4 text-end">
+          <center>
+          <button class="btn  btn-lg btn-block text-white  log" type="button">Login</button>
+          </center>
+        </div>
+    </div>
     </form>
-  );
+  )
 }
