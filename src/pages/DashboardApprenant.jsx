@@ -21,12 +21,13 @@ export default function DashboardApprenant() {
 
           <div className="col-12">
             <div class="form-floating my-3">
-              <textarea
+              <input
+                type="file"
                 className="form-control textarea"
                 placeholder="Leave a comment here"
                 id="floatingTextarea2"
-                style={{}}
-              ></textarea>
+                // style={{height: ''}}
+              ></input>
               <label for="floatingTextarea2">Ajouter un commentaire</label>
             </div>
             {/* <div className="w-100 d-flex jutify-content-end">

@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth, db, storage } from "../config/firebase-config";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
-import { useNavigate, Link } from "react-router-dom";
+// import { useNavigate, Link } from "react-router-dom";
+// import affiche from "../assets/images/affiche.jpg";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import { auth, db, storage } from "../config/firebase-config";
+import { useNavigate } from "react-router";
 
 const Inscription = () => {
   const [loading, setLoading] = useState(false);
@@ -121,5 +126,4 @@ const Inscription = () => {
     </form>
   );
 };
-
 export default Inscription;

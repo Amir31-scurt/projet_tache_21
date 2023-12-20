@@ -66,7 +66,11 @@
 .height-img {
     height: 100vh !important;
     width: 50% !important;
-    padding: 15px
+    padding:15px;
+    background-image:url(assets/images/affiche.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+
 }
 
 .height-img img {
@@ -80,21 +84,24 @@
     width: 40% !important;
     margin: 15px auto;
 }
-.bouton-switch{
-    border: 1px solid #d4f1f4;
-    display: flex;
-    justify-content: space-around;
-    border-radius: 33px;
-    padding:5px ;
-    margin: auto;
-    width: 260px;
-    height: 40px;
-    background-color: #d4f1f4; 
+
+.bouton-switch button {
+    flex: 1;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    /* background-color: transparent; */
+  }
+
+  .bouton-switch .active {
+    background-color: #b3e0f2;
+    border-radius: 30px;
 }
 .tir{
     height: 30px;
     border-radius: 33px !important; 
     background-color: #189AB4 !important;
+    /* background-color: #49BBBD; */
 }
 .tire{
     border-radius: 33px !important; 
@@ -120,17 +127,3 @@
 .oubli{
     color: #189AB4;
 }
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: 0;
-  font-family: 'Montserrat', sans-serif;
-  /* background-color: #d4f1f4; */
-}
-
-/* cartes : Navy Blue #05445E */
-/*  Navbar : Blue Grotto  #189AB4 */
-/*  Button : Blue Green  #189AB4 */
-/* Button:hover : Grotto Blue #189AB4 */
-/* Background: baby blue #D4F1F4 */
