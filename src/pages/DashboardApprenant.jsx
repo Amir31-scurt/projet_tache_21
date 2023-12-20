@@ -23,23 +23,19 @@ export default function DashboardApprenant() {
           <div className="col-md-12 d-flex flex-sm-column colApprenant my-3">
             <img src={userProfile} alt="" className="icon" />
             <div className="mySpan">
-              <h6 className=" px-3 pt-2" style={{ color: "#e16b07" }}>
-                {nom}
-              </h6>
-              <p className="m-0" style={{ color: "#e16b07" }}>
-                {date}
-              </p>
+              <h6 className=" px-3 pt-2 mainColor">{nom}</h6>
+              <p className="m-0 mainColor">{date}</p>
             </div>
           </div>
 
-          <div className="col-12 my-2">
+          <div className="col-12 my-2 ">
             <img src={livraison} alt="" className="publication rounded-2" />
           </div>
-          <div className="row comment border rounded-2 w-100 m-0 my-2">
+          <div className="row comment border rounded-2 m-0 my-2 boxshadow">
             <div className="col-12 py-1">
               <p className=" d-flex">
                 <span className="fw-bolder">Coach Kalika Ba</span>
-                <span className="coach bg-success text-light rounded-2 px-2 mx-3 pb-0">
+                <span className="text-light rounded-2 px-2 mx-3 pb-0 mainBackgrounColor">
                   {role}
                 </span>
                 <span>il y a {days} jour</span>
@@ -50,18 +46,20 @@ export default function DashboardApprenant() {
             </div>
           </div>
 
-          <div className="col-12 py-1">
-            <div className="comment d-flex align-items-center">
+          <div className="col-12 py-1 ">
+            <div className="comment d-flex align-items-center ">
               <img
                 src={commenter}
                 alt=""
                 className=""
                 style={{ width: "30px", height: "30px" }}
               />
-              <p className="px-2 m-0" style={{fontSize: "12px"}}>Plus de commentaires</p>
+              <p className="px-2 m-0 sizeHover" style={{ fontSize: "12px" }}>
+                Plus de commentaires
+              </p>
             </div>
 
-            <div className="form-floating my-3">
+            <div className="form-floating my-3 rounded-2 boxshadow">
               <input
                 className="form-control textarea"
                 placeholder="Leave a comment here"
