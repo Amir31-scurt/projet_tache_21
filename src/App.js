@@ -9,6 +9,7 @@ import Connexion from "./pages/Connexion";
 // import Inscription from "./pages/Inscription"
 import DashboardApprenant from "./pages/DashboardApprenant";
 import OubliMoPass from './pages/OubliMoPass';
+import ChatHome from "./components/chatComponent/ChatHome";
 import Programme from "./components/Programme";
 
 export default function App() {
@@ -25,6 +26,10 @@ export default function App() {
     {
       path: "/modal",
       element: <OubliMoPass />,
+    },
+    {
+      path: "/chatHome",
+      element: <ChatHome/>
     },
     {
       path: "/dashboardapprenant",
