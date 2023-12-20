@@ -9,9 +9,9 @@ export default function OubliMoPass() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const emailVal = e.target.email.value;
-
+    // const emailVal = e.target.email.value;
   };
+
   return (
     <div className="container">
       <div className="row justify-content-center">
@@ -34,7 +34,7 @@ export default function OubliMoPass() {
               {/* <!-- Submit button --> */}
               <div className="text-end justify-content-between">
                 <button type="button" class="btn btn-block  btn-secondary ">
-                  <Link to="/connecxion" className='text-decoration-none text-white'>Fermer</Link>
+                  <Link to="/" className='text-decoration-none text-white'>Fermer</Link>
                 </button>
                 <button type="submit" className="btn but btn-block  text-white">
                   Envoyer

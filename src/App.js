@@ -1,4 +1,3 @@
-// import { useState } from "react";
 import "./App.css";
 import {
   createBrowserRouter,
@@ -16,12 +15,12 @@ export default function App() {
   const rooter = createBrowserRouter([
     {
       path: "/",
-      element: <Inscription/>,
+      element: <Connexion/>,
     },
-    {
-      path: "/connecxion",
-      element: <Connexion/>
-    },
+    // {
+    //   path: "/Inscription",
+    //   element: <Inscription />,
+    // },
     {
       path: "/modal",
       element: <OubliMoPass/>
@@ -31,8 +30,8 @@ export default function App() {
       element: <DashboardApprenant />,
       children: [
         // {
-          // path: "/dashboardapprenant/",
-          // element: <nomComposantHome/>,
+        // path: "/dashboardapprenant/",
+        // element: <nomComposantHome/>,
         // },
       ],
     },
@@ -41,3 +40,4 @@ export default function App() {
     <RouterProvider router={rooter} />
   );
 }
+
