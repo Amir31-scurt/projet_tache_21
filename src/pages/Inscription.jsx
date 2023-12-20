@@ -119,9 +119,12 @@ const Inscription = () => {
           <span>Choisir l'image de profil</span>
         </label>
       </div>
-      <button type="submit" className="btn btn-primary" disabled={loading}>
+      <center>
+          <button class="btn  d-flex justify-content-center align-items-center fs-6 btn-lg btn-block text-white  log" type="button">S'inscrire</button>
+          </center>
+      {/* <button type="submit" className="btn btn-primary" disabled={loading}>
         Sign In
-      </button>
+      </button> */}
       {err && <span style={{ color: "red" }}>Quelque chose d'anormale</span>}
     </form>
   );

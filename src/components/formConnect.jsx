@@ -16,8 +16,8 @@ export default function FormConnect() {
   // render login
   return (
     <form>
-      <div class=" tire mb-4">
-        <div class="input-group  flex-nowrap">
+      <div className=" tire mb-4">
+        <div className="input-group  flex-nowrap">
           <span class="input-group-text" id="addon-wrapping">
             <CiMail />
           </span>
@@ -31,8 +31,8 @@ export default function FormConnect() {
         </div>
       </div>
 
-      <div class=" tire ">
-        <div class="input-group mb-3  flex-nowrap">
+      <div className=" tire ">
+        <div className="input-group mb-3  flex-nowrap">
           <span class="input-group-text" id="addon-wrapping">
             <RiLockPasswordFill />
           </span>
@@ -52,9 +52,9 @@ export default function FormConnect() {
             <p className="m-0 p-0 text-end oubli">Mot de passe oublié?</p>
           </Link>
 
-        <div class="pt-1 mt-4 text-end">
+        <div className="pt-1 mt-4 text-end">
           <center>
-          <button class="btn  btn-lg btn-block text-white  log" type="button">Login</button>
+          <button class="btn  d-flex justify-content-center align-items-center fs-6 btn-lg btn-block text-white  log" type="button">Connecter</button>
           </center>
         </div>
     </div>

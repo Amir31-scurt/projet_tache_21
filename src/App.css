@@ -65,24 +65,20 @@
 
 .height-img {
     height: 100vh !important;
-    width: 50% !important;
-    padding:15px;
-    background-image:url(assets/images/affiche.jpg);
+    /* width: 50% !important; */
+    /* padding:15px; */
+    background-image:url(assets/images/renom.jpg);
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
 
 }
-
-.height-img img {
-    height: 100%;
-    border-radius: 5%;
-    width: 100%;
-    padding: 15px;
-}
-
 .height-form {
-    width: 40% !important;
-    margin: 15px auto;
+    /* width: 40% !important; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
 }
 
 .bouton-switch button {
@@ -90,19 +86,20 @@
     border: none;
     outline: none;
     cursor: pointer;
-    /* background-color: transparent; */
+    background-color: transparent; 
   }
 
-  .bouton-switch .active {
-    background-color: #b3e0f2;
+.bouton-switch {
+    background-color: #432705;
     border-radius: 30px;
  }
-.tir{
+ .bouton-switch .active {
     height: 30px;
     border-radius: 33px !important; 
-    background-color: #189AB4 !important;
-    /* background-color: #49BBBD; */
-}
+    background-color: #e16d07 !important;
+  }
+  /* background-color: #49BBBD; */
+
 .tire{
     border-radius: 33px !important; 
 }
@@ -110,7 +107,7 @@
     height: 40px;
     border-radius: 33px !important;
     width: 30%;
-    background-color: #189AB4 !important; 
+    background-color:  #e16d07 !important; 
     
 }
 .first {
