@@ -35,7 +35,7 @@ export default function DashboardApprenant() {
             <div className="col-12 py-1">
               <p className=" d-flex">
                 <span className="fw-bolder">Coach Kalika Ba</span>
-                <span className="text-light rounded-2 px-2 mx-3 pb-0 mainBackgrounColor">
+                <span className="text-light bg-warning rounded-2 px-2 mx-3 pb-0 mainBackgrounColor">
                   {role}
                 </span>
                 <span>il y a {days} jour</span>
