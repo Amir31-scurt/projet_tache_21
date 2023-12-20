@@ -4,7 +4,7 @@ import { useState } from "react";
 import { CiMail } from "react-icons/ci";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../config/firebase";
+import { auth } from "../config/firebase-config";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -54,10 +54,9 @@ export default function FormConnect() {
 
   return (
     <>
-
+        <ToastContainer />
         {/* Formulaire de connexion */}
         <form onSubmit={handleLogin}>
-         
           {/* Champ email avec icône */}
           <div className=" tire mb-4">
             <div className="input-group  flex-nowrap">
