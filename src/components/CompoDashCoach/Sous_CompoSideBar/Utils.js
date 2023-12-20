@@ -10,7 +10,7 @@ export const menuSidebar = [
       id: "link1",
     },
     {
-      title: "Livrable",
+      title: "Livraison",
       icon: <PiFilesBold />,
       id: "link2",
     },

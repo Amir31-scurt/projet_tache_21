@@ -4,7 +4,7 @@ import React from 'react'
 function SidebarCompo({title, icon, id}) {
   return (
     <a
-        href="#link"
+      href="#link"
       style={{ textDecoration: "none" }}
       className="list-group-item bg-transparent border-0 px-2"
       id={id}
