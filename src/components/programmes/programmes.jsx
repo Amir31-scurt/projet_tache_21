@@ -1,15 +1,29 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import CategoryList from './Domaines';
+import { Link } from 'react-router-dom';
+import {
+  ButtonGroup,
+  Button,
+  Whisper,
+  Popover,
+  Dropdown,
+  IconButton,
+} from 'rsuite';
+import ArrowDownIcon from '@rsuite/icons/ArrowDown';
 
 // Define a reusable ProgramCard component
 const ProgramCard = ({ title, description, imageUrl, buttonText }) => {
   return (
-    <div className="program-card">
+    <div className="program-card bg-light">
       <img src={imageUrl} alt={title} />
       <h3>{title}</h3>
       <p>{description}</p>
-      <button>{buttonText}</button>
+      <button>
+        <Link to="/specific-cour" className="text-light text-decoration-none">
+          {buttonText}
+        </Link>
+      </button>
     </div>
   );
 };
@@ -22,7 +36,7 @@ const CourseCard = ({
   progressColor,
 }) => {
   return (
-    <div className="card course-card m-2" style={{ width: '19rem' }}>
+    <div className="card course-card" style={{ width: '19rem' }}>
       <div className="img-container">
         <img src={imageUrl} alt={title} className="card-img-top" />
       </div>
@@ -70,6 +84,12 @@ const CourseCard = ({
 
 // Main component that uses ProgramCard to display a list of programs
 const ProgramList = () => {
+  const [action, setAction] = React.useState(0);
+  const options = [
+    'Create a merge commit',
+    'Squash and merge',
+    'Rebase and merge',
+  ];
   // const [currentPage, setCurrentPage] = useState(1);
   // const pageSize = 4; // Number of cards per page
   // Example data that would be fetched from an API or defined in your application
@@ -114,7 +134,7 @@ const ProgramList = () => {
       title: 'UX & Web Design Master Course A-Z',
       author: 'Sheikh Ali',
       progress: 88,
-      progressColor: '#6c5ce7', // Use a color that matches the progress bar color
+      progressColor: '#189AB4', // Use a color that matches the progress bar color
       imageUrl:
         'https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg',
     },
@@ -123,16 +143,16 @@ const ProgramList = () => {
       title: 'Programmation Master Course A-Z',
       author: 'Sheikh Ali',
       progress: 18,
-      progressColor: '#6c5ce7', // Use a color that matches the progress bar color
+      progressColor: '#189AB4', // Use a color that matches the progress bar color
       imageUrl:
         'https://cdn4.iconfinder.com/data/icons/apply-pixels-glyphs/40/Code_Tag-512.png',
     },
     {
       category: { name: 'UX Design', color: '#FFB572' },
-      title: 'Marketing Master Course A-Z',
+      title: 'Digital marketing Master Course A-Z',
       author: 'Sheikh Ali',
       progress: 88,
-      progressColor: '#6c5ce7', // Use a color that matches the progress bar color
+      progressColor: '#189AB4', // Use a color that matches the progress bar color
       imageUrl:
         'https://cdn.shopify.com/s/files/1/0070/7032/files/Introduction_To_Marketing.jpg?v=1648057035',
     },
@@ -141,7 +161,7 @@ const ProgramList = () => {
       title: 'Project gestion Master Course A-Z',
       author: 'Sheikh Ali',
       progress: 48,
-      progressColor: '#6c5ce7', // Use a color that matches the progress bar color
+      progressColor: '#189AB4', // Use a color that matches the progress bar color
       imageUrl:
         'https://kiluz.com/wp-content/uploads/2021/05/bureautique-1.png',
     },
@@ -161,24 +181,30 @@ const ProgramList = () => {
   // };
 
   return (
-    <div className="containerProgramme d-flex flex-column justify-content-center align-items-center m-0 p-0">
-      <div className="d-flex flex-wrap justify-content-center">
-        {programs.map((program, index) => (
-          <div className="col" key={index}>
-            <ProgramCard
-              title={program.title}
-              description={program.description}
-              imageUrl={program.imageUrl}
-              buttonText={program.buttonText}
-            />
-          </div>
-        ))}
+    <div className="containerProgramme d-flex flex-column justify-content-center align-items-center">
+      <div className="contain1 bg-info bg-opacity-25 w-100 py-5">
+        <h2 className="mb-5 text-center">Programmes</h2>
+        <div className="d-flex flex-wrap justify-content-center">
+          {programs.map((program, index) => (
+            <div
+              className="d-flex flex-wrap gap-2  justify-content-center"
+              key={index}
+            >
+              <ProgramCard
+                title={program.title}
+                description={program.description}
+                imageUrl={program.imageUrl}
+                buttonText={program.buttonText}
+              />
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="d-flex flex-wrap justify-content-center flex-column mx-5">
-        <h2>Choice </h2>
-        <div className="d-flex flex-wrap">
+      <div className="d-flex flex-wrap justify-content-center flex-column align-items-center my-5">
+        <h2 className="my-3">Choice </h2>
+        <div className="d-flex flex-wrap gap-2  justify-content-center">
           {coursesData.map((course, index) => (
-            <div className="col-3" key={index}>
+            <div className="" key={index}>
               <CourseCard {...course} />
             </div>
           ))}
@@ -191,11 +217,45 @@ const ProgramList = () => {
           />
         </div> */}
       </div>
-      <div className="m-5 px-5">
-        <h2>Choice favourite course from top category</h2>
+      <div className="bg-info py-5 bg-opacity-25">
+        <h2 className="text-center">
+          Choice favourite course from top category
+        </h2>
         <CategoryList />
         {/* ... other components */}
       </div>
+      <ButtonGroup>
+        <Button appearance="primary">{options[action]}</Button>
+        <Whisper
+          placement="bottomEnd"
+          trigger="click"
+          speaker={({ onClose, left, top, className }, ref) => {
+            const handleSelect = (eventKey) => {
+              onClose();
+              setAction(eventKey);
+              console.log(eventKey);
+            };
+            return (
+              <Popover
+                ref={ref}
+                className={className}
+                style={{ left, top }}
+                full
+              >
+                <Dropdown.Menu onSelect={handleSelect}>
+                  {options.map((item, index) => (
+                    <Dropdown.Item key={index} eventKey={index}>
+                      {item}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Popover>
+            );
+          }}
+        >
+          <IconButton appearance="primary" icon={<ArrowDownIcon />} />
+        </Whisper>
+      </ButtonGroup>
     </div>
   );
 };
