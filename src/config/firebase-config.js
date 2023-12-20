@@ -10,7 +10,6 @@ import { getFirestore } from "firebase/firestore";
 //   messagingSenderId: "395175751377",
 //   appId: "1:395175751377:web:7bc66ba39d4223256a5ff0"
 // };
-// Bismilah
 
 const firebaseConfig = {
   apiKey: "AIzaSyAkYLY7TMu0ZBoCqT7kXwE1sdnxVC-55uk",

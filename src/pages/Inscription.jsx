@@ -27,6 +27,7 @@ const Inscription = () => {
     const password = e.target[2].value;
     // const confirmPassword = e.target[3].value;
     const file = e.target[3].value;
+    console.log(displayName, file, email, password);
 
     try {
       // Création de l'utilisateur
