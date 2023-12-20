@@ -24,36 +24,92 @@ body{
 
                 .module-container {
                   display: flex;
+                 
+                 
+                 
+                
                 }
                 
                 .sidebar {
-                  width: 20%;
+                  
+                  width: 25%;
                   background-color: #f0f2f5;
-                  padding: 20px;
+                  height: 100vh;
+                  position: fixed;
+                 
+                
+                  
+                 
+                }
+                .file{
+                  position: fixed;
+                  overflow-y: scroll;
+                  height: 100vh;
+                  padding: 0px 10px;
+
+                }
+                .titre{
+                  font-size: 32px;
+                  font-weight: 500;
                 }
                 
                 .main-content {
-                  width: 80%;
+                  width: 75%;
                   padding: 20px;
+                  margin: 10px;
+                  text-align: left;
+                  margin-left: 27%;
                 }
                 
                 .lesson-item {
                   background-color: white;
                   margin-bottom: 10px;
                   padding: 10px;
-                  border-left: 5px solid #007bff; /* Blue border for active item */
+                  width: 92%;
+                  border-left: 5px solid #e16d07; /* Blue border for active item */
                 }
                 
                 .content-block {
                   background-color: white;
+                  width: 92%;
                   margin-bottom: 10px;
                   padding: 20px;
-                  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* subtle shadow */
+                  border-left: 5px solid #e16d07;
+                  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                 }
                 
                 .introduction {
                   font-size: 18px;
                   margin-bottom: 20px;
                 }
+                .label{
+                  margin-left: 5px;
+                }
+
+                .dig{
+                  background-color: #d4f1f4;
+                  padding: 10px;
+                }
+                .sous{
+                  border-radius: 20px;
+                  height: 50px;
+                  font-size: 22px;
+                  width: 50%;
+                  margin-left: 25%;
+                  margin-top: 30px;
+                  background-color: #e16d07;
+                  border: none;
+                  color: white;
+                  font-weight: bold;
+                }
+                
+                .paragraph{
+                  font-size: 18px;
+                  font-weight: 700;
+                }
+
+                
+
+                
                 
                 /* Add responsive design, animations, and interactive JS as needed */
