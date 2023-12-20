@@ -17,10 +17,10 @@ export default function App() {
       path: "/",
       element: <Connexion/>,
     },
-    {
-      path: "/Inscription",
-      element: <Inscription />,
-    },
+    // {
+    //   path: "/Inscription",
+    //   element: <Inscription />,
+    // },
     {
       path: "/modal",
       element: <OubliMoPass/>
