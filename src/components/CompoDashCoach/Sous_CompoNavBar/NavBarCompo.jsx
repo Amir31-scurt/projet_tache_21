@@ -1,15 +1,14 @@
-
-import React, { useContext, useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import LogoTech from "../../../assets/images/Logo.png";
-import { MdMessage } from "react-icons/md";
-import { IoNotifications } from "react-icons/io5";
-import { Dropdown } from "rsuite";
-import { FaUserCog } from "react-icons/fa";
-import { TbTriangleInvertedFilled } from "react-icons/tb";
-import { IoMdLogOut } from "react-icons/io";
-import ModalComponent from "./ModalComponent";
-import NavBarContext from "./context";
+import React, { useContext, useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import LogoTech from '../../../assets/images/logo.png';
+import { MdMessage } from 'react-icons/md';
+import { IoNotifications } from 'react-icons/io5';
+import { Dropdown } from 'rsuite';
+import { FaUserCog } from 'react-icons/fa';
+import { TbTriangleInvertedFilled } from 'react-icons/tb';
+import { IoMdLogOut } from 'react-icons/io';
+import ModalComponent from './ModalComponent';
+import NavBarContext from './context';
 
 export const NavBarCompo = () => {
   const [open, setOpen] = useState(false);
@@ -43,7 +42,7 @@ export const NavBarCompo = () => {
               title={
                 <TbTriangleInvertedFilled
                   className="fs-5"
-                  style={{ color: "#d4f1f4" }}
+                  style={{ color: '#d4f1f4' }}
                 />
               }
               placement="bottomEnd"
@@ -60,7 +59,7 @@ export const NavBarCompo = () => {
               {/*===============Bouton Deconnexion=============== */}
               <Dropdown.Item
                 className="fw-bold"
-                onClick={() => alert("Bouton de Deconnection")}
+                onClick={() => alert('Bouton de Deconnection')}
               >
                 <IoMdLogOut className="fs-5 IcoColor mx-1" /> Déconnexion
               </Dropdown.Item>
