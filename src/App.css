@@ -216,8 +216,8 @@ body {
 
   .sidebar .list-group-item:hover {
     border-radius: 10%;
-    transform: scale(1.1);
-    transition: 1s;
+    /* transform: scale(1.1); */
+    /* transition: 1s; */
   }
 
   .sidebar .list-group-item {
