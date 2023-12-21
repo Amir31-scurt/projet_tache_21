@@ -10,22 +10,22 @@ export default function ChatHome() {
   const [openChat, setOpenChat] = useState(false);
   return (
     <div className="chatHomeContainer">
-      {openChat && (
-        <div className="chatHome border">
-          <div className="chatContainer">
-            <ChatHeader />
-            <Chat />
-          </div>
+      {/* {openChat && ( */}
+      <div className="chatHome rounded">
+        <div className="chatContainer">
+          <ChatHeader />
+          <Chat />
         </div>
-      )}
-      <button className="btn mt-3 rounded-circle bg-primary" id="btn-toggle">
+      </div>
+      {/* )} */}
+      <button className="btn mt-2 rounded-circle" id="btn-toggle">
         {!openChat ? (
           <i
-            className="bi bi-chat-fill fs-3"
+            className="bi bi-chat-fill fs-4"
             onClick={() => setOpenChat(true)}
           ></i>
         ) : (
-          <i className="bi bi-x-lg fs-3" onClick={() => setOpenChat(false)}></i>
+          <i className="bi bi-x-lg fs-4" onClick={() => setOpenChat(false)}></i>
         )}
       </button>
     </div>

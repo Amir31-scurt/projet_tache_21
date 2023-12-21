@@ -1,17 +1,36 @@
+
 /* ================================================== 
-                CHATS
+                    CHAT HOME
+   ================================================== */
+.chatHome{
+    border: 0.01rem solid #333;
+    overflow: hidden;
+}
+/* ================================================== 
+                    CHAT HEADER
+   ================================================== */
+.chatHeader #closeSearch,
+.chatHeader #openSearch{
+    cursor: pointer;
+}
+.chatHeader{
+    transition: all 0.3s ease;
+}
+.chatHeader .chatHeaderBtnContainer{
+    background-color: #432705;
+    
+}
+/* ================================================== 
+                    CHATS 
    ================================================== */
 .chatHomeContainer{
     width: 400px;
     position: absolute;
-    bottom: 30px;
-    right: 20px;
+    bottom: 15px;
+    right: 20px; 
 }
 /* .chatHome{
-    width: 400px;
-    position: absolute;
-    bottom: 60px;
-    right: 30px;
+    background-color: #d89356;
 } */
 .chats{
     overflow-x: scroll;
@@ -19,6 +38,7 @@
 .chatHomeContainer #btn-toggle{
     float: right;
     outline: none !important;
+    background-color: #e16d07;
 }
 .chatHome .chatHeader .chatNavbar .user img{
     width: 40px;
@@ -27,11 +47,28 @@
     width: 40px;
 }
 /* ================================================== 
+                SEARCH-FORM 
+   ================================================== */
+.searchForm #navbar-input-container input{
+    outline: none !important;
+}
+
+/* ================================================== 
+                        CHAT
+   ================================================== */
+.chatHome .chat .chatInfo{
+    background-color: #e16d07;
+    color: #333;
+}
+
+
+/* ================================================== 
                 MESSAGES
    ================================================== */
 .messages{
     height: 250px;
     overflow-y: auto;
+    background-color: #edcaaa;
 }
 .messages .owner  {
     flex-direction: row-reverse;
@@ -68,4 +105,16 @@
 .messages .owner .messageContent p{
     max-width: fit-content;
     border-radius: 10px 0 10px 10px;
+}
+
+/* ================================================== 
+                CHAT INPUT  
+   ================================================== */
+.chatInput {
+    background-color: #edcaaa;
+}
+
+.chatInput button{
+    background-color: #e16d07;
+    /* background-color: rgba(225, 109, 7, 0.5); */
 }

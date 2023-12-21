@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import pp from "../assets/images/user.png";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
@@ -12,6 +13,7 @@ import { auth, db, storage } from "../config/firebase-config";
 import { useNavigate } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "../assets/css/inscription.css";
 
 const Inscription = () => {
   const [loading, setLoading] = useState(false);
@@ -20,6 +22,7 @@ const Inscription = () => {
 
   const navigate = useNavigate();
   const formRegister = useRef();
+  const imgUserRegisted = useRef();
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -153,11 +156,17 @@ const Inscription = () => {
           name="fichier"
           type="file"
           id="file"
+          // ref={imgUserRegisted}
         />
         <label htmlFor="file">
           {/* <img src={Add} alt="" /> */}
-          <i className="bi bi-card-image me-3"></i>
-          <span>Choisir l'image de profil</span>
+          <i className="bi bi-card-image me-3" id="choseIMG"></i>
+          <span className="me-3">Choisir l'image de profil</span>
+          {/* <img
+            src={imgUserRegisted ? URL.createObjectURL(imgUserRegisted) : pp}
+            alt=""
+            id="imgRegister"
+          /> */}
         </label>
       </div>
       <button
