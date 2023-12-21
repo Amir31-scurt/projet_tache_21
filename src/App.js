@@ -4,9 +4,9 @@ import {
   RouterProvider,
   // Navigate,
 } from "react-router-dom";
-
-                   
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Template from './layout/template';
+import 'rsuite/dist/rsuite.min.css';
 import Connexion from "./pages/Connexion";
 // import Inscription from "./pages/Inscription"
 import DashboardApprenant from "./pages/DashboardApprenant";
@@ -45,6 +45,9 @@ export default function App() {
     },
   ]);
   return (
-    <RouterProvider router={rooter} />
+    <div className="">
+      <RouterProvider router={rooter} />
+      <Template />
+    </div>
   );
 }
