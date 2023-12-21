@@ -5,7 +5,7 @@ import envoi from "../assets/images/envoi.png";
 import commenter from "../assets/images/commenter.png";
 
 // import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
+import {Dialog} from 'primereact/dialog';
 
 export default function DashboardApprenant() {
 
