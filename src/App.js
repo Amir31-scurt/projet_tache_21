@@ -9,11 +9,8 @@ import Connexion from "./pages/Connexion";
 // import Inscription from "./pages/Inscription"
 import DashboardApprenant from "./pages/DashboardApprenant";
 import OubliMoPass from './pages/OubliMoPass';
-<<<<<<< HEAD
 import ChatHome from "./components/chatComponent/ChatHome";
-=======
 import Programme from "./components/Programme";
->>>>>>> 2fa79db052fa1c7a96b731863895a0110bbf4a32
 
 export default function App() {
 
