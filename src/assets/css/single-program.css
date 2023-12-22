@@ -1,10 +1,11 @@
 .main-container {
-  max-width: 100%;
+  width: 100%;
   margin: auto;
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 50px;
 }
 
 .header-section h1 {
@@ -28,7 +29,7 @@
   background-color: #ca6206;
 }
 .img-centered {
-  height: 100vh;
+  height: 70vh;
   width: 180em;
 }
 

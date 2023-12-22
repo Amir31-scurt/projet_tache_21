@@ -576,14 +576,18 @@ body {
 
 /*============ A ne pas toucher============*/
 .Side_Content {
-  margin-top: 5.7em;
+  margin-top: 5em;
   display: flex;
 }
 .bodyContent {
-  margin-left: 20%;
+  margin-left: 18%;
 }
 .car {
   width: 25%;
+}
+.car img {
+  height: 150px;
+  width: 100%;
 }
 @media (max-width: 1024px) {
   .bodyContent {
@@ -591,9 +595,6 @@ body {
     margin: 0 40px;
     margin-bottom: 30px;
   }
-}
-.car {
-  width: 50%;
 }
 @media (max-width: 726px) {
   .car {

@@ -11,7 +11,10 @@ const ProgramCard = ({ title, description, imageUrl, buttonText }) => {
       <h3>{title}</h3>
       <p className="mb-3">{description}</p>
       <button>
-        <Link to="/specific-cour" className="text-light text-decoration-none">
+        <Link
+          to="/timeline/programme/cours"
+          className="text-light text-decoration-none"
+        >
           {buttonText}
         </Link>
       </button>
@@ -103,7 +106,7 @@ const ProgramList = () => {
       description:
         'Learn the principles of user experience and user interface design.',
       imageUrl:
-        'https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg',
+        'https://kiluz.com/wp-content/uploads/2021/05/bureautique-1.png',
       buttonText: 'Les cours',
     },
     {
@@ -111,7 +114,7 @@ const ProgramList = () => {
       description:
         'Learn the principles of user experience and user interface design.',
       imageUrl:
-        'https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg',
+        'https://cdn4.iconfinder.com/data/icons/apply-pixels-glyphs/40/Code_Tag-512.png',
       buttonText: 'Les cours',
     },
     {
@@ -119,7 +122,7 @@ const ProgramList = () => {
       description:
         'Learn the principles of user experience and user interface design.',
       imageUrl:
-        'https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg',
+        'https://cdn.shopify.com/s/files/1/0070/7032/files/Introduction_To_Marketing.jpg?v=1648057035',
       buttonText: 'Les cours',
     },
     // ...other programs
@@ -196,7 +199,7 @@ const ProgramList = () => {
           ))}
         </div>
       </div>
-      <div className="d-flex flex-wrap justify-content-center flex-column align-items-center my-5">
+      {/* <div className="d-flex flex-wrap justify-content-center flex-column align-items-center my-5">
         <h2 className="my-3">Choice </h2>
         <div className="d-flex flex-wrap gap-2  justify-content-center">
           {coursesData.map((course, index) => (
@@ -205,17 +208,17 @@ const ProgramList = () => {
             </div>
           ))}
         </div>
-        {/* <div className="pagi d-flex justify-content-end w-100">
+      </div> */}
+      {/* <div className="pagi d-flex justify-content-end w-100">
           <Pagination
             currentPage={currentPage}
             totalPages={pageCount}
             onPageChange={handlePageChange}
           />
         </div> */}
-      </div>
-      <div className="bg-info py-5 bg-opacity-25">
+      <div className="py-5">
         <h2 className="text-center">
-          Choice favourite course from top category
+          Choix du cours de la catégorie supérieure
         </h2>
         <CategoryList />
         {/* ... other components */}
