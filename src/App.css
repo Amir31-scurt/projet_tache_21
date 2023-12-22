@@ -63,7 +63,12 @@ body {
   width: 300px; /* or any desired width */
   margin: 8px;
 }
-
+.program-card2 {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 20px; /* or any desired width */
+}
 .program-card img {
   width: 100%;
   height: auto;
@@ -90,6 +95,34 @@ body {
 }
 
 .program-card button:hover {
+  background-color: #0056b3;
+}
+.program-card2 img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.program-card2 h3 {
+  font-size: 1.2rem;
+  margin-top: 8px;
+}
+
+.program-card2 p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.program-card2 button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.program-card2 button:hover {
   background-color: #0056b3;
 }
 
@@ -336,23 +369,20 @@ body {
 
 /*============ Le Dashboard CSS Debut =========*/
 
-.CardDashBoard{
+.CardDashBoard {
   width: fit-content;
   height: fit-content;
   border-radius: 20px;
 }
-.CouleurA{
+.CouleurA {
   background-color: #b3b3b396;
 }
-.CouleurB{
+.CouleurB {
   background-color: #82c55592;
 }
-.CouleurC{
+.CouleurC {
   background-color: #a62ac877;
 }
-
-
-
 
 /*============ Le Dashboard CSS Fin ============*/
 

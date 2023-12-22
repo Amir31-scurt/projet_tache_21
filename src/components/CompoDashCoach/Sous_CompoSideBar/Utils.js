@@ -1,79 +1,79 @@
-import { PiFilesBold, PiStudentBold } from "react-icons/pi";
+import { PiFilesBold, PiStudentBold } from 'react-icons/pi';
 import {
   MdOutlineAssignment,
   MdOutlineSpaceDashboard,
   MdOutlineLibraryBooks,
   MdTask,
-} from "react-icons/md";
-import { TbCertificate } from "react-icons/tb";
-import { LuSettings } from "react-icons/lu";
-import { FaUsers } from "react-icons/fa";
-import { LiaUsersSolid } from "react-icons/lia";
+} from 'react-icons/md';
+import { TbCertificate } from 'react-icons/tb';
+import { LuSettings } from 'react-icons/lu';
+import { FaUsers } from 'react-icons/fa';
+import { LiaUsersSolid } from 'react-icons/lia';
 export const menuSidebar = [
   {
-    title: "Dashboard",
+    title: 'Dashboard',
     icon: <MdOutlineSpaceDashboard />,
-    id: "link1",
+    id: 'link1',
   },
   {
-    title: "Programme",
+    title: 'Programme',
     icon: <MdOutlineLibraryBooks />,
-    id: "link1",
-    link: "/timeline/programme",
+    id: 'link1',
+    link: '/dashboard/programme',
   },
   {
-    title: "Livrable",
+    title: 'Livrable',
     icon: <PiFilesBold />,
-    id: "link2",
+    id: 'link2',
   },
   {
-    title: "Assignation",
+    title: 'Assignation',
     icon: <MdOutlineAssignment />,
-    id: "link3",
+    id: 'link3',
   },
   {
-    title: "Etudiants",
+    title: 'Etudiants',
     icon: <PiStudentBold />,
-    id: "link4",
+    id: 'link4',
   },
   {
-    title: "Certificats",
+    title: 'Certificats',
     icon: <TbCertificate />,
-    id: "link5",
-    link: "/timeline/certificat",
+    id: 'link5',
+    link: '/dashboard/certificat',
   },
   {
-    title: "Parametre",
+    title: 'Parametre',
     icon: <LuSettings />,
-    id: "link6",
+    id: 'link6',
   },
 ];
 
 export const ContenuCardDsb = [
   {
-    ChiffreCardDsb: "26",
+    ChiffreCardDsb: '26',
     IconeCardDsb: (
-      <FaUsers style={{ fontSize: "70px", opacity: "0.6", color: "#432705" }} />
+      <FaUsers style={{ fontSize: '70px', opacity: '0.6', color: '#432705' }} />
     ),
-    TextCardDsb: "Professeurs",
-    couleurCarte: "CouleurA",
+    TextCardDsb: 'Professeurs',
+    couleurCarte: 'CouleurA',
   },
   {
-    ChiffreCardDsb: "134",
+    ChiffreCardDsb: '134',
     IconeCardDsb: (
       <LiaUsersSolid
-        style={{ fontSize: "70px", opacity: "0.6", color: "#432705" }}
+        style={{ fontSize: '70px', opacity: '0.6', color: '#432705' }}
       />
     ),
-    TextCardDsb: "Etudiants",
-    couleurCarte: "CouleurB",
+    TextCardDsb: 'Etudiants',
+    couleurCarte: 'CouleurB',
   },
   {
-    ChiffreCardDsb: "32",
+    ChiffreCardDsb: '32',
     IconeCardDsb: (
-      <MdTask style={{ fontSize: "70px", opacity: "0.6", color: "#432705" }} />
+      <MdTask style={{ fontSize: '70px', opacity: '0.6', color: '#432705' }} />
     ),
-    TextCardDsb: "Taches",
-    couleurCarte: "CouleurC",
+    TextCardDsb: 'Taches',
+    couleurCarte: 'CouleurC',
   },
 ];

@@ -12,7 +12,7 @@ const ProgramCard = ({ title, description, imageUrl, buttonText }) => {
       <p className="mb-3">{description}</p>
       <button>
         <Link
-          to="/timeline/programme/cours"
+          to="/dashboard/programme/cours"
           className="text-light text-decoration-none"
         >
           {buttonText}
@@ -180,7 +180,7 @@ const ProgramList = () => {
         <div className="d-flex flex-wrap justify-content-center">
           {programs.map((program, index) => (
             <div
-              className="d-flex flex-wrap col-lg-3 justify-content-center car"
+              className="d-flex flex-wrap col justify-content-center car"
               key={index}
             >
               <ProgramCard

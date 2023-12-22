@@ -8,11 +8,17 @@ import commenter from '../assets/images/commenter.png';
 import { Dialog } from 'primereact/dialog';
 
 export default function CardLivraison() {
+  // eslint-disable-next-line
   const [apprenant, setApprenat] = useState('Cheikh Ahmed Tidiane Gueye');
+  // eslint-disable-next-line
   const [coach, setCoach] = useState('Kalika Ba');
+  // eslint-disable-next-line
   const [date, setDate] = useState('19 Dec 2023, 16:05');
+  // eslint-disable-next-line
   const [days, setDays] = useState('1');
+  // eslint-disable-next-line
   const [comment, setComment] = useState('Good job (:-)');
+  // eslint-disable-next-line
   const [role, setRole] = useState('Coach');
   const [visible, setVisible] = useState(false);
 
@@ -22,7 +28,7 @@ export default function CardLivraison() {
   }
 
   return (
-    <div className="w-75">
+    <div className="">
       <div className="container containerApprenant w-100 my-5">
         <div className="row rowAppenant ">
           <div className="col-md-12 d-flex colApprenant my-3">

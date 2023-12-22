@@ -38,7 +38,7 @@ export default function FormConnect() {
 
       setEmail('');
       setPassword('');
-      navigate('/timeline');
+      navigate('/dashboard');
     } catch (error) {
       // alert('Échec de la connexion. Veuillez vérifier vos informations.');
       toast.error(
