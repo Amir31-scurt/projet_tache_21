@@ -1,7 +1,7 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Template from './layout/template';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import 'rsuite/dist/rsuite.min.css';
 import Connexion from './pages/Connexion';
 // import Inscription from "./pages/Inscription"
