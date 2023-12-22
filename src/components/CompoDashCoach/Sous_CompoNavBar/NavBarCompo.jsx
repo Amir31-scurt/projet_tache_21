@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LogoTech from '../../../assets/images/logo.png';
+import LogoTech from '../../../assets/images/Logo.png';
 import { MdMessage } from 'react-icons/md';
 import { IoNotifications } from 'react-icons/io5';
 import { Dropdown } from 'rsuite';
@@ -40,7 +40,7 @@ export const NavBarCompo = () => {
           <div className="LogoConta d-flex align-items-center justify-content-center">
             <div className="LogoConta2">
               <img src={LogoTech} alt="Le Logo" className="img-fluid LOGONAV" />
-              <h3 className=" d-none d-lg-block text-white ms-2">TechGenius</h3>
+              <h3 className=" d-none d-lg-block text-white ms-2 mt-2">TechGenius</h3>
             </div>
           </div>
           {/*=====================SECOND PARTIE DU NavBar Debut============= */}

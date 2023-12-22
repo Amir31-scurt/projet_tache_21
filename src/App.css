@@ -163,7 +163,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100px;
+  /* width: 100px; */
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 25px;
 }
@@ -332,6 +332,28 @@ body {
   font-size: 0.875rem;
 }
 /* Background: baby Blue #D4F1F4 */
+
+/*============ Le Dashboard CSS Debut =========*/
+
+.CardDashBoard{
+  width: fit-content;
+  height: fit-content;
+  border-radius: 20px;
+}
+.CouleurA{
+  background-color: #b3b3b396;
+}
+.CouleurB{
+  background-color: #82c55592;
+}
+.CouleurC{
+  background-color: #a62ac877;
+}
+
+
+
+
+/*============ Le Dashboard CSS Fin ============*/
 
 /* =============== Je crée ici le CSS que je vais Utilisé Début =============== */
 
