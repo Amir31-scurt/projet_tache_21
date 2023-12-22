@@ -1,9 +1,13 @@
-import "./App.css";
+
 import {
   createBrowserRouter,
   RouterProvider,
   // Navigate,
 } from "react-router-dom";
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Template from './layout/template';
+import 'rsuite/dist/rsuite.min.css';
 
                    
 
@@ -45,6 +49,8 @@ export default function App() {
     },
   ]);
   return (
-    <RouterProvider router={rooter} />
+    <div className="">
+      <Template />
+    </div>
   );
 }
