@@ -1,129 +1,204 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 * {
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
   margin: 0;
   padding: 0;
   box-sizing: 0;
-  font-family: 'Montserrat', sans-serif;
+  background-color: #fff;
 }
 
 /* cartes : Navy Blue #05445E */
 /*  Navbar : Blue Grotto  #189AB4 */
 /*  Button : Blue Green  #189AB4 */
 /* Button:hover : Grotto Blue #189AB4 */
-/* Background: baby blue #D4F1F4 */
+/* Background: baby Blue #D4F1F4 */
 
-/* Cheikh CSS */
-.containerApprenant {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    border-radius: 25px;
+/* =============== Je crée ici le CSS que je vais Utilisé Début =============== */
+
+.NavBarContainer {
+  width: 100%;
+  background-color: #432705;
+  height: 80px;
+  border-radius: 2px;
 }
-.rowAppenant{
-    width: 100%;
+
+.LogoConta {
+  width: 25%;
+  height: auto;
+}
+.LogoConta2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100px;
+}
+.SecRightNav {
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+.ProfilSpace {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.NotifIcone {
+  width: 90px;
+  color: #d4f1f4;
+}
+.MessageIcone {
+  color: #d4f1f4;
+  width: 90px;
+}
+.ProfilUser {
+  border-radius: 50%;
+}
+.Mod {
+  cursor: pointer;
+}
+
+/* =============== Je crée ici le CSS que je vais Utilisé Fin =============== */
+
+/* Buttons :  #6B240C */
+/*  Navbar :   #994D1C */
+/*  Button :   #E48F45 */
+/* Cartes :  #F5CCA0 */
+.program-card {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  width: 300px; /* or any desired width */
+  margin: 8px;
+}
+
+.program-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.program-card h3 {
+  font-size: 1.2rem;
+  margin-top: 8px;
+}
+
+.program-card p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.program-card button {
+  background-color: #e16d07;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.program-card button:hover {
+  background-color: #ca6206;
+}
+
+.program-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.sidebar {
+  height: 100vh;
+  padding: 1%;
+}
+.sidebar .list-group-item:hover {
+  background-color: #ca6206 !important;
+  color: #fff;
+}
+
+.sidebar .list-group-item {
+  padding: 7% 0 7%;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.sidebar .icon {
+  font-size: 25px !important;
+}
+
+#contentSidebar {
+  background-color: #8b510a;
+  border-radius: 20px 20px 20px 20px;
+  position: fixed;
+  width: 18%;
+  color: white;
+}
+
+@media (max-width: 1024px) {
+  .sidebar .list-group-item .title {
+    display: none;
+  }
+
+  .sidebar .list-group-item:hover {
+    border-radius: 10%;
+    transform: scale(1.1);
+    transition: 1s;
+  }
+
+  .sidebar .list-group-item {
+    padding-top: 0 !important;
+    padding-bottom: 1.5% !important;
+  }
+
+  .sidebar {
+    margin-top: 0 !important;
     height: 100%;
-}
-.colApprenant{
+    padding: 0 !important;
+  }
+
+  .sidebar .icon {
+    font-size: 30px !important;
+    padding-left: 0 !important;
+  }
+
+  .sidebar .brand-name {
+    display: none;
+  }
+
+  .sidebar #contentSidebar {
+    border-radius: 0;
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    /* flex-wrap: wrap; */
-    /* justify-content: center; */
-    align-items: center;
-}
-.cardSpan{
-    flex-wrap: wrap;
-}
-.mySpan{
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
     justify-content: space-around;
-}
-.icon {
-    width: 65px;
-    height: 100%;
-    border-radius: 100%;
-}
+    position: fixed;
+    bottom: 0;
+  }
 
-.publication{
-    width: 100%;
-    height: 100%;
-    /* padding: 10% 10%; */
-}
-
-.textarea{
-    border-radius: 25px;
-}
-
-/* Fin Cheikh CSS */
-
-/* Mariama CSS */
-.contain-connect {
-    height: 100vh !important;
-}
-
-.height-img {
-    height: 100vh !important;
-    /* width: 50% !important; */
-    /* padding:15px; */
-    background-image:url(assets/images/renom.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-
-}
-.height-form {
-    /* width: 40% !important; */
+  .sidebar .linkSidebar {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: auto;
-}
-
-.bouton-switch button {
-    flex: 1;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    background-color: transparent; 
+    margin-left: 4px;
   }
+}
 
-.bouton-switch {
-    background-color: #432705;
-    border-radius: 30px;
- }
- .bouton-switch .active {
-    height: 30px;
-    border-radius: 33px !important; 
-    background-color: #e16d07 !important;
+/*       A ne pas toucher       */
+.Side_Content {
+  margin-top: 6em;
+  display: flex;
+}
+.bodyContent {
+  margin-left: 20%;
+  margin-right: 20px;
+}
+@media (max-width: 1024px) {
+  .bodyContent {
+    margin-left: 0px;
+    margin: 0 40px;
+    margin-bottom: 30px;
   }
-  /* background-color: #49BBBD; */
-
-.tire{
-    border-radius: 33px !important; 
-}
-.log{
-    height: 40px;
-    border-radius: 33px !important;
-    width: 30%;
-    background-color:  #e16d07 !important; 
-    
-}
-.first {
-    background-color: #f5f5f5;
-    box-shadow: 2px 0px 10px 2px grey;
-    border-radius: 15px;
-    color: black;
-    height: fit-content;
-}
-.but {
-    border: 1px solid #189AB4;
-    background: #189AB4 !important;
-}
-.oubli{
-    color: #189AB4;
 }
