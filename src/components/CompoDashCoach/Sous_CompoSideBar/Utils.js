@@ -30,6 +30,7 @@ export const menuSidebar = [
     title: 'Certificats',
     icon: <TbCertificate />,
     id: 'link5',
+    link: '/timeline/certificat',
   },
   {
     title: 'Parametre',

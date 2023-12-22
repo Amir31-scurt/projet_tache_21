@@ -9,11 +9,28 @@ import { TbTriangleInvertedFilled } from 'react-icons/tb';
 import { IoMdLogOut } from 'react-icons/io';
 import ModalComponent from './ModalComponent';
 import NavBarContext from './context';
+import { auth } from '../../../config/firebase-config';
+import { signOut } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 export const NavBarCompo = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  // Deconnexion
+  const navigate = useNavigate();
+
+  const logOut = async () => {
+    try {
+      await signOut(auth);
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Fin Deconnexion
 
   return (
     <NavBarContext.Provider value={{ open, handleOpen, handleClose }}>
@@ -57,10 +74,7 @@ export const NavBarCompo = () => {
               </Dropdown.Item>
 
               {/*===============Bouton Deconnexion=============== */}
-              <Dropdown.Item
-                className="fw-bold"
-                onClick={() => alert('Bouton de Deconnection')}
-              >
+              <Dropdown.Item className="fw-bold" onClick={logOut}>
                 <IoMdLogOut className="fs-5 IcoColor mx-1" /> Déconnexion
               </Dropdown.Item>
             </Dropdown>
