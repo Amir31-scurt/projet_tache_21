@@ -1,17 +1,18 @@
-import React from "react";
+import React from 'react';
+import { Link } from 'react-router-dom';
 // import { Link } from 'react-router-dom'
 
-function SidebarCompo({ title, icon, id }) {
+function SidebarCompo({ title, icon, id, link }) {
   return (
-    <a
-      href="#link"
+    <Link
+      to={link}
       // style={{ textDecoration: "none" }}
       className="list-group-item px-2 LienSidBar"
       id={id}
     >
       <span className="fs-5 mx-2 icon">{icon}</span>
       <span className="title">{title}</span>
-    </a>
+    </Link>
   );
 }
 

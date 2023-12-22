@@ -1,18 +1,18 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { CiMail } from "react-icons/ci";
-import { RiLockPasswordFill } from "react-icons/ri";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../config/firebase-config";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import "bootstrap-icons/font/bootstrap-icons.css";
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { CiMail } from 'react-icons/ci';
+import { RiLockPasswordFill } from 'react-icons/ri';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../config/firebase-config';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 export default function FormConnect() {
   // Les states pour la connexion / login
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   // UseNavigate pour les redirections
@@ -35,18 +35,17 @@ export default function FormConnect() {
       setLoading(true);
       await signInWithEmailAndPassword(auth, email, password);
 
-      setEmail("");
-      setPassword("");
+      setEmail('');
+      setPassword('');
 
-      navigate("/dashboardapprenant");
+      navigate('/timeline');
     } catch (error) {
-      alert("Échec de la connexion. Veuillez vérifier vos informations.");
+      alert('Échec de la connexion. Veuillez vérifier vos informations.');
       console.error(error);
     } finally {
       setLoading(false);
     }
   };
-
 
   return (
     <form onSubmit={handleLogin}>
@@ -82,10 +81,7 @@ export default function FormConnect() {
             aria-describedby="addon-wrapping"
           />
         </div>
-        <Link
-          to="/Modal"
-          className="text-decoration-none"
-        >
+        <Link to="/Modal" className="text-decoration-none">
           <p className="m-0 p-0 text-end oubli">Mot de passe oublié?</p>
         </Link>
 
@@ -96,7 +92,7 @@ export default function FormConnect() {
               className="btn d-flex justify-content-center align-items-center fs-6 btn-lg btn-block text-white log"
               disabled={loading}
             >
-              {loading ? "Chargement..." : "Connecter"}
+              {loading ? 'Chargement...' : 'Connecter'}
             </button>
           </center>
         </div>

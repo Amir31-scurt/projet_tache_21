@@ -1,11 +1,11 @@
 /* ================================================== 
                 CHATS
    ================================================== */
-.chatHomeContainer{
-    width: 400px;
-    position: absolute;
-    bottom: 30px;
-    right: 20px;
+.chatHomeContainer {
+  width: 400px;
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
 }
 /* .chatHome{
     width: 400px;
@@ -13,59 +13,61 @@
     bottom: 60px;
     right: 30px;
 } */
-.chats{
-    overflow-x: scroll;
+.chats {
+  overflow-x: scroll;
 }
-.chatHomeContainer #btn-toggle{
-    float: right;
-    outline: none !important;
+.chatHomeContainer #btn-toggle {
+  float: right;
+  outline: none !important;
+  background-color: #e16d07;
+  color: white;
 }
-.chatHome .chatHeader .chatNavbar .user img{
-    width: 40px;
+.chatHome .chatHeader .chatNavbar .user img {
+  width: 40px;
 }
-.userChat img{
-    width: 40px;
+.userChat img {
+  width: 40px;
 }
 /* ================================================== 
                 MESSAGES
    ================================================== */
-.messages{
-    height: 250px;
-    overflow-y: auto;
+.messages {
+  height: 250px;
+  overflow-y: auto;
 }
-.messages .owner  {
-    flex-direction: row-reverse;
+.messages .owner {
+  flex-direction: row-reverse;
 }
 .messages .owner .messageContent {
-    /* d-flex flex-column align-items-end */
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+  /* d-flex flex-column align-items-end */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
-.messages .message .messageInfo{
-    margin-right: 10px;
+.messages .message .messageInfo {
+  margin-right: 10px;
 }
-.messages .owner .messageInfo{
-    margin-left: 10px;
+.messages .owner .messageInfo {
+  margin-left: 10px;
 }
 .messages .message .messageInfo img,
-.messages .owner .messageInfo img{
-    width: 25px;
+.messages .owner .messageInfo img {
+  width: 25px;
 }
 .messages .message .messageInfo span,
-.messages .owner .messageInfo span{
-    font-size: 12px;
+.messages .owner .messageInfo span {
+  font-size: 12px;
 }
 .messages .message .messageContent img,
-.messages .owner .messageContent img{
-    width: 40%;
-    object-fit: cover;
+.messages .owner .messageContent img {
+  width: 40%;
+  object-fit: cover;
 }
-.messages .message .messageContent p{
-    max-width: fit-content;
-    border-radius: 0 10px 10px 10px;
+.messages .message .messageContent p {
+  max-width: fit-content;
+  border-radius: 0 10px 10px 10px;
 }
-.messages .owner .messageContent p{
-    max-width: fit-content;
-    border-radius: 10px 0 10px 10px;
+.messages .owner .messageContent p {
+  max-width: fit-content;
+  border-radius: 10px 0 10px 10px;
 }

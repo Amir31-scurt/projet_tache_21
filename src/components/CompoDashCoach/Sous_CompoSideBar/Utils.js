@@ -1,38 +1,39 @@
-import { MdOutlineLibraryBooks } from "react-icons/md";
-import { PiFilesBold } from "react-icons/pi";
-import { MdOutlineAssignment } from "react-icons/md";
-import { TbCertificate } from "react-icons/tb";
-import { PiStudentBold } from "react-icons/pi";
-import { LuSettings } from "react-icons/lu";
+import { MdOutlineLibraryBooks } from 'react-icons/md';
+import { PiFilesBold } from 'react-icons/pi';
+import { MdOutlineAssignment } from 'react-icons/md';
+import { TbCertificate } from 'react-icons/tb';
+import { PiStudentBold } from 'react-icons/pi';
+import { LuSettings } from 'react-icons/lu';
 export const menuSidebar = [
   {
-    title: "Programme",
+    title: 'Programme',
     icon: <MdOutlineLibraryBooks />,
-    id: "link1",
+    id: 'link1',
+    link: '/timeline/programme',
   },
   {
-    title: "Livrable",
+    title: 'Livrable',
     icon: <PiFilesBold />,
-    id: "link2",
+    id: 'link2',
   },
   {
-    title: "Assignation",
+    title: 'Assignation',
     icon: <MdOutlineAssignment />,
-    id: "link3",
+    id: 'link3',
   },
   {
-    title: "Etudiants",
+    title: 'Etudiants',
     icon: <PiStudentBold />,
-    id: "link4",
+    id: 'link4',
   },
   {
-    title: "Certificats",
+    title: 'Certificats',
     icon: <TbCertificate />,
-    id: "link5",
+    id: 'link5',
   },
   {
-    title: "Parametre",
+    title: 'Parametre',
     icon: <LuSettings />,
-    id: "link6",
+    id: 'link6',
   },
 ];

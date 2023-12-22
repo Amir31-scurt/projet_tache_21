@@ -1,53 +1,49 @@
-import "./App.css";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  // Navigate,
-} from "react-router-dom";
+import './App.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Template from './layout/template';
 import 'rsuite/dist/rsuite.min.css';
-import Connexion from "./pages/Connexion";
+import Connexion from './pages/Connexion';
 // import Inscription from "./pages/Inscription"
-import DashboardApprenant from "./pages/DashboardApprenant";
+import DashboardApprenant from './pages/DashboardApprenant';
 import OubliMoPass from './pages/OubliMoPass';
-import ChatHome from "./components/chatComponent/ChatHome";
-import Programme from "./components/Programme";
+import ChatHome from './components/chatComponent/ChatHome';
+import Programme from './components/Programme';
 
 export default function App() {
-
-  const rooter = createBrowserRouter([
+  const router = createBrowserRouter([
     {
-      path: "/",
+      path: '/',
       element: <Connexion />,
     },
     {
-      path: "/dashboardapprenant/programme",
-      element: <Programme />,
-    },
-    {
-      path: "/modal",
+      path: '/modal',
       element: <OubliMoPass />,
     },
     {
-      path: "/chatHome",
-      element: <ChatHome/>
-    },
-    {
-      path: "/dashboardapprenant",
-      element: <DashboardApprenant />,
+      path: '/timeline',
+      element: <Template />,
       children: [
-        // {
-        // path: "/dashboardapprenant/programme",
-        // element: <Programme/>,
-        // },
+        {
+          index: true, // Index route for /timeline
+          element: <DashboardApprenant />,
+        },
+        {
+          path: '/timeline/programme', // Relative path
+          element: <Programme />,
+        },
+        {
+          index: true,
+          // path: '/timeline/chatHome', // Relative path
+          element: <ChatHome />,
+        },
       ],
     },
   ]);
+
   return (
     <div className="">
-      <RouterProvider router={rooter} />
-      <Template />
+      <RouterProvider router={router} />
     </div>
   );
 }

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import ChatHeader from "./ChatHeader";
-import Chat from "./Chat";
-import "../../assets/css/chat.css";
+import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import ChatHeader from './ChatHeader';
+import Chat from './Chat';
+import '../../assets/css/chat.css';
 
 export default function ChatHome() {
   const [openChat, setOpenChat] = useState(false);
@@ -18,7 +18,7 @@ export default function ChatHome() {
           </div>
         </div>
       )}
-      <button className="btn mt-3 rounded-circle bg-primary" id="btn-toggle">
+      <button className="btn mt-3 rounded-circle" id="btn-toggle">
         {!openChat ? (
           <i
             className="bi bi-chat-fill fs-3"
