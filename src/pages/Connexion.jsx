@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 // import affiche from "../assets/images/affiche.jpg";
-import FormConnect from "../components/formConnect";
-import Inscription from "./Inscription";
+import FormConnect from '../components/formConnect';
+import Inscription from './Inscription';
 
 export default function Connexion() {
-  const state = "true";
+  const state = 'true';
   const [connected, setConnected] = useState(state);
   return (
     <div class="container-fluid contain-connect  ">
       <div class="row d-flex justify-content-center align-items-center ">
         <div class="row g-0 justify-content-arround">
-          <div class=" height-img  col-md-7  d-none d-md-block ">
+          <div class=" height-img col-md-7 d-none d-md-block ">
             {/* <img
               src={affiche}
               alt="login form"
@@ -25,7 +25,9 @@ export default function Connexion() {
               >
                 <button
                   type="button"
-                  className={`btn  justify-content-center align-items-center fs-6 text-white ${connected ? 'active' : ''}`}
+                  className={`btn  justify-content-center align-items-center fs-6 text-white ${
+                    connected ? 'active' : ''
+                  }`}
                   onClick={() => {
                     setConnected(true);
                   }}
@@ -34,7 +36,9 @@ export default function Connexion() {
                 </button>
                 <button
                   type="button"
-                  className= {`btn justify-content-center align-items-center  fs-6 text-white ${!connected ? 'active' : ''}`}   
+                  className={`btn justify-content-center align-items-center  fs-6 text-white ${
+                    !connected ? 'active' : ''
+                  }`}
                   onClick={() => {
                     setConnected(false);
                   }}

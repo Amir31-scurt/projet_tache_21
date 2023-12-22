@@ -12,7 +12,6 @@ import { auth, db, storage } from '../config/firebase-config';
 import { useNavigate } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import FormConnect from '../components/formConnect';
 
 const Inscription = () => {
   const [loading, setLoading] = useState(false);
@@ -78,7 +77,7 @@ const Inscription = () => {
               theme: 'dark',
             });
             // On navigue
-            navigate(<FormConnect />);
+            navigate('/');
           } catch (err) {
             setErr(true);
             setLoading(false);

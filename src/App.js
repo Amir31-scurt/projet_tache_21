@@ -36,7 +36,7 @@ export default function App() {
         },
         {
           index: true,
-          // path: '/timeline/chatHome', // Relative path
+          path: '/timeline/chatHome', // Relative path
           element: <ChatHome />,
         },
         {

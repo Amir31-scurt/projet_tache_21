@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { CiMail } from 'react-icons/ci';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { ToastContainer, toast } from 'react-toastify';
 import { auth } from '../config/firebase-config';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -37,10 +38,22 @@ export default function FormConnect() {
 
       setEmail('');
       setPassword('');
-
       navigate('/timeline');
     } catch (error) {
-      alert('Échec de la connexion. Veuillez vérifier vos informations.');
+      // alert('Échec de la connexion. Veuillez vérifier vos informations.');
+      toast.error(
+        'Échec de la connexion. Veuillez vérifier vos informations.',
+        {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark',
+        }
+      );
       console.error(error);
     } finally {
       setLoading(false);
@@ -97,6 +110,7 @@ export default function FormConnect() {
           </center>
         </div>
       </div>
+      <ToastContainer />
     </form>
   );
 }
