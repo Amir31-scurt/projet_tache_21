@@ -22,8 +22,8 @@ export default function CardLivraison() {
   }
 
   return (
-    <>
-      <div className="container containerApprenant w-lg-75  my-5">
+    <div className="w-75">
+      <div className="container containerApprenant w-100 my-5">
         <div className="row rowAppenant ">
           <div className="col-md-12 d-flex colApprenant my-3">
             <img src={userProfile} alt="" className="icon" />
@@ -126,6 +126,6 @@ export default function CardLivraison() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
