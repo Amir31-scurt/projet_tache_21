@@ -87,7 +87,7 @@ export default function FormConnect() {
           <input
             type="password"
             class="form-control "
-            placeholder="Password"
+            placeholder="Mot de passe"
             value={password}
             onChange={handlePasswordChange}
             aria-label="Username"
@@ -105,7 +105,7 @@ export default function FormConnect() {
               className="btn d-flex justify-content-center align-items-center fs-6 btn-lg btn-block text-white log"
               disabled={loading}
             >
-              {loading ? 'Chargement...' : 'Connecter'}
+              {loading ? 'Chargement...' : 'Se connecter'}
             </button>
           </center>
         </div>

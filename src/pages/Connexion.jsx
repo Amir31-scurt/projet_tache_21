@@ -9,15 +9,15 @@ export default function Connexion() {
   return (
     <div class="container-fluid contain-connect  ">
       <div class="row d-flex justify-content-center align-items-center ">
-        <div class="row g-0 justify-content-arround">
-          <div class=" height-img col-md-7 d-none d-md-block ">
+        <div class="row g-0">
+          <div class="height-img d-none d-lg-block col-0 col-lg-6">
             {/* <img
               src={affiche}
               alt="login form"
               className="img-fluid rounded-6"
             /> */}
           </div>
-          <div className=" col-md-5 col-sm-6  height-form d-flex justify-content-center align-items-center">
+          <div className="height-form col">
             <div className="card-body  p-lg-5 text-black">
               <div
                 className="d-flex  mb-5 justify-content-center align-items-center   bouton-switch border border-light p-2 rounded-pill "
@@ -32,7 +32,7 @@ export default function Connexion() {
                     setConnected(true);
                   }}
                 >
-                  Connecter
+                  Connexion
                 </button>
                 <button
                   type="button"
@@ -43,13 +43,9 @@ export default function Connexion() {
                     setConnected(false);
                   }}
                 >
-                  S'inscrire
+                  Inscription
                 </button>
               </div>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Repellat recusandae
-              </p>
               {connected ? <FormConnect /> : <Inscription />}
             </div>
           </div>

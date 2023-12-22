@@ -256,6 +256,7 @@ body {
   align-items: center;
   justify-content: center;
   margin: auto;
+  height: 100vh;
 }
 
 .bouton-switch button {
@@ -271,7 +272,7 @@ body {
   border-radius: 30px;
 }
 .bouton-switch .active {
-  height: 30px;
+  /* height: 30px; */
   border-radius: 33px !important;
   background-color: #e16d07 !important;
 }
@@ -530,7 +531,13 @@ body {
   .sidebar .list-group-item .title {
     display: none;
   }
-
+  .height-form {
+    /* width: 40% !important; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
   .sidebar .list-group-item:hover {
     border-radius: 10%;
     /* transform: scale(1.1); */
@@ -582,9 +589,6 @@ body {
 .bodyContent {
   margin-left: 18%;
 }
-.car {
-  width: 25%;
-}
 .car img {
   height: 150px;
   width: 100%;
@@ -594,10 +598,5 @@ body {
     margin-left: 0px;
     margin: 0 40px;
     margin-bottom: 30px;
-  }
-}
-@media (max-width: 726px) {
-  .car {
-    width: 100%;
   }
 }

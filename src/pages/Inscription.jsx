@@ -101,7 +101,10 @@ const Inscription = () => {
   };
 
   return (
-    <form className="justify-content-center" ref={formRegister}>
+    <form
+      className="d-flex flex-column align-items-center justify-content-center"
+      ref={formRegister}
+    >
       <div className="mb-3 input-group flex-nowrap">
         <span className="input-group-text">
           <FaUser />
@@ -111,7 +114,7 @@ const Inscription = () => {
           name="nom"
           type="text"
           className="form-control"
-          placeholder="Votre nom"
+          placeholder="Nom complet"
         />
       </div>
       <div className="mb-3 input-group flex-nowrap">
@@ -123,7 +126,7 @@ const Inscription = () => {
           type="email"
           name="mail"
           className="form-control"
-          placeholder="Votre email"
+          placeholder="Email"
         />
       </div>
       <div className="mb-3 input-group flex-nowrap ps-0 form-check">
@@ -135,7 +138,7 @@ const Inscription = () => {
           type="password"
           name="mdpass"
           className="form-control"
-          placeholder="Votre mot de passe"
+          placeholder="Mot de passe"
         />
       </div>
       {/* <div className="mb-3 ps-0 form-check">
@@ -156,7 +159,7 @@ const Inscription = () => {
         />
         <label htmlFor="file">
           {/* <img src={Add} alt="" /> */}
-          <i className="bi bi-card-image me-3"></i>
+          <i className="bi bi-card-image mx-3"></i>
           <span>Choisir l'image de profil</span>
         </label>
       </div>
