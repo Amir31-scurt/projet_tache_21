@@ -368,7 +368,7 @@ body {
   width: 80%;
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: right;
 }
 .ProfilSpace {
   width: 50px;
