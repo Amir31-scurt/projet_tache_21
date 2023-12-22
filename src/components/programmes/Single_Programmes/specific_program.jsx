@@ -13,8 +13,16 @@ const SpecificPro = () => {
             flexibilité professionnelle, et la satisfaction de créer des
             produits utilisés par des millions de personnes.
           </p>
-          <h5 className="mb-3">Ajouter des cours</h5>
-          <div className="d-flex gap-2">
+          <hr />
+          <h5 className="mb-3 text-center">Ajouter des cours</h5>
+          <div className="d-flex flex-wrap gap-2 justify-content-center">
+            <select className="course-select">
+              <option value="">Choisir le cours</option>
+              <option value="frontend">Développement Front-end</option>
+              <option value="backend">Développement Back-end</option>
+              <option value="fullstack">Développement Full Stack</option>
+              <option value="webdesign">Design Web</option>
+            </select>
             <input
               type="text"
               name="coursAjout"
@@ -23,13 +31,6 @@ const SpecificPro = () => {
             />
             <button className="learn-more-btn">Ajouter</button>
           </div>
-        </div>
-        <div>
-          <img
-            src="https://cdn.arstechnica.net/wp-content/uploads/2019/03/codersTOP-800x534.jpg"
-            alt="#"
-            className="img-fluid img-centered"
-          />
         </div>
       </section>
 

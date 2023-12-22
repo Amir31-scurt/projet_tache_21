@@ -1,17 +1,18 @@
-import React, { useRef, useState } from "react";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { doc, setDoc } from "firebase/firestore";
-import { FaUser } from "react-icons/fa";
-import { RiLockPasswordFill } from "react-icons/ri";
-import { IoMdMail } from "react-icons/io";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import { auth, db, storage } from "../config/firebase-config";
-import { useNavigate } from "react-router";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useRef, useState } from 'react';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { doc, setDoc } from 'firebase/firestore';
+import { FaUser } from 'react-icons/fa';
+import { RiLockPasswordFill } from 'react-icons/ri';
+import { IoMdMail } from 'react-icons/io';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import { auth, db, storage } from '../config/firebase-config';
+import { useNavigate } from 'react-router';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import FormConnect from '../components/formConnect';
 
 const Inscription = () => {
   const [loading, setLoading] = useState(false);
@@ -55,7 +56,7 @@ const Inscription = () => {
               photoURL: downloadURL,
             });
             //Création de l'utilisatreur dans le firestore
-            await setDoc(doc(db, "users", res.user.uid), {
+            await setDoc(doc(db, 'users', res.user.uid), {
               uid: res.user.uid,
               displayName,
               email,
@@ -63,33 +64,33 @@ const Inscription = () => {
             });
 
             //Créer un userChats (discussion de l'utilisateur) vide dans firestore
-            await setDoc(doc(db, "userChats", res.user.uid), {});
+            await setDoc(doc(db, 'userChats', res.user.uid), {});
 
             // Toast
-            toast.success("Inscription réussie!", {
-              position: "top-right",
+            toast.success('Inscription réussie!', {
+              position: 'top-right',
               autoClose: 3000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
-              theme: "dark",
+              theme: 'dark',
             });
             // On navigue
-            navigate("/");
+            navigate(<FormConnect />);
           } catch (err) {
             setErr(true);
             setLoading(false);
             toast.error("Erreur lors de l'inscription!", {
-              position: "top-right",
+              position: 'top-right',
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
-              theme: "dark",
+              theme: 'dark',
             });
           }
         });
@@ -149,7 +150,7 @@ const Inscription = () => {
       <div className="mb-3 input-group flex-nowrap ps-0 form-check">
         <input
           // required
-          style={{ display: "none" }}
+          style={{ display: 'none' }}
           name="fichier"
           type="file"
           id="file"

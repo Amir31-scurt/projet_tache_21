@@ -83,12 +83,6 @@ const CourseCard = ({
 
 // Main component that uses ProgramCard to display a list of programs
 const ProgramList = () => {
-  const [action, setAction] = React.useState(0);
-  const options = [
-    'Create a merge commit',
-    'Squash and merge',
-    'Rebase and merge',
-  ];
   // const [currentPage, setCurrentPage] = useState(1);
   // const pageSize = 4; // Number of cards per page
   // Example data that would be fetched from an API or defined in your application

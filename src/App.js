@@ -11,7 +11,6 @@ import ChatHome from './components/chatComponent/ChatHome';
 import ProgrammeCoach from './components/programmes/programmes';
 import SpecificPro from './components/programmes/Single_Programmes/specific_program';
 import Certificate from './components/BulletinEtudiant';
-import Livrable from './components/CardLivraison';
 
 export default function App() {
   const router = createBrowserRouter([

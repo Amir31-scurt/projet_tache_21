@@ -1,29 +1,29 @@
-import React, { useState } from "react";
-import userProfile from "../assets/images/userProfile.png";
-import livraison from "../assets/images/livraison.jpg";
-import envoi from "../assets/images/envoi.png";
-import commenter from "../assets/images/commenter.png";
+import React, { useState } from 'react';
+import userProfile from '../assets/images/userProfile.png';
+import livraison from '../assets/images/livraison.jpg';
+import envoi from '../assets/images/envoi.png';
+import commenter from '../assets/images/commenter.png';
 
 // import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
+import { Dialog } from 'primereact/dialog';
 
 export default function CardLivraison() {
-  const [apprenant, setApprenat] = useState("Cheikh Ahmed Tidiane Gueye");
-  const [coach, setCoach] = useState("Kalika Ba");
-  const [date, setDate] = useState("19 Dec 2023, 16:05");
-  const [days, setDays] = useState("1");
-  const [comment, setComment] = useState("Good job (:-)");
-  const [role, setRole] = useState("Coach");
+  const [apprenant, setApprenat] = useState('Cheikh Ahmed Tidiane Gueye');
+  const [coach, setCoach] = useState('Kalika Ba');
+  const [date, setDate] = useState('19 Dec 2023, 16:05');
+  const [days, setDays] = useState('1');
+  const [comment, setComment] = useState('Good job (:-)');
+  const [role, setRole] = useState('Coach');
   const [visible, setVisible] = useState(false);
 
   function handleSend() {
     console.log("Cliqué sur l'image send");
-    alert("message envoyé");
+    alert('message envoyé');
   }
 
   return (
     <>
-      <div className="container containerApprenant w-50 my-5">
+      <div className="container containerApprenant w-lg-75  my-5">
         <div className="row rowAppenant ">
           <div className="col-md-12 d-flex colApprenant my-3">
             <img src={userProfile} alt="" className="icon" />
@@ -43,7 +43,7 @@ export default function CardLivraison() {
               header="Commentaires"
               visible={visible}
               maximizable
-              style={{ width: "50vw" }}
+              style={{ width: '50vw' }}
               onHide={() => setVisible(false)}
             >
               <div className="row comment border rounded-2 m-0 my-2 boxshadow">
@@ -100,9 +100,9 @@ export default function CardLivraison() {
                 src={commenter}
                 alt=""
                 className=""
-                style={{ width: "30px", height: "30px" }}
+                style={{ width: '30px', height: '30px' }}
               />
-              <p className="px-2 m-0 sizeHover" style={{ fontSize: "12px" }}>
+              <p className="px-2 m-0 sizeHover" style={{ fontSize: '12px' }}>
                 Plus de commentaires
               </p>
             </div>
@@ -119,7 +119,7 @@ export default function CardLivraison() {
                 <img
                   src={envoi}
                   alt="send"
-                  style={{ width: "30px", height: "30px" }}
+                  style={{ width: '30px', height: '30px' }}
                 />
               </span>
             </div>
