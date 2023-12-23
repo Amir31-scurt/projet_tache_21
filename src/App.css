@@ -390,6 +390,7 @@ body {
   width: fit-content;
   height: fit-content;
   border-radius: 20px;
+  box-shadow: 1px 1px 7px 1px rgba(255, 255, 255, 0.582); 
 }
 .CouleurA {
   background-color: #b3b3b396;
@@ -399,6 +400,9 @@ body {
 }
 .CouleurC {
   background-color: #a62ac877;
+}
+.ContaCardDsb{
+  flex-wrap: wrap;
 }
 
 /*============ Le Dashboard CSS Fin ============*/

@@ -12,7 +12,7 @@ export default function DashboardApprenant() {
       >
         Dashboard
       </h1>
-      <div className="d-flex">
+      <div className="d-flex bg- ContaCardDsb w-100">
         {ContenuCardDsb.map((elem, index) => (
           <DashboardCompo {...elem} key={index} />
         ))}
