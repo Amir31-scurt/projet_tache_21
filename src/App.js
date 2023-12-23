@@ -11,7 +11,7 @@ import ChatHome from './components/chatComponent/ChatHome';
 import ProgrammeCoach from './components/programmes/programmes';
 import SpecificPro from './components/programmes/Single_Programmes/specific_program';
 import Certificate from './components/BulletinEtudiant';
-import Livrable from './components/CardLivraison';
+import AuthContextProvider from './contexte/AuthContext';
 
 export default function App() {
   const router = createBrowserRouter([
@@ -24,7 +24,7 @@ export default function App() {
       element: <OubliMoPass />,
     },
     {
-      path: '/timeline',
+      path: '/dashboard',
       element: <Template />,
       children: [
         {
@@ -32,20 +32,20 @@ export default function App() {
           element: <DashboardApprenant />,
         },
         {
-          path: '/timeline/programme', // Relative path
+          path: '/dashboard/programme', // Relative path
           element: <ProgrammeCoach />,
         },
         {
           index: true,
-          // path: '/timeline/chatHome', // Relative path
+          path: '/dashboard/chatHome', // Relative path
           element: <ChatHome />,
         },
         {
-          path: '/timeline/programme/cours',
+          path: '/dashboard/programme/cours',
           element: <SpecificPro />,
         },
         {
-          path: '/timeline/certificat',
+          path: '/dashboard/certificat',
           element: <Certificate />,
         },
       ],
@@ -53,8 +53,10 @@ export default function App() {
   ]);
 
   return (
-    <div className="">
-      <RouterProvider router={router} />
-    </div>
+    <AuthContextProvider>
+      <div className="">
+        <RouterProvider router={router} />
+      </div>
+    </AuthContextProvider>
   );
 }

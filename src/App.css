@@ -63,7 +63,12 @@ body {
   width: 300px; /* or any desired width */
   margin: 8px;
 }
-
+.program-card2 {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 20px; /* or any desired width */
+}
 .program-card img {
   width: 100%;
   height: auto;
@@ -90,6 +95,34 @@ body {
 }
 
 .program-card button:hover {
+  background-color: #0056b3;
+}
+.program-card2 img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.program-card2 h3 {
+  font-size: 1.2rem;
+  margin-top: 8px;
+}
+
+.program-card2 p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.program-card2 button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.program-card2 button:hover {
   background-color: #0056b3;
 }
 
@@ -256,6 +289,7 @@ body {
   align-items: center;
   justify-content: center;
   margin: auto;
+  height: 100vh;
 }
 
 .bouton-switch button {
@@ -271,7 +305,7 @@ body {
   border-radius: 30px;
 }
 .bouton-switch .active {
-  height: 30px;
+  /* height: 30px; */
   border-radius: 33px !important;
   background-color: #e16d07 !important;
 }
@@ -335,27 +369,24 @@ body {
 
 /*============ Le Dashboard CSS Debut =========*/
 
-.CardDashBoard{
+.CardDashBoard {
   width: fit-content;
   height: fit-content;
   border-radius: 20px;
   box-shadow: 1px 1px 7px 1px rgba(255, 255, 255, 0.582); 
 }
-.CouleurA{
+.CouleurA {
   background-color: #b3b3b396;
 }
-.CouleurB{
+.CouleurB {
   background-color: #82c55592;
 }
-.CouleurC{
+.CouleurC {
   background-color: #a62ac877;
 }
 .ContaCardDsb{
   flex-wrap: wrap;
 }
-
-
-
 
 /*============ Le Dashboard CSS Fin ============*/
 
@@ -393,7 +424,7 @@ body {
   width: 80%;
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: right;
 }
 .ProfilSpace {
   width: 50px;
@@ -556,7 +587,13 @@ body {
   .sidebar .list-group-item .title {
     display: none;
   }
-
+  .height-form {
+    /* width: 40% !important; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
   .sidebar .list-group-item:hover {
     border-radius: 10%;
     /* transform: scale(1.1); */
@@ -608,9 +645,6 @@ body {
 .bodyContent {
   margin-left: 18%;
 }
-.car {
-  width: 25%;
-}
 .car img {
   height: 150px;
   width: 100%;
@@ -620,10 +654,5 @@ body {
     margin-left: 0px;
     margin: 0 40px;
     margin-bottom: 30px;
-  }
-}
-@media (max-width: 726px) {
-  .car {
-    width: 100%;
   }
 }

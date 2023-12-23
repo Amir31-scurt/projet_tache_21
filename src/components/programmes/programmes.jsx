@@ -12,7 +12,7 @@ const ProgramCard = ({ title, description, imageUrl, buttonText }) => {
       <p className="mb-3">{description}</p>
       <button>
         <Link
-          to="/timeline/programme/cours"
+          to="/dashboard/programme/cours"
           className="text-light text-decoration-none"
         >
           {buttonText}
@@ -83,12 +83,6 @@ const CourseCard = ({
 
 // Main component that uses ProgramCard to display a list of programs
 const ProgramList = () => {
-  const [action, setAction] = React.useState(0);
-  const options = [
-    'Create a merge commit',
-    'Squash and merge',
-    'Rebase and merge',
-  ];
   // const [currentPage, setCurrentPage] = useState(1);
   // const pageSize = 4; // Number of cards per page
   // Example data that would be fetched from an API or defined in your application
@@ -186,7 +180,7 @@ const ProgramList = () => {
         <div className="d-flex flex-wrap justify-content-center">
           {programs.map((program, index) => (
             <div
-              className="d-flex flex-wrap gap-2  justify-content-center car"
+              className="d-flex flex-wrap col justify-content-center car"
               key={index}
             >
               <ProgramCard
