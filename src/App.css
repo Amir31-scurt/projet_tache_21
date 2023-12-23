@@ -112,6 +112,8 @@ body {
   flex-wrap: wrap;
   justify-content: center;
 }
+
+/*-----------------------Sidebar---------------------*/
 .sidebar {
   height: 100vh;
   padding: 1%;
@@ -143,9 +145,62 @@ body {
   max-width: 60% !important;
 }
 
+/*------------------------Carte de livraison des etudiants--------------------*/
+.BigContainer{
+  background-color: #D4F1F4;
+}
+
+#viewDetails{
+  color:#ca6206;
+}
+
+.cardLivraison .imgCard{
+  height: 220px !important;
+  width: 100%;
+}
+
+.filterStudent{
+  background-color: #ca6206;
+  color: white !important;
+  border: none !important;
+}
+
+.filterStudent svg{
+  color: #fff !important;
+}
+
+.filterStudent fieldset{
+  border: 1px solid #ca6206 !important;
+}
+
+
+.filterStudent .MuiChip-label{
+  color: #fff;
+}
+
+
+/*------------------Media Queries----------------*/
 @media (max-width: 1024px) {
   .sidebar .list-group-item .title {
     display: none;
+  }
+
+  .cardLivraison .imgCard{
+    height: 100%;
+  }
+
+  .modal-dialog{
+    max-width: 100% !important;
+  }
+
+  .bodyContent {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-bottom: 20% !important;
+  }
+
+  .rs-carousel{
+    height: 50% !important;
   }
 
   .sidebar .list-group-item:hover {
@@ -182,6 +237,8 @@ body {
     justify-content: space-around;
     position: fixed;
     bottom: 0;
+    margin: 0;
+    z-index: 1000;
   }
 
   .sidebar .linkSidebar {
@@ -193,12 +250,14 @@ body {
 /*       A ne pas toucher       */
 .Side_Content {
   margin-top: 6em;
+  width: 100%;
   display: flex;
 }
 .bodyContent {
   margin-left: 20%;
   margin-right: 20px;
 }
+
 @media (max-width: 1024px) {
   .bodyContent {
     margin-left: 0px;
