@@ -70,26 +70,26 @@ const SpecificPro = () => {
         </div>
       </section>
 
-      <section className="reading-blog-list d-flex gap-1 flex-wrap">
-        <div className="blog-card">
+      <section className="reading-blog-list d-flex gap-1 flex-wrap w-100">
+        <div className="blog-card col">
           <img
             src="https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg"
             alt="UX/UI"
           />
           <h2>UX/UI</h2>
         </div>
-        <div className="blog-card">
+        <div className="blog-card col">
           <img
             src="https://raw.githubusercontent.com/llanojs/Readme_template/master/react-logo.jpg"
             alt="React"
           />
           <h2>React</h2>
         </div>
-        <div className="blog-card">
+        <div className="blog-card col">
           <img src="https://www.php.net/images/meta-image.png" alt="PHP" />
           <h2>PHP</h2>
         </div>
-        <div className="blog-card">
+        <div className="blog-card col">
           <img
             src="https://www.orientsoftware.com/Themes/OrientSoftwareTheme/Content/Images/blog/2021-12-16/what-can-you-do-with-javascript-thumb.jpg"
             alt="JavaScript"

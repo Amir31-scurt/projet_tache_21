@@ -26,15 +26,13 @@ export default function Template() {
         <div className="bodyContent d-flex">
           <div className="col">
             <Outlet />
+            {/* Outlet Position */}
           </div>
-          <div className="col">
-            {isDashboard && (
-              <div className="">
-                <Card />
-              </div>
-            )}
-          </div>
-          {/* Outlet Position */}
+          {isDashboard && (
+            <div className="col d-none d-lg-block">
+              <Card />
+            </div>
+          )}
         </div>
       </div>
     </div>

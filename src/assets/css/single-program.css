@@ -40,7 +40,7 @@
 }
 
 .blog-card {
-  width: 24%;
+  width: 25%;
   text-align: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   /* margin: 10px; */
@@ -61,4 +61,9 @@
 .blog-card h2 {
   font-size: 1.2em;
   margin: 10px 0;
+}
+@media (max-width: 1024px) {
+  .blog-card {
+    width: 100%;
+  }
 }
