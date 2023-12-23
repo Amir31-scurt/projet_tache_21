@@ -1,76 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import userProfile from '../assets/images/userProfile.png';
-// import livraison from '../assets/images/livraison.jpg';
-import envoi from '../assets/images/envoi.png';
-import commenter from '../assets/images/commenter.png';
-
-import img1 from '../assets/images/img (1).jpg';
-import img2 from '../assets/images/img (2).jpg';
-import img3 from '../assets/images/img (3).jpg';
-import img4 from '../assets/images/img (4).jpg';
-import img5 from '../assets/images/img (5).jpg';
-
+import React, { useState, useEffect } from "react";
+import userProfile from "../assets/images/userProfile.png";
+import envoi from "../assets/images/envoi.png";
+import commenter from "../assets/images/commenter.png";
+import img1 from "../assets/images/img (1).jpg";
+import img2 from "../assets/images/img (2).jpg";
+import img3 from "../assets/images/img (3).jpg";
+import img4 from "../assets/images/img (4).jpg";
+import img5 from "../assets/images/img (5).jpg";
 import { Galleria } from "primereact/galleria";
-// import { PhotoService } from "./service/PhotoService";
-
-
-// import { Button } from "primereact/button";
-import { Dialog } from 'primereact/dialog';
+import { Dialog } from "primereact/dialog";
 
 export default function CardLivraison() {
   // eslint-disable-next-line
-  const [apprenant, setApprenat] = useState('Cheikh Ahmed Tidiane Gueye');
+  const [apprenant, setApprenat] = useState("Cheikh Ahmed Tidiane Gueye");
   // eslint-disable-next-line
-  const [coach, setCoach] = useState('Kalika Ba');
+  const [coach, setCoach] = useState("Kalika Ba");
   // eslint-disable-next-line
-  const [date, setDate] = useState('19 Dec 2023, 16:05');
+  const [date, setDate] = useState("19 Dec 2023, 16:05");
   // eslint-disable-next-line
-  const [days, setDays] = useState('1');
+  const [days, setDays] = useState("1");
   // eslint-disable-next-line
-  const [comment, setComment] = useState('Good job (:-)');
+  const [comment, setComment] = useState("Good job (:-)");
   // eslint-disable-next-line
-  const [role, setRole] = useState('Coach');
+  const [role, setRole] = useState("Coach");
   const [visible, setVisible] = useState(false);
-
   const [images, setImages] = useState(null);
-  // const responsiveOptions = [
-  //   {
-  //     breakpoint: "991px",
-  //     numVisible: 4,
-  //   },
-  //   {
-  //     breakpoint: "767px",
-  //     numVisible: 3,
-  //   },
-  //   {
-  //     breakpoint: "575px",
-  //     numVisible: 1,
-  //   },
-  // ];
-
-  useEffect(() => {
-    PhotoService.getImages().then((data) => setImages(data));
-  }, []);
-
-  const itemTemplate = (item) => {
-    return (
-      <img
-        src={item.itemImageSrc}
-        alt={item.alt}
-        style={{ width: "100%", height: "100%" }}
-      />
-    );
-  };
-
-  const thumbnailTemplate = (item) => {
-    return (
-      <img
-        src={item.thumbnailImageSrc}
-        alt={item.alt}
-        style={{ width:'140px', height: "100px" }}
-      />
-    );
-  };
 
   const PhotoService = {
     getData() {
@@ -113,16 +67,39 @@ export default function CardLivraison() {
     },
   };
 
+  const itemTemplate = (item) => {
+    return (
+      <img
+        src={item.itemImageSrc}
+        alt={item.alt}
+        style={{ width: "100%", height: "100px%" }}
+      />
+    );
+  };
+
+  const thumbnailTemplate = (item) => {
+    return (
+      <img
+        src={item.thumbnailImageSrc}
+        alt={item.alt}
+        style={{ width: "140px", height: "100px" }}
+      />
+    );
+  };
+
+  useEffect(() => {
+    PhotoService.getImages().then((data) => setImages(data));
+  }, []);
+
   function handleSend() {
     console.log("Cliqué sur l'image send");
-    alert('message envoyé');
+    alert("message envoyé");
   }
-
 
   return (
     <div className="">
-      <div className="container containerApprenant w-75 h-0 my-5">
-        <div className="row rowAppenant ">
+      <div className="container containerApprenant w-100 my-5">
+        <div className="row rowAppenant">
           <div className="col-md-12 d-flex colApprenant my-3">
             <img src={userProfile} alt="" className="icon" />
             <div className="mySpan">
@@ -132,15 +109,14 @@ export default function CardLivraison() {
           </div>
 
           <div className="col-12 my-2 ">
-            {/* <img src={livraison} alt="" className="publication rounded-2" /> */}
-              <Galleria
-                value={images}
-                numVisible={5}
-                style={{ maxWidth: "" }}
-                item={itemTemplate}
-                thumbnail={thumbnailTemplate}
-                className="publication rounded-2"
-              />
+            <Galleria
+              value={images}
+              numVisible={5}
+              style={{ maxWidth: "" }}
+              item={itemTemplate}
+              thumbnail={thumbnailTemplate}
+              className="publication rounded-2"
+            />
           </div>
 
           <div>
