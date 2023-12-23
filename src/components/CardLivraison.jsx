@@ -45,7 +45,7 @@ export default function CardLivraison() {
 
           <div>
             <Dialog
-              className="card flex justify-content-center"
+              className="com flex justify-content-center"
               header="Commentaires"
               visible={visible}
               maximizable

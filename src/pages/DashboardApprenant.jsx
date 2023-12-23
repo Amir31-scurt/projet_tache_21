@@ -6,12 +6,12 @@ import { ContenuCardDsb } from '../components/CompoDashCoach/Sous_CompoSideBar/U
 export default function DashboardApprenant() {
   return (
     <div className="d-flex flex-column ms-3 justify-content-center">
-      <h1
+      <span
         className="fst-italic fs-3 fw-bold ps-2 pt-3"
         style={{ color: "#5a2a00" }}
       >
-        Dashboard
-      </h1>
+        <h1>Dashboard</h1>
+      </span>
       <div className="d-flex">
         {ContenuCardDsb.map((elem, index) => (
           <DashboardCompo {...elem} key={index} />
