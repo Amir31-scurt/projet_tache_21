@@ -29,7 +29,7 @@ export default function Template() {
             {/* Outlet Position */}
           </div>
           {isDashboard && (
-            <div className="col d-none d-lg-block">
+            <div className="col-3 d-none d-lg-block">
               <Card />
             </div>
           )}
