@@ -53,7 +53,7 @@ export const ContenuCardDsb = [
   {
     ChiffreCardDsb: "26",
     IconeCardDsb: (
-      <FaUsers style={{ fontSize: "70px", opacity: "0.6", color: "#432705" }} />
+      <FaUsers style={{ fontSize: "71px", opacity: "0.6", color: "#432705" }} />
     ),
     TextCardDsb: "Professeurs",
     couleurCarte: "CouleurA",
@@ -62,7 +62,7 @@ export const ContenuCardDsb = [
     ChiffreCardDsb: "134",
     IconeCardDsb: (
       <LiaUsersSolid
-        style={{ fontSize: "70px", opacity: "0.6", color: "#432705" }}
+        style={{ fontSize: "62px", opacity: "0.6", color: "#432705" }}
       />
     ),
     TextCardDsb: "Etudiants",
@@ -71,7 +71,7 @@ export const ContenuCardDsb = [
   {
     ChiffreCardDsb: "32",
     IconeCardDsb: (
-      <MdTask style={{ fontSize: "70px", opacity: "0.6", color: "#432705" }} />
+      <MdTask style={{ fontSize: "72px", opacity: "0.6", color: "#432705" }} />
     ),
     TextCardDsb: "Taches",
     couleurCarte: "CouleurC",
