@@ -13,15 +13,10 @@ import { Dialog } from "primereact/dialog";
 export default function CardLivraison() {
   // eslint-disable-next-line
   const [apprenant, setApprenat] = useState("Cheikh Ahmed Tidiane Gueye");
-  // eslint-disable-next-line
   const [coach, setCoach] = useState("Kalika Ba");
-  // eslint-disable-next-line
   const [date, setDate] = useState("19 Dec 2023, 16:05");
-  // eslint-disable-next-line
   const [days, setDays] = useState("1");
-  // eslint-disable-next-line
   const [comment, setComment] = useState("Good job (:-)");
-  // eslint-disable-next-line
   const [role, setRole] = useState("Coach");
   const [visible, setVisible] = useState(false);
   const [images, setImages] = useState(null);
@@ -106,6 +101,10 @@ export default function CardLivraison() {
               <h6 className=" px-3 pt-2 mainColor">{apprenant}</h6>
               <p className="m-0 px-3 pt-2 mainColor">{date}</p>
             </div>
+          </div>
+
+          <div className="col-md-12 d-flex justify-content-center py-2">
+            <p>Titre de la publication de l'apprenant</p>
           </div>
 
           <div className="col-12 my-2 ">
