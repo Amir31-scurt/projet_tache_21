@@ -9,11 +9,11 @@ export default function DashboardCompo({
   couleurCarte,
 }) {
   return (
-    <div>
+    <div className='WidthCardDsb'>
       <div
-        className={`CardDashBoard d-flex justify-content-center align-items-center ms-1 my-3 me-4 ${couleurCarte}`}
+        className={`CardDashBoard d-flex justify-content-center align-items-center my-3 ${couleurCarte}`}
       >
-        <div className="bg-dangr px-4">
+        <div className=" px-4">
           <div className="d-flex justify-content-between ">
             <div className="me-5 d-flex align-items-center pt-3">
               <p className="fs-1 px-2 fw-bold fst-italic" style={{ color: "#5a2a00" }}>

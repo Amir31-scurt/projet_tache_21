@@ -370,7 +370,7 @@ body {
 /*============ Le Dashboard CSS Debut =========*/
 
 .CardDashBoard {
-  width: fit-content;
+  width: 96%;
   height: fit-content;
   border-radius: 20px;
   box-shadow: 1px 1px 7px 1px rgba(255, 255, 255, 0.582); 
@@ -386,6 +386,17 @@ body {
 }
 .ContaCardDsb{
   flex-wrap: wrap;
+}
+.BigContainer{
+  background-color: #ecebeb;
+}
+
+@media screen and (max-width: 692px) {
+  .WidthCardDsb{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 }
 
 /*============ Le Dashboard CSS Fin ============*/
@@ -418,7 +429,7 @@ body {
   align-items: center;
   justify-content: center;
   height: 100%;
-  width: 90px;
+  width: 80px;
 }
 .SecRightNav {
   width: 80%;
@@ -430,12 +441,13 @@ body {
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  border: 2px solid #4a2801;
   cursor: pointer;
 }
 
 .ProfilSpace2 {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
 }
 .EditUser {

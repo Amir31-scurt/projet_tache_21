@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LogoTech from '../../../assets/images/Logo.png';
+import UserProfil from "../../../assets/images/user.png";
 import { MdMessage } from 'react-icons/md';
 import { IoNotifications } from 'react-icons/io5';
 import { Dropdown } from 'rsuite';
@@ -40,7 +41,9 @@ export const NavBarCompo = () => {
           <div className="LogoConta d-flex align-items-center justify-content-center">
             <div className="LogoConta2">
               <img src={LogoTech} alt="Le Logo" className="img-fluid LOGONAV" />
-              <h3 className=" d-none d-lg-block text-white ms-2 mt-2">TechGenius</h3>
+              <h3 className=" d-none d-lg-block text-white ms-2 mt-2">
+                TechGenius
+              </h3>
             </div>
           </div>
           {/*=====================SECOND PARTIE DU NavBar Debut============= */}
@@ -48,7 +51,7 @@ export const NavBarCompo = () => {
             <div className="MessageIcone d-flex align-items-center justify-content-center">
               <MdMessage className="fs-4" />
             </div>
-            <div className="NotifIcone d-flex align-items-center justify-content-center me-3">
+            <div className="NotifIcone d-flex align-items-center justify-content-center me-2">
               <div className="">
                 <IoNotifications className="fs-4" />
               </div>
@@ -57,14 +60,15 @@ export const NavBarCompo = () => {
             {/*================Icone du DropDown========= */}
             <Dropdown
               title={
-                <TbTriangleInvertedFilled
-                  className="fs-5"
-                  style={{ color: '#d4f1f4' }}
+                <input
+                  type="image"
+                  src={UserProfil}
+                  className="img-fluid ProfilSpace"
                 />
               }
               placement="bottomEnd"
               noCaret
-              className="me-5"
+              className="me-4"
               appearance="subtle"
               toggleClassName="bg-transparent"
             >
