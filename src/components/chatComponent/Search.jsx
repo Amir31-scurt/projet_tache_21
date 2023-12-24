@@ -12,8 +12,9 @@ export default function Search() {
           <i className="bi bi-search my-auto "></i>
           <input
             type="text"
-            className="form-control border-0"
+            className="form-control text-white border-0"
             placeholder="Search"
+            autoFocus
           />
           {/* <i className="bi bi-x-lg  my-auto fs-4" id="closeSearch"></i> */}
         </div>

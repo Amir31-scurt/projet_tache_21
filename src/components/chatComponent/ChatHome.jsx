@@ -9,9 +9,9 @@ import "../../assets/css/chat.css";
 export default function ChatHome() {
   const [openChat, setOpenChat] = useState(false);
   return (
-    <div className="chatHomeContainer">
+    <div className="chatHomeContainer text-white">
       {/* {openChat && ( */}
-      <div className="chatHome rounded">
+      <div className={`chatHome rounded ${openChat ? "" : "chatHomeDisplay"}`}>
         <div className="chatContainer">
           <ChatHeader />
           <Chat />

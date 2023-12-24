@@ -9,7 +9,8 @@ export default function ChatHeader() {
   return (
     <div className="chatHeader">
       {/* <ChatNavbar /> */}
-      <div className="text-end chatHeaderBtnContainer text-white p-1">
+      <div className="d-flex justify-content-between chatHeaderBtnContainer text-white p-1">
+        <span>currentUser.name</span>
         {openSearch ? (
           <i
             className="bi bi-x-lg my-auto me-3"

@@ -3,8 +3,13 @@
                     CHAT HOME
    ================================================== */
 .chatHome{
-    border: 0.01rem solid #333;
+    /* border: 0.01rem solid #333; */
     overflow: hidden;
+    background-color: #432705;
+    transition: 0.2s ease-in-out;
+}
+.chatHomeDisplay{
+    transform: translateY(-1000%);
 }
 /* ================================================== 
                     CHAT HEADER
@@ -17,7 +22,7 @@
     transition: all 0.3s ease;
 }
 .chatHeader .chatHeaderBtnContainer{
-    background-color: #432705;
+    background-color: #e16d07;
     
 }
 /* ================================================== 
@@ -29,12 +34,25 @@
     bottom: 15px;
     right: 20px; 
 }
-/* .chatHome{
-    background-color: #d89356;
-} */
+
 .chats{
     overflow-x: scroll;
 }
+/* Styles pour la barre de défilement */
+.chats::-webkit-scrollbar {
+    height: 6px;
+    margin-bottom: 22px;
+}
+
+.chats::-webkit-scrollbar-thumb {
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.chats::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
 .chatHomeContainer #btn-toggle{
     float: right;
     outline: none !important;
@@ -49,8 +67,17 @@
 /* ================================================== 
                 SEARCH-FORM 
    ================================================== */
-.searchForm #navbar-input-container input{
+.searchForm #navbar-input-container input {
     outline: none !important;
+    background-color: transparent;
+    border-bottom: 1px solid #e16d07 !important;
+}
+.searchForm #navbar-input-container input::placeholder {
+    color: #fff;
+    font-style: italic;
+}
+.form-control:focus {
+    box-shadow: none;
 }
 
 /* ================================================== 
@@ -67,9 +94,22 @@
    ================================================== */
 .messages{
     height: 250px;
-    overflow-y: auto;
-    background-color: #edcaaa;
+    overflow-y: scroll;
+    /* background-color: #edcaaa; */
 }
+/* Styles pour la barre de défilement */
+.messages::-webkit-scrollbar {
+        width: 8px;
+    }
+
+.messages::-webkit-scrollbar-thumb {
+        background-color: #e16d07;
+        border-radius: 6px;
+    }
+
+.messages::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
 .messages .owner  {
     flex-direction: row-reverse;
 }
@@ -110,8 +150,18 @@
 /* ================================================== 
                 CHAT INPUT  
    ================================================== */
-.chatInput {
-    background-color: #edcaaa;
+.chatInput input {
+    background-color: transparent;
+    border: 1px solid #e16d07;
+}
+.chatInput input::placeholder {
+    color: #fff;
+    font-style: italic;
+}
+.chatInput input:focus {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: 1px solid #e16d07;
 }
 
 .chatInput button{

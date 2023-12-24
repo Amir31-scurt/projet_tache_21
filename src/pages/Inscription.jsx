@@ -1,15 +1,16 @@
 import React, { useRef, useState } from "react";
 import pp from "../assets/images/user.png";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+// import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { IoMdMail } from "react-icons/io";
+import { ClipLoader } from "react-spinners";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { auth, db, storage } from "../config/firebase-config";
+import { auth, db } from "../config/firebase-config";
 import { useNavigate } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,6 +20,7 @@ const Inscription = () => {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(false);
   const [actived, setActived] = useState(true);
+  const [validatePwd, setValidatePwd] = useState(false);
 
   const navigate = useNavigate();
   const formRegister = useRef();
@@ -32,74 +34,110 @@ const Inscription = () => {
     const displayName = formRegister.current.nom.value;
     const email = formRegister.current.mail.value;
     const password = formRegister.current.mdpass.value;
-    // // const confirmPassword = e.target[3].value;
-    const file = formRegister.current.fichier.value;
-    console.log(displayName);
-    console.log(email);
-    console.log(password);
-    console.log(file);
+    const confirmPassword = formRegister.current.mdpassConfirm.value;
 
+    // Controle des mots de passe saisie par l'utilisateur
+    if (password !== confirmPassword) {
+      return setValidatePwd(true);
+    }
     try {
       // Création de l'utilisateur
       const res = await createUserWithEmailAndPassword(auth, email, password);
+      setLoading(true);
 
-      // Créer un nom d'image unique dans le Storage de firebase
-      const date = new Date().getTime();
-      // Concaténation du nom de l'user et de la date pour créer un nom unique
-      const storageRef = ref(storage, `${displayName + date}`);
-
-      // La fonction uploadBytesResumable est utilisée pour téléverser des octets de manière reprise, ce qui signifie que si le téléversement est interrompu pour une raison quelconque, il peut être repris à partir du point où il s'est arrêté
-      uploadBytesResumable(storageRef, file).then(() => {
-        getDownloadURL(storageRef).then(async (downloadURL) => {
-          try {
-            //Mis à jour du profil
-            await updateProfile(res.user, {
-              displayName,
-              photoURL: downloadURL,
-            });
-            //Création de l'utilisatreur dans le firestore
-            await setDoc(doc(db, "users", res.user.uid), {
-              uid: res.user.uid,
-              displayName,
-              email,
-              photoURL: downloadURL,
-            });
-
-            //Créer un userChats (discussion de l'utilisateur) vide dans firestore
-            await setDoc(doc(db, "userChats", res.user.uid), {});
-
-            // Toast
-            toast.success("Inscription réussie!", {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "dark",
-            });
-            // On navigue
-            navigate("/");
-          } catch (err) {
-            setErr(true);
-            setLoading(false);
-            toast.error("Erreur lors de l'inscription!", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "dark",
-            });
-          }
-        });
+      await updateProfile(res.user, {
+        displayName,
+        photoURL: "",
       });
-    } catch (err) {
+      //Création de l'utilisatreur dans le firestore
+      await setDoc(doc(db, "users", res.user.uid), {
+        uid: res.user.uid,
+        displayName,
+        email,
+        photoURL: "",
+      });
+
+      //Créer un userChats (discussion de l'utilisateur) vide dans firestore
+      await setDoc(doc(db, "userChats", res.user.uid), {});
+
+      formRegister.current.nom.value = "";
+      formRegister.current.mail.value = "";
+      formRegister.current.mdpass.value = "";
+      formRegister.current.mdpassConfirm.value = "";
+
+      // Toast
+      toast.success("Inscription réussie!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      // On navigue
+      navigate("/");
+    } catch (error) {
       setErr(true);
       setLoading(false);
+
+      if (error.code === "auth/invalid-email") {
+        toast.error("L'adresse e-mail fournie n'est pas au format valide!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else if (error.code === "auth/invalid-email") {
+        toast.error("L'adresse e-mail fournie n'est pas au format valide!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else if (error.code === "auth/email-already-in-use") {
+        toast.error("Adresse e-mail déjà associée à un compte!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else if (error.code === "auth/weak-password") {
+        toast.error("Le mot de passe fourni est trop faible!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else {
+        toast.error("Erreur lors de l'inscription!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
     }
   };
 
@@ -141,46 +179,35 @@ const Inscription = () => {
           placeholder="Votre mot de passe"
         />
       </div>
-      {/* <div className="mb-3 ps-0 form-check">
-              <input
-                required
-                type="password"
-                className="form-control"
-                placeholder="Confirm password"
-              />
-            </div> */}
       <div className="mb-3 input-group flex-nowrap ps-0 form-check">
+        <span className="input-group-text">
+          <RiLockPasswordFill />
+        </span>
         <input
-          // required
-          style={{ display: "none" }}
-          name="fichier"
-          type="file"
-          id="file"
-          // ref={imgUserRegisted}
+          required
+          type="password"
+          name="mdpassConfirm"
+          className="form-control"
+          placeholder="Confirmer votre mot de passe"
         />
-        <label htmlFor="file">
-          {/* <img src={Add} alt="" /> */}
-          <i className="bi bi-card-image me-3" id="choseIMG"></i>
-          <span className="me-3">Choisir l'image de profil</span>
-          {/* <img
-            src={imgUserRegisted ? URL.createObjectURL(imgUserRegisted) : pp}
-            alt=""
-            id="imgRegister"
-          /> */}
-        </label>
       </div>
+      {validatePwd && (
+        <span className="d-block text-danger">
+          Les mots de passe ne correspondent pas!
+        </span>
+      )}
+
       <button
         onClick={handleSubmit}
-        className="btn d-flex justify-content-center align-items-center fs-6 btn-lg btn-block text-white log"
+        className="btn d-flex bg-danger mx-auto  fs-6 btn-lg btn-block text-white log"
         type="button"
       >
-        S'inscrire
+        S'inscrire{" "}
+        {loading && (
+          <ClipLoader color={"#fff"} size={15} className="ms-1 my-auto" />
+        )}
       </button>
       <ToastContainer />
-      {/* <button type="submit" className="btn btn-primary" disabled={loading}>
-        Sign In
-      </button> */}
-      {/* {err && <span style={{ color: "red" }}>Quelque chose d'anormale</span>} */}
     </form>
   );
 };
