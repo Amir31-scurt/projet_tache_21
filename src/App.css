@@ -405,7 +405,7 @@ body {
   flex-wrap: wrap;
 }
 .BigContainer {
-  background-color: #ecebeb;
+  background-color: #fff;
 }
 
 @media screen and (max-width: 692px) {
@@ -746,3 +746,22 @@ body {
     margin-bottom: 30px;
   }
 }
+.program-img{
+    width:250px;
+    height: 200px;
+}
+.program-img img{
+    width:100%;
+    height: 100%;
+}
+.progress-bar{
+    background-color: #e16d07;
+}
+.bg-cours{
+    background-color:#f0c5a939;
+    height: 100vh;
+}
+.divard{
+    display: flex !important;
+}
+/*   Fin Mariama Css */

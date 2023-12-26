@@ -5,7 +5,7 @@ import { CiMail } from 'react-icons/ci';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { ToastContainer, toast } from 'react-toastify';
-import { auth } from '../config/firebase-config';
+import { auth } from '../../config/firebase-config';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap-icons/font/bootstrap-icons.css';
