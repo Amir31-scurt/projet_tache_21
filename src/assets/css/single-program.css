@@ -35,6 +35,16 @@
 
 .reading-blog-list {
   display: flex;
+  justify-content: space-around;
+  margin-top: 50px;
+}
+
+.blog-card {
+  width: 25%;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  /* margin: 10px; */
+  transition: transform 0.2s;
   margin-top: 50px;
 }
 .lolo {
@@ -55,6 +65,7 @@
 
 .blog-card:hover {
   transform: translateY(-5px);
+  border-radius: 15px;
 }
 
 .blog-card img {
@@ -66,4 +77,9 @@
 .blog-card h2 {
   font-size: 1.2em;
   margin: 10px 0;
+}
+@media (max-width: 1024px) {
+  .blog-card {
+    width: 100%;
+  }
 }

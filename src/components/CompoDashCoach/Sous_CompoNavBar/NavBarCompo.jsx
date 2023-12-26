@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LogoTech from '../../../assets/images/logo.png';
-import UserProfil from '../../../assets/images/user.png';
+import LogoTech from '../../../assets/images/Logo.png';
+import UserProfil from "../../../assets/images/user.png";
 import { MdMessage } from 'react-icons/md';
 import { IoNotifications } from 'react-icons/io5';
 import { Dropdown } from 'rsuite';
