@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 // import affiche from "../assets/images/affiche.jpg";
-import FormConnect from "../components/formConnect";
-import Inscription from "./Inscription";
+import FormConnect from "../Connected/formConnect";
+import Inscription from "../Inscription";
 
 export default function Connexion() {
+
+  // etat pour le formulaire active
   const state = "true";
   const [connected, setConnected] = useState(state);
+
+
+
   return (
     <div class="container-fluid contain-connect  ">
       <div class="row d-flex justify-content-center align-items-center ">

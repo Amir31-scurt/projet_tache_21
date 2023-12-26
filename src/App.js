@@ -5,11 +5,12 @@ import {
   // Navigate,
 } from "react-router-dom";
 
-import Connexion from "./pages/Connexion";
+import Connexion from "./pages/Connected/Connexion";
 // import Inscription from "./pages/Inscription"
 import DashboardApprenant from "./pages/DashboardApprenant";
-import OubliMoPass from './pages/OubliMoPass';
-import Programme from "./components/Programme";
+import OubliMoPass from './pages/Connected/OubliMoPass';
+import Programme from "./components/ProEtudiant/Programme";
+import CoursHtmlCss from "./components/ProEtudiant/Cours";
 
 export default function App() {
 
@@ -25,6 +26,10 @@ export default function App() {
     {
       path: "/modal",
       element: <OubliMoPass />,
+    },
+    {
+      path: "/Cours/HtmlCss",
+      element: <CoursHtmlCss />,
     },
     {
       path: "/dashboardapprenant",

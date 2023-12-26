@@ -32,7 +32,7 @@ export default function OubliMoPass() {
               {/* <!-- Password input --> */}
 
               {/* <!-- Submit button --> */}
-              <div className="text-end justify-content-between">
+              <div className="text-end justify-content-between ">
                 <button type="button" class="btn btn-block  btn-secondary ">
                   <Link to="/" className='text-decoration-none text-white'>Fermer</Link>
                 </button>
