@@ -7,19 +7,18 @@ import './Certification.css'
 
 function Certification() {
   return (
-    <div className="container my-4">
+    <div className="container">
       <div className="row justify-content-center flex-wrap">
-        <div className="border">
-          <div class="card border-0 p-1 border-secondary shadow-5 text-center ">
-            <div class="card-body  border-secondary">
-              <div className="flex-column justify-content-center">
+        <div className="col-md-6">
+          <div class="card  p-2 border-0 shadow-5 ">
+            <div class="card-body dash">
+              <div className="flex-column justify-content-center m-0">
                 <img className="img-fluid reduct" src={school} alt="" />
-                <p className=" fs-3">Tech Genius</p>
               </div>
-              <div className="mt-1">
+              <div className="text-center">
                 <h6 class="card-subtitle  fw-bolder fs-4">Oumar Ndongo</h6>
                 <p>a terminé avec succes le</p>
-                <p class="card-text fw-bolder fs-2">
+                <p class="card-text fw-bolder fs-3">
                   Programme de Développement Web
                 </p>
                 <p class="card-text">
@@ -27,14 +26,13 @@ function Certification() {
                 </p>
                 <p class="card-text ">représentant 1 an de formation</p>
               </div>
-              <div className="d-flex justify-content-between">
+              <div className="d-flex align-items-center justify-content-between">
                 <div className="">
                   <p class=" text-center  DG">Amadou woury BAH</p>
-                  <img className="img-fluid reduct" src={signature} alt="" />
+                  <img className="img-fluid ajout" src={signature} alt="" />
                 </div>
                 <div className="">
-                  <img className="img-fluid reduct" src={codeqr} alt="" />
-                  <p className=" fs-3">Tech Genius</p>
+                  <img className="img-fluid ajout" src={codeqr} alt="" />
                 </div>
               </div>
             </div>
