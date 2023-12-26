@@ -180,11 +180,7 @@ const ProgramList = () => {
         <div className="d-flex flex-wrap justify-content-center">
           {programs.map((program, index) => (
             <div
-<<<<<<< HEAD
-              className="d-flex flex-wrap col justify-content-center car"
-=======
               className="d-flex flex-wrap col-lg-3 col justify-content-center car"
->>>>>>> f17fc7bbe566081f0a588d88a6fbe9e5d7db76c5
               key={index}
             >
               <ProgramCard
