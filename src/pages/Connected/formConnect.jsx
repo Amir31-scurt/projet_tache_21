@@ -101,17 +101,6 @@ export default function FormConnect() {
         >
           Mot de passe oublié?
         </p>
-        <div className="pt-1 mt-4 text-end">
-          <center>
-            <button
-              type="submit"
-              className="btn d-flex justify-content-center align-items-center fs-6 btn-lg btn-block text-white log"
-              disabled={loading}
-            >
-              {loading ? 'Chargement...' : 'Se connecter'}
-            </button>
-          </center>
-        </div>
         {/* <!-- Modal --> */}
         <div
           class="modal fade"
@@ -158,6 +147,7 @@ export default function FormConnect() {
               </div>
             </div>
           </div>
+          <p className="m-0 p-0 text-end oubli">Mot de passe oublié?</p>
         </div>
         <div className="pt-1 mt-4 text-end">
           <center>
