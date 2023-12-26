@@ -267,6 +267,23 @@ body {
   color: #e16b07;
 }
 
+/* .Lbtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 30px;
+    background: #e16b07;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10rem;
+    transition: transform 400ms;
+    &:hover {
+        transform: scale(1.15);
+    }
+} */
 /* Fin Cheikh CSS */
 
 /* Mariama CSS */
@@ -387,16 +404,16 @@ body {
 .ContaCardDsb {
   flex-wrap: wrap;
 }
-.BigContainer{
+.BigContainer {
   background-color: #ecebeb;
 }
 
 @media screen and (max-width: 692px) {
-  .WidthCardDsb{
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
+  .WidthCardDsb {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
 }
 
 /*============ Le Dashboard CSS Fin ============*/
