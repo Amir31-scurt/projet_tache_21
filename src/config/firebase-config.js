@@ -1,37 +1,28 @@
+import { config } from "dotenv";
 import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
-import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
-// const firebaseConfig = {
-//   apiKey: "AIzaSyB11i9eAe_iNYBdOonaoZ6lkIrFf5xMvco",
-//   authDomain: "test-23c5e.firebaseapp.com",
-//   projectId: "test-23c5e",
-//   storageBucket: "test-23c5e.appspot.com",
-//   messagingSenderId: "395175751377",
-//   appId: "1:395175751377:web:7bc66ba39d4223256a5ff0"
-// };
+import { getStorage } from "firebase/storage";
 
+// Load environment variables from .env file
+config();
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAkYLY7TMu0ZBoCqT7kXwE1sdnxVC-55uk",
-  authDomain: "tache21-82734.firebaseapp.com",
-  projectId: "tache21-82734",
-  storageBucket: "tache21-82734.appspot.com",
-  messagingSenderId: "512673644432",
-  appId: "1:512673644432:web:4682f6560a4cb803533d15"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+const auth = getAuth(app);
 
-// Initialize Firebase Authentification
-export const auth = getAuth()
-
-// Initialize Firestore Services
-export const db = getFirestore()
-
-// Initialize Storage Services
-export const storage = getStorage()
-
-
-
-
+export { analytics, storage, auth, db };
