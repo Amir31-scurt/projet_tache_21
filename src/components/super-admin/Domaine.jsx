@@ -62,7 +62,6 @@ export default function TemplateDemo() {
 
   return (
     <div className="card" id='domaine'>
-    Je suis là
       <TreeTable
         value={nodes}
         header={header}
