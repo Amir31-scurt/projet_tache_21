@@ -48,6 +48,7 @@ export const NavBarCompo = () => {
           </div>
           {/*=====================SECOND PARTIE DU NavBar Debut============= */}
           <div className="SecRightNav">
+            {/* <div className="Lbtn me-5 me-sm-3 ">Livrer une tache</div> */}
             <div className="MessageIcone d-flex align-items-center justify-content-center">
               <MdMessage className="fs-4" />
             </div>
@@ -64,6 +65,9 @@ export const NavBarCompo = () => {
                   type="image"
                   src={UserProfil}
                   className="img-fluid ProfilSpace"
+                  // <TbTriangleInvertedFilled
+                  //   className="fs-5"
+                  //   style={{ color: "#d4f1f4" }}
                 />
               }
               placement="bottomEnd"

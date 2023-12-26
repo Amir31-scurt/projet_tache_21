@@ -1,6 +1,5 @@
-import React from 'react'
+import React from 'react';
 // import Card from ''
-
 
 export default function DashboardCompo({
   ChiffreCardDsb,
@@ -9,21 +8,24 @@ export default function DashboardCompo({
   couleurCarte,
 }) {
   return (
-    <div className='WidthCardDsb'>
+    <div className="WidthCardDsb">
       <div
         className={`CardDashBoard d-flex justify-content-center align-items-center my-3 ${couleurCarte}`}
       >
         <div className=" px-4">
           <div className="d-flex justify-content-between ">
             <div className="me-5 d-flex align-items-center pt-3">
-              <p className="fs-1 px-2 fw-bold fst-italic" style={{ color: "#5a2a00" }}>
+              <p
+                className="fs-1 px-2 fw-bold fst-italic"
+                style={{ color: '#5a2a00' }}
+              >
                 {ChiffreCardDsb}
               </p>
             </div>
             <div className="ms-5 mt-3">{IconeCardDsb}</div>
           </div>
           <div className="">
-            <p className="fs-4 fw-bold fst-italic" style={{ color: "#ee6d09" }}>
+            <p className="fs-4 fw-bold fst-italic" style={{ color: '#ee6d09' }}>
               {TextCardDsb}
             </p>
           </div>
@@ -32,4 +34,3 @@ export default function DashboardCompo({
     </div>
   );
 }
-
