@@ -12,6 +12,8 @@ import ProgrammeCoach from './components/programmes/programmes';
 import SpecificPro from './components/programmes/Single_Programmes/specific_program';
 import Certificate from './components/BulletinEtudiant';
 import AuthContextProvider from './contexte/AuthContext';
+import CardLivraison from './components/CompoDashCoach/CardLivraison';
+import ContentCardLivraison from './components/ContentCardLivraison';
 
 export default function App() {
   const router = createBrowserRouter([
@@ -47,6 +49,10 @@ export default function App() {
         {
           path: '/dashboard/certificat',
           element: <Certificate />,
+        },
+        {
+          path: '/dashboard/livrable',
+          element: <ContentCardLivraison />,
         },
       ],
     },

@@ -30,7 +30,7 @@ export default function Template() {
           </div>
           {isDashboard && (
             <div className="col-3 d-none d-lg-block">
-              <Card/>
+              <Card />
             </div>
           )}
         </div>

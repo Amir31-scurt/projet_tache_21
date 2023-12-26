@@ -49,13 +49,21 @@ const SpecificPro = () => {
           </p>
           <hr />
           <h5 className="mb-3 text-center">Ajouter des cours</h5>
+<<<<<<< HEAD
           <div className="d-flex flex-column flex-wrap gap-2 justify-content-center align-items-center col-6 mx-auto mx-lg-0">
+=======
+          <div className="d-flex flex-column flex-wrap gap-2 justify-content-center align-items-center col-lg-6 mx-auto mx-lg-0">
+>>>>>>> f17fc7bbe566081f0a588d88a6fbe9e5d7db76c5
             <>
               <SelectPicker
                 data={data}
                 groupBy="role"
                 style={{ width: 224 }}
+<<<<<<< HEAD
                 className="w-100"
+=======
+                className="w-100 "
+>>>>>>> f17fc7bbe566081f0a588d88a6fbe9e5d7db76c5
               />
             </>
             <input
@@ -63,13 +71,18 @@ const SpecificPro = () => {
               name="coursAjout"
               id="coursAjout"
               placeholder="Le lien des cours"
+<<<<<<< HEAD
               className="w-100"
+=======
+              className="w-100 rounded p-1 border-secondary border-opacity-25 border-1"
+>>>>>>> f17fc7bbe566081f0a588d88a6fbe9e5d7db76c5
             />
             <button className="learn-more-btn">Ajouter</button>
           </div>
         </div>
       </section>
 
+<<<<<<< HEAD
       <section className="reading-blog-list d-flex gap-1 flex-wrap w-100">
         <div className="blog-card col">
           <img
@@ -95,6 +108,35 @@ const SpecificPro = () => {
             alt="JavaScript"
           />
           <h2>JavaScript</h2>
+=======
+      <section className="reading-blog-list">
+        <div className="row g-4 d-flex">
+          <div className="blog-card col-md-6 col-lg-3">
+            <img
+              src="https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg"
+              alt="UX/UI"
+            />
+            <h2>UX/UI</h2>
+          </div>
+          <div className="blog-card col-md-6 col-lg-3">
+            <img
+              src="https://raw.githubusercontent.com/llanojs/Readme_template/master/react-logo.jpg"
+              alt="React"
+            />
+            <h2>React</h2>
+          </div>
+          <div className="blog-card col-md-6 col-lg-3">
+            <img src="https://www.php.net/images/meta-image.png" alt="PHP" />
+            <h2>PHP</h2>
+          </div>
+          <div className="blog-card col-md-6 col-lg-3">
+            <img
+              src="https://www.orientsoftware.com/Themes/OrientSoftwareTheme/Content/Images/blog/2021-12-16/what-can-you-do-with-javascript-thumb.jpg"
+              alt="JavaScript"
+            />
+            <h2>JavaScript</h2>
+          </div>
+>>>>>>> f17fc7bbe566081f0a588d88a6fbe9e5d7db76c5
         </div>
       </section>
     </div>
