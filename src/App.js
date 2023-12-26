@@ -14,6 +14,18 @@ import Certificate from './components/BulletinEtudiant';
 import AuthContextProvider from './contexte/AuthContext';
 import ContentCardLivraison from './components/ContentCardLivraison';
 import AssignationPage from './pages/pageAssignation/AssignationPage';
+import './App.css';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  // Navigate,
+} from 'react-router-dom';
+import Connexion from './pages/Connected/Connexion';
+// import Inscription from "./pages/Inscription"
+import DashboardApprenant from './pages/DashboardApprenant';
+import OubliMoPass from './pages/Connected/OubliMoPass';
+import Programme from './components/ProEtudiant/Programme';
+import CoursHtmlCss from './components/ProEtudiant/Cours';
 
 export default function App() {
   const router = createBrowserRouter([
@@ -28,6 +40,14 @@ export default function App() {
     {
       path: '/dashboard',
       element: <Template />,
+      // =======
+      //       path: "/Cours/HtmlCss",
+      //       element: <CoursHtmlCss />,
+      //     },
+      //     {
+      //       path: "/dashboardapprenant",
+      //       element: <DashboardApprenant />,
+      // >>>>>>> 19-12-2023-Connexion
       children: [
         {
           index: true, // Index route for /timeline
