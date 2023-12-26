@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
-import userProfile from "../assets/images/userProfile.png";
-import envoi from "../assets/images/envoi.png";
-import commenter from "../assets/images/commenter.png";
-import img1 from "../assets/images/img (1).jpg";
-import img2 from "../assets/images/img (2).jpg";
-import img3 from "../assets/images/img (3).jpg";
-import img4 from "../assets/images/img (4).jpg";
-import img5 from "../assets/images/img (5).jpg";
-import { Galleria } from "primereact/galleria";
-import { Dialog } from "primereact/dialog";
+import React, { useState, useEffect } from 'react';
+import userProfile from '../assets/images/userProfile.png';
+import envoi from '../assets/images/envoi.png';
+import commenter from '../assets/images/commenter.png';
+import img1 from '../assets/images/img (1).jpg';
+import img2 from '../assets/images/img (2).jpg';
+import img3 from '../assets/images/img (3).jpg';
+import img4 from '../assets/images/img (4).jpg';
+import img5 from '../assets/images/img (5).jpg';
+import { Galleria } from 'primereact/galleria';
+import { Dialog } from 'primereact/dialog';
 
 export default function CardLivraison() {
   // eslint-disable-next-line
-  const [apprenant, setApprenat] = useState("Cheikh Ahmed Tidiane Gueye");
-  const [coach, setCoach] = useState("Kalika Ba");
-  const [date, setDate] = useState("19 Dec 2023, 16:05");
-  const [days, setDays] = useState("1");
-  const [comment, setComment] = useState("Good job (:-)");
-  const [role, setRole] = useState("Coach");
+  const [apprenant, setApprenat] = useState('Cheikh Ahmed Tidiane Gueye');
+  const [coach, setCoach] = useState('Kalika Ba');
+  const [date, setDate] = useState('19 Dec 2023, 16:05');
+  const [days, setDays] = useState('1');
+  const [comment, setComment] = useState('Good job (:-)');
+  const [role, setRole] = useState('Coach');
   const [visible, setVisible] = useState(false);
   const [images, setImages] = useState(null);
 
@@ -27,32 +27,32 @@ export default function CardLivraison() {
         {
           itemImageSrc: img1,
           thumbnailImageSrc: img1,
-          alt: "Description for Image 1",
-          title: "Title 1",
+          alt: 'Description for Image 1',
+          title: 'Title 1',
         },
         {
           itemImageSrc: img2,
           thumbnailImageSrc: img2,
-          alt: "Description for Image 2",
-          title: "Title 2",
+          alt: 'Description for Image 2',
+          title: 'Title 2',
         },
         {
           itemImageSrc: img3,
           thumbnailImageSrc: img3,
-          alt: "Description for Image 3",
-          title: "Title 3",
+          alt: 'Description for Image 3',
+          title: 'Title 3',
         },
         {
           itemImageSrc: img4,
           thumbnailImageSrc: img4,
-          alt: "Description for Image 4",
-          title: "Title 4",
+          alt: 'Description for Image 4',
+          title: 'Title 4',
         },
         {
           itemImageSrc: img5,
           thumbnailImageSrc: img5,
-          alt: "Description for Image 5",
-          title: "Title 5",
+          alt: 'Description for Image 5',
+          title: 'Title 5',
         },
       ];
     },
@@ -67,7 +67,7 @@ export default function CardLivraison() {
       <img
         src={item.itemImageSrc}
         alt={item.alt}
-        style={{ width: "100%", height: "100px%" }}
+        style={{ width: '100%', height: '100px%' }}
       />
     );
   };
@@ -77,7 +77,7 @@ export default function CardLivraison() {
       <img
         src={item.thumbnailImageSrc}
         alt={item.alt}
-        style={{ width: "140px", height: "100px" }}
+        style={{ width: '140px', height: '100px' }}
       />
     );
   };
@@ -88,7 +88,7 @@ export default function CardLivraison() {
 
   function handleSend() {
     console.log("Cliqué sur l'image send");
-    alert("message envoyé");
+    alert('message envoyé');
   }
 
   return (
@@ -111,7 +111,7 @@ export default function CardLivraison() {
             <Galleria
               value={images}
               numVisible={5}
-              style={{ maxWidth: "" }}
+              style={{ maxWidth: '' }}
               item={itemTemplate}
               thumbnail={thumbnailTemplate}
               className="publication rounded-2"
@@ -124,7 +124,7 @@ export default function CardLivraison() {
               header="Commentaires"
               visible={visible}
               maximizable
-              style={{ width: "50vw" }}
+              style={{ width: '50vw' }}
               onHide={() => setVisible(false)}
             >
               <div className="row comment border rounded-2 m-0 my-2 boxshadow">
@@ -181,9 +181,9 @@ export default function CardLivraison() {
                 src={commenter}
                 alt=""
                 className=""
-                style={{ width: "30px", height: "30px" }}
+                style={{ width: '30px', height: '30px' }}
               />
-              <p className="px-2 m-0 sizeHover" style={{ fontSize: "12px" }}>
+              <p className="px-2 m-0 sizeHover" style={{ fontSize: '12px' }}>
                 Plus de commentaires
               </p>
             </div>
@@ -200,7 +200,7 @@ export default function CardLivraison() {
                 <img
                   src={envoi}
                   alt="send"
-                  style={{ width: "30px", height: "30px" }}
+                  style={{ width: '30px', height: '30px' }}
                 />
               </span>
             </div>
