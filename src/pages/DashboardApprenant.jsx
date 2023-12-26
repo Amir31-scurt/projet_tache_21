@@ -15,7 +15,7 @@ export default function DashboardApprenant() {
         Dashboard
       </h1>
       {/*========= Les cartes du dashboard Debut =========*/}
-      <div className="d-flex ContaCardDsb justify-content-between">
+      <div className="d-flex ContaCardDsb justify-content-start">
         {ContenuCardDsb.map((elem, index) => (
           <DashboardCompo {...elem} key={index} />
         ))}

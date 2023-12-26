@@ -128,7 +128,6 @@ export default function FormConnect() {
                     type="email"
                     id="email"
                     class="form-control p-2"
-                    required
                     placeholder="Saisissez votre mail"
                   />
                 </div>
