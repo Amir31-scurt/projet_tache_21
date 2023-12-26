@@ -1,20 +1,20 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState } from 'react';
 // import pp from "../assets/images/user.png";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 // import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { doc, setDoc } from "firebase/firestore";
-import { FaUser } from "react-icons/fa";
-import { RiLockPasswordFill } from "react-icons/ri";
-import { IoMdMail } from "react-icons/io";
-import { ClipLoader } from "react-spinners";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import { auth, db } from "../config/firebase-config";
-import { useNavigate } from "react-router";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "../assets/css/inscription.css";
+import { doc, setDoc } from 'firebase/firestore';
+import { FaUser } from 'react-icons/fa';
+import { RiLockPasswordFill } from 'react-icons/ri';
+import { IoMdMail } from 'react-icons/io';
+import { ClipLoader } from 'react-spinners';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import { auth, db } from '../config/firebase-config';
+import { useNavigate } from 'react-router';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import '../assets/css/inscription.css';
 
 const Inscription = () => {
   const [loading, setLoading] = useState(false);
@@ -48,95 +48,95 @@ const Inscription = () => {
       //Mis à jour du profil
       await updateProfile(res.user, {
         displayName,
-        photoURL: "",
+        photoURL: '',
       });
       //Création de l'utilisatreur dans le firestore
-      await setDoc(doc(db, "users", res.user.uid), {
+      await setDoc(doc(db, 'users', res.user.uid), {
         uid: res.user.uid,
         displayName,
         email,
-        photoURL: "",
+        photoURL: '',
       });
 
       //Créer un userChats (discussion de l'utilisateur) vide dans firestore
-      await setDoc(doc(db, "userChats", res.user.uid), {});
+      await setDoc(doc(db, 'userChats', res.user.uid), {});
 
-      formRegister.current.nom.value = "";
-      formRegister.current.mail.value = "";
-      formRegister.current.mdpass.value = "";
-      formRegister.current.mdpassConfirm.value = "";
+      formRegister.current.nom.value = '';
+      formRegister.current.mail.value = '';
+      formRegister.current.mdpass.value = '';
+      formRegister.current.mdpassConfirm.value = '';
 
       // Toast
-      toast.success("Inscription réussie!", {
-        position: "top-right",
+      toast.success('Inscription réussie!', {
+        position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: 'dark',
       });
       // On navigue
-      navigate("/");
+      navigate('/');
     } catch (error) {
       setErr(true);
       setLoading(false);
 
-      if (error.code === "auth/invalid-email") {
+      if (error.code === 'auth/invalid-email') {
         toast.error("L'adresse e-mail fournie n'est pas au format valide!", {
-          position: "top-right",
+          position: 'top-right',
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
-      } else if (error.code === "auth/invalid-email") {
+      } else if (error.code === 'auth/invalid-email') {
         toast.error("L'adresse e-mail fournie n'est pas au format valide!", {
-          position: "top-right",
+          position: 'top-right',
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
-      } else if (error.code === "auth/email-already-in-use") {
-        toast.error("Adresse e-mail déjà associée à un compte!", {
-          position: "top-right",
+      } else if (error.code === 'auth/email-already-in-use') {
+        toast.error('Adresse e-mail déjà associée à un compte!', {
+          position: 'top-right',
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
-      } else if (error.code === "auth/weak-password") {
-        toast.error("Le mot de passe fourni est trop faible!", {
-          position: "top-right",
+      } else if (error.code === 'auth/weak-password') {
+        toast.error('Le mot de passe fourni est trop faible!', {
+          position: 'top-right',
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
       } else {
         toast.error("Erreur lors de l'inscription!", {
-          position: "top-right",
+          position: 'top-right',
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
       }
     }
@@ -206,9 +206,9 @@ const Inscription = () => {
         className="btn d-flex mx-auto  fs-6 btn-lg btn-block text-white log"
         type="button"
       >
-        S'inscrire{" "}
+        S'inscrire{' '}
         {loading && (
-          <ClipLoader color={"#fff"} size={15} className="ms-1 my-auto" />
+          <ClipLoader color={'#fff'} size={15} className="ms-1 my-auto" />
         )}
       </button>
       <ToastContainer />
