@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import userProfile from '../assets/images/userProfile.png';
 import envoi from '../assets/images/envoi.png';
 import commenter from '../assets/images/commenter.png';
