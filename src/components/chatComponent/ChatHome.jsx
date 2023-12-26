@@ -10,15 +10,17 @@ export default function ChatHome() {
   const [openChat, setOpenChat] = useState(false);
   return (
     <div className="chatHomeContainer text-white">
-      {/* {openChat && ( */}
-      <div className={`chatHome rounded ${openChat ? "" : "chatHomeDisplay"}`}>
-        <div className="chatContainer">
-          <ChatHeader />
-          <Chat />
+      {openChat && (
+        <div
+          className={`chatHome rounded ${openChat ? "" : "chatHomeDisplay"}`}
+        >
+          <div className="chatContainer">
+            <ChatHeader />
+            <Chat />
+          </div>
         </div>
-      </div>
-      {/* )} */}
-      <button className="btn mt-2 rounded-circle" id="btn-toggle">
+      )}
+      <button className="btn mt-3 rounded-circle" id="btn-toggle">
         {!openChat ? (
           <i
             className="bi bi-chat-fill fs-4"

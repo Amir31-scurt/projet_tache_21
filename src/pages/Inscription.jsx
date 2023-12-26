@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import pp from "../assets/images/user.png";
+// import pp from "../assets/images/user.png";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 // import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
@@ -41,10 +41,11 @@ const Inscription = () => {
       return setValidatePwd(true);
     }
     try {
+      setLoading(true);
       // Création de l'utilisateur
       const res = await createUserWithEmailAndPassword(auth, email, password);
-      setLoading(true);
 
+      //Mis à jour du profil
       await updateProfile(res.user, {
         displayName,
         photoURL: "",
@@ -142,7 +143,10 @@ const Inscription = () => {
   };
 
   return (
-    <form className="justify-content-center" ref={formRegister}>
+    <form
+      className="d-flex flex-column align-items-center justify-content-center"
+      ref={formRegister}
+    >
       <div className="mb-3 input-group flex-nowrap">
         <span className="input-group-text">
           <FaUser />
@@ -152,7 +156,7 @@ const Inscription = () => {
           name="nom"
           type="text"
           className="form-control"
-          placeholder="Votre nom"
+          placeholder="Nom complet"
         />
       </div>
       <div className="mb-3 input-group flex-nowrap">
@@ -164,7 +168,7 @@ const Inscription = () => {
           type="email"
           name="mail"
           className="form-control"
-          placeholder="Votre email"
+          placeholder="Email"
         />
       </div>
       <div className="mb-3 input-group flex-nowrap ps-0 form-check">
@@ -176,7 +180,7 @@ const Inscription = () => {
           type="password"
           name="mdpass"
           className="form-control"
-          placeholder="Votre mot de passe"
+          placeholder="Mot de passe"
         />
       </div>
       <div className="mb-3 input-group flex-nowrap ps-0 form-check">
@@ -199,7 +203,7 @@ const Inscription = () => {
 
       <button
         onClick={handleSubmit}
-        className="btn d-flex bg-danger mx-auto  fs-6 btn-lg btn-block text-white log"
+        className="btn d-flex mx-auto  fs-6 btn-lg btn-block text-white log"
         type="button"
       >
         S'inscrire{" "}

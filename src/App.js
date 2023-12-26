@@ -12,12 +12,18 @@ import OubliMoPass from './pages/OubliMoPass';
 import ChatHome from "./components/chatComponent/ChatHome";
 import Programme from "./components/Programme";
 import Inscription from "./pages/Inscription";
+import Template from './layout/template';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'rsuite/dist/rsuite.min.css';
+import ProgrammeCoach from './components/programmes/programmes';
+import SpecificPro from './components/programmes/Single_Programmes/specific_program';
+import Certificate from './components/BulletinEtudiant';
+import AuthContextProvider from './contexte/AuthContext';
 
 export default function App() {
-
-  const rooter = createBrowserRouter([
+  const router = createBrowserRouter([
     {
-      path: "/",
+      path: '/',
       element: <Connexion />,
     },
     {
@@ -29,26 +35,43 @@ export default function App() {
       element: <Programme />,
     },
     {
-      path: "/modal",
+      path: '/modal',
       element: <OubliMoPass />,
     },
     {
-      path: "/chatHome",
-      element: <ChatHome/>
-    },
-    {
-      path: "/dashboardapprenant",
-      element: <DashboardApprenant />,
+      path: '/dashboard',
+      element: <Template />,
       children: [
-        // {
-        // path: "/dashboardapprenant/programme",
-        // element: <Programme/>,
-        // },
+        {
+          index: true, // Index route for /timeline
+          element: <DashboardApprenant />,
+        },
+        {
+          path: '/dashboard/programme', // Relative path
+          element: <ProgrammeCoach />,
+        },
+        {
+          index: true,
+          path: '/dashboard/chatHome', // Relative path
+          element: <ChatHome />,
+        },
+        {
+          path: '/dashboard/programme/cours',
+          element: <SpecificPro />,
+        },
+        {
+          path: '/dashboard/certificat',
+          element: <Certificate />,
+        },
       ],
     },
   ]);
+
   return (
-    <RouterProvider router={rooter} />
+    <AuthContextProvider>
+      <div className="">
+        <RouterProvider router={router} />
+      </div>
+    </AuthContextProvider>
   );
 }
-

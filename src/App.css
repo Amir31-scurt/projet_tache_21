@@ -11,11 +11,401 @@ body {
   background-color: #fff;
 }
 
+.cardpcc {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cardpcc .card-img-top {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  object-fit: cover;
+}
+.img-container {
+  width: 100%;
+  height: 180px; /* Set a fixed height */
+  overflow: hidden; /* Hide any overflow */
+  display: flex; /* Use flexbox to center the image */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.img-container img {
+  height: 100%; /* Set image height to fill the container */
+  width: auto; /* Set width to auto to maintain aspect ratio */
+  min-width: 100%; /* Ensure it covers the width */
+  object-fit: cover; /* Cover the container without stretching the image */
+}
+
+.cardpcc .card-body {
+  padding: 1rem;
+}
+
+.cardpcc .card-title {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.cardpcc .progress {
+  background-color: #f5f5f5;
+  margin-top: 0.5rem;
+}
+
+.cardpcc .progress-bar {
+  background-color: #6c5ce7;
+}
+
+/* programmes */
+.program-card {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  width: 300px; /* or any desired width */
+  margin: 8px;
+}
+.program-card2 {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 20px; /* or any desired width */
+}
+.program-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.program-card h3 {
+  font-size: 1.2rem;
+  margin-top: 8px;
+}
+
+.program-card p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.program-card button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.program-card button:hover {
+  background-color: #0056b3;
+}
+.program-card2 img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.program-card2 h3 {
+  font-size: 1.2rem;
+  margin-top: 8px;
+}
+
+.program-card2 p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.program-card2 button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.program-card2 button:hover {
+  background-color: #0056b3;
+}
+
+.program-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.course-card {
+  width: 250px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  text-align: center;
+}
+
+.course-image {
+  width: 100%;
+  height: auto;
+}
+
+.course-title,
+.course-author,
+.course-progress {
+  margin: 10px 0;
+}
+
+.category-card {
+  width: 200px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 10px;
+}
+
+.category-icon {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.category-title {
+  font-weight: bold;
+}
+
+.category-description {
+  color: #666;
+}
 /* cartes : Navy Blue #05445E */
 /*  Navbar : Blue Grotto  #189AB4 */
 /*  Button : Blue Green  #189AB4 */
 /* Button:hover : Grotto Blue #189AB4 */
+/* Background: baby blue #D4F1F4 */
+
+/* Cheikh CSS */
+.body {
+  background: var(--surface-ground);
+  color: var(--text-color);
+  padding: 1rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.card {
+  background: var(--surface-card);
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+.containerApprenant {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 100px; */
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 25px;
+}
+.boxshadow:hover {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.sizeHover:hover {
+  font-size: 18px;
+  cursor: pointer;
+}
+.rowAppenant {
+  width: 100%;
+  height: 100%;
+}
+.colApprenant {
+  display: flex;
+  /* flex-direction: column; */
+  /* flex-wrap: wrap; */
+  /* justify-content: center; */
+  /* align-items: center; */
+}
+.cardSpan {
+  flex-wrap: wrap;
+}
+.mySpan {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  /* justify-content: center; */
+  /* align-items: center; */
+  justify-content: space-around;
+}
+.icon {
+  width: 65px;
+  height: 100%;
+  border-radius: 100%;
+}
+
+.publication {
+  width: 100%;
+  height: 100%;
+  /* padding: 10% 10%; */
+}
+
+.textarea {
+  border-radius: 25px;
+}
+
+.send {
+  display: none;
+  position: absolute;
+  top: 18px;
+  right: 20px;
+}
+.send:hover {
+  display: block;
+}
+
+/* Pour afficher l'icône par défaut, si le champ textarea est déjà en focus au chargement de la page */
+#floatingTextarea2:focus + label + .send {
+  display: block;
+}
+
+.mainColor {
+  color: #e16b07;
+}
+.mainBackgrounColor {
+  color: #e16b07;
+}
+
+/* .Lbtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 30px;
+    background: #e16b07;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10rem;
+    transition: transform 400ms;
+    &:hover {
+        transform: scale(1.15);
+    }
+} */
+/* Fin Cheikh CSS */
+
+/* Mariama CSS */
+.contain-connect {
+  height: 100vh !important;
+}
+
+.height-img {
+  height: 100vh !important;
+  /* width: 50% !important; */
+  /* padding:15px; */
+  background-image: url(assets/images/renom.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.height-form {
+  /* width: 40% !important; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  height: 100vh;
+}
+
+.bouton-switch button {
+  flex: 1;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.bouton-switch {
+  background-color: #432705;
+  border-radius: 30px;
+}
+.bouton-switch .active {
+  /* height: 30px; */
+  border-radius: 33px !important;
+  background-color: #e16d07 !important;
+}
+/* background-color: #49BBBD; */
+
+.tire {
+  border-radius: 33px !important;
+}
+.log {
+  height: 40px;
+  border-radius: 33px !important;
+  width: 30%;
+  background-color: #e16d07 !important;
+}
+.first {
+  background-color: #f5f5f5;
+  box-shadow: 2px 0px 10px 2px grey;
+  border-radius: 15px;
+  color: black;
+  height: fit-content;
+}
+.but {
+  border: 1px solid #189ab4;
+  background: #189ab4 !important;
+}
+.oubli {
+  color: #189ab4;
+}
+/* Suivi du programme */
+.category-card {
+  border-radius: 16px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 200px; /* Adjust width as needed */
+  margin: 10px;
+}
+
+.category-icon {
+  /* Assuming you are using an icon library like Font Awesome */
+  font-size: 2rem; /* Adjust size as needed */
+  color: #4c9aff; /* Adjust icon color as needed */
+  margin-bottom: 10px;
+}
+
+.category-title {
+  color: #333333;
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.category-description {
+  color: #666666;
+  font-size: 0.875rem;
+}
 /* Background: baby Blue #D4F1F4 */
+
+/*============ Le Dashboard CSS Debut =========*/
+
+.CardDashBoard {
+  width: fit-content;
+  height: fit-content;
+  border-radius: 20px;
+  box-shadow: 1px 1px 7px 1px rgba(255, 255, 255, 0.582); 
+}
+.CouleurA {
+  background-color: #b3b3b396;
+}
+.CouleurB {
+  background-color: #82c55592;
+}
+.CouleurC {
+  background-color: #a62ac877;
+}
+.ContaCardDsb{
+  flex-wrap: wrap;
+}
+
+/*============ Le Dashboard CSS Fin ============*/
 
 /* =============== Je crée ici le CSS que je vais Utilisé Début =============== */
 
@@ -27,21 +417,31 @@ body {
 }
 
 .LogoConta {
-  width: 25%;
+  width: 20%;
   height: auto;
+}
+@media screen and (max-width: 1444px) {
+  .LogoConta {
+    width: 24%;
+  }
+}
+@media screen and (max-width: 1444px) {
+  .LogoConta {
+    width: 30%;
+  }
 }
 .LogoConta2 {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-  width: 100px;
+  width: 90px;
 }
 .SecRightNav {
   width: 80%;
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: right;
 }
 .ProfilSpace {
   width: 50px;
@@ -49,13 +449,43 @@ body {
   border-radius: 50%;
   cursor: pointer;
 }
+
+.ProfilSpace2 {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+.EditUser {
+  color: #f67505;
+}
+.EditBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: #e7e2e2;
+  margin-top: 50px;
+  margin-left: -20px;
+}
+
+.IcoColor {
+  color: #fc7b09;
+  font-size: 20px;
+}
+.ContImputUser {
+  width: 80%;
+  margin: auto;
+}
+
 .NotifIcone {
-  width: 90px;
+  width: 80px;
   color: #d4f1f4;
 }
 .MessageIcone {
   color: #d4f1f4;
-  width: 90px;
+  width: 50px;
 }
 .ProfilUser {
   border-radius: 50%;
@@ -64,6 +494,24 @@ body {
   cursor: pointer;
 }
 
+.SaveModifBtn {
+  border-radius: 20px;
+  background-color: #da6f11;
+  color: #fff;
+}
+.CancelModifBtn {
+  border-radius: 20px;
+  color: #fff;
+  background-color: #666;
+}
+.SaveModifBtn:hover {
+  background-color: #c58d5994;
+  color: #000000;
+}
+.CancelModifBtn:hover {
+  background-color: #502906db;
+  color: #fff;
+}
 /* =============== Je crée ici le CSS que je vais Utilisé Fin =============== */
 
 /* Buttons :  #6B240C */
@@ -117,14 +565,24 @@ body {
   padding: 1%;
 }
 .sidebar .list-group-item:hover {
-  background-color: #ca6206 !important;
+  background-color: #ff7700 !important;
   color: #fff;
+  text-decoration: none;
 }
 
 .sidebar .list-group-item {
   padding: 7% 0 7%;
   font-size: 17px;
   font-weight: 500;
+  text-decoration: none;
+  color: #fff;
+}
+.sidebar .list-group-item:focus {
+  background-color: #ff7700 !important;
+  color: #552704;
+  font-weight: bold;
+  border-right: 15px solid #5a2a00;
+  transition: 1s;
 }
 
 .sidebar .icon {
@@ -133,21 +591,30 @@ body {
 
 #contentSidebar {
   background-color: #8b510a;
-  border-radius: 20px 20px 20px 20px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   position: fixed;
   width: 18%;
   color: white;
+  height: 90vh;
+  z-index: 100;
 }
 
 @media (max-width: 1024px) {
   .sidebar .list-group-item .title {
     display: none;
   }
-
+  .height-form {
+    /* width: 40% !important; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
   .sidebar .list-group-item:hover {
     border-radius: 10%;
-    transform: scale(1.1);
-    transition: 1s;
+    /* transform: scale(1.1); */
+    /* transition: 1s; */
   }
 
   .sidebar .list-group-item {
@@ -178,6 +645,7 @@ body {
     justify-content: space-around;
     position: fixed;
     bottom: 0;
+    height: auto;
   }
 
   .sidebar .linkSidebar {
@@ -186,14 +654,17 @@ body {
   }
 }
 
-/*       A ne pas toucher       */
+/*============ A ne pas toucher============*/
 .Side_Content {
-  margin-top: 6em;
+  margin-top: 5em;
   display: flex;
 }
 .bodyContent {
-  margin-left: 20%;
-  margin-right: 20px;
+  margin-left: 18%;
+}
+.car img {
+  height: 150px;
+  width: 100%;
 }
 @media (max-width: 1024px) {
   .bodyContent {
