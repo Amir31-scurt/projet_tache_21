@@ -23,10 +23,7 @@ export default function App() {
       path: "/dashboardapprenant/programme",
       element: <Programme />,
     },
-    {
-      path: "/modal",
-      element: <OubliMoPass />,
-    },
+   
     {
       path: "/Cours/HtmlCss",
       element: <CoursHtmlCss />,
