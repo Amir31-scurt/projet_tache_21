@@ -40,10 +40,6 @@ export default function App() {
       element: <Programme />,
     },
     {
-      path: '/modal',
-      element: <OubliMoPass />,
-    },
-    {
       path: '/dashboard',
       element: <Template />,
       // =======
