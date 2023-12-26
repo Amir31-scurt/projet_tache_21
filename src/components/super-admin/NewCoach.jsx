@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { Form, Button, Modal, SelectPicker } from "rsuite";
+import { useState } from 'react';
+import { Form, Button, Modal, SelectPicker } from 'rsuite';
 
-const selectData = ["Eugenia", "Bryan", "Linda", "Nancy", "Lloyd", "Alice"].map(
+const selectData = ['Eugenia', 'Bryan', 'Linda', 'Nancy', 'Lloyd', 'Alice'].map(
   (item) => ({
     label: item,
     value: item,
@@ -12,9 +12,9 @@ const selectData = ["Eugenia", "Bryan", "Linda", "Nancy", "Lloyd", "Alice"].map(
 const NewCoach = () => {
   const [open, setOpen] = useState(false);
   const [formValue, setFormValue] = useState({
-    name: "",
-    email: "",
-    password: "",
+    name: '',
+    email: '',
+    password: '',
   });
 
   // Méthode pour fermer le modal

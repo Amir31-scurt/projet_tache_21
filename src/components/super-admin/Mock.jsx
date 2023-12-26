@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker/locale/en";
+import { faker } from '@faker-js/faker/locale/en';
 export function mockUsers(length) {
   const createRowData = (rowIndex) => {
     const firstName = faker.person.firstName();
@@ -53,16 +53,16 @@ export function mockTreeData(options) {
 
     Array.from({ length }).forEach((_, index) => {
       const value = parentValue
-        ? parentValue + "-" + (index + 1)
-        : index + 1 + "";
+        ? parentValue + '-' + (index + 1)
+        : index + 1 + '';
       const children = [];
       const label = Array.isArray(labels) ? labels[layer] : labels;
 
       let row = {
         label:
-          typeof label === "function"
+          typeof label === 'function'
             ? label(layer, value, faker)
-            : label + " " + value,
+            : label + ' ' + value,
         value,
       };
 
