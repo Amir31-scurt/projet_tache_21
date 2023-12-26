@@ -44,7 +44,7 @@ export default function FormConnect() {
             aria-describedby="addon-wrapping"
           />
           </div>
-      <p className="m-0 p-0 text-end oubli"data-bs-toggle="modal" data-bs-target="#exampleModal">Mot de passe oublié?</p>
+          <p className="m-0 p-0 text-end oubli"data-bs-toggle="modal" data-bs-target="#exampleModal">Mot de passe oublié?</p>
 {/* <!-- Modal --> */}
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
