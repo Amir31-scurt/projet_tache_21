@@ -18,6 +18,7 @@ import ProgrammeCoach from './components/programmes/programmes';
 import SpecificPro from './components/programmes/Single_Programmes/specific_program';
 import Certificate from './components/BulletinEtudiant';
 import AuthContextProvider from './contexte/AuthContext';
+import CardLivraison from './components/CompoDashCoach/CardLivraison';
 import ContentCardLivraison from './components/ContentCardLivraison';
 import AssignationPage from './pages/pageAssignation/AssignationPage';
 import './App.css';
