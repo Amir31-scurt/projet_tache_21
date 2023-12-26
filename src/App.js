@@ -10,7 +10,7 @@ import Connexion from './pages/Connected/Connexion';
 import DashboardApprenant from './pages/DashboardApprenant';
 import ChatHome from './components/chatComponent/ChatHome';
 import Programme from './components/Programme';
-import Inscription from './pages/Inscription';
+import Inscription from './components/Inscription/Inscription';
 import Template from './layout/template';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'rsuite/dist/rsuite.min.css';
