@@ -405,7 +405,7 @@ body {
   flex-wrap: wrap;
 }
 .BigContainer {
-  background-color: #ecebeb;
+  background-color: #fff;
 }
 
 @media screen and (max-width: 692px) {

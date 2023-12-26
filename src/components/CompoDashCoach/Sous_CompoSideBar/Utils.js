@@ -31,6 +31,7 @@ export const menuSidebar = [
     title: 'Assignation',
     icon: <MdOutlineAssignment />,
     id: 'link3',
+    link: '/dashboard/assignation',
   },
   {
     title: 'Etudiants',

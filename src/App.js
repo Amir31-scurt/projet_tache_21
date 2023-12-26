@@ -13,6 +13,7 @@ import SpecificPro from './components/programmes/Single_Programmes/specific_prog
 import Certificate from './components/BulletinEtudiant';
 import AuthContextProvider from './contexte/AuthContext';
 import ContentCardLivraison from './components/ContentCardLivraison';
+import AssignationPage from './pages/pageAssignation/AssignationPage';
 
 export default function App() {
   const router = createBrowserRouter([
@@ -54,8 +55,8 @@ export default function App() {
           element: <ContentCardLivraison />,
         },
         {
-          // path: '/dashboard/assignation',
-          // element:  <AssignationPage />
+          path: '/dashboard/assignation',
+          element: <AssignationPage />,
         },
       ],
     },
