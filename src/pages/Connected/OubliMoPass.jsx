@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { auth } from '../config/firebase-config';
+import { auth } from '../../config/firebase-config';
 
 const OubliMoPass = () => {
   // State pour l'e-mail

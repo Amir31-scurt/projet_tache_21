@@ -3,9 +3,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Template from './layout/template';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'rsuite/dist/rsuite.min.css';
-import Connexion from './pages/Connexion';
+import Connexion from './pages/Connected/Connexion';
 import DashboardApprenant from './pages/DashboardApprenant';
-import OubliMoPass from './pages/OubliMoPass';
 import ChatHome from './components/chatComponent/ChatHome';
 // import Programme from './components/Programme';
 import ProgrammeCoach from './components/programmes/programmes';
@@ -15,14 +14,7 @@ import AuthContextProvider from './contexte/AuthContext';
 import ContentCardLivraison from './components/ContentCardLivraison';
 import AssignationPage from './pages/pageAssignation/AssignationPage';
 import './App.css';
-import {
-  createBrowserRouter,
-  RouterProvider,
-  // Navigate,
-} from 'react-router-dom';
-import Connexion from './pages/Connected/Connexion';
 // import Inscription from "./pages/Inscription"
-import DashboardApprenant from './pages/DashboardApprenant';
 import OubliMoPass from './pages/Connected/OubliMoPass';
 import Programme from './components/ProEtudiant/Programme';
 import CoursHtmlCss from './components/ProEtudiant/Cours';
