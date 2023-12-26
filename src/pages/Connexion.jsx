@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 // import affiche from "../assets/images/affiche.jpg";
-import FormConnect from '../components/formConnect';
-import Inscription from './Inscription';
+import FormConnect from "../components/formConnect";
+import Inscription from "./Inscription";
 
 export default function Connexion() {
-  const state = 'true';
+  const state = "true";
   const [connected, setConnected] = useState(state);
   return (
     <div class="container-fluid contain-connect  ">
@@ -26,7 +26,7 @@ export default function Connexion() {
                 <button
                   type="button"
                   className={`btn  justify-content-center align-items-center fs-6 text-white ${
-                    connected ? 'active' : ''
+                    connected ? "active" : ""
                   }`}
                   onClick={() => {
                     setConnected(true);
@@ -37,7 +37,7 @@ export default function Connexion() {
                 <button
                   type="button"
                   className={`btn justify-content-center align-items-center  fs-6 text-white ${
-                    !connected ? 'active' : ''
+                    !connected ? "active" : ""
                   }`}
                   onClick={() => {
                     setConnected(false);

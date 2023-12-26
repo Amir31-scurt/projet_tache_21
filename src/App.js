@@ -1,13 +1,20 @@
-import './App.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import "./App.css";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  // Navigate,
+} from "react-router-dom";
+
+import Connexion from "./pages/Connexion";
+// import Inscription from "./pages/Inscription"
+import DashboardApprenant from "./pages/DashboardApprenant";
+import OubliMoPass from './pages/OubliMoPass';
+import ChatHome from "./components/chatComponent/ChatHome";
+import Programme from "./components/Programme";
+import Inscription from "./pages/Inscription";
 import Template from './layout/template';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'rsuite/dist/rsuite.min.css';
-import Connexion from './pages/Connexion';
-import DashboardApprenant from './pages/DashboardApprenant';
-import OubliMoPass from './pages/OubliMoPass';
-import ChatHome from './components/chatComponent/ChatHome';
-// import Programme from './components/Programme';
 import ProgrammeCoach from './components/programmes/programmes';
 import SpecificPro from './components/programmes/Single_Programmes/specific_program';
 import Certificate from './components/BulletinEtudiant';
@@ -18,6 +25,14 @@ export default function App() {
     {
       path: '/',
       element: <Connexion />,
+    },
+    {
+      path: "/inscription",
+      element: <Inscription />,
+    },
+    {
+      path: "/dashboardapprenant/programme",
+      element: <Programme />,
     },
     {
       path: '/modal',

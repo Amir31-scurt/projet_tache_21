@@ -5,8 +5,8 @@ import Messages from "./Messages";
 export default function Chat() {
   return (
     <div className="chat ">
-      <div className="chatInfo bg-dark p-1">
-        <span className="text-white">Nom correspondant</span>
+      <div className="chatInfo p-1">
+        <span className="fst-italic text-white">user.name</span>
       </div>
       <Messages />
       <ChatInput />
