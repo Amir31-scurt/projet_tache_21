@@ -13,7 +13,6 @@ import Certificate from './components/BulletinEtudiant';
 import AuthContextProvider from './contexte/AuthContext';
 import CardLivraison from './components/CompoDashCoach/CardLivraison';
 import ContentCardLivraison from './components/ContentCardLivraison';
-import ContentCardLivraison from './components/ContentCardLivraison';
 import AssignationPage from './pages/pageAssignation/AssignationPage';
 import './App.css';
 // import Inscription from "./pages/Inscription"
