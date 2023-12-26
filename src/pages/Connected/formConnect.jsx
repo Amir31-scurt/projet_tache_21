@@ -94,10 +94,60 @@ export default function FormConnect() {
             aria-describedby="addon-wrapping"
           />
         </div>
-        <Link to="/Modal" className="text-decoration-none">
+        <p
+          className="m-0 p-0 text-end oubli"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+        >
+          Mot de passe oublié?
+        </p>
+        {/* <!-- Modal --> */}
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                  Mot de pass oublié{' '}
+                </h1>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <div class="form-outline text-start mb-4">
+                  <input
+                    type="email"
+                    id="email"
+                    class="form-control p-2"
+                    placeholder="Saisissez votre mail"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
           <p className="m-0 p-0 text-end oubli">Mot de passe oublié?</p>
-        </Link>
-
+        </div>
         <div className="pt-1 mt-4 text-end">
           <center>
             <button
@@ -109,8 +159,8 @@ export default function FormConnect() {
             </button>
           </center>
         </div>
+        <ToastContainer />
       </div>
-      <ToastContainer />
     </form>
   );
 }
