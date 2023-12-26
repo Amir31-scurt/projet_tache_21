@@ -8,7 +8,6 @@ import {
 import Connexion from './pages/Connected/Connexion';
 // import Inscription from "./pages/Inscription"
 import DashboardApprenant from './pages/DashboardApprenant';
-import OubliMoPass from './pages/Connected/OubliMoPass';
 import ChatHome from './components/chatComponent/ChatHome';
 import Programme from './components/Programme';
 import Inscription from './pages/Inscription';

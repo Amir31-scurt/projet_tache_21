@@ -94,10 +94,7 @@ export default function FormConnect() {
             aria-describedby="addon-wrapping"
           />
         </div>
-        <Link to="/Modal" className="text-decoration-none">
-          <p className="m-0 p-0 text-end oubli">Mot de passe oublié?</p>
-        </Link>
-
+        <p className="m-0 p-0 text-end oubli">Mot de passe oublié?</p>
         <div className="pt-1 mt-4 text-end">
           <center>
             <button
