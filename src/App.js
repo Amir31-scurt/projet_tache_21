@@ -11,6 +11,7 @@ import DashboardApprenant from "./pages/DashboardApprenant";
 import OubliMoPass from './pages/OubliMoPass';
 import ChatHome from "./components/chatComponent/ChatHome";
 import Programme from "./components/Programme";
+import Inscription from "./pages/Inscription";
 
 export default function App() {
 
@@ -18,6 +19,10 @@ export default function App() {
     {
       path: "/",
       element: <Connexion />,
+    },
+    {
+      path: "/inscription",
+      element: <Inscription />,
     },
     {
       path: "/dashboardapprenant/programme",

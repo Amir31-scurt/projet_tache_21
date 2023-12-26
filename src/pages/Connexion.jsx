@@ -25,7 +25,9 @@ export default function Connexion() {
               >
                 <button
                   type="button"
-                  className={`btn  justify-content-center align-items-center fs-6 text-white ${connected ? 'active' : ''}`}
+                  className={`btn  justify-content-center align-items-center fs-6 text-white ${
+                    connected ? "active" : ""
+                  }`}
                   onClick={() => {
                     setConnected(true);
                   }}
@@ -34,7 +36,9 @@ export default function Connexion() {
                 </button>
                 <button
                   type="button"
-                  className= {`btn justify-content-center align-items-center  fs-6 text-white ${!connected ? 'active' : ''}`}   
+                  className={`btn justify-content-center align-items-center  fs-6 text-white ${
+                    !connected ? "active" : ""
+                  }`}
                   onClick={() => {
                     setConnected(false);
                   }}
