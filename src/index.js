@@ -2,6 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import './cheikh.css';
+import { PrimeReactProvider } from 'primereact/api';
+import './index.css';
+import './flags.css';
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -11,9 +14,16 @@ import 'primeicons/primeicons.css';
 import 'primereact/resources/primereact.css';
 import './index.css';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+
+import 'rsuite/dist/rsuite-no-reset.min.css';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <PrimeReactProvider>
+      <App />
+    </PrimeReactProvider>
   </React.StrictMode>
 );

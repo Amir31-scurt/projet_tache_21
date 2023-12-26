@@ -267,6 +267,23 @@ body {
   color: #e16b07;
 }
 
+/* .Lbtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 30px;
+    background: #e16b07;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10rem;
+    transition: transform 400ms;
+    &:hover {
+        transform: scale(1.15);
+    }
+} */
 /* Fin Cheikh CSS */
 
 /* Mariama CSS */
@@ -373,7 +390,7 @@ body {
   width: 96%;
   height: fit-content;
   border-radius: 20px;
-  box-shadow: 1px 1px 7px 1px rgba(255, 255, 255, 0.582); 
+  box-shadow: 1px 1px 7px 1px rgba(255, 255, 255, 0.582);
 }
 .CouleurA {
   background-color: #b3b3b396;
@@ -387,17 +404,21 @@ body {
 .ContaCardDsb{
   flex-wrap: wrap;
 }
-.BigContainer{
-  background-color: #ecebeb;
+.ContaCardDsb {
+  flex-wrap: wrap;
+}
+.BigContainer {
+  background-color: #fff;
 }
 
 @media screen and (max-width: 692px) {
-  .WidthCardDsb{
-  width: 100%;
-  display: flex;
-  justify-content: center;
+  .WidthCardDsb {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
 }
-}
+
 
 /*============ Le Dashboard CSS Fin ============*/
 
@@ -711,16 +732,17 @@ body {
 /*============ A ne pas toucher============*/
 .Side_Content {
   margin-top: 5em;
-
   width: 100%;
   display: flex;
 }
 .bodyContent {
   margin-left: 18%;
+
 }
 .car img {
   height: 150px;
   width: 100%;
+
 }
 .car img {
   height: 150px;
@@ -734,3 +756,22 @@ body {
     margin-bottom: 30px;
   }
 }
+.program-img{
+    width:250px;
+    height: 200px;
+}
+.program-img img{
+    width:100%;
+    height: 100%;
+}
+.progress-bar{
+    background-color: #e16d07;
+}
+.bg-cours{
+    background-color:#f0c5a939;
+    height: 100vh;
+}
+.divard{
+    display: flex !important;
+}
+/*   Fin Mariama Css */

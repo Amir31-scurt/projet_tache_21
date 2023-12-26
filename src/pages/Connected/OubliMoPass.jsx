@@ -4,10 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { auth } from '../config/firebase-config';
+import { auth } from '../../config/firebase-config';
 
 const OubliMoPass = () => {
-  // State pour l'e-mail 
+  // State pour l'e-mail
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
 
   // Hook de navigation
@@ -26,16 +26,20 @@ const OubliMoPass = () => {
       await sendPasswordResetEmail(auth, forgotPasswordEmail);
 
       // Affichage d'une alerte en cas de succès
-      alert("Un e-mail de réinitialisation a été envoyé à votre adresse e-mail.");
+      alert(
+        'Un e-mail de réinitialisation a été envoyé à votre adresse e-mail.'
+      );
 
       // Réinitialisation du champ d'e-mail
       setForgotPasswordEmail('');
 
-      // Redirection 
-      navigate("/");
+      // Redirection
+      navigate('/');
     } catch (error) {
       // Affichage d'une alerte en cas d'échec
-      alert("Échec de l'envoi de l'e-mail de réinitialisation. Veuillez réessayer.");
+      alert(
+        "Échec de l'envoi de l'e-mail de réinitialisation. Veuillez réessayer."
+      );
 
       // Affichage de l'erreur dans la console
       console.error(error);
@@ -59,12 +63,15 @@ const OubliMoPass = () => {
                   onChange={handleForgotPasswordEmailChange}
                   required
                   placeholder="Saisissez votre e-mail"
-                  autoComplete='off'
+                  autoComplete="off"
                 />
               </div>
               {/* Boutons pour fermer et soumettre le formulaire */}
               <div className="text-end justify-content-between">
-                <button type="button" className="btn btn-block btn-secondary me-2">
+                <button
+                  type="button"
+                  className="btn btn-block btn-secondary me-2"
+                >
                   {/* Lien pour fermer la page ou revenir à la page d'accueil */}
                   <Link to="/" className="text-decoration-none text-white">
                     Fermer

@@ -2,6 +2,8 @@ import React, { useContext, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LogoTech from '../../../assets/images/Logo.png';
 import UserProfil from "../../../assets/images/user.png";
+import LogoTech from '../../../assets/images/logo.png';
+import UserProfil from '../../../assets/images/user.png';
 import { MdMessage } from 'react-icons/md';
 import { IoNotifications } from 'react-icons/io5';
 import { Dropdown } from 'rsuite';
@@ -48,6 +50,7 @@ export const NavBarCompo = () => {
           </div>
           {/*=====================SECOND PARTIE DU NavBar Debut============= */}
           <div className="SecRightNav">
+            {/* <div className="Lbtn me-5 me-sm-3 ">Livrer une tache</div> */}
             <div className="MessageIcone d-flex align-items-center justify-content-center">
               <MdMessage className="fs-4" />
             </div>
@@ -64,6 +67,9 @@ export const NavBarCompo = () => {
                   type="image"
                   src={UserProfil}
                   className="img-fluid ProfilSpace"
+                  // <TbTriangleInvertedFilled
+                  //   className="fs-5"
+                  //   style={{ color: "#d4f1f4" }}
                 />
               }
               placement="bottomEnd"
