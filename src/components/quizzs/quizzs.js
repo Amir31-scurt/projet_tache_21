@@ -8,9 +8,11 @@ function Quizzs() {
    "Programme 02: JavaScript",
     "Programme 03: PHP", 
     "Programme 04: PYTHON"];
-  const quizzes = ["Quizs Final HTML/CSS", 
+  const quizzes = [
+  "Quizs Final HTML/CSS", 
   "Quizs Final JavaScript",
-  "Quizs Final REACT JS", "Quizs Final LARAVEL"];
+  "Quizs Final REACT JS",
+   "Quizs Final LARAVEL"];
 
   return(
     <Score  lessons={lessons} quizzes={quizzes}/>

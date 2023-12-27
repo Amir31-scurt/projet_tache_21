@@ -83,7 +83,6 @@ export default function App() {
       ],
     },
   ]);
->>>>>>> cd5a32ec9e0c5c775347be28c466fc0f499a7253
 
   return (
     <AuthContextProvider>

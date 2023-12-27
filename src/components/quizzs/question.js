@@ -9,6 +9,7 @@ export const quizzes = [
             "Home Tool Markup Language",
             "HyperLinks and Text Markup Language",
             "Hyper Text Markup Language",
+            
           ],
         },
 
