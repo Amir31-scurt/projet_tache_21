@@ -35,12 +35,12 @@ export const getSidebarMenu = (email) => {
         id: 'admin-link1',
         link: '/dashboard/table',
       },
-      {
-        title: 'Tab. Etudiants',
-        id: 'admin-link1',
-        icon: <PiStudent />,
-        link: '/dashboard/etudiants',
-      },
+      //   {
+      //     title: 'Tab. Etudiants',
+      //     id: 'admin-link1',
+      //     icon: <PiStudent />,
+      //     link: '/dashboard/etudiants',
+      //   },
       {
         title: 'Tab. Coachs',
         id: 'admin-link1',
