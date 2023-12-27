@@ -67,10 +67,15 @@ export default function TemplateDemo() {
         header={header}
         footer={footer}
         togglerTemplate={togglerTemplate}
-        tableStyle={{ minWidth: '50rem' }}
-        className="mx-5 my-3"
+        tableStyle={{ minWidth: '70vw' }}
+        className="mx-1 my-3"
       >
-        <Column field="domaine" header="Domaines" expander></Column>
+        <Column
+          field="domaine"
+          header="Domaines"
+          headerClassName="w-7rem"
+          expander
+        ></Column>
         <Column field="size" header="Size"></Column>
         <Column field="type" header="Type"></Column>
         <Column body={actionTemplate} headerClassName="w-10rem" />
