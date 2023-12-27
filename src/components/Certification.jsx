@@ -2,7 +2,7 @@
 import React from 'react'
 import signature from '../assets/images/signature.png'
 import codeqr from '../assets/images/codeqr.png'
-import school from '../assets/images/school.png'
+import gaandal from '../assets/images/gaandal.png'
 import './Certification.css'
 
 function Certification() {
@@ -13,7 +13,7 @@ function Certification() {
           <div class="card  p-2 border-0 shadow-5 ">
             <div class="card-body dash">
               <div className="flex-column justify-content-center m-0">
-                <img className="img-fluid reduct" src={school} alt="" />
+                <img className="img-fluid reduct" src={gaandal} alt="" />
               </div>
               <div className="text-center">
                 <h6 class="card-subtitle  fw-bolder fs-4">Oumar Ndongo</h6>
