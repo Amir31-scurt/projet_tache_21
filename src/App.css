@@ -301,33 +301,17 @@ body {
   background-position: center;
 }
 .height-form {
-  /* width: 40% !important; */
   display: flex;
   align-items: center;
   justify-content: center;
   margin: auto;
   height: 100vh;
 }
-
-.bouton-switch button {
-  flex: 1;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  background-color: transparent;
+.imagel{
+  height: 200px;
+  width: 200px;
+  
 }
-
-.bouton-switch {
-  background-color: #432705;
-  border-radius: 30px;
-}
-.bouton-switch .active {
-  /* height: 30px; */
-  border-radius: 33px !important;
-  background-color: #e16d07 !important;
-}
-/* background-color: #49BBBD; */
-
 .tire {
   border-radius: 33px !important;
 }
@@ -335,7 +319,7 @@ body {
   height: 40px;
   border-radius: 33px !important;
   width: 30%;
-  background-color: #e16d07 !important;
+  background-color: #3084b5 !important;
 }
 .first {
   background-color: #f5f5f5;
@@ -393,13 +377,13 @@ body {
   box-shadow: 1px 1px 7px 1px rgba(255, 255, 255, 0.582);
 }
 .CouleurA {
-  background-color: #b3b3b396;
+  background-color: #9ad3f4;
 }
 .CouleurB {
-  background-color: #82c55592;
+  background-color: #48a93c;
 }
 .CouleurC {
-  background-color: #a62ac877;
+  background-color: #3084b5;
 }
 .ContaCardDsb {
   flex-wrap: wrap;
@@ -425,7 +409,7 @@ body {
 
 .NavBarContainer {
   width: 100%;
-  background-color: #432705;
+  background-color: #9ad3f4;
   height: 80px;
   border-radius: 2px;
 }
@@ -449,7 +433,7 @@ body {
   align-items: center;
   justify-content: center;
   height: 100%;
-  width: 80px;
+  width: 110px;
 }
 .SecRightNav {
   width: 80%;
@@ -461,7 +445,7 @@ body {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 2px solid #4a2801;
+  border: 1px solid #3084b5;
   cursor: pointer;
 }
 
@@ -486,7 +470,7 @@ body {
 }
 
 .IcoColor {
-  color: #fc7b09;
+  color: #3084b5;
   font-size: 20px;
 }
 .ContImputUser {
@@ -527,6 +511,7 @@ body {
   background-color: #502906db;
   color: #fff;
 }
+
 /* =============== Je crée ici le CSS que je vais Utilisé Fin =============== */
 
 /* Buttons :  #6B240C */
@@ -558,7 +543,7 @@ body {
 }
 
 .program-card button {
-  background-color: #e16d07;
+  background-color: #3084b5;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -567,7 +552,7 @@ body {
 }
 
 .program-card button:hover {
-  background-color: #ca6206;
+  background-color: #9ad3f4;
 }
 
 .program-list {
@@ -580,9 +565,10 @@ body {
 .sidebar {
   height: 100vh;
   padding: 1%;
+
 }
 .sidebar .list-group-item:hover {
-  background-color: #ff7700 !important;
+  background-color: #48a93c !important;
   color: #fff;
   text-decoration: none;
 }
@@ -595,11 +581,11 @@ body {
   color: #fff;
 }
 .sidebar .list-group-item:focus {
-  background-color: #ff7700 !important;
-  color: #552704;
+  background-color: #48a93c !important;
+  color: #fff;
   font-weight: bold;
-  border-right: 15px solid #5a2a00;
-  transition: 1s;
+  border-right: 10px solid #308425 !important;
+  /* transition: 0.5s; */
 }
 
 .sidebar .icon {
@@ -607,7 +593,7 @@ body {
 }
 
 #contentSidebar {
-  background-color: #8b510a;
+  background-color: #3084b5;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   position: fixed;
@@ -616,7 +602,6 @@ body {
   height: 90vh;
   z-index: 100;
 }
-
 .modal-dialog {
   max-width: 60% !important;
 }
@@ -636,7 +621,7 @@ body {
 }
 
 .filterStudent {
-  background-color: #ca6206;
+  background-color: #3084b5;
   color: white !important;
   border: none !important;
 }
@@ -646,7 +631,7 @@ body {
 }
 
 .filterStudent fieldset {
-  border: 1px solid #ca6206 !important;
+  border: 1px solid #3084b5 !important;
 }
 
 .filterStudent .MuiChip-label {
@@ -765,10 +750,10 @@ body {
   background-color: #e16d07;
 }
 .bg-cours {
-  background-color: #f0c5a939;
+
   height: 100vh;
 }
-.divard {
+.divard{
   display: flex !important;
 }
 /*   Fin Mariama Css */

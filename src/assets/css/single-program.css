@@ -18,7 +18,7 @@
 }
 
 .learn-more-btn {
-  background-color: #e16d07;
+  background-color: #3084b5;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -26,7 +26,7 @@
   cursor: pointer;
 }
 .learn-more-btn:hover {
-  background-color: #ca6206;
+  background-color: #9ad3f4;
 }
 .img-centered {
   height: 70vh;

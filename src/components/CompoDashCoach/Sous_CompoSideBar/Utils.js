@@ -48,6 +48,7 @@ export const menuSidebar = [
     title: 'Parametre',
     icon: <LuSettings />,
     id: 'link6',
+    link : '/dashboard/dashboardapprenant/programme'
   },
 ];
 

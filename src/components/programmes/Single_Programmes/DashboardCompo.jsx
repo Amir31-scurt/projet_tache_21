@@ -17,7 +17,7 @@ export default function DashboardCompo({
             <div className="me-5 d-flex align-items-center pt-3">
               <p
                 className="fs-1 px-2 fw-bold fst-italic"
-                style={{ color: '#5a2a00' }}
+                style={{ color: '#fff' }}
               >
                 {ChiffreCardDsb}
               </p>
@@ -25,7 +25,7 @@ export default function DashboardCompo({
             <div className="ms-5 mt-3">{IconeCardDsb}</div>
           </div>
           <div className="">
-            <p className="fs-4 fw-bold fst-italic" style={{ color: '#ee6d09' }}>
+            <p className="fs-4 fw-bold fst-italic" style={{ color: '#fff' }}>
               {TextCardDsb}
             </p>
           </div>
