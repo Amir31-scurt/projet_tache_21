@@ -6,7 +6,8 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.1",
-    "@mui/material": "^5.15.1",
+    "@mui/material": "^5.15.2",
+    "@mui/system": "^5.15.2",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -57,6 +58,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@faker-js/faker": "^8.3.1",
     "source-map-loader": "^4.0.1"
   }
 }
