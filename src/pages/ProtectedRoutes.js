@@ -28,6 +28,31 @@ import React, { useContext } from 'react';
 
 export default function ProtectedRoutes() {
   // List of admin emails
+  const { email } = useContext(EmailContext);
+  const adminEmails = ['admin1@gmail.com']; // Admin emails
+  const isAdmin = adminEmails.includes(email);
+
+  const adminRoutes = isAdmin
+    ? [
+        {
+          path: '/dashboard/admin',
+          element: <Table />,
+        },
+        {
+          path: '/dashboard/table',
+          element: <TemplateDemo />,
+        },
+        {
+          path: '/dashboard/coachs',
+          element: <NewCoach />,
+        },
+        {
+          path: '/dashboard/etudiants',
+          element: <StudentTable />,
+        },
+      ]
+    : [];
+
   const router = createBrowserRouter([
     {
       path: '/',
@@ -50,22 +75,7 @@ export default function ProtectedRoutes() {
           element: <DashboardApprenant />,
         },
         // Admin routes
-        {
-          path: '/dashboard/admin',
-          element: <Table />,
-        },
-        {
-          path: '/dashboard/table',
-          element: <TemplateDemo />,
-        },
-        {
-          path: '/dashboard/coachs',
-          element: <NewCoach />,
-        },
-        {
-          path: '/dashboard/etudiants',
-          element: <StudentTable />,
-        },
+        ...adminRoutes,
         // Coach routes
         {
           path: 'programme', // Relative path
