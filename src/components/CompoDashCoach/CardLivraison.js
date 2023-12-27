@@ -12,7 +12,7 @@ function CardLivraison() {
   //Fonction pour la fermeture du modal
   const handleShow = () => setShow(true);
   return (
-    <div className="d-flex flex-wrap justify-content-center">
+    <div style={{margin:'auto'}}>
       <Card
         style={{ width: "20rem" }}
         className="cardLivraison col-lg-4 col-md-6 my-3  mx-3 "
