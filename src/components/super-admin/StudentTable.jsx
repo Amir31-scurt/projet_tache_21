@@ -126,26 +126,17 @@ const StudentTable = () => {
   };
 
   return (
-    <div className="mx-5">
-      <div className="">
-        <div className="TableStudents">
-          <h3 className="text-center mt-4">Base de données étudiants</h3>
-          <Table height={450} data={data} id="table" style={{ width: '75vw' }}>
-            <Column width={50} align="center">
-              <HeaderCell style={{ padding: 0 }}>
-                <div style={{ lineHeight: '40px' }}>
-                  <Checkbox
-                    inline
-                    checked={checked}
-                    indeterminate={indeterminate}
-                    onChange={handleCheckAll}
-                  />
-                </div>
-              </HeaderCell>
-              <CheckCell
-                dataKey="id"
-                checkedKeys={checkedKeys}
-                onChange={handleCheck}
+    <div className="mx-5 my-3 w-100">
+      <h3>Base de données étudiants</h3>
+      <Table height={300} data={data} id="table">
+        <Column width={50} align="center">
+          <HeaderCell style={{ padding: 0 }}>
+            <div style={{ lineHeight: '40px' }}>
+              <Checkbox
+                inline
+                checked={checked}
+                indeterminate={indeterminate}
+                onChange={handleCheckAll}
               />
             </Column>
             <Column width={80} align="center">

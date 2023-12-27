@@ -266,24 +266,9 @@ body {
 .mainBackgrounColor {
   color: #e16b07;
 }
-
-/* .Lbtn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 150px;
-    height: 30px;
-    background: #e16b07;
-    color: white;
-    font-size: 12px;
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 10rem;
-    transition: transform 400ms;
-    &:hover {
-        transform: scale(1.15);
-    }
-} */
+.tableShadow{
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
 /* Fin Cheikh CSS */
 
 /* Mariama CSS */
