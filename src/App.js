@@ -1,8 +1,13 @@
-import logo from './logo.svg';
+import React from 'react'
 import './App.css';
+import AdminAssignation from './pages/Admin-Assignation/AdminAssignation';
 
 function App() {
-  return <div className="App"></div>;
+  return (
+    <div>
+      <AdminAssignation />
+    </div>
+  )
 }
 
-export default App;
+export default App
