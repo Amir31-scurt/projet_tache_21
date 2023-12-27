@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // import affiche from "../assets/images/affiche.jpg";
+import LogoTech from '../../assets/images/logo2.png';
 import FormConnect from '../Connected/formConnect';
-import Inscription from '../../components/Inscription/Inscription';
 
 export default function Connexion() {
   const state = 'true';
@@ -17,36 +17,17 @@ export default function Connexion() {
               className="img-fluid rounded-6"
             /> */}
           </div>
-          <div className="height-form col">
+          <div className="height-form  col">
             <div className="card-body  p-lg-5 text-black">
               <div
-                className="d-flex  mb-5 justify-content-center align-items-center   bouton-switch border border-light p-2 rounded-pill "
-                // style={{ background: "rgba(73, 187, 189, 0.6)" }}
+                className="d-flex flex-column justify-content-center align-items-center border border-light p-2 rounded-pill "
               >
-                <button
-                  type="button"
-                  className={`btn  justify-content-center align-items-center fs-6 text-white ${
-                    connected ? 'active' : ''
-                  }`}
-                  onClick={() => {
-                    setConnected(true);
-                  }}
-                >
-                  Connexion
-                </button>
-                <button
-                  type="button"
-                  className={`btn justify-content-center align-items-center  fs-6 text-white ${
-                    !connected ? 'active' : ''
-                  }`}
-                  onClick={() => {
-                    setConnected(false);
-                  }}
-                >
-                  Inscription
-                </button>
+                  <div className='imagel  justify-content-center align-items-center'>
+              <img src={LogoTech} className='img-fluid' alt="" />
+            </div>
+                <h2>Connectez-vous</h2>
               </div>
-              {connected ? <FormConnect /> : <Inscription />}
+              {  <FormConnect /> }
             </div>
           </div>
         </div>

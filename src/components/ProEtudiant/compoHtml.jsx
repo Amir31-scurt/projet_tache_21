@@ -3,7 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom' 
 export default function CompoHtml() {
   return (
-    <Link to ='/Cours/HtmlCss'className='text-decoration-none'  >
+    <Link to ='/dashboard/dashboardapprenant/programme/cours'className='text-decoration-none'  >
     <div className=''>
          <div className="card rounded-4 shadow">
             <div className='program-img'>
@@ -12,7 +12,7 @@ export default function CompoHtml() {
             <div className="card-body border-top">
             <h4>Html/Css/Bootstrap</h4>
             <div className="progress" role="progressbar" aria-label="Example 10px high" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-          <div class="progress-bar text-warning" style={{width: '25%',background:'#e16d07'}}></div> 
+          <div class="progress-bar text-warning" style={{width: '25%',background:'#3084b5'}}></div> 
             </div>
           </div>  
         </div>

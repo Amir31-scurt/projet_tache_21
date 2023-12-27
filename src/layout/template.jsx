@@ -10,9 +10,6 @@ export default function Template() {
   const location = useLocation();
   const timelinePath = '/dashboard';
   const isDashboard = location.pathname === timelinePath;
-  // if (!currentUser) {
-  //   return <Navigate to="/" />;
-  // }
 
   return (
     <div className="BigContainer">
