@@ -46,13 +46,21 @@ export default function FormConnect() {
       setEmail(userEmail);
       setPassword('');
 
-      // Check if the user is an admin
-      const isAdmin = ['admin1@gmail.com', 'admin2@gmail.com'].includes(
-        userEmail
-      );
+      // Define email lists for different roles
+      const adminEmails = ['admin1@gmail.com', 'admin2@gmail.com'];
+      const coachEmails = ['coach1@gmail.com', 'coach2@gmail.com'];
 
+      // Check if the user is an admin or a coach
+      const isAdmin = adminEmails.includes(userEmail);
+      const isCoach = coachEmails.includes(userEmail);
       // Navigate based on the user role
-      navigate(isAdmin ? '/dashboard/admin' : '/dashboard');
+      if (isAdmin) {
+        navigate('/dashboard/admin');
+      } else if (isCoach) {
+        navigate('/dashboard/coach');
+      } else {
+        navigate('/dashboard'); // Assuming this is the route for students
+      }
     } catch (error) {
       // alert('Échec de la connexion. Veuillez vérifier vos informations.');
       toast.error(

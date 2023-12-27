@@ -15,7 +15,9 @@ import { PiCertificateDuotone } from 'react-icons/pi';
 
 export const getSidebarMenu = (email) => {
   const adminEmails = ['admin1@gmail.com'];
+  const coachEmails = ['coach1@gmail.com']; // Example coach emails
   const isAdmin = adminEmails.includes(email);
+  const isCoach = coachEmails.includes(email);
 
   if (isAdmin) {
     // Return admin specific menu items
@@ -59,6 +61,7 @@ export const getSidebarMenu = (email) => {
       },
       // ... other admin specific items
     ];
+  } else if (isCoach) {
   } else {
     // Return regular user menu items
     return [

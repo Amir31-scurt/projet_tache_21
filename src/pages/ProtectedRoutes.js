@@ -27,10 +27,14 @@ import { EmailContext } from '../contexte/EmailContexte';
 import React, { useContext } from 'react';
 
 export default function ProtectedRoutes() {
-  // List of admin emails
   const { email } = useContext(EmailContext);
-  const adminEmails = ['admin1@gmail.com']; // Admin emails
+  // List des mails d'admins et coachs
+  const adminEmails = ['admin1@gmail.com'];
+  const coachEmails = ['coach1@gmail.com', 'coach2@gmail.com'];
+  // Verifier si le mail est un mail de coach ou d'Admin
   const isAdmin = adminEmails.includes(email);
+  const isCoach = coachEmails.includes(email);
+  // Add more role checks as necessary
 
   const adminRoutes = isAdmin
     ? [
@@ -52,6 +56,9 @@ export default function ProtectedRoutes() {
         },
       ]
     : [];
+  const coachRoutes = isCoach ? [] : [];
+
+  // Add more conditional routes as necessary
 
   const router = createBrowserRouter([
     {
@@ -77,6 +84,8 @@ export default function ProtectedRoutes() {
         // Admin routes
         ...adminRoutes,
         // Coach routes
+        ...coachRoutes,
+        // Students routes
         {
           path: 'programme', // Relative path
           element: <ProgrammeCoach />,
