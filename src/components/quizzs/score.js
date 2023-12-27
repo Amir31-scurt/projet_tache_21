@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { quizzes } from "./question";
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import { PiFileHtmlLight } from "react-icons/pi";
+import { PiFileHtmlLight } from "react-icons/pi";
 // import { IoLogoJavascript } from "react-icons/io";
 // import { BsFiletypePhp } from "react-icons/bs";
 
-const ContentBlock = ({ title, content, onClick }) => (
+const ContentBlock = ({ title, content, onClick, icons}) => (
   <div className="content-block" onClick={onClick}>
     <h2>{title}</h2>
     <p>{content}</p>
+    <h3></h3>
   </div>
 );
 
@@ -22,7 +23,7 @@ const Quiz = ({ questions }) => {
   };
 
   return (
-    <div className="">
+    <div className="espace-tru">
       {questions.map((questionObj, index, id) => (
         <div key={`question-${index}`}>
           <h6 className="paragraph">{questionObj.question}</h6>
@@ -32,7 +33,7 @@ const Quiz = ({ questions }) => {
                 type="radio"
                 checked={selectedAnswers[id]}
                 onChange={() => handleAnswerChange(index)}
-                className={selectedAnswers[id] ? 'checked' : 'unchecked'}
+               id="port"
               />
               <label className="label">{answer}</label>
             </div>
@@ -53,9 +54,13 @@ export default function Score() {
     setSelectedQuiz(index);
   };
 
-  const lessons = ["Programmation 01: HTML/CSS", "Programmation 02: JavaScript", "Programmation 03: PHP", "Programmation 04: PYTHON"]; // Example lessons
+  // Titre des domaines de la programmation
+  const lessons = ["Programmation 01: HTML/CSS",
+   "Programmation 02: JavaScript",
+    "Programmation 03: PHP",
+     "Programmation 04: PYTHON"]; 
 
-
+//contenu du sidebar 
   return (
     <div className="module-container">
       <div className="sidebar">
@@ -74,10 +79,12 @@ export default function Score() {
         <h2>PRACTICE QUIZ</h2>
         {quizzes && (
           <>
+          
             {quizzes.map((quiz, index) => (
               <ContentBlock
                 key={`quiz-${index}`}
                 title={quiz.title}
+                icons={quiz.icons}
                 content={quiz.description}
                 onClick={() => handleContentBlockClick(index)}
               />
