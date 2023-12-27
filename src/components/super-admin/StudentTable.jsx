@@ -126,7 +126,7 @@ const StudentTable = () => {
   };
 
   return (
-    <div className="mx-5 my-3">
+    <div className="mx-5 my-3 w-100">
       <h3>Base de données étudiants</h3>
       <Table height={300} data={data} id="table">
         <Column width={50} align="center">
@@ -138,56 +138,51 @@ const StudentTable = () => {
                 indeterminate={indeterminate}
                 onChange={handleCheckAll}
               />
-            </div>
-          </HeaderCell>
-          <CheckCell
-            dataKey="id"
-            checkedKeys={checkedKeys}
-            onChange={handleCheck}
-          />
-        </Column>
-        <Column width={80} align="center">
-          <HeaderCell>Avartar</HeaderCell>
-          <ImageCell dataKey="avartar" />
-        </Column>
+            </Column>
+            <Column width={80} align="center">
+              <HeaderCell>Avartar</HeaderCell>
+              <ImageCell dataKey="avartar" />
+            </Column>
 
-        <Column width={160}>
-          <HeaderCell>Nom</HeaderCell>
-          <NameCell dataKey="name" />
-        </Column>
+            <Column width={160}>
+              <HeaderCell>Nom</HeaderCell>
+              <NameCell dataKey="name" />
+            </Column>
 
-        <Column width={230}>
-          <HeaderCell>Progression</HeaderCell>
-          <Cell style={{ padding: '10px 0' }}>
-            {(rowData) => (
-              <Progress percent={rowData.progress} showInfo={false} />
-            )}
-          </Cell>
-        </Column>
+            <Column width={230}>
+              <HeaderCell>Progression</HeaderCell>
+              <Cell style={{ padding: '10px 0' }}>
+                {(rowData) => (
+                  <Progress percent={rowData.progress} showInfo={false} />
+                )}
+              </Cell>
+            </Column>
 
-        <Column width={100}>
-          <HeaderCell>Note</HeaderCell>
-          <Cell>
-            {(rowData) =>
-              Array.from({ length: rowData.rating }).map((_, i) => (
-                <span key={i}>⭐️</span>
-              ))
-            }
-          </Cell>
-        </Column>
+            <Column width={100}>
+              <HeaderCell>Note</HeaderCell>
+              <Cell>
+                {(rowData) =>
+                  Array.from({ length: rowData.rating }).map((_, i) => (
+                    <span key={i}>⭐️</span>
+                  ))
+                }
+              </Cell>
+            </Column>
 
-        <Column width={100}>
-          <HeaderCell>Solde</HeaderCell>
-          <Cell>{(rowData) => `$${rowData.amount}`}</Cell>
-        </Column>
+            <Column width={100}>
+              <HeaderCell>Solde</HeaderCell>
+              <Cell>{(rowData) => `$${rowData.amount}`}</Cell>
+            </Column>
 
-        <Column width={120}>
-          <HeaderCell>
-            <MoreIcon />
-          </HeaderCell>
-          <ActionCell dataKey="id" />
-        </Column>
-      </Table>
+            <Column width={120}>
+              <HeaderCell>
+                <MoreIcon />
+              </HeaderCell>
+              <ActionCell dataKey="id" />
+            </Column>
+          </Table>
+        </div>
+      </div>
     </div>
   );
 };
