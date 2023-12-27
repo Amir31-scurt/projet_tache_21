@@ -7,7 +7,7 @@ import { Dialog } from "primereact/dialog";
 import { Divider } from "primereact/divider";
 import { classNames } from "primereact/utils";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../firebase-config";
+import { auth, db } from "../../config/firebase-config";
 import { Dropdown } from "primereact/dropdown";
 import { addDoc, collection } from "firebase/firestore";
 
