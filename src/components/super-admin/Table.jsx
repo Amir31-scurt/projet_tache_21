@@ -97,7 +97,7 @@ const Table = () => {
   ];
 
   return (
-    <div>
+    <div style={{ width: '80vw' }} className="px-1">
       <NewCoach />
       <CustomDataTable data={data} />
     </div>

@@ -21,6 +21,7 @@
     "primereact": "^10.2.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
+    "react-data-table-component": "^7.5.4",
     "react-dom": "^18.2.0",
     "react-icons": "^4.12.0",
     "react-is": "^18.2.0",

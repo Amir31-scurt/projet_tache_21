@@ -1,7 +1,7 @@
 import React from 'react';
-import CardLivraison from '../components/CardLivraison';
-import DashboardCompo from '../components/programmes/Single_Programmes/DashboardCompo';
-import { ContenuCardDsb } from '../components/CompoDashCoach/Sous_CompoSideBar/Utils';
+import CardLivraison from './CardLivraison';
+import DashboardCompo from './programmes/Single_Programmes/DashboardCompo';
+import { ContenuCardDsb } from './CompoDashCoach/Sous_CompoSideBar/Utils';
 
 export default function DashboardApprenant() {
   return (
