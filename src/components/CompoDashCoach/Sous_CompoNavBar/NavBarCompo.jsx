@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LogoTech from '../../../assets/images/logo.png';
+import LogoTech from '../../../assets/images/logo2.png';
 import UserProfil from '../../../assets/images/user.png';
 import { MdMessage } from 'react-icons/md';
 import { IoNotifications } from 'react-icons/io5';
@@ -37,24 +37,23 @@ export const NavBarCompo = () => {
     <NavBarContext.Provider value={{ open, handleOpen, handleClose }}>
       <div className="mt-">
         {/*============NavBar============= */}
-        <div className="NavBarContainer d-flex">
+        <div className="NavBarContainer  d-flex">
           <div className="LogoConta d-flex align-items-center justify-content-center">
-            <div className="LogoConta2">
-              <img src={LogoTech} alt="Le Logo" className="img-fluid LOGONAV" />
-              <h3 className=" d-none d-lg-block text-white ms-2 mt-2">
-                TechGenius
-              </h3>
+            <div className="LogoConta2 ">
+            <div className='img-logo'>
+              <img src={LogoTech} className='img-fluid ' alt="" />
+            </div>
             </div>
           </div>
           {/*=====================SECOND PARTIE DU NavBar Debut============= */}
           <div className="SecRightNav">
             {/* <div className="Lbtn me-5 me-sm-3 ">Livrer une tache</div> */}
             <div className="MessageIcone d-flex align-items-center justify-content-center">
-              <MdMessage className="fs-4" />
+              <MdMessage className="fs-4" style={{color:'3084b5'}} />
             </div>
             <div className="NotifIcone d-flex align-items-center justify-content-center me-2">
               <div className="">
-                <IoNotifications className="fs-4" />
+                <IoNotifications className="fs-4" style={{color:'3084b5'}} />
               </div>
             </div>
 
@@ -80,7 +79,6 @@ export const NavBarCompo = () => {
               <Dropdown.Item onClick={handleOpen} className="fw-bold">
                 <FaUserCog className="fs-5 IcoColor mx-1" /> Profile
               </Dropdown.Item>
-
               {/*===============Bouton Deconnexion=============== */}
               <Dropdown.Item className="fw-bold" onClick={logOut}>
                 <IoMdLogOut className="fs-5 IcoColor mx-1" /> Déconnexion

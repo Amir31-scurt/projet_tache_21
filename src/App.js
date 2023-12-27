@@ -9,7 +9,8 @@ import Connexion from './pages/Connected/Connexion';
 // import Inscription from "./pages/Inscription"
 import DashboardApprenant from './pages/DashboardApprenant';
 import ChatHome from './components/chatComponent/ChatHome';
-import Programme from './components/Programme';
+import Programme from './components/ProEtudiant/Programme';
+import CoursHtml from './components/ProEtudiant/Cours';
 import Inscription from './pages/Inscription';
 import Template from './layout/template';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -35,10 +36,7 @@ export default function App() {
       path: '/inscription',
       element: <Inscription />,
     },
-    {
-      path: '/dashboardapprenant/programme',
-      element: <Programme />,
-    },
+
     {
       path: '/dashboard',
       element: <Template />,
@@ -79,6 +77,14 @@ export default function App() {
         {
           path: '/dashboard/assignation',
           element: <AssignationPage />,
+        },
+        {
+          path: '/dashboard/dashboardapprenant/programme',
+          element: <Programme />,
+        },
+        {
+          path: '/dashboard/dashboardapprenant/programme/cours',
+          element: <CoursHtml />,
         },
       ],
     },
