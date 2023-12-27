@@ -728,6 +728,13 @@ body {
   }
 }
 
+@media (max-width: 412px) {
+  .selection{
+    display: flex;
+    justify-content: center;
+  }
+}
+
 /*============ A ne pas toucher============*/
 .Side_Content {
   margin-top: 5em;

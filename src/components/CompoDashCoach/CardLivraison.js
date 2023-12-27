@@ -12,7 +12,6 @@ function CardLivraison() {
   //Fonction pour la fermeture du modal
   const handleShow = () => setShow(true);
   return (
-    <div style={{margin:'auto'}}>
       <Card
         style={{ width: "20rem" }}
         className="cardLivraison col-lg-4 col-md-6 my-3  mx-3 "
@@ -49,7 +48,6 @@ function CardLivraison() {
           </Modal.Footer>
         </Modal>
       </Card>
-    </div>
   );
 }
 
