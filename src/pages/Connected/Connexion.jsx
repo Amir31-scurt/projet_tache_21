@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // import affiche from "../assets/images/affiche.jpg";
 import FormConnect from '../Connected/formConnect';
-import Inscription from '../Inscription';
+import Inscription from '../../components/Inscription/Inscription';
 
 export default function Connexion() {
   const state = 'true';
