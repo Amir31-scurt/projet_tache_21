@@ -1,20 +1,25 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-import { getStorage } from "firebase/storage";
+import { initializeApp } from 'firebase/app';
+import { getAnalytics } from 'firebase/analytics';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCoWlo96uEOZytiEMN2xqNUyHlGP0c7FOU",
-  authDomain: "test-f485d.firebaseapp.com",
-  projectId: "test-f485d",
-  storageBucket: "test-f485d.appspot.com",
-  messagingSenderId: "606951006466",
-  appId: "1:606951006466:web:7cf8ab019fd0bb0250e21b",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 const db = getFirestore(app);
-const storage = getStorage();
-const auth = getAuth();
+const storage = getStorage(app);
+const auth = getAuth(app);
 
-export { app, db, storage, auth };
+export { analytics, storage, auth, db };

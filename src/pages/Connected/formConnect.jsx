@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { CiMail } from 'react-icons/ci';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -9,12 +9,15 @@ import { auth } from '../../config/firebase-config';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { EmailContext } from '../../contexte/EmailContexte';
 
 export default function FormConnect() {
   // Les states pour la connexion / login
-  const [email, setEmail] = useState('');
+  // const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const { email, setEmail } = useContext(EmailContext);
 
   // UseNavigate pour les redirections
   const navigate = useNavigate();
@@ -34,11 +37,30 @@ export default function FormConnect() {
 
     try {
       setLoading(true);
-      await signInWithEmailAndPassword(auth, email, password);
-
-      setEmail('');
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const userEmail = userCredential.user.email; // Assuming this is how you get the email
+      setEmail(userEmail);
       setPassword('');
-      navigate('/dashboard');
+
+      // Define email lists for different roles
+      const adminEmails = ['admin1@gmail.com', 'admin2@gmail.com'];
+      const coachEmails = ['coach1@gmail.com', 'coach2@gmail.com'];
+
+      // Check if the user is an admin or a coach
+      const isAdmin = adminEmails.includes(userEmail);
+      const isCoach = coachEmails.includes(userEmail);
+      // Navigate based on the user role
+      if (isAdmin) {
+        navigate('/dashboard/admin');
+      } else if (isCoach) {
+        navigate('/dashboard/coach');
+      } else {
+        navigate('/dashboard'); // Assuming this is the route for students
+      }
     } catch (error) {
       // alert('Échec de la connexion. Veuillez vérifier vos informations.');
       toast.error(
