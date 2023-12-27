@@ -126,7 +126,7 @@ const StudentTable = () => {
   };
 
   return (
-    <div className="mx-5 my-3">
+    <div className="mx-5 my-3 w-100">
       <h3>Base de données étudiants</h3>
       <Table height={300} data={data} id="table">
         <Column width={50} align="center">

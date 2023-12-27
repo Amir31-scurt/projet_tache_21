@@ -24,23 +24,25 @@ import AssignationPage from './pages/pageAssignation/AssignationPage';
 import './App.css';
 // import Inscription from "./pages/Inscription"
 import CoursHtmlCss from './components/ProEtudiant/Cours';
+import TableEtudiants from "./components/super-admin/TableEtudiants";
+import TableCoachs from "./components/super-admin/TableCoachs";
 
 export default function App() {
   const router = createBrowserRouter([
     {
-      path: '/',
+      path: "/",
       element: <Connexion />,
     },
     {
-      path: '/inscription',
+      path: "/inscription",
       element: <Inscription />,
     },
     {
-      path: '/dashboardapprenant/programme',
+      path: "/dashboardapprenant/programme",
       element: <Programme />,
     },
     {
-      path: '/dashboard',
+      path: "/dashboard",
       element: <Template />,
       // =======
       //       path: "/Cours/HtmlCss",
@@ -56,33 +58,42 @@ export default function App() {
           element: <DashboardApprenant />,
         },
         {
-          path: '/dashboard/programme', // Relative path
+          path: "/dashboard/programme", // Relative path
           element: <ProgrammeCoach />,
         },
         {
           index: true,
-          path: '/dashboard/chatHome', // Relative path
+          path: "/dashboard/chatHome", // Relative path
           element: <ChatHome />,
         },
         {
-          path: '/dashboard/programme/cours',
+          path: "/dashboard/programme/cours",
           element: <SpecificPro />,
         },
         {
-          path: '/dashboard/certificat',
+          path: "/dashboard/certificat",
           element: <Certificate />,
         },
         {
-          path: '/dashboard/livrable',
+          path: "/dashboard/livrable",
           element: <ContentCardLivraison />,
         },
         {
-          path: '/dashboard/assignation',
+          path: "/dashboard/assignation",
           element: <AssignationPage />,
+        },
+        {
+          path: "/dashboard/tablestudent",
+          element: <TableEtudiants />,
+        },
+        {
+          path: "/dashboard/TableCoachs",
+          element: <TableCoachs />,
         },
       ],
     },
   ]);
+
 
   return (
     <AuthContextProvider>
