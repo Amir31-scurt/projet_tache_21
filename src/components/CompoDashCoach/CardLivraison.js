@@ -12,11 +12,11 @@ function CardLivraison() {
   //Fonction pour la fermeture du modal
   const handleShow = () => setShow(true);
   return (
-    <div className="d-flex justify-content-center align-items-center">
-      <div className="d-flex flex-wrap justify-content-center">
+    <div className="">
+      <div className="d-flex flex-wrap flex-row justify-content-center">
         <Card
           style={{ width: "20rem" }}
-          className="cardLivraison  col-lg-4 col-md-6 my-3 column-gap-3 "
+          className="cardLivraison  col-lg-3 col-md-6 my-3 mx-3 "
         >
           <Card.Img variant="top" src={image} className="imgCard" />
           <Card.Body>
