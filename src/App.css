@@ -546,6 +546,16 @@ body {
   justify-content: center;
 }
 
+/* CardLivraison */
+/* .cardLivraison{
+  margin-left: 200px;
+}
+
+@media (min-width: 412px) {
+  .cardLivraison{
+  margin-left: 40px;
+}
+} */
 /*-----------------------Sidebar---------------------*/
 .sidebar {
   height: 100vh;
