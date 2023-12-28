@@ -35,7 +35,7 @@ export default function CoursHtmlCss() {
 
   // 
   useEffect(() => {
-    if (!files) return;
+    if (!files) return; 
     let tmp = [];
     for (let i = 0; i < files.length; i++) {
       tmp.push(URL.createObjectURL(files[i]));
