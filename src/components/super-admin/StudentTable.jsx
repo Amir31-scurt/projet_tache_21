@@ -128,7 +128,7 @@ const StudentTable = () => {
   return (
     <div className="mx-5 my-3">
       <h3>Base de données étudiants</h3>
-      <Table height={300} data={data} id="table">
+      <Table height={300} data={data} id="table" width={'75vw'}>
         <Column width={50} align="center">
           <HeaderCell style={{ padding: 0 }}>
             <div style={{ lineHeight: '40px' }}>
@@ -165,7 +165,7 @@ const StudentTable = () => {
           </Cell>
         </Column>
 
-        <Column width={100}>
+        <Column width={200}>
           <HeaderCell>Note</HeaderCell>
           <Cell>
             {(rowData) =>

@@ -3,13 +3,16 @@ import { NavBarCompo } from '../components/CompoDashCoach/Sous_CompoNavBar/NavBa
 import { Outlet, useLocation, Navigate } from 'react-router-dom';
 import SideBar from '../components/CompoDashCoach/Sous_CompoSideBar/SideBar';
 import { AuthContext } from '../contexte/AuthContext';
-import Card from '../outils/cards_reusable';
+import Card from '../utils/cards_reusable';
 
 export default function Template() {
   const { currentUser } = useContext(AuthContext);
   const location = useLocation();
   const timelinePath = '/dashboard';
   const isDashboard = location.pathname === timelinePath;
+  if (!currentUser) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <div className="BigContainer">

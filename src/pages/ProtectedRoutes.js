@@ -4,7 +4,6 @@ import {
   // Navigate,
 } from 'react-router-dom';
 import Connexion from './Connected/Connexion';
-// import Inscription from "./pages/Inscription"
 import DashboardApprenant from '../components/DashboardApprenant';
 import ChatHome from '../components/chatComponent/ChatHome';
 import Programme from '../components/Programme';
@@ -18,23 +17,42 @@ import Certificate from '../components/BulletinEtudiant';
 import ContentCardLivraison from '../components/ContentCardLivraison';
 import AssignationPage from '../components/pageAssignation/AssignationPage';
 import '../App.css';
-// import Inscription from "./pages/Inscription"
 import Table from '../components/super-admin/Table';
 import TemplateDemo from '../components/super-admin/Domaine';
 import NewCoach from '../components/super-admin/NewCoach';
 import StudentTable from '../components/super-admin/StudentTable';
 import { EmailContext } from '../contexte/EmailContexte';
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import { fetchAdminEmails } from '../utils/fetchAdminEmails';
+import { fetchCoachEmails } from '../utils/fetchCoachEmails';
+import { fetchStudentEmails } from '../utils/fetchStudentEmails';
+import StudentProgram from '../components/ProEtudiant/Programme';
 
 export default function ProtectedRoutes() {
   const { email } = useContext(EmailContext);
-  // List des mails d'admins et coachs
-  const adminEmails = ['admin1@gmail.com'];
-  const coachEmails = ['coach1@gmail.com', 'coach2@gmail.com'];
-  // Verifier si le mail est un mail de coach ou d'Admin
+  const [adminEmails, setAdminEmails] = useState([]);
+  const [coachEmails, setCoachEmails] = useState([]);
+  const [studentEmails, setStudentEmails] = useState([]);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    fetchAdminEmails().then((emails) => {
+      setAdminEmails(emails);
+      setIsReady(true); // Set this to true after the fetch is complete
+    });
+    fetchCoachEmails().then((emails) => {
+      setCoachEmails(emails);
+      setIsReady(true); // Set this to true after the fetch is complete
+    });
+    fetchStudentEmails().then((emails) => {
+      setStudentEmails(emails);
+      setIsReady(true); // Set this to true after the fetch is complete
+    });
+  }, []);
+
   const isAdmin = adminEmails.includes(email);
   const isCoach = coachEmails.includes(email);
-  // Add more role checks as necessary
+  const isStudent = studentEmails.includes(email);
 
   const adminRoutes = isAdmin
     ? [
@@ -54,38 +72,18 @@ export default function ProtectedRoutes() {
           path: '/dashboard/etudiants',
           element: <StudentTable />,
         },
+        {
+          path: '/dashboard/inscription',
+          element: <Inscription />,
+        },
       ]
     : [];
-  const coachRoutes = isCoach ? [] : [];
-
-  // Add more conditional routes as necessary
-
-  const router = createBrowserRouter([
-    {
-      path: '/',
-      element: <Connexion />,
-    },
-    {
-      path: '/inscription',
-      element: <Inscription />,
-    },
-    {
-      path: '/dashboardapprenant/programme',
-      element: <Programme />,
-    },
-    {
-      path: '/dashboard',
-      element: <Template />,
-      children: [
+  const coachRoutes = isCoach
+    ? [
         {
           index: true,
           element: <DashboardApprenant />,
         },
-        // Admin routes
-        ...adminRoutes,
-        // Coach routes
-        ...coachRoutes,
-        // Students routes
         {
           path: 'programme', // Relative path
           element: <ProgrammeCoach />,
@@ -110,6 +108,54 @@ export default function ProtectedRoutes() {
           path: 'assignation',
           element: <AssignationPage />,
         },
+      ]
+    : [];
+  const studentRoutes = isStudent
+    ? [
+        {
+          index: true,
+          element: <DashboardApprenant />,
+        },
+        {
+          path: 'programme-apprenant', // Relative path
+          element: <StudentProgram />,
+        },
+        {
+          path: 'chatHome', // Relative path
+          element: <ChatHome />,
+        },
+        {
+          path: 'certificat',
+          element: <Certificate />,
+        },
+        {
+          path: 'livrable',
+          element: <ContentCardLivraison />,
+        },
+      ]
+    : [];
+
+  // Add more conditional routes as necessary
+
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <Connexion />,
+    },
+    {
+      path: '/dashboardapprenant/programme',
+      element: <StudentProgram />,
+    },
+    {
+      path: '/dashboard',
+      element: <Template />,
+      children: [
+        // Admin routes
+        ...adminRoutes,
+        // Coach routes
+        ...coachRoutes,
+        // Students routes
+        ...studentRoutes,
       ],
     },
   ]);

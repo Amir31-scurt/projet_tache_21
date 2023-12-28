@@ -1,34 +1,34 @@
-import React, { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { InputText } from "primereact/inputtext";
-import { Button } from "primereact/button";
-import { Password } from "primereact/password";
-import { Dialog } from "primereact/dialog";
-import { Divider } from "primereact/divider";
-import { classNames } from "primereact/utils";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../../config/firebase-config";
-import { Dropdown } from "primereact/dropdown";
-import { addDoc, collection } from "firebase/firestore";
+import React, { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+import { Password } from 'primereact/password';
+import { Dialog } from 'primereact/dialog';
+import { Divider } from 'primereact/divider';
+import { classNames } from 'primereact/utils';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from '../../config/firebase-config';
+import { Dropdown } from 'primereact/dropdown';
+import { addDoc, collection } from 'firebase/firestore';
 
 // Composant principal
 const Inscription = () => {
-  const roles = ["Administrateur", "Coach", "Étudiant"];
+  const roles = ['Administrateur', 'Coach', 'Étudiant'];
   const [showMessage, setShowMessage] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    address: "",
-    number: "",
-    email: "",
-    password: "",
+    name: '',
+    address: '',
+    number: '',
+    email: '',
+    password: '',
   });
   const defaultValues = {
-    name: "",
-    address: "",
-    number: "",
-    email: "",
-    password: "",
-    role: "",
+    name: '',
+    address: '',
+    number: '',
+    email: '',
+    password: '',
+    role: '',
     accept: false,
     active: true,
   };
@@ -54,7 +54,7 @@ const Inscription = () => {
       const userId = userCredential.user.uid;
 
       // Enregistrez les données dans Firestore
-      await addDoc(collection(db, "utilisateurs"), {
+      await addDoc(collection(db, 'utilisateurs'), {
         userId: userId,
         name: data.name,
         address: data.address,
@@ -69,7 +69,7 @@ const Inscription = () => {
       setShowMessage(true);
       reset();
     } catch (error) {
-      console.error("Error creating user:", error.message);
+      console.error('Error creating user:', error.message);
     }
     setFormData(data);
     setShowMessage(true);
@@ -98,7 +98,7 @@ const Inscription = () => {
     <React.Fragment>
       <Divider />
       <p className="mt-2">Suggestions</p>
-      <ul className="pl-2 ml-2 mt-0" style={{ lineHeight: "1.5" }}>
+      <ul className="pl-2 ml-2 mt-0" style={{ lineHeight: '1.5' }}>
         <li>Au moins une minuscule</li>
         <li>Au moins une majuscule</li>
         <li>Au moins un chiffre</li>
@@ -115,16 +115,16 @@ const Inscription = () => {
         position="center"
         footer={dialogFooter}
         showHeader={false}
-        breakpoints={{ "960px": "80vw" }}
-        style={{ width: "30vw" }}
+        breakpoints={{ '960px': '80vw' }}
+        style={{ width: '30vw' }}
       >
         <div className="flex justify-content-center flex-column pt-6 px-3">
           <i
             className="pi pi-check-circle"
-            style={{ fontSize: "5rem", color: "var(--green-500)" }}
+            style={{ fontSize: '5rem', color: 'var(--green-500)' }}
           ></i>
           <h5>Inscription réussie!</h5>
-          <p style={{ lineHeight: 1.5, textIndent: "1rem" }}>
+          <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
             Votre compte est enrégistré sous le nom <b>{formData.name}</b>. Il
             sera valable pour les 30 prochains jours sans activation. Veuillez
             consulter
@@ -142,7 +142,7 @@ const Inscription = () => {
                 <Controller
                   name="name"
                   control={control}
-                  rules={{ required: "Le nom est obligatoire." }}
+                  rules={{ required: 'Le nom est obligatoire.' }}
                   render={({ field, fieldState }) => (
                     <InputText
                       id={field.name}
@@ -150,13 +150,13 @@ const Inscription = () => {
                       autoFocus
                       placeholder="Nom"
                       className={classNames({
-                        "p-invalid": fieldState.invalid,
+                        'p-invalid': fieldState.invalid,
                       })}
                     />
                   )}
                 />
               </span>
-              {getFormErrorMessage("name")}
+              {getFormErrorMessage('name')}
             </div>
             <div className="field">
               <span className="p-float-label p-input-icon-right">
@@ -172,13 +172,13 @@ const Inscription = () => {
                       autoFocus
                       placeholder="Adresse"
                       className={classNames({
-                        "p-invalid": fieldState.invalid,
+                        'p-invalid': fieldState.invalid,
                       })}
                     />
                   )}
                 />
               </span>
-              {getFormErrorMessage("name")}
+              {getFormErrorMessage('name')}
             </div>
             <div className="field">
               <span className="p-float-label p-input-icon-right">
@@ -187,10 +187,10 @@ const Inscription = () => {
                   name="number"
                   control={control}
                   rules={{
-                    required: "Le numéro de téléphone est obligatoire.",
+                    required: 'Le numéro de téléphone est obligatoire.',
                     pattern: {
                       value: /^\+(?:[0-9] ?){6,14}[0-9]$/,
-                      message: "Numéro de téléphone invalide. Ex: +123456789",
+                      message: 'Numéro de téléphone invalide. Ex: +123456789',
                     },
                   }}
                   render={({ field, fieldState }) => (
@@ -200,13 +200,13 @@ const Inscription = () => {
                       autoFocus
                       placeholder="Numéro"
                       className={classNames({
-                        "p-invalid": fieldState.invalid,
+                        'p-invalid': fieldState.invalid,
                       })}
                     />
                   )}
                 />
               </span>
-              {getFormErrorMessage("name")}
+              {getFormErrorMessage('name')}
             </div>
             <div className="field">
               <span className="p-float-label p-input-icon-right">
@@ -218,7 +218,7 @@ const Inscription = () => {
                     required: "L'email est obligatoire.",
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                      message: "Adresse email invalide. Ex: example@email.com",
+                      message: 'Adresse email invalide. Ex: example@email.com',
                     },
                   }}
                   render={({ field, fieldState }) => (
@@ -227,20 +227,20 @@ const Inscription = () => {
                       {...field}
                       placeholder="Émail"
                       className={classNames({
-                        "p-invalid": fieldState.invalid,
+                        'p-invalid': fieldState.invalid,
                       })}
                     />
                   )}
                 />
               </span>
-              {getFormErrorMessage("email")}
+              {getFormErrorMessage('email')}
             </div>
             <div className="field">
               <span className="p-float-label">
                 <Controller
                   name="password"
                   control={control}
-                  rules={{ required: "Le mot de passe est obligatoire." }}
+                  rules={{ required: 'Le mot de passe est obligatoire.' }}
                   render={({ field, fieldState }) => (
                     <Password
                       id={field.name}
@@ -248,7 +248,7 @@ const Inscription = () => {
                       toggleMask
                       placeholder="Mot de passe"
                       className={classNames({
-                        "p-invalid": fieldState.invalid,
+                        'p-invalid': fieldState.invalid,
                       })}
                       header={passwordHeader}
                       footer={passwordFooter}
@@ -256,7 +256,7 @@ const Inscription = () => {
                   )}
                 />
               </span>
-              {getFormErrorMessage("password")}
+              {getFormErrorMessage('password')}
             </div>
             <div className="field">
               <span className="p-float-label">
@@ -264,7 +264,7 @@ const Inscription = () => {
                 <Controller
                   name="role"
                   control={control}
-                  rules={{ required: "Le rôle est obligatoire." }}
+                  rules={{ required: 'Le rôle est obligatoire.' }}
                   render={({ field, fieldState }) => (
                     <Dropdown
                       id={field.name}
@@ -272,15 +272,15 @@ const Inscription = () => {
                       options={roles.map((r) => ({ label: r, value: r }))}
                       placeholder="Sélectionnez le rôle"
                       className={classNames({
-                        "p-invalid": fieldState.invalid,
+                        'p-invalid': fieldState.invalid,
                       })}
                     />
                   )}
                 />
               </span>
-              {getFormErrorMessage("role")}
+              {getFormErrorMessage('role')}
             </div>
-            <Button type="submit" label="S'inscrire" className="mt-2" />
+            <Button type="submit" label="Inscrire" className="mt-2" />
           </form>
         </div>
       </div>

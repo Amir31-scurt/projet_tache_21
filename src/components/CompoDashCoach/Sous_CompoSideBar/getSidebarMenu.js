@@ -12,12 +12,37 @@ import { PiStudent } from 'react-icons/pi';
 import { FaChalkboardTeacher } from 'react-icons/fa';
 import { GrDomain } from 'react-icons/gr';
 import { PiCertificateDuotone } from 'react-icons/pi';
+import { fetchAdminEmails } from '../../../utils/fetchAdminEmails';
+import React, { useContext, useState, useEffect } from 'react';
+import { EmailContext } from '../../../contexte/EmailContexte';
+import { fetchCoachEmails } from '../../../utils/fetchCoachEmails';
+import { fetchStudentEmails } from '../../../utils/fetchStudentEmails';
 
-export const getSidebarMenu = (email) => {
-  const adminEmails = ['admin1@gmail.com'];
-  const coachEmails = ['coach1@gmail.com']; // Example coach emails
+export const GetSidebarMenu = () => {
+  const { email } = useContext(EmailContext);
+  const [adminEmails, setAdminEmails] = useState([]);
+  const [coachEmails, setCoachEmails] = useState([]);
+  const [studentEmails, setStudentEmails] = useState([]);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    fetchAdminEmails().then((emails) => {
+      setAdminEmails(emails);
+      setIsReady(true); // Set this to true after the fetch is complete
+    });
+    fetchCoachEmails().then((emails) => {
+      setCoachEmails(emails);
+      setIsReady(true); // Set this to true after the fetch is complete
+    });
+    fetchStudentEmails().then((emails) => {
+      setStudentEmails(emails);
+      setIsReady(true); // Set this to true after the fetch is complete
+    });
+  }, []);
+
   const isAdmin = adminEmails.includes(email);
   const isCoach = coachEmails.includes(email);
+  const isStudent = studentEmails.includes(email);
 
   if (isAdmin) {
     // Return admin specific menu items
@@ -59,11 +84,14 @@ export const getSidebarMenu = (email) => {
         icon: <PiCertificateDuotone />,
         link: '/dashboard/admin',
       },
+      {
+        title: 'Inscrire',
+        id: 'admin-link1',
+        link: '/dashboard/inscription',
+      },
       // ... other admin specific items
     ];
   } else if (isCoach) {
-  } else {
-    // Return regular user menu items
     return [
       {
         title: 'Dashboard',
@@ -92,6 +120,38 @@ export const getSidebarMenu = (email) => {
         title: 'Etudiants',
         icon: <PiStudentBold />,
         id: 'link4',
+      },
+      {
+        title: 'Certificats',
+        icon: <TbCertificate />,
+        id: 'link5',
+        link: '/dashboard/certificat',
+      },
+      {
+        title: 'Parametre',
+        icon: <LuSettings />,
+        id: 'link6',
+      },
+    ];
+  } else {
+    // Return regular user menu items
+    return [
+      {
+        title: 'Dashboard',
+        icon: <MdOutlineSpaceDashboard />,
+        id: 'link1',
+      },
+      {
+        title: 'Programme',
+        icon: <MdOutlineLibraryBooks />,
+        id: 'link1',
+        link: 'programme-apprenant',
+      },
+      {
+        title: 'Livrable',
+        icon: <PiFilesBold />,
+        id: 'link2',
+        link: '/dashboard/livrable',
       },
       {
         title: 'Certificats',
