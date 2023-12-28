@@ -66,7 +66,7 @@ export default function CoursHtmlCss() {
   <label for="formFileLg" class="form-label">Large file input example</label>
   <input class="form-control "onChange={handleImageChange} accept="image/*" id="formFileLg" type="file"/>
     </div>
-    {imagePreview && <img src={imagePreview} alt="Image Preview" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '10px' }} />}
+    {imagePreview && <img src={imagePreview} alt="Image Preview" style={{ maxWidth: '100%', maxHeight: '100px', marginTop: '10px' }} />} 
        
         </Modal.Body>
         <Modal.Footer>
