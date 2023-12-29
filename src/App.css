@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 * {
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 body {
@@ -266,7 +266,7 @@ body {
 .mainBackgrounColor {
   color: #e16b07;
 }
-.tableShadow{
+.tableShadow {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 /* Fin Cheikh CSS */
@@ -292,10 +292,9 @@ body {
   margin: auto;
   height: 100vh;
 }
-.imagel{
+.imagel {
   height: 200px;
   width: 200px;
-  
 }
 .tire {
   border-radius: 33px !important;
@@ -319,6 +318,19 @@ body {
 }
 .oubli {
   color: #189ab4;
+}
+.inputStyle{
+  border: 1px solid #3084b5;
+  padding: 3px;
+  color: white;
+  background-color: #3084b5 !important;
+  border-radius: 6px;
+
+}
+.output {
+  height:100px;
+  width:100px;
+
 }
 /* Suivi du programme */
 .category-card {
@@ -394,7 +406,8 @@ body {
 
 .NavBarContainer {
   width: 100%;
-  background-color: #9ad3f4;
+  background-color: #fff;
+  
   height: 80px;
   border-radius: 2px;
 }
@@ -546,11 +559,20 @@ body {
   justify-content: center;
 }
 
+/* CardLivraison */
+/* .cardLivraison{
+  margin-left: 200px;
+}
+
+@media (min-width: 412px) {
+  .cardLivraison{
+  margin-left: 40px;
+}
+} */
 /*-----------------------Sidebar---------------------*/
 .sidebar {
   height: 100vh;
   padding: 1%;
-
 }
 .sidebar .list-group-item:hover {
   background-color: #48a93c !important;
@@ -698,6 +720,8 @@ body {
   }
 }
 
+
+
 /*============ A ne pas toucher============*/
 .Side_Content {
   margin-top: 5em;
@@ -735,10 +759,9 @@ body {
   background-color: #e16d07;
 }
 .bg-cours {
-
   height: 100vh;
 }
-.divard{
+.divard {
   display: flex !important;
 }
 /*   Fin Mariama Css */
@@ -754,15 +777,16 @@ body {
 .form-demo .card .field {
   margin-bottom: 1.5rem;
 }
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 1024px) {
   .form-demo .card {
     width: 80%;
+    min-width: 95vw;
   }
 }
 @media screen and (max-width: 640px) {
   .form-demo .card {
     width: 100%;
-    min-width: 0;
+    min-width: 93vw;
   }
 }
 /*Fin */
