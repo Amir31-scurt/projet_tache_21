@@ -10,6 +10,7 @@ import Connexion from './pages/Connected/Connexion';
 import DashboardApprenant from './pages/DashboardApprenant';
 import ChatHome from './components/chatComponent/ChatHome';
 import Programme from './components/ProEtudiant/Programme';
+import Quizzs from './components/quizzs/quizzs'
 import CoursHtml from './components/ProEtudiant/Cours';
 import Inscription from './pages/Inscription';
 import Template from './layout/template';
@@ -22,6 +23,7 @@ import AuthContextProvider from './contexte/AuthContext';
 import CardLivraison from './components/CompoDashCoach/CardLivraison';
 import ContentCardLivraison from './components/ContentCardLivraison';
 import AssignationPage from './pages/pageAssignation/AssignationPage';
+import Quizz from './components/quizzs/quizzs'
 import './App.css';
 // import Inscription from "./pages/Inscription"
 import CoursHtmlCss from './components/ProEtudiant/Cours';
@@ -85,6 +87,10 @@ export default function App() {
         {
           path: '/dashboard/dashboardapprenant/programme/cours',
           element: <CoursHtml />,
+        },
+        {
+          path: '/dashboard/quizz',
+          element: <Quizz />,
         },
       ],
     },
