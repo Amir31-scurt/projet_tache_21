@@ -319,6 +319,19 @@ body {
 .oubli {
   color: #189ab4;
 }
+.inputStyle{
+  border: 1px solid #3084b5;
+  padding: 3px;
+  color: white;
+  background-color: #3084b5 !important;
+  border-radius: 6px;
+
+}
+.output {
+  height:100px;
+  width:100px;
+
+}
 /* Suivi du programme */
 .category-card {
   border-radius: 16px;
@@ -393,7 +406,8 @@ body {
 
 .NavBarContainer {
   width: 100%;
-  background-color: #9ad3f4;
+  background-color: #fff;
+  
   height: 80px;
   border-radius: 2px;
 }
