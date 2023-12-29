@@ -17,6 +17,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { EmailContext } from '../../../contexte/EmailContexte';
 import { fetchCoachEmails } from '../../../utils/fetchCoachEmails';
 import { fetchStudentEmails } from '../../../utils/fetchStudentEmails';
+import SidebarCompo from './SidebarCompo';
 
 export const GetSidebarMenu = () => {
   const { email } = useContext(EmailContext);
@@ -26,145 +27,157 @@ export const GetSidebarMenu = () => {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    fetchAdminEmails().then((emails) => {
-      setAdminEmails(emails);
-      setIsReady(true); // Set this to true after the fetch is complete
-    });
-    fetchCoachEmails().then((emails) => {
-      setCoachEmails(emails);
-      setIsReady(true); // Set this to true after the fetch is complete
-    });
-    fetchStudentEmails().then((emails) => {
-      setStudentEmails(emails);
-      setIsReady(true); // Set this to true after the fetch is complete
-    });
+    const getEmails = async () => {
+      const admins = await fetchAdminEmails();
+      const coaches = await fetchCoachEmails();
+      const students = await fetchStudentEmails();
+      setAdminEmails(admins);
+      setCoachEmails(coaches);
+      setStudentEmails(students);
+      setIsReady(true);
+    };
+
+    getEmails();
   }, []);
 
   const isAdmin = adminEmails.includes(email);
   const isCoach = coachEmails.includes(email);
   const isStudent = studentEmails.includes(email);
 
-  if (isAdmin) {
-    // Return admin specific menu items
-    return [
-      // Admin specific menu items here
-      {
-        title: 'Dashboard',
-        icon: <MdOutlineSpaceDashboard />,
-        id: 'admin-link1',
-        link: '/dashboard/admin',
-      },
-      {
-        title: 'Programmes',
-        icon: <RiMiniProgramFill />,
-        id: 'admin-link1',
-        link: '/dashboard/table',
-      },
-      {
-        title: 'Tab. Etudiants',
-        id: 'admin-link1',
-        icon: <PiStudent />,
-        link: '/dashboard/etudiants',
-      },
-      {
-        title: 'Tab. Coachs',
-        id: 'admin-link1',
-        icon: <FaChalkboardTeacher />,
-        link: '/dashboard/coachs',
-      },
-      {
-        title: 'Domaines',
-        id: 'admin-link1',
-        icon: <GrDomain />,
-        link: '/dashboard/table',
-      },
-      {
-        title: 'Certificats',
-        id: 'admin-link1',
-        icon: <PiCertificateDuotone />,
-        link: '/dashboard/admin',
-      },
-      {
-        title: 'Inscrire',
-        id: 'admin-link1',
-        link: '/dashboard/inscription',
-      },
-      // ... other admin specific items
-    ];
-  } else if (isCoach) {
-    return [
-      {
-        title: 'Dashboard',
-        icon: <MdOutlineSpaceDashboard />,
-        id: 'link1',
-      },
-      {
-        title: 'Programme',
-        icon: <MdOutlineLibraryBooks />,
-        id: 'link1',
-        link: '/dashboard/programme',
-      },
-      {
-        title: 'Livrable',
-        icon: <PiFilesBold />,
-        id: 'link2',
-        link: '/dashboard/livrable',
-      },
-      {
-        title: 'Assignation',
-        icon: <MdOutlineAssignment />,
-        id: 'link3',
-        link: '/dashboard/assignation',
-      },
-      {
-        title: 'Etudiants',
-        icon: <PiStudentBold />,
-        id: 'link4',
-      },
-      {
-        title: 'Certificats',
-        icon: <TbCertificate />,
-        id: 'link5',
-        link: '/dashboard/certificat',
-      },
-      {
-        title: 'Parametre',
-        icon: <LuSettings />,
-        id: 'link6',
-      },
-    ];
-  } else {
-    // Return regular user menu items
-    return [
-      {
-        title: 'Dashboard',
-        icon: <MdOutlineSpaceDashboard />,
-        id: 'link1',
-      },
-      {
-        title: 'Programme',
-        icon: <MdOutlineLibraryBooks />,
-        id: 'link1',
-        link: 'programme-apprenant',
-      },
-      {
-        title: 'Livrable',
-        icon: <PiFilesBold />,
-        id: 'link2',
-        link: '/dashboard/livrable',
-      },
-      {
-        title: 'Certificats',
-        icon: <TbCertificate />,
-        id: 'link5',
-        link: '/dashboard/certificat',
-      },
-      {
-        title: 'Parametre',
-        icon: <LuSettings />,
-        id: 'link6',
-      },
-      // ... other items for regular users
-    ];
-  }
+  const getMenuItems = () => {
+    if (isAdmin) {
+      // Return admin specific menu items
+      return [
+        // Admin specific menu items here
+        {
+          title: 'Dashboard',
+          icon: <MdOutlineSpaceDashboard />,
+          id: 'admin-link1',
+          link: '/dashboard/admin',
+        },
+        {
+          title: 'Programmes',
+          icon: <RiMiniProgramFill />,
+          id: 'admin-link1',
+          link: '/dashboard/table',
+        },
+        {
+          title: 'Tab. Etudiants',
+          id: 'admin-link1',
+          icon: <PiStudent />,
+          link: '/dashboard/etudiants',
+        },
+        {
+          title: 'Tab. Coachs',
+          id: 'admin-link1',
+          icon: <FaChalkboardTeacher />,
+          link: '/dashboard/coachs',
+        },
+        {
+          title: 'Domaines',
+          id: 'admin-link1',
+          icon: <GrDomain />,
+          link: '/dashboard/table',
+        },
+        {
+          title: 'Certificats',
+          id: 'admin-link1',
+          icon: <PiCertificateDuotone />,
+          link: '/dashboard/admin',
+        },
+        {
+          title: 'Inscrire',
+          id: 'admin-link1',
+          link: '/dashboard/inscription',
+        },
+        // ... other admin specific items
+      ];
+    } else if (isCoach) {
+      return [
+        {
+          title: 'Dashboard',
+          icon: <MdOutlineSpaceDashboard />,
+          id: 'link1',
+        },
+        {
+          title: 'Programme',
+          icon: <MdOutlineLibraryBooks />,
+          id: 'link1',
+          link: '/dashboard/programme',
+        },
+        {
+          title: 'Livrable',
+          icon: <PiFilesBold />,
+          id: 'link2',
+          link: '/dashboard/livrable',
+        },
+        {
+          title: 'Assignation',
+          icon: <MdOutlineAssignment />,
+          id: 'link3',
+          link: '/dashboard/assignation',
+        },
+        {
+          title: 'Etudiants',
+          icon: <PiStudentBold />,
+          id: 'link4',
+        },
+        {
+          title: 'Certificats',
+          icon: <TbCertificate />,
+          id: 'link5',
+          link: '/dashboard/certificat',
+        },
+        {
+          title: 'Parametre',
+          icon: <LuSettings />,
+          id: 'link6',
+        },
+      ];
+    } else if (isStudent) {
+      // Return regular user menu items
+      return [
+        {
+          title: 'Dashboard',
+          icon: <MdOutlineSpaceDashboard />,
+          id: 'link1',
+          link: '/dashboard',
+        },
+        {
+          title: 'Programme',
+          icon: <MdOutlineLibraryBooks />,
+          id: 'link1',
+          link: 'programme-apprenant',
+        },
+        {
+          title: 'Livrable',
+          icon: <PiFilesBold />,
+          id: 'link2',
+          link: 'livrable',
+        },
+        {
+          title: 'Certificats',
+          icon: <TbCertificate />,
+          id: 'link5',
+          link: 'certificat',
+        },
+        {
+          title: 'Parametre',
+          icon: <LuSettings />,
+          id: 'link6',
+        },
+        // ... other items for regular users
+      ];
+    }
+  };
+  const menuItems = getMenuItems();
+  return isReady ? (
+    <div>
+      {menuItems.map((item, index) => (
+        <SidebarCompo key={index} {...item} />
+      ))}
+    </div>
+  ) : (
+    <div>Loading...</div>
+  );
 };

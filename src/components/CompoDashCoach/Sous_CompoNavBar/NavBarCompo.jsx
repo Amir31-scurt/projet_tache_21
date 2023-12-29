@@ -1,12 +1,11 @@
 import React, { useContext, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LogoTech from '../../../assets/images/logo2.png';
+import LogoTech from '../../../assets/images/logo.png';
 import UserProfil from '../../../assets/images/user.png';
 import { MdMessage } from 'react-icons/md';
 import { IoNotifications } from 'react-icons/io5';
 import { Dropdown } from 'rsuite';
 import { FaUserCog } from 'react-icons/fa';
-import { TbTriangleInvertedFilled } from 'react-icons/tb';
 import { IoMdLogOut } from 'react-icons/io';
 import ModalComponent from './ModalComponent';
 import NavBarContext from './context';

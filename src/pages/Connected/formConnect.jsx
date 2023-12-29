@@ -11,7 +11,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { EmailContext } from '../../contexte/EmailContexte';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { fetchCoachEmails } from '../../utils/fetchCoachEmails';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function FormConnect() {
   // Les states pour la connexion / login
@@ -118,18 +118,19 @@ export default function FormConnect() {
       // Check if the user is an admin or a coach
       const isAdmin = adminEmails.includes(userEmail);
       const isCoach = coachEmails.includes(userEmail);
+      const isStudent = studentEmails.includes(userEmail);
       // Navigate based on the user role
       if (isAdmin) {
         navigate('/dashboard/admin');
       } else if (isCoach) {
-        navigate('/dashboard/');
-      } else {
-        navigate('/dashboard/'); // Assuming this is the route for students
+        navigate('/dashboard/coach');
+      } else if (isStudent) {
+        navigate('/dashboard'); // Assuming this is the route for students
       }
     } catch (error) {
       // alert('Échec de la connexion. Veuillez vérifier vos informations.');
       toast.error(
-        '🦄 Échec de la connexion. Veuillez vérifier vos informations.Échec de la connexion. Veuillez vérifier vos informations.',
+        'Échec de la connexion. Veuillez vérifier vos informations.',
         {
           position: 'top-right',
           autoClose: 5000,
