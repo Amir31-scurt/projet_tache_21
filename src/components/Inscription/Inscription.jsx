@@ -1,27 +1,43 @@
-import React, { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
-import { Password } from 'primereact/password';
-import { Dialog } from 'primereact/dialog';
-import { Divider } from 'primereact/divider';
-import { classNames } from 'primereact/utils';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from '../../config/firebase-config';
-import { Dropdown } from 'primereact/dropdown';
-import { addDoc, collection } from 'firebase/firestore';
+import React, { useEffect, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
+import { Password } from "primereact/password";
+import { Dialog } from "primereact/dialog";
+import { Divider } from "primereact/divider";
+import { classNames } from "primereact/utils";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../../config/firebase-config";
+import { Dropdown } from "primereact/dropdown";
+import { addDoc, collection } from "firebase/firestore";
+import emailjs from "emailjs-com";
+import randomString from "crypto-random-string";
+
+emailjs.init("iyzQvt6sAJkX_ndas");
 
 // Composant principal
 const Inscription = () => {
   const roles = ['Administrateur', 'Coach', 'Étudiant'];
   const [showMessage, setShowMessage] = useState(false);
+
   const [formData, setFormData] = useState({
-    name: '',
-    address: '',
-    number: '',
-    email: '',
-    password: '',
+    name: "",
+    address: "",
+    number: "",
+    email: "",
+    password: "",
+    role: "",
+    accept: false,
+    active: true,
   });
+
+  useEffect(() => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      password: generateRandomPassword(),
+    }));
+  }, []);
+
   const defaultValues = {
     name: '',
     address: '',
@@ -31,6 +47,23 @@ const Inscription = () => {
     role: '',
     accept: false,
     active: true,
+  };
+
+  const generateRandomPassword = () => {
+    // Vous pouvez personnaliser la longueur et les caractères autorisés selon vos besoins
+    const newPassword = randomString({
+      length: 12,
+      characters:
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()",
+    });
+
+    // Mettez à jour la valeur du mot de passe dans le state
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      password: newPassword,
+    }));
+
+    return newPassword;
   };
 
   // Contrôle des champs
@@ -68,13 +101,25 @@ const Inscription = () => {
       setFormData(data);
       setShowMessage(true);
       reset();
+
+      // Envoyer les identifiants par e-mail
+      const templateParams = {
+        to_email: data.email,
+        subject: "Vos identifiants",
+        message: `Bonjour ${data.name}, \n\nVotre compte a été créé avec succès. Vos identifiants sont: \nEmail: ${data.email} \nMot de passe: ${data.password}`,
+      };
+
+      emailjs
+        .send("service_5vkyapl", "template_3zobb4l", templateParams)
+        .then((response) => {
+          console.log("Email sent:", response);
+        })
+        .catch((error) => {
+          console.error("Error sending email:", error);
+        });
     } catch (error) {
       console.error('Error creating user:', error.message);
     }
-    setFormData(data);
-    setShowMessage(true);
-
-    reset();
   };
 
   const getFormErrorMessage = (name) => {
@@ -160,7 +205,7 @@ const Inscription = () => {
             </div>
             <div className="field">
               <span className="p-float-label p-input-icon-right">
-                <i className="pi pi-user" />
+                <i className="pi pi-home" />
                 <Controller
                   name="address"
                   control={control}
@@ -178,11 +223,11 @@ const Inscription = () => {
                   )}
                 />
               </span>
-              {getFormErrorMessage('name')}
+              {getFormErrorMessage("address")}
             </div>
             <div className="field">
               <span className="p-float-label p-input-icon-right">
-                <i className="pi pi-user" />
+                <i className="pi pi-phone" />
                 <Controller
                   name="number"
                   control={control}
@@ -206,7 +251,7 @@ const Inscription = () => {
                   )}
                 />
               </span>
-              {getFormErrorMessage('name')}
+              {getFormErrorMessage("number")}
             </div>
             <div className="field">
               <span className="p-float-label p-input-icon-right">
@@ -244,6 +289,7 @@ const Inscription = () => {
                   render={({ field, fieldState }) => (
                     <Password
                       id={field.name}
+                      value={formData.password}
                       {...field}
                       toggleMask
                       placeholder="Mot de passe"
