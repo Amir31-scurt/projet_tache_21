@@ -84,7 +84,7 @@ export default function FormConnect() {
 
   return (
     <form onSubmit={handleLogin}>
-      <div className=" tire mb-4">
+      <div className="m-5 mb-4">
         <div className="input-group  flex-nowrap">
           <span class="input-group-text" id="addon-wrapping">
             <CiMail />
@@ -100,8 +100,7 @@ export default function FormConnect() {
           />
         </div>
       </div>
-
-      <div className=" tire ">
+      <div className=" m-5 ">
         <div className="input-group mb-3  flex-nowrap">
           <span class="input-group-text" id="addon-wrapping">
             <RiLockPasswordFill />
