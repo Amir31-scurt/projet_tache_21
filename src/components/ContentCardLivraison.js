@@ -6,7 +6,7 @@ function ContentCardLivraison() {
   return (
     <div>
         <FilterStudents />
-        <div className='d-flex justify-content-between flex-wrap'>
+        <div className='d-flex justify-content-center  flex-wrap'>
             <CardLivraison />
             <CardLivraison />
             <CardLivraison />

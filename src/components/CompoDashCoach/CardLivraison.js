@@ -14,7 +14,7 @@ function CardLivraison() {
   return (
       <Card
         style={{ width: "20rem" }}
-        className="cardLivraison justify-content-center col-lg-3 bg-white shadow-4 rounded-4 col-md-6 my-3 mx-3 "
+        className="cardLivraison col-lg-3 bg-white shadow-4 rounded-4 col-md-6 my-3 mx-3 "
       >
         <Card.Img variant="top" src={image} className="imgCard rounded-3" />
         <Card.Body>

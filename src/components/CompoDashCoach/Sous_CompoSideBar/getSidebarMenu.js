@@ -79,7 +79,7 @@ export const GetSidebarMenu = () => {
         link: '/dashboard/table',
       },
       {
-        title: 'Certificats',
+        title: 'Bulletin',
         id: 'admin-link1',
         icon: <PiCertificateDuotone />,
         link: '/dashboard/admin',
@@ -108,7 +108,7 @@ export const GetSidebarMenu = () => {
         title: 'Livraison',
         icon: <PiFilesBold />,
         id: 'link2',
-        link: '/dashboard/livraison',
+        link: '/dashboard/livrable',
       },
       {
         title: 'Assignation',
@@ -122,7 +122,7 @@ export const GetSidebarMenu = () => {
         id: 'link4',
       },
       {
-        title: 'Certificats',
+        title: 'Bulletin',
         icon: <TbCertificate />,
         id: 'link5',
         link: '/dashboard/certificat',
@@ -148,13 +148,13 @@ export const GetSidebarMenu = () => {
         link: 'programme-apprenant',
       },
       {
-        title: 'Livrable',
+        title: 'Livraison',
         icon: <PiFilesBold />,
         id: 'link2',
         link: '/dashboard/livrable',
       },
       {
-        title: 'Certificats',
+        title: 'Bulletin',
         icon: <TbCertificate />,
         id: 'link5',
         link: '/dashboard/certificat',

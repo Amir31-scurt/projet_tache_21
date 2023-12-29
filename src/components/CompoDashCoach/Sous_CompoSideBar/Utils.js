@@ -25,7 +25,7 @@ export const menuSidebar = [
     title: 'Livraison',
     icon: <PiFilesBold />,
     id: 'link2',
-    link: '/dashboard/livraison',
+    link: '/dashboard/livrable',
   },
   {
     title: 'Assignation',
