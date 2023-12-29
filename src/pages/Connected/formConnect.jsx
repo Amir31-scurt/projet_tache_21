@@ -11,7 +11,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { EmailContext } from '../../contexte/EmailContexte';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { fetchCoachEmails } from '../../utils/fetchCoachEmails';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function FormConnect() {
   // Les states pour la connexion / login
@@ -129,7 +129,7 @@ export default function FormConnect() {
     } catch (error) {
       // alert('Échec de la connexion. Veuillez vérifier vos informations.');
       toast.error(
-        '🦄 Échec de la connexion. Veuillez vérifier vos informations.Échec de la connexion. Veuillez vérifier vos informations.',
+        'Échec de la connexion. Veuillez vérifier vos informations.',
         {
           position: 'top-right',
           autoClose: 5000,

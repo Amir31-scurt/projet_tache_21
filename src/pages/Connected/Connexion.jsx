@@ -19,15 +19,16 @@ export default function Connexion() {
           </div>
           <div className="height-form  col">
             <div className="card-body  p-lg-5 text-black">
-              <div
-                className="d-flex flex-column justify-content-center align-items-center border border-light p-2 rounded-pill "
-              >
-                  <div className='imagel  justify-content-center align-items-center'>
-              <img src={LogoTech} className='img-fluid' alt="" />
-            </div>
-                <h2>Connectez-vous</h2>
+              <div className="d-flex flex-column justify-content-center align-items-center border border-light  rounded-pill ">
+                <div className="imagel d-flex flex-column justify-content-center align-items-center">
+                  <img src={LogoTech} className="img-fluid" alt="" />
+                  <h3 className="" style={{ color: '#3084b5' }}>
+                    Gandal
+                  </h3>
+                </div>
+                <h3>Connectez-vous</h3>
               </div>
-              {  <FormConnect /> }
+              {<FormConnect />}
             </div>
           </div>
         </div>
