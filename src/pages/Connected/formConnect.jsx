@@ -1,21 +1,29 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { CiMail } from 'react-icons/ci';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { ToastContainer, toast } from 'react-toastify';
-import { auth } from '../../config/firebase-config';
+import { auth, db } from '../../config/firebase-config';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { EmailContext } from '../../contexte/EmailContexte';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function FormConnect() {
   // Les states pour la connexion / login
-  // const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Emails d'admin
+  const [adminEmails, setAdminEmails] = useState([]);
+  // Email de coachs
+  const [coachEmails, setCoachEmails] = useState([]);
+  // Email des etudiants
+  const [studentEmails, setStudentEmails] = useState([]);
 
   const { email, setEmail } = useContext(EmailContext);
 
@@ -30,6 +38,67 @@ export default function FormConnect() {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
+
+  // Recuperer les emails de l'admin
+  const fetchAdminEmails = async () => {
+    const usersRef = collection(db, 'utilisateurs');
+    const q = query(usersRef, where('role', '==', 'Administrateur'));
+    const querySnapshot = await getDocs(q);
+    const adminEmails = [];
+
+    querySnapshot.forEach((doc) => {
+      // Assuming each document has an 'email' field
+      adminEmails.push(doc.data().email);
+    });
+
+    return adminEmails;
+  };
+  // Recuperer les emails de coach
+  const fetchCoachEmails = async () => {
+    const usersRef = collection(db, 'utilisateurs');
+    const coachQuery = query(usersRef, where('role', '==', 'Coach'));
+    const querySnapshot = await getDocs(coachQuery);
+    const coachEmails = [];
+
+    querySnapshot.forEach((doc) => {
+      coachEmails.push(doc.data().email); // Assuming the email field is named 'email'
+    });
+
+    return coachEmails;
+  };
+  // Recuperer les emails des etudiants
+  const fetchStudentEmails = async () => {
+    const usersRef = collection(db, 'utilisateurs');
+    const studentQuery = query(usersRef, where('role', '==', 'Étudiant'));
+    const querySnapshot = await getDocs(studentQuery);
+    const studentEmails = [];
+
+    querySnapshot.forEach((doc) => {
+      studentEmails.push(doc.data().email); // Assuming the email field is named 'email'
+    });
+
+    return studentEmails;
+  };
+
+  // Define email lists for different roles
+  useEffect(() => {
+    const getAdminEmails = async () => {
+      const emails = await fetchAdminEmails();
+      setAdminEmails(emails);
+    };
+    const getCoachEmails = async () => {
+      const emails = await fetchCoachEmails();
+      setCoachEmails(emails);
+    };
+    const getStudentEmails = async () => {
+      const emails = await fetchStudentEmails();
+      setStudentEmails(emails);
+    };
+
+    getAdminEmails();
+    getCoachEmails();
+    getStudentEmails();
+  }, []);
 
   // Fonction pour la connexion / login
   const handleLogin = async (e) => {
@@ -46,19 +115,16 @@ export default function FormConnect() {
       setEmail(userEmail);
       setPassword('');
 
-      // Define email lists for different roles
-      const adminEmails = ['admin1@gmail.com', 'admin2@gmail.com'];
-      const coachEmails = ['coach1@gmail.com', 'coach2@gmail.com'];
-
       // Check if the user is an admin or a coach
       const isAdmin = adminEmails.includes(userEmail);
       const isCoach = coachEmails.includes(userEmail);
+      const isStudent = studentEmails.includes(userEmail);
       // Navigate based on the user role
       if (isAdmin) {
         navigate('/dashboard/admin');
       } else if (isCoach) {
         navigate('/dashboard/coach');
-      } else {
+      } else if (isStudent) {
         navigate('/dashboard'); // Assuming this is the route for students
       }
     } catch (error) {
@@ -67,13 +133,13 @@ export default function FormConnect() {
         'Échec de la connexion. Veuillez vérifier vos informations.',
         {
           position: 'top-right',
-          autoClose: 3000,
+          autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: 'dark',
+          theme: 'light',
         }
       );
       console.error(error);
@@ -180,8 +246,8 @@ export default function FormConnect() {
             </button>
           </center>
         </div>
-        <ToastContainer />
       </div>
+      <ToastContainer />
     </form>
   );
 }

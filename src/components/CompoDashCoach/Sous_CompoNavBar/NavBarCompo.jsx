@@ -1,12 +1,11 @@
 import React, { useContext, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LogoTech from '../../../assets/images/logo2.png';
+import LogoTech from '../../../assets/images/logo.png';
 import UserProfil from '../../../assets/images/user.png';
 import { MdMessage } from 'react-icons/md';
 import { IoNotifications } from 'react-icons/io5';
 import { Dropdown } from 'rsuite';
 import { FaUserCog } from 'react-icons/fa';
-import { TbTriangleInvertedFilled } from 'react-icons/tb';
 import { IoMdLogOut } from 'react-icons/io';
 import ModalComponent from './ModalComponent';
 import NavBarContext from './context';
@@ -40,21 +39,26 @@ export const NavBarCompo = () => {
         <div className="NavBarContainer shadow-sm d-flex">
           <div className="LogoConta d-flex align-items-center justify-content-center">
             <div className="LogoConta2 ">
-            <div className='img-logo'>
-              <img src={LogoTech} className='img-fluid ' alt="" />
+              <div className="img-logo d-flex align-items-center justify-content-center">
+                <img src={LogoTech} className="img-fluid " alt="" />
+                <h3 className="" style={{ color: '#3084b5' }}>
+                  Gandal
+                </h3>
+              </div>
             </div>
-            </div>
-            <h3 className=''style={{color:'#3084b5'}} >Gandal</h3>
           </div>
           {/*=====================SECOND PARTIE DU NavBar Debut============= */}
           <div className="SecRightNav">
             {/* <div className="Lbtn me-5 me-sm-3 ">Livrer une tache</div> */}
             <div className="MessageIcone d-flex align-items-center justify-content-center">
-              <MdMessage className="fs-4" style={{color:'#3084b5'}} />
+              <MdMessage className="fs-4" style={{ color: '#3084b5' }} />
             </div>
             <div className="NotifIcone d-flex align-items-center justify-content-center me-2">
               <div className="">
-                <IoNotifications className="fs-4" style={{color:'#3084b5'}} />
+                <IoNotifications
+                  className="fs-4"
+                  style={{ color: '#3084b5' }}
+                />
               </div>
             </div>
 
