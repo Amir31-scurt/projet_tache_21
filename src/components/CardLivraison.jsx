@@ -94,7 +94,7 @@ export default function CardLivraison() {
   return (
     <div className="">
       <div className="container containerApprenant w-100 my-5">
-        <div className="row rowAppenant">
+        <div className="row rowAppenant align-items-center">
           <div className="col-md-12 d-flex colApprenant my-3">
             <img src={userProfile} alt="" className="icon" />
             <div className="mySpan">

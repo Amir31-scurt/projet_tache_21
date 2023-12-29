@@ -105,10 +105,10 @@ export const GetSidebarMenu = () => {
         link: '/dashboard/programme',
       },
       {
-        title: 'Livrable',
+        title: 'Livraison',
         icon: <PiFilesBold />,
         id: 'link2',
-        link: '/dashboard/livrable',
+        link: '/dashboard/livraison',
       },
       {
         title: 'Assignation',

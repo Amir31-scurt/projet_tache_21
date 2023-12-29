@@ -56,7 +56,7 @@ export default function TemplateDemo() {
   );
   const footer = (
     <div className="flex justify-content-start">
-      <Button icon="pi pi-refresh" label="Reload" severity="warning" />
+      <Button icon="pi pi-refresh" className='last' label="Reload" severity="secondary" />
     </div>
   );
 

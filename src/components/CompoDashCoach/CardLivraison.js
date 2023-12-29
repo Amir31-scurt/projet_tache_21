@@ -12,46 +12,42 @@ function CardLivraison() {
   //Fonction pour la fermeture du modal
   const handleShow = () => setShow(true);
   return (
-    <div className="">
-      <div className="d-flex flex-wrap flex-row justify-content-center">
-        <Card
-          style={{ width: "20rem" }}
-          className="cardLivraison  col-lg-3 col-md-6 my-3 mx-3 "
+      <Card
+        style={{ width: "20rem" }}
+        className="cardLivraison justify-content-center col-lg-3 bg-white shadow-4 rounded-4 col-md-6 my-3 mx-3 "
+      >
+        <Card.Img variant="top" src={image} className="imgCard rounded-3" />
+        <Card.Body>
+          <Card.Title>Tache 02 JavaScript</Card.Title>
+          <p>Serigne Mourtalla Syll</p>
+          <div className="d-flex justify-content-between">
+            <i
+              className="bi bi-eye-fill fs-3"
+              onClick={handleShow}
+              id="viewDetails"
+              role="button"
+            ></i>
+            <span className="d-flex align-items-center">Il y'a 1 jour</span>
+          </div>
+        </Card.Body>
+        <Modal
+          show={show}
+          onHide={handleClose}
+          keyboard={false}
+          className="modals"
         >
-          <Card.Img variant="top" src={image} className="imgCard" />
-          <Card.Body>
-            <Card.Title>Tache 02 JavaScript</Card.Title>
-            <p>Serigne Mourtalla Syll</p>
-            <div className="d-flex justify-content-between">
-              <i
-                className="bi bi-eye-fill fs-3"
-                onClick={handleShow}
-                id="viewDetails"
-                role="button"
-              ></i>
-              <span className="d-flex align-items-center">Il y'a 1 jour</span>
-            </div>
-          </Card.Body>
-          <Modal
-            show={show}
-            onHide={handleClose}
-            keyboard={false}
-            className="modals"
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>Livraisons</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="content-modal">
-              <CarouselCard />
-            </Modal.Body>
-            <Modal.Footer>
-              <Button className="bg-success border-0">Valider</Button>
-              <Button className="bg-danger border-0">Invalider</Button>
-            </Modal.Footer>
-          </Modal>
-        </Card>
-      </div>
-    </div>
+          <Modal.Header closeButton>
+            <Modal.Title>Livraisons</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="content-modal">
+            <CarouselCard />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button className="bg-success  border-0">Valider</Button>
+            <Button className="bg-danger border-0">Invalider</Button>
+          </Modal.Footer>
+        </Modal>
+      </Card>
   );
 }
 
