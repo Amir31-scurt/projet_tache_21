@@ -98,8 +98,8 @@ export default function CardLivraison() {
           <div className="col-md-12 d-flex colApprenant my-3">
             <img src={userProfile} alt="" className="icon" />
             <div className="mySpan">
-              <h6 className=" px-3 pt-2 mainColor">{apprenant}</h6>
-              <p className="m-0 px-3 pt-2 mainColor">{date}</p>
+              <h6 className=" px-3 pt-2 dark">{apprenant}</h6>
+              <p className="m-0 px-3 pt-2 dark">{date}</p>
             </div>
           </div>
 

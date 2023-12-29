@@ -17,7 +17,7 @@ export default function DashboardCompo({
             <div className="me-5 d-flex align-items-center pt-3">
               <p
                 className="fs-1 px-2 fw-bold fst-italic"
-                style={{ color: '#fff' }}
+                style={{color: '#fff' }}
               >
                 {ChiffreCardDsb}
               </p>
