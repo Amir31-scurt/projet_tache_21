@@ -42,7 +42,9 @@ const BulletinEtudiant = () => {
     return total / notes.length;
   };
 
-  const moyenneGenerale = calculerMoyenne(bulletins.map((bulletin) => bulletin.notes.examen));
+  const moyenneGenerale = calculerMoyenne(
+    bulletins.map((bulletin) => bulletin.notes.examen)
+  );
 
   const choisirAppreciation = (moyenne) => {
     if (moyenne >= 16) {
@@ -56,49 +58,56 @@ const BulletinEtudiant = () => {
 
   const appreciation = choisirAppreciation(moyenneGenerale);
 
-
-
   const handleDownload = () => {
     const pdf = new jsPDF();
-  
+
     // En tete
-    pdf.text('Bulletin de l\'étudiant', 15, 15);
-  
+    pdf.text("Bulletin de l'étudiant", 15, 15);
+
     // Infos de l'etudiant
     pdf.text(`Nom: ${studentInfo.nom}`, 15, 30);
     pdf.text(`Prénom: ${studentInfo.prenom}`, 15, 45);
     pdf.text(`Email: ${studentInfo.email}`, 15, 60);
     pdf.text(`Domaine: ${studentInfo.domaine}`, 15, 75);
-  
+
     // Bulletin
     let yOffset = 90;
     bulletins.forEach((bulletin, index) => {
       pdf.text(`Domaine: ${bulletin.domaine}`, 15, yOffset);
       pdf.text(`Note : ${bulletin.note}`, 15, yOffset + 10);
-  
+
       if (['JavaScript', 'Laravel', 'Flutter'].includes(bulletin.domaine)) {
-        pdf.text(`Notes : Examen: ${bulletin.notes.examen}, Projet: ${bulletin.notes.projet}, Devoirs: ${bulletin.notes.devoirs}`, 15, yOffset + 20);
+        pdf.text(
+          `Notes : Examen: ${bulletin.notes.examen}, Projet: ${bulletin.notes.projet}, Devoirs: ${bulletin.notes.devoirs}`,
+          15,
+          yOffset + 20
+        );
       }
-  
+
       yOffset += 40;
     });
-  
-    // Infos 
+
+    // Infos
     pdf.text(`Moyenne générale : ${moyenneGenerale.toFixed(2)}`, 15, yOffset);
-    pdf.text(`Appréciation des professeurs : ${appreciation}`, 15, yOffset + 10);
-    pdf.text(`Décision : ${moyenneGenerale >= 10 ? 'Passer' : 'Redoubler'}`, 15, yOffset + 20);
-  
+    pdf.text(
+      `Appréciation des professeurs : ${appreciation}`,
+      15,
+      yOffset + 10
+    );
+    pdf.text(
+      `Décision : ${moyenneGenerale >= 10 ? 'Passer' : 'Redoubler'}`,
+      15,
+      yOffset + 20
+    );
+
     // nom du pdf
     pdf.save('bulletin_etudiant.pdf');
   };
-  
-
-
 
   return (
     <div className="container mt-4" id="bulletin-container">
       <div className="letter-format p-4">
-        <div className='d-flex justify-content-between align-items-center'>
+        <div className="d-flex justify-content-between align-items-center">
           <h2 className="mb-4">Bulletin de l'étudiant</h2>
           <button onClick={handleDownload} className="btn btn-primary mb-4">
             <FaFilePdf className="mr-2" /> Télécharger le bulletin
@@ -125,15 +134,15 @@ const BulletinEtudiant = () => {
                 <div className="card-body">
                   <h3 className="card-title">{bulletin.domaine}</h3>
                   <p className="card-text">Note : {bulletin.note}</p>
-                  <p className="card-text">Ponctualité : {bulletin.ponctualite}</p>
+                  <p className="card-text">
+                    Ponctualité : {bulletin.ponctualite}
+                  </p>
                   <p className="card-text">Assiduité : {bulletin.assiduite}</p>
-                  <p className="card-text">Notes :
-                    <br />
-                    - Examen : {bulletin.notes.examen}
-                    <br />
-                    - Projet : {bulletin.notes.projet}
-                    <br />
-                    - Devoirs : {bulletin.notes.devoirs}
+                  <p className="card-text">
+                    Notes :
+                    <br />- Examen : {bulletin.notes.examen}
+                    <br />- Projet : {bulletin.notes.projet}
+                    <br />- Devoirs : {bulletin.notes.devoirs}
                   </p>
                 </div>
               </div>

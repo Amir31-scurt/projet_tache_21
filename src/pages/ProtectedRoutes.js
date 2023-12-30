@@ -27,6 +27,7 @@ import { fetchCoachEmails } from '../utils/fetchCoachEmails';
 import { fetchStudentEmails } from '../utils/fetchStudentEmails';
 import StudentProgram from '../components/ProEtudiant/Programme';
 import Cours from '../components/ProEtudiant/Cours';
+import UserTable from '../components/super-admin/TableauUtilisateurs';
 
 export default function ProtectedRoutes() {
   const { email } = useContext(EmailContext);
@@ -58,7 +59,7 @@ export default function ProtectedRoutes() {
     ? [
         {
           path: '/dashboard/admin',
-          element: <Table />,
+          element: <UserTable />,
         },
         {
           path: '/dashboard/table',

@@ -124,6 +124,7 @@ export const GetSidebarMenu = () => {
           title: 'Etudiants',
           icon: <PiStudentBold />,
           id: 'link5',
+          link: '/dashboard/coach',
         },
         {
           title: 'Certificats',
