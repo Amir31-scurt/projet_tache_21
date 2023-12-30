@@ -61,7 +61,7 @@ export const GetSidebarMenu = () => {
           title: 'Domaines',
           id: 'admin-link5',
           icon: <GrDomain />,
-          link: '/dashboard/table',
+          link: '/dashboard/createDomaine',
         },
         {
           title: 'Tab. Etudiants',

@@ -1,14 +1,14 @@
-import React from 'react'
-import Domaine from './Domaine'
-import FormikDoc from './FormCreateDomaine'
+import React from 'react';
+import Domaine from './CreateDomaine';
+import FormikDoc from './FormCreateDomaine';
 
 function CreateDomaine() {
   return (
     <div>
-        <FormikDoc />
-        {/*<Domaine />*/}
+      <FormikDoc />
+      {/*<Domaine />*/}
     </div>
-  )
+  );
 }
 
-export default CreateDomaine
+export default CreateDomaine;
