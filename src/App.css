@@ -486,18 +486,16 @@ input:checked {
 .oubli {
   color: #189ab4;
 }
-.inputStyle{
+.inputStyle {
   border: 1px solid #3084b5;
   padding: 3px;
   color: white;
   background-color: #3084b5 !important;
   border-radius: 6px;
-
 }
 .output {
-  height:100px;
-  width:100px;
-
+  height: 100px;
+  width: 100px;
 }
 /* Suivi du programme */
 .category-card {
@@ -574,7 +572,7 @@ input:checked {
 .NavBarContainer {
   width: 100%;
   background-color: #fff;
-  
+
   height: 80px;
   border-radius: 2px;
 }
@@ -878,7 +876,6 @@ input:checked {
     width: 100%;
     display: flex;
     justify-content: center;
-    justify-content: space-around;
     position: fixed;
     bottom: 0;
     height: auto;
@@ -890,9 +887,10 @@ input:checked {
     display: flex;
     margin-left: 4px;
   }
+  .GandalTitle {
+    display: none;
+  }
 }
-
-
 
 /*============ A ne pas toucher============*/
 .Side_Content {
@@ -910,6 +908,30 @@ input:checked {
 .car img {
   height: 150px;
   width: 100%;
+}
+.loadingPageLogo {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loadingPageLogo img {
+  animation: pulse 2s infinite ease-in-out;
+  width: 150px;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @media (max-width: 1024px) {
