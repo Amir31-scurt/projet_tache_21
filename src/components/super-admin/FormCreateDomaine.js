@@ -8,9 +8,9 @@ import { Toast } from "primereact/toast";
 import {
   collection,
   addDoc,
-  getDocs,
   updateDoc,
   doc,
+  onSnapshot,
 } from "firebase/firestore";
 
 import { db } from "./firebase-config";
@@ -24,25 +24,24 @@ const FormikDoc = () => {
   const [selectedDomaine, setSelectedDomaine] = useState(null);
   const [isAdding, setIsAdding] = useState(true);
 
+
   const toggleSousDomainesInput = () => {
     setShowSousDomainesInput((prev) => !prev);
   };
 
-  const loadDomaines = useCallback(async () => {
-    try {
-      const domaineCollection = collection(db, "domaines");
-      const snapshot = await getDocs(domaineCollection);
-      const Data = snapshot.docs.map((doc) => ({
+  const loadDomaines = useCallback(() => {
+    const unsubscribe = onSnapshot(collection(db, "domaines"), (snapshot) => {
+      const updatedDomaines = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      setDomaines(Data);
-    } catch (error) {
-      console.error("Error loading books:", error);
-      alert(
-        "Erreur de chargement. Veuillez vérifier votre connexion internet!"
-      );
-    }
+      setDomaines(updatedDomaines);
+    });
+  
+    return () => {
+      // Nettoyez le listener lors du démontage du composant
+      unsubscribe();
+    };
   }, []);
   useEffect(() => {
     loadDomaines();
@@ -169,10 +168,11 @@ const FormikDoc = () => {
     },
     validate: (data) => {
       let errors = {};
-
-      if (!data.sousDomaines && !data.name) {
-        errors.sousDomaines = "Sous domaines is required.";
-        errors.name = "Name is required.";
+      if(isAdding && !isAdding){
+        if (!data.sousDomaines && !data.name) {
+          errors.sousDomaines = "Sous domaines is required.";
+          errors.name = "Name is required.";
+        }
       }
 
       return errors;
@@ -186,6 +186,7 @@ const FormikDoc = () => {
         formik.resetForm();
       } else {
         data && handleUpdateDomaine();
+        setIsAdding(true);
       }
     },
   });
@@ -287,7 +288,7 @@ const FormikDoc = () => {
           label={isAdding ? "Ajouter" : "Modifier"}
           type="submit"
           icon="pi pi-check"
-          className="col-md-4 text-white rounded"
+          className={isAdding ? "col-md-4 text-white rounded" : "col-md-4 text-white rounded bg-warning"}
         />
       </form>
       <Domaine
