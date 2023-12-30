@@ -58,12 +58,12 @@ export const GetSidebarMenu = () => {
           id: 'admin-link1',
           link: '/dashboard/admin',
         },
-        // {
-        //   title: 'Domaines',
-        //   id: 'admin-link5',
-        //   icon: <GrDomain />,
-        //   link: '/dashboard/createDomaine',
-        // },
+        {
+          title: 'Domaines',
+          id: 'admin-link5',
+          icon: <GrDomain />,
+          link: '/dashboard/createDomaine',
+        },
         {
           title: 'Utilisateurs',
           id: 'admin-link3',
