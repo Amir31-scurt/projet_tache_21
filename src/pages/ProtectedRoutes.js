@@ -17,7 +17,7 @@ import ContentCardLivraison from '../components/ContentCardLivraison';
 import AssignationPage from '../components/pageAssignation/AssignationPage';
 import '../App.css';
 import Table from '../components/super-admin/Table';
-import TemplateDemo from '../components/super-admin/Domaine';
+import TemplateDemo from '../components/super-admin/AssignationDomaines';
 import NewCoach from '../components/super-admin/NewCoach';
 import StudentTable from '../components/super-admin/StudentTable';
 import { EmailContext } from '../contexte/EmailContexte';

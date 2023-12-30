@@ -1,8 +1,8 @@
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useMemo, useEffect, useState } from 'react';
 import {
   MaterialReactTable,
   useMaterialReactTable,
-} from "material-react-table";
+} from 'material-react-table';
 import {
   collection,
   doc,
@@ -10,12 +10,12 @@ import {
   getDoc,
   onSnapshot,
   updateDoc,
-} from "firebase/firestore";
-import { db } from "../../config/firebase-config";
-import { FaEye, FaEdit, FaArchive } from "react-icons/fa";
-import { Dialog } from "primereact/dialog";
-import { InputText } from "primereact/inputtext";
-import { Button } from "primereact/button";
+} from 'firebase/firestore';
+import { db } from '../../config/firebase-config';
+import { FaEye, FaEdit, FaArchive } from 'react-icons/fa';
+import { Dialog } from 'primereact/dialog';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
 
 export default function TableauUtilisateurs() {
   // États pour gérer les données et les interactions
@@ -28,13 +28,13 @@ export default function TableauUtilisateurs() {
   const [loading, setLoading] = useState(false); // Gère l'état de chargement
 
   // Ajoutez un nouvel état local pour gérer l'étiquette du bouton
-  const [archiveLabel, setArchiveLabel] = useState("Archiver");
+  const [archiveLabel, setArchiveLabel] = useState('Archiver');
 
   // États pour chaque champ du formulaire de modification
-  const [nameValue, setNameValue] = useState("");
-  const [numberValue, setNumberValue] = useState("");
-  const [emailValue, setEmailValue] = useState("");
-  const [addresseValue, setAddresseValue] = useState("");
+  const [nameValue, setNameValue] = useState('');
+  const [numberValue, setNumberValue] = useState('');
+  const [emailValue, setEmailValue] = useState('');
+  const [addresseValue, setAddresseValue] = useState('');
 
   // Affiche les détails de l'utilisateur sélectionné
   const showDetails = (utilisateur) => {
@@ -55,14 +55,14 @@ export default function TableauUtilisateurs() {
   // Récupère les données de l'utilisateurs depuis Firestore
   const fetchData = async () => {
     try {
-      const querySnapshot = await getDocs(collection(db, "utilisateurs"));
+      const querySnapshot = await getDocs(collection(db, 'utilisateurs'));
       const utilisateurs = [];
       querySnapshot.forEach((doc) => {
         utilisateurs.push({ UserId: doc.id, ...doc.data() });
       });
       setUtilisateursData(utilisateurs);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
     }
   };
 
@@ -70,7 +70,7 @@ export default function TableauUtilisateurs() {
   const handleUpdateStudent = async () => {
     if (!selectedUtilisateursForUpdate) return;
 
-    const utilisateursRef = collection(db, "utilisateurs");
+    const utilisateursRef = collection(db, 'utilisateurs');
     const utilisateurDoc = doc(
       utilisateursRef,
       selectedUtilisateursForUpdate.UserId
@@ -87,7 +87,7 @@ export default function TableauUtilisateurs() {
       setFormVisible(false);
       fetchData(); // Met à jour les données après la modification
     } catch (error) {
-      console.error("Error updating student:", error);
+      console.error('Error updating student:', error);
     }
   };
 
@@ -102,10 +102,10 @@ export default function TableauUtilisateurs() {
   // Effectue la souscription aux modifications des données Firestore
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      collection(db, "utilisateurs"),
+      collection(db, 'utilisateurs'),
       (snapshot) => {
         snapshot.docChanges().forEach((change) => {
-          if (change.type === "added") {
+          if (change.type === 'added') {
             fetchData(); // Mise à jour des données lorsqu'un nouvel utilisateur est ajouté
           }
         });
@@ -121,7 +121,7 @@ export default function TableauUtilisateurs() {
 
   // Fonction pour gérer l'archivage et le désarchivage
   const handleArchiveToggle = async (utilisateurId, isArchived) => {
-    const utilisateursRef = collection(db, "utilisateurs");
+    const utilisateursRef = collection(db, 'utilisateurs');
     const utilisateurDoc = doc(utilisateursRef, utilisateurId);
 
     try {
@@ -130,9 +130,9 @@ export default function TableauUtilisateurs() {
       });
       fetchData(); // Met à jour les données après l'archivage ou le désarchivage
       // Mettre à jour l'étiquette du bouton en fonction du nouvel état 'archiver'
-      setArchiveLabel(!isArchived ? "Désarchiver" : "Archiver");
+      setArchiveLabel(!isArchived ? 'Désarchiver' : 'Archiver');
     } catch (error) {
-      console.error("Error archiving student:", error);
+      console.error('Error archiving student:', error);
     }
   };
 
@@ -140,28 +140,28 @@ export default function TableauUtilisateurs() {
   const columns = useMemo(
     () => [
       {
-        accessorKey: "name",
-        header: "Prenom & Nom",
+        accessorKey: 'name',
+        header: 'Prenom & Nom',
         size: 150,
       },
       {
-        accessorKey: "number",
-        header: "Téléphone",
+        accessorKey: 'number',
+        header: 'Téléphone',
         size: 200,
       },
       {
-        accessorKey: "email",
-        header: "Email",
+        accessorKey: 'email',
+        header: 'Email',
         size: 150,
       },
       {
-        accessorKey: "addresse",
-        header: "Adresse",
+        accessorKey: 'addresse',
+        header: 'Adresse',
         size: 150,
       },
       {
-        accessorKey: "actions",
-        header: "Actions",
+        accessorKey: 'actions',
+        header: 'Actions',
         // size: 100,
       },
     ],
@@ -183,7 +183,7 @@ export default function TableauUtilisateurs() {
             className="d-flex justify-content-center align-items-center btn btn-outline-primary rounded-pill me-3"
             onClick={() => showDetails(utilisateur)}
           >
-            <FaEye className="me-1" style={{ width: "20px", height: "20px" }} />
+            <FaEye className="me-1" style={{ width: '20px', height: '20px' }} />
             Voir
           </button>
           <button
@@ -196,7 +196,7 @@ export default function TableauUtilisateurs() {
           >
             <FaEdit
               className="me-1"
-              style={{ width: "20px", height: "20px" }}
+              style={{ width: '20px', height: '20px' }}
             />
             Modifier
           </button>
@@ -209,9 +209,9 @@ export default function TableauUtilisateurs() {
           >
             <FaArchive
               className="me-1"
-              style={{ width: "20px", height: "20px" }}
+              style={{ width: '20px', height: '20px' }}
             />
-            {utilisateur.archiver ? "Désarchiver" : "Archiver"}
+            {utilisateur.archiver ? 'Désarchiver' : 'Archiver'}
           </button>
         </div>
       ),
@@ -230,11 +230,11 @@ export default function TableauUtilisateurs() {
       {/* Dialogue pour afficher les détails de l'utilisateur */}
       <Dialog
         header={`Informations sur ${
-          selectedUtilisateur ? selectedUtilisateur.name : ""
+          selectedUtilisateur ? selectedUtilisateur.name : ''
         }`}
         visible={infoVisible}
         maximizable
-        style={{ width: "50vw" }}
+        style={{ width: '50vw' }}
         onHide={() => setInfoVisible(false)}
         className="w-md-50 w-sm-100"
       >
@@ -273,7 +273,7 @@ export default function TableauUtilisateurs() {
       <Dialog
         header={`Mis à jour du profil`}
         visible={formVisible}
-        style={{ width: "50vw" }}
+        style={{ width: '50vw' }}
         onHide={() => setFormVisible(false)}
       >
         <form
@@ -332,7 +332,7 @@ export default function TableauUtilisateurs() {
       </Dialog>
 
       {/* Affichage du tableau */}
-      <div className="TableUtilisateurs d-flex flex-column justyfy-content-center align-items-center w-100">
+      <div className="TableUtilisateurs d-flex flex-column justify-content-center align-items-center w-100 ms-0 ms-lg-4">
         <h1 className="my-3 shadowTable">Tableaux utilisateur</h1>
         <div className="myTable ">
           <MaterialReactTable table={table} className="" />

@@ -1,9 +1,9 @@
-import { Button } from "primereact/button";
-import { Column } from "primereact/column";
-import { TreeTable } from "primereact/treetable";
+import { Button } from 'primereact/button';
+import { Column } from 'primereact/column';
+import { TreeTable } from 'primereact/treetable';
 // import { NodeService } from "./service/NodeService";
-import "primereact/resources/themes/lara-light-cyan/theme.css";
-import { classNames } from "primereact/utils";
+import 'primereact/resources/themes/lara-light-cyan/theme.css';
+import { classNames } from 'primereact/utils';
 
 //========= Imports Assignation debut =========/
 
@@ -14,11 +14,11 @@ import {
   query,
   updateDoc,
   where,
-} from "firebase/firestore";
-import React, { useEffect, useState } from "react";
-import { MultiCascader } from "rsuite";
-import "rsuite/dist/rsuite.css";
-import { db } from "../../config/firebase-config";
+} from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { MultiCascader } from 'rsuite';
+import 'rsuite/dist/rsuite.css';
+import { db } from '../../config/firebase-config';
 
 //========= Imports Assignation  Fin=========/
 
@@ -34,13 +34,13 @@ export default function TemplateDemo() {
     if (value.length > 0) {
       // Obtenez le dernier élément sélectionné (le coach)
       const selectedCoach = value[value.length - 1];
-      const [domaine, sousDomaine, userEmail] = selectedCoach.split("-");
+      const [domaine, sousDomaine, userEmail] = selectedCoach.split('-');
 
       try {
         // Requête pour récupérer le document du coach par e-mail
         const coachQuery = query(
-          collection(db, "utilisateurs"),
-          where("email", "==", userEmail)
+          collection(db, 'utilisateurs'),
+          where('email', '==', userEmail)
         );
         const coachDocs = await getDocs(coachQuery);
 
@@ -49,13 +49,13 @@ export default function TemplateDemo() {
           const coachDoc = coachDocs.docs[0];
 
           // Mettez à jour le document du coach avec les clés "domaine" et "sousDomaine"
-          const coachDocRef = doc(db, "utilisateurs", coachDoc.id);
+          const coachDocRef = doc(db, 'utilisateurs', coachDoc.id);
           await updateDoc(coachDocRef, {
             domaine: domaine,
             sousDomaine,
           });
 
-          alert("Assignation réussie !");
+          alert('Assignation réussie !');
         } else {
           alert("Aucun document de coach trouvé avec l'e-mail spécifié.");
         }
@@ -64,7 +64,7 @@ export default function TemplateDemo() {
         alert("Erreur lors de l'assignation. Veuillez réessayer.");
       }
     } else {
-      alert("Aucun coach sélectionné. Veuillez sélectionner un coach.");
+      alert('Aucun coach sélectionné. Veuillez sélectionner un coach.');
     }
   };
 
@@ -72,7 +72,7 @@ export default function TemplateDemo() {
     const loadData = async () => {
       try {
         // Charger les domaines
-        const domaineCollection = collection(db, "domaines");
+        const domaineCollection = collection(db, 'domaines');
         const domainesSnapshot = await getDocs(domaineCollection);
         const domainesData = domainesSnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -81,14 +81,14 @@ export default function TemplateDemo() {
         setDomaines(domainesData);
 
         // Charger les utilisateurs (coachs)
-        const collectionUtilisateurs = collection(db, "utilisateurs");
+        const collectionUtilisateurs = collection(db, 'utilisateurs');
         const utilisateursSnapshot = await getDocs(collectionUtilisateurs);
         const utilisateursData = utilisateursSnapshot.docs.map((doc) =>
           doc.data()
         );
         setUsers(utilisateursData);
       } catch (error) {
-        console.error("Erreur lors du chargement des données :", error);
+        console.error('Erreur lors du chargement des données :', error);
       }
     };
 
@@ -109,7 +109,7 @@ export default function TemplateDemo() {
       const sousDomaine = domaine.sousDomaine[sousDomaineKey];
       // Filtrer les coachs correspondant à ce sous-domaine
       const coachsForSousDomaine = users.filter(
-        (coach) => coach.role === "Coach"
+        (coach) => coach.role === 'Coach'
       );
 
       return {
@@ -124,22 +124,28 @@ export default function TemplateDemo() {
   }));
 
   return (
-    <div>
-      <div className="mt-5" style={{ marginBottom: "300px" }}>
+    <div className="px-5 w-100">
+      <div
+        style={{
+          width: '70%',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          gap: '10px',
+          position: 'absolute',
+          marginTop: '90px', // Added to ensure the container takes the full viewport height
+        }}
+      >
         <MultiCascader
-          style={{ width: 480 }}
           data={options}
           cascade={false}
           onChange={setValue}
           value={value}
           appearance="default"
-          menuWidth={"220px"}
+          menuWidth={'220px'}
           placeholder="Assigner un domaine à un coach"
         />
-      </div>
-
-      <div>
-        <button className="btn btn-primary w-100" onClick={handleAssign}>
+        <button className="btn btn-primary" onClick={handleAssign}>
           Assigner
         </button>
       </div>

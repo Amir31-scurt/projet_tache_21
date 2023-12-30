@@ -58,9 +58,9 @@ export const GetSidebarMenu = () => {
           link: '/dashboard/admin',
         },
         {
-          title: 'Programmes',
-          icon: <RiMiniProgramFill />,
-          id: 'admin-link2',
+          title: 'Domaines',
+          id: 'admin-link5',
+          icon: <GrDomain />,
           link: '/dashboard/table',
         },
         {
@@ -76,9 +76,9 @@ export const GetSidebarMenu = () => {
           link: '/dashboard/coachs',
         },
         {
-          title: 'Domaines',
-          id: 'admin-link5',
-          icon: <GrDomain />,
+          title: 'Assignation',
+          icon: <RiMiniProgramFill />,
+          id: 'admin-link2',
           link: '/dashboard/table',
         },
         {
