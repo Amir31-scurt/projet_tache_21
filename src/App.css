@@ -744,7 +744,7 @@ body {
   text-decoration: none;
   color: #fff;
 }
-.sidebar .list-group-item:focus:active {
+.sidebar .list-group-item:focus {
   background-color: #48a93c !important;
   color: #fff;
   font-weight: bold;
