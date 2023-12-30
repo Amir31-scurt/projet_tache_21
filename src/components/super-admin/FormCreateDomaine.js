@@ -105,6 +105,7 @@ const FormikDoc = () => {
     // Extraction des noms des sous-domaines et ajout à la liste
     const sousDomaines = Object.keys(domain.sousDomaines || {});
     setSousDomainesList(sousDomaines);
+    setShowSousDomainesInput(true);
     setIsAdding(false);
     setSelectedDomaine(domain);
   };
@@ -187,6 +188,7 @@ const FormikDoc = () => {
       } else {
         data && handleUpdateDomaine();
         setIsAdding(true);
+        setShowSousDomainesInput(false);
       }
     },
   });
