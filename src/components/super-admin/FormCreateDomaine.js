@@ -4,7 +4,6 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { classNames } from 'primereact/utils';
 import { Toast } from 'primereact/toast';
-import { FileUpload } from 'primereact/fileupload';
 
 import {
   collection,
@@ -13,11 +12,8 @@ import {
   updateDoc,
   doc,
 } from 'firebase/firestore';
-
 import { db, storage } from '../../config/firebase-config';
 import Domaine from './CreateDomaine';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-
 const FormikDoc = () => {
   const toast = useRef(null);
   const [showSousDomainesInput, setShowSousDomainesInput] = useState(false);
@@ -25,8 +21,6 @@ const FormikDoc = () => {
   const [domaines, setDomaines] = useState([]);
   const [selectedDomaine, setSelectedDomaine] = useState(null);
   const [isAdding, setIsAdding] = useState(true);
-  const [uploadedFileUrl, setUploadedFileUrl] = useState(null);
-  const [uploadUrl, setUploadUrl] = useState('/api/upload'); // Valeur initiale de l'URL
 
   const toggleSousDomainesInput = () => {
     setShowSousDomainesInput((prev) => !prev);
@@ -165,24 +159,10 @@ const FormikDoc = () => {
     setSousDomainesList(updatedList);
   };
 
-  const handleFileUpload = (event) => {
-    const response = event.xhr.response; // La réponse contient les informations sur le fichier téléchargé
-    const jsonResponse = JSON.parse(response);
-
-    if (jsonResponse.files && jsonResponse.files.length > 0) {
-      const uploadedFile = jsonResponse.files[0];
-      const fileUrl = uploadedFile.url; // L'URL du fichier téléchargé
-
-      setUploadedFileUrl(fileUrl);
-      formik.setFieldValue('fileUrl', fileUrl); // Mettez à jour le champ dans le formulaire
-    }
-  };
-
   const formik = useFormik({
     initialValues: {
       sousDomaines: '',
       name: '',
-      fileUrl: '',
     },
     validate: (data) => {
       let errors = {};
@@ -297,19 +277,6 @@ const FormikDoc = () => {
             />
           </div>
         )}
-
-        <div className="card">
-          <FileUpload
-            name="demo[]"
-            url={'/api/upload'}
-            multiple
-            accept="image/*"
-            maxFileSize={1000000}
-            onUpload={(event) => handleFileUpload(event)}
-            emptyTemplate={<p className="m-0">Image(s) choisie(s)</p>}
-          />
-        </div>
-
         {getFormErrorMessage('sousDomaines')}
         {getFormErrorMessage('name')}
         <Button
