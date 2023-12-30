@@ -112,19 +112,21 @@ export default function FormConnect() {
         password
       );
       const userEmail = userCredential.user.email; // Assuming this is how you get the email
+
       setEmail(userEmail);
       setPassword('');
 
       // Check if the user is an admin or a coach
       const isAdmin = adminEmails.includes(userEmail);
       const isCoach = coachEmails.includes(userEmail);
+      const isStudent = studentEmails.includes(userEmail);
       // Navigate based on the user role
       if (isAdmin) {
         navigate('/dashboard/admin');
       } else if (isCoach) {
-        navigate('/dashboard/');
-      } else {
-        navigate('/dashboard/'); // Assuming this is the route for students
+        navigate('/dashboard/coach');
+      } else if (isStudent) {
+        navigate('/dashboard'); // Assuming this is the route for students
       }
     } catch (error) {
       // alert('Échec de la connexion. Veuillez vérifier vos informations.');
@@ -149,9 +151,9 @@ export default function FormConnect() {
 
   return (
     <form onSubmit={handleLogin}>
-      <div className=" tire mb-4">
+      <div className="m-5 mb-4">
         <div className="input-group  flex-nowrap">
-          <span class="input-group-text" id="addon-wrapping">
+          <span className="input-group-text" id="addon-wrapping">
             <CiMail />
           </span>
           <input
@@ -165,10 +167,9 @@ export default function FormConnect() {
           />
         </div>
       </div>
-
-      <div className=" tire ">
+      <div className=" m-5 ">
         <div className="input-group mb-3  flex-nowrap">
-          <span class="input-group-text" id="addon-wrapping">
+          <span className="input-group-text" id="addon-wrapping">
             <RiLockPasswordFill />
           </span>
           <input
@@ -190,44 +191,44 @@ export default function FormConnect() {
         </p>
         {/* <!-- Modal --> */}
         <div
-          class="modal fade"
+          className="modal fade"
           id="exampleModal"
           tabindex="-1"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
         >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h1 className="modal-title fs-5" id="exampleModalLabel">
                   Mot de pass oublié{' '}
                 </h1>
                 <button
                   type="button"
-                  class="btn-close"
+                  className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
                 ></button>
               </div>
-              <div class="modal-body">
-                <div class="form-outline text-start mb-4">
+              <div className="modal-body">
+                <div className="form-outline text-start mb-4">
                   <input
                     type="email"
                     id="email"
-                    class="form-control p-2"
+                    className="form-control p-2"
                     placeholder="Saisissez votre mail"
                   />
                 </div>
               </div>
-              <div class="modal-footer">
+              <div className="modal-footer">
                 <button
                   type="button"
-                  class="btn btn-secondary"
+                  className="btn btn-secondary"
                   data-bs-dismiss="modal"
                 >
                   Close
                 </button>
-                <button type="button" class="btn btn-primary">
+                <button type="button" className="btn btn-primary">
                   Save changes
                 </button>
               </div>

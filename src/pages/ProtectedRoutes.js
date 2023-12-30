@@ -6,7 +6,6 @@ import {
 import Connexion from './Connected/Connexion';
 import DashboardApprenant from '../components/DashboardApprenant';
 import ChatHome from '../components/chatComponent/ChatHome';
-import Programme from '../components/Programme';
 import Inscription from '../components/Inscription/Inscription';
 import Template from '../layout/template';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -27,6 +26,8 @@ import { fetchAdminEmails } from '../utils/fetchAdminEmails';
 import { fetchCoachEmails } from '../utils/fetchCoachEmails';
 import { fetchStudentEmails } from '../utils/fetchStudentEmails';
 import StudentProgram from '../components/ProEtudiant/Programme';
+import Cours from '../components/ProEtudiant/Cours';
+import UserTable from '../components/super-admin/TableauUtilisateurs';
 
 export default function ProtectedRoutes() {
   const { email } = useContext(EmailContext);
@@ -58,7 +59,7 @@ export default function ProtectedRoutes() {
     ? [
         {
           path: '/dashboard/admin',
-          element: <Table />,
+          element: <UserTable />,
         },
         {
           path: '/dashboard/table',
@@ -81,31 +82,31 @@ export default function ProtectedRoutes() {
   const coachRoutes = isCoach
     ? [
         {
-          index: true,
+          path: '/dashboard/coach',
           element: <DashboardApprenant />,
         },
         {
-          path: 'programme', // Relative path
+          path: '/dashboard/programme', // Relative path
           element: <ProgrammeCoach />,
         },
         {
-          path: 'chatHome', // Relative path
+          path: '/dashboard/chatHome', // Relative path
           element: <ChatHome />,
         },
         {
-          path: 'programme/cours',
+          path: '/dashboard/programme/cours',
           element: <SpecificPro />,
         },
         {
-          path: 'certificat',
+          path: '/dashboard/certificat',
           element: <Certificate />,
         },
         {
-          path: 'livrable',
+          path: '/dashboard/livrable',
           element: <ContentCardLivraison />,
         },
         {
-          path: 'assignation',
+          path: '/dashboard/assignation',
           element: <AssignationPage />,
         },
       ]
@@ -131,6 +132,10 @@ export default function ProtectedRoutes() {
         {
           path: 'livrable',
           element: <ContentCardLivraison />,
+        },
+        {
+          path: 'cours',
+          element: <Cours />,
         },
       ]
     : [];

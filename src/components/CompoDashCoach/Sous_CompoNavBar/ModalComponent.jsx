@@ -12,7 +12,7 @@ const ModalComponent = () => {
     <Modal open={open} onClose={handleClose}>
       <Modal.Header>
         <Modal.Title
-          style={{ color: "#f67505" }}
+          style={{ color: "#3084b5" }}
           className="text-center fw-bold fst-italic"
         >
           Modifier le Profile
@@ -33,7 +33,7 @@ const ModalComponent = () => {
             className="EditBtn"
             onClick={() => alert("On Modifie Le profile ")}
           >
-            <FaUserEdit className="fs-5 EditUser " />
+            <FaUserEdit className="fs-5 text-secondary " />
           </button>
           {/*===============Bouton Modifier le Profil Fin========= */}
         </div>
@@ -56,12 +56,12 @@ const ModalComponent = () => {
 
       <Modal.Footer>
         {/*====== Bouton Sauvegarder Modifications Profil ====== */}
-        <button onClick={handleClose} className="SaveModifBtn py-2 px-3 me-2">
+        <button onClick={handleClose}   style={{backgroundColor: "#3084b5" }} className="btn py-2 px-3 me-2">
           Modifier
         </button>
 
         {/*====== Bouton Annuler Modifications Profil ====== */}
-        <button onClick={handleClose} className="CancelModifBtn py-2 px-3">
+        <button onClick={handleClose} className="btn btn-secondary py-2 px-3">
           Annuler
         </button>
       </Modal.Footer>

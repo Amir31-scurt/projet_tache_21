@@ -11,6 +11,157 @@ body {
   background-color: #fff;
 }
 
+/* Quizzs CSS */
+
+.module-container {
+  display: flex;
+}
+
+.module-container .sidebar {
+  /* width: 25%;  */
+  background-color: #f0f2f5;
+  height: 100vh;
+  position: fixed;
+  overflow-y: scroll;
+}
+
+.module-container .file {
+  padding: 0px 10px;
+}
+.module-container .titre {
+  font-size: 32px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.module-container .main-content {
+  width: 100%;
+  padding: 20px;
+  margin: 10px;
+  margin-left: 40%;
+  text-align: left !important;
+}
+
+.module-container input[type='radio'] {
+  --webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  /* background-color: #48a93c !important;  */
+  border: 2px solid #999;
+}
+
+.module-container input:checked {
+  border: 2px solid #007bff !important;
+  background-color: #48a93c;
+}
+
+.module-container .lesson-item {
+  background-color: white;
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+  border-left: 5px solid #48a93c !important;
+  /* Blue border for active item */
+}
+
+.content-block {
+  background-color: white;
+  width: 100%;
+  margin-bottom: 10px;
+  cursor: pointer;
+  padding: 20px;
+  border-left: 5px solid #48a93c !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.introduction {
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: left;
+  margin-left: 8%;
+}
+
+.module-container .label {
+  margin-left: 5px;
+  font-family: Montserrat;
+  font-size: 16px;
+  color: #000000;
+}
+
+.module-container .paragraph {
+  margin-top: 5%;
+  color: black;
+  width: 100%;
+  margin-left: 5px;
+}
+
+.dig {
+  /* background-color: #3084b5;  */
+  color: black;
+  font-size: 16px;
+  width: 100%;
+  height: 10vh;
+  padding-left: 10px;
+  padding-top: 20px;
+}
+
+.sous {
+  border-radius: 20px;
+  height: 50px;
+  font-size: 22px;
+  width: 30%;
+  margin-left: 25%;
+  margin-top: 30px;
+  background-color: #48a93c;
+  border: none;
+  color: white;
+  font-weight: bold;
+}
+
+.paragraph {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+@media (max-width: 1024px) {
+  .module-container {
+    flex-direction: column;
+    /* width: 100%; */
+  }
+
+  .module-container .sidebar {
+    width: 100%;
+    position: relative;
+  }
+
+  .module-container .main-content {
+    width: 100%;
+    margin-left: 30%;
+  }
+
+  .module-container .lesson-item {
+    background-color: white;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 50%;
+    border-left: 5px solid #e16d07;
+    /* Blue border for active item */
+  }
+
+  .module-container .content-block {
+    width: 53%;
+  }
+
+  .sous {
+    width: 40%;
+  }
+}
+
 .cardpcc {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -319,18 +470,16 @@ body {
 .oubli {
   color: #189ab4;
 }
-.inputStyle{
+.inputStyle {
   border: 1px solid #3084b5;
   padding: 3px;
   color: white;
   background-color: #3084b5 !important;
   border-radius: 6px;
-
 }
 .output {
-  height:100px;
-  width:100px;
-
+  height: 100px;
+  width: 100px;
 }
 /* Suivi du programme */
 .category-card {
@@ -407,7 +556,7 @@ body {
 .NavBarContainer {
   width: 100%;
   background-color: #fff;
-  
+
   height: 80px;
   border-radius: 2px;
 }
@@ -508,6 +657,11 @@ body {
 .CancelModifBtn:hover {
   background-color: #502906db;
   color: #fff;
+}
+
+.last {
+  background-color: #3084b5;
+  border-radius: 40px;
 }
 
 /* =============== Je crée ici le CSS que je vais Utilisé Fin =============== */
@@ -706,7 +860,6 @@ body {
     width: 100%;
     display: flex;
     justify-content: center;
-    justify-content: space-around;
     position: fixed;
     bottom: 0;
     height: auto;
@@ -718,9 +871,10 @@ body {
     display: flex;
     margin-left: 4px;
   }
+  .GandalTitle {
+    display: none;
+  }
 }
-
-
 
 /*============ A ne pas toucher============*/
 .Side_Content {
@@ -738,6 +892,30 @@ body {
 .car img {
   height: 150px;
   width: 100%;
+}
+.loadingPageLogo {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loadingPageLogo img {
+  animation: pulse 2s infinite ease-in-out;
+  width: 150px;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @media (max-width: 1024px) {
