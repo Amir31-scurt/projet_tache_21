@@ -124,16 +124,16 @@ export default function TemplateDemo() {
   }));
 
   return (
-    <div className="px-5 w-100">
+    <div className="w-100">
       <div
         style={{
-          width: '70%',
+          width: '40%',
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'center',
           gap: '10px',
           position: 'absolute',
-          marginTop: '90px', // Added to ensure the container takes the full viewport height
+          marginTop: '20px', // Added to ensure the container takes the full viewport height
         }}
       >
         <MultiCascader

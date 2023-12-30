@@ -661,7 +661,10 @@ body {
 
 .last {
   background-color: #3084b5;
-  border-radius: 40px;
+  border-radius: 15px;
+}
+.last:hover {
+  background-color: #4c9aff;
 }
 
 /* =============== Je crée ici le CSS que je vais Utilisé Fin =============== */
@@ -741,7 +744,14 @@ body {
   text-decoration: none;
   color: #fff;
 }
-.sidebar .list-group-item:focus {
+.sidebar .list-group-item:focus:active {
+  background-color: #48a93c !important;
+  color: #fff;
+  font-weight: bold;
+  border-right: 10px solid #308425 !important;
+  /* transition: 0.5s; */
+}
+.sidebar .list-group-item.active-link {
   background-color: #48a93c !important;
   color: #fff;
   font-weight: bold;
@@ -946,6 +956,10 @@ body {
 /*  */
 
 /* Css ajout de l'utilisateur côté admin par oury */
+.form-demo {
+  display: flex;
+  margin-top: 20px;
+}
 .form-demo .card {
   min-width: 450px;
 }
@@ -968,11 +982,11 @@ body {
   }
 }
 
-.archived td{
+.archived td {
   background-color: rgb(247, 239, 239) !important;
 }
 
-.domaine button[aria-label="Upload"]{
+.domaine button[aria-label='Upload'] {
   display: none !important;
 }
 /*Fin */
