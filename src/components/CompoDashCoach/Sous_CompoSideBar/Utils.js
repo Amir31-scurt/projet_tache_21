@@ -22,7 +22,7 @@ export const menuSidebar = [
     link: '/dashboard/programme',
   },
   {
-    title: 'Livrable',
+    title: 'Livraison',
     icon: <PiFilesBold />,
     id: 'link2',
     link: '/dashboard/livrable',
