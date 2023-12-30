@@ -7,8 +7,7 @@ export default function DashboardApprenant() {
   return (
     <div className="d-flex flex-column ms-3 justify-content-center">
       <h1
-        className="fst-italic fs-3 fw-bold ps-2 pt-3"
-        style={{ color: '#5a2a00' }}
+        className="fst-italic text-secondary fs-3 fw-bold ps-2 pt-3" 
       >
         Dashboard
       </h1>

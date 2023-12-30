@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { InputText } from "primereact/inputtext";
-import { Button } from "primereact/button";
-import { Password } from "primereact/password";
-import { Dialog } from "primereact/dialog";
-import { Divider } from "primereact/divider";
-import { classNames } from "primereact/utils";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../../config/firebase-config";
-import { Dropdown } from "primereact/dropdown";
-import { addDoc, collection } from "firebase/firestore";
-import emailjs from "emailjs-com";
-import randomString from "crypto-random-string";
+import React, { useEffect, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+import { Password } from 'primereact/password';
+import { Dialog } from 'primereact/dialog';
+import { Divider } from 'primereact/divider';
+import { classNames } from 'primereact/utils';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from '../../config/firebase-config';
+import { Dropdown } from 'primereact/dropdown';
+import { addDoc, collection } from 'firebase/firestore';
+import emailjs from 'emailjs-com';
+import randomString from 'crypto-random-string';
+import TemplateDemo from '../super-admin/AssignationDomaines';
 
-emailjs.init("iyzQvt6sAJkX_ndas");
+emailjs.init('iyzQvt6sAJkX_ndas');
 
 // Composant principal
 const Inscription = () => {
@@ -21,12 +22,12 @@ const Inscription = () => {
   const [showMessage, setShowMessage] = useState(false);
 
   const [formData, setFormData] = useState({
-    name: "",
-    address: "",
-    number: "",
-    email: "",
-    password: "",
-    role: "",
+    name: '',
+    address: '',
+    number: '',
+    email: '',
+    password: '',
+    role: '',
     accept: false,
     active: true,
   });
@@ -54,7 +55,7 @@ const Inscription = () => {
     const newPassword = randomString({
       length: 12,
       characters:
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()",
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()',
     });
 
     // Mettez à jour la valeur du mot de passe dans le state
@@ -105,17 +106,17 @@ const Inscription = () => {
       // Envoyer les identifiants par e-mail
       const templateParams = {
         to_email: data.email,
-        subject: "Vos identifiants",
+        subject: 'Vos identifiants',
         message: `Bonjour ${data.name}, \n\nVotre compte a été créé avec succès. Vos identifiants sont: \nEmail: ${data.email} \nMot de passe: ${data.password}`,
       };
 
       emailjs
-        .send("service_5vkyapl", "template_3zobb4l", templateParams)
+        .send('service_5vkyapl', 'template_3zobb4l', templateParams)
         .then((response) => {
-          console.log("Email sent:", response);
+          console.log('Email sent:', response);
         })
         .catch((error) => {
-          console.error("Error sending email:", error);
+          console.error('Error sending email:', error);
         });
     } catch (error) {
       console.error('Error creating user:', error.message);
@@ -223,7 +224,7 @@ const Inscription = () => {
                   )}
                 />
               </span>
-              {getFormErrorMessage("address")}
+              {getFormErrorMessage('address')}
             </div>
             <div className="field">
               <span className="p-float-label p-input-icon-right">
@@ -251,7 +252,7 @@ const Inscription = () => {
                   )}
                 />
               </span>
-              {getFormErrorMessage("number")}
+              {getFormErrorMessage('number')}
             </div>
             <div className="field">
               <span className="p-float-label p-input-icon-right">
@@ -326,10 +327,15 @@ const Inscription = () => {
               </span>
               {getFormErrorMessage('role')}
             </div>
-            <Button type="submit" label="Inscrire" className="mt-2" />
+            <Button
+              type="submit"
+              label="Inscrire"
+              className="mt-2 last text-light"
+            />
           </form>
         </div>
       </div>
+      <TemplateDemo />
     </div>
   );
 };

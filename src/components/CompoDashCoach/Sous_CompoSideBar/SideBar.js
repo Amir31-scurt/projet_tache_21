@@ -5,9 +5,7 @@ function SideBar() {
   return (
     <div className="sidebar col-lg-2">
       <div className="py-3" id="contentSidebar">
-        <div className="linkSidebar">
-          <GetSidebarMenu />
-        </div>
+        <GetSidebarMenu />
       </div>
     </div>
   );

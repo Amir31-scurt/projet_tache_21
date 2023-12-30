@@ -1,9 +1,9 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
-import { useFormik } from "formik";
-import { InputText } from "primereact/inputtext";
-import { Button } from "primereact/button";
-import { classNames } from "primereact/utils";
-import { Toast } from "primereact/toast";
+import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { useFormik } from 'formik';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+import { classNames } from 'primereact/utils';
+import { Toast } from 'primereact/toast';
 
 import {
   collection,
@@ -13,9 +13,8 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 
-import { db } from "./firebase-config";
-import Domaine from "./Domaine";
-
+import { db, storage } from '../../config/firebase-config';
+import Domaine from './Domaine';
 const FormikDoc = () => {
   const toast = useRef(null);
   const [showSousDomainesInput, setShowSousDomainesInput] = useState(false);
@@ -52,7 +51,7 @@ const FormikDoc = () => {
       try {
         const selectDomaine = domaines.find((book) => book.id === domaineId);
         if (!selectDomaine) {
-          console.error("No selected book to archive.");
+          console.error('No selected domaines to archive.');
           return;
         }
 
@@ -61,7 +60,7 @@ const FormikDoc = () => {
           archived: !selectDomaine.archived,
         };
 
-        await updateDoc(doc(db, "domaines", domaineId), updatedDomaineData);
+        await updateDoc(doc(db, 'domaines', domaineId), updatedDomaineData);
         setDomaines((prevBooks) =>
           prevBooks.map((domaine) =>
             domaine.id === domaineId
@@ -70,7 +69,7 @@ const FormikDoc = () => {
           )
         );
       } catch (error) {
-        console.error("Error updating book:", error);
+        console.error('Error updating book:', error);
       }
     },
     [domaines, selectedDomaine, setDomaines, loadDomaines]
@@ -84,17 +83,17 @@ const FormikDoc = () => {
 
     const domainesData = Object.assign({}, ...sousDomaines);
 
-    await addDoc(collection(db, "domaines"), {
+    await addDoc(collection(db, 'domaines'), {
       domaine: domain,
       sousDomaines: domainesData,
       archived: false,
-    }).catch((error) => console.error("Error adding document: ", error));
+    }).catch((error) => console.error('Error adding document: ', error));
 
     toast.current.show({
-      severity: "success",
-      summary: "Form Submitted",
+      severity: 'success',
+      summary: 'Form Submitted',
       detail: `Domaine: ${domain}, Sous domaines: ${sousDomainesList.join(
-        ", "
+        ', '
       )}`,
     });
     setSousDomainesList([]);
@@ -118,7 +117,7 @@ const FormikDoc = () => {
 
     const domainesData = Object.assign({}, ...sousDomaines);
     if (selectedDomaine) {
-      await updateDoc(doc(db, "domaines", selectedDomaine.id), {
+      await updateDoc(doc(db, 'domaines', selectedDomaine.id), {
         domaine: domain,
         sousDomaines: domainesData,
       });
@@ -135,13 +134,13 @@ const FormikDoc = () => {
       );
 
       await loadDomaines();
-      formik.setValues({ name: "" });
+      formik.setValues({ name: '' });
       setSousDomainesList([]);
       toast.current.show({
-        severity: "success",
-        summary: "Form Submitted",
+        severity: 'success',
+        summary: 'Form Submitted',
         detail: `Domaine: ${domain}, Sous domaines: ${sousDomainesList.join(
-          ", "
+          ', '
         )}`,
       });
     }
@@ -152,7 +151,7 @@ const FormikDoc = () => {
       ...prevList,
       formik.values.sousDomaines,
     ]);
-    formik.setFieldValue("sousDomaines", "");
+    formik.setFieldValue('sousDomaines', '');
   };
 
   const removeSousDomaine = (index) => {
@@ -160,12 +159,11 @@ const FormikDoc = () => {
     updatedList.splice(index, 1);
     setSousDomainesList(updatedList);
   };
-  
 
   const formik = useFormik({
     initialValues: {
-      sousDomaines: "",
-      name: "",
+      sousDomaines: '',
+      name: '',
     },
     validate: (data) => {
       let errors = {};
@@ -178,11 +176,11 @@ const FormikDoc = () => {
 
       return errors;
     },
-    onSubmit: async(data) => {
+    onSubmit: async (data) => {
       if (isAdding) {
         data && show();
         console.log(formik.values.fileUrl);
-        formik.setValues({ name: "", sousDomaines: "" });
+        formik.setValues({ name: '', sousDomaines: '' });
         setShowSousDomainesInput(false);
         formik.resetForm();
       } else {
@@ -215,10 +213,10 @@ const FormikDoc = () => {
         <InputText
           inputid="name"
           name="name"
-          className={classNames({ "p-invalid": isFormFieldInvalid("name") })}
+          className={classNames({ 'p-invalid': isFormFieldInvalid('name') })}
           value={formik.values.name}
           onChange={(e) => {
-            formik.setFieldValue("name", e.target.value);
+            formik.setFieldValue('name', e.target.value);
           }}
         />
 
@@ -226,9 +224,9 @@ const FormikDoc = () => {
         <div
           className={classNames(
             {
-              "p-invalid": isFormFieldInvalid("sousDomaines"),
+              'p-invalid': isFormFieldInvalid('sousDomaines'),
             },
-            "border rounded d-flex justify-content-between"
+            'border rounded d-flex justify-content-between'
           )}
         >
           <div className="sousDomaines-list d-flex align-items-center">
@@ -250,16 +248,16 @@ const FormikDoc = () => {
           >
             <i
               className={`pi ${
-                showSousDomainesInput ? "pi-minus" : "pi-plus"
+                showSousDomainesInput ? 'pi-minus' : 'pi-plus'
               } bg-primary p-3 rounded`}
-              style={{ fontSize: "1rem" }}
+              style={{ fontSize: '1rem' }}
               role="button"
             ></i>
           </div>
         </div>
 
         {showSousDomainesInput && (
-          <div className="p-inputgroup" style={{ width: "40%" }}>
+          <div className="p-inputgroup" style={{ width: '40%' }}>
             <InputText
               inputid="sousDomaines"
               name="sousDomaines"
@@ -267,11 +265,11 @@ const FormikDoc = () => {
               cols={30}
               icon="pi pi-plus"
               className={classNames({
-                "p-invalid": isFormFieldInvalid("sousDomaines"),
+                'p-invalid': isFormFieldInvalid('sousDomaines'),
               })}
               value={formik.values.sousDomaines}
               onChange={(e) => {
-                formik.setFieldValue("sousDomaines", e.target.value);
+                formik.setFieldValue('sousDomaines', e.target.value);
               }}
             />
             <Button
@@ -283,11 +281,10 @@ const FormikDoc = () => {
             />
           </div>
         )}
-
-        {getFormErrorMessage("sousDomaines")}
-        {getFormErrorMessage("name")}
+        {getFormErrorMessage('sousDomaines')}
+        {getFormErrorMessage('name')}
         <Button
-          label={isAdding ? "Ajouter" : "Modifier"}
+          label={isAdding ? 'Ajouter' : 'Modifier'}
           type="submit"
           icon="pi pi-check"
           className={isAdding ? "col-md-4 text-white rounded" : "col-md-4 text-white rounded bg-warning"}
