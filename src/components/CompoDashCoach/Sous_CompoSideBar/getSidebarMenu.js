@@ -20,6 +20,7 @@ import { fetchStudentEmails } from '../../../utils/fetchStudentEmails';
 import SidebarCompo from './SidebarCompo';
 import { Placeholder } from 'rsuite';
 import { width } from '@mui/system';
+import { BsFillSignIntersectionFill } from 'react-icons/bs';
 
 export const GetSidebarMenu = () => {
   const { email } = useContext(EmailContext);
@@ -58,39 +59,34 @@ export const GetSidebarMenu = () => {
           link: '/dashboard/admin',
         },
         {
-          title: 'Programmes',
-          icon: <RiMiniProgramFill />,
-          id: 'admin-link2',
-          link: '/dashboard/table',
+          title: 'Domaines',
+          id: 'admin-link5',
+          icon: <GrDomain />,
+          link: '/dashboard/createDomaine',
         },
         {
-          title: 'Tab. Etudiants',
+          title: 'Utilisateurs',
           id: 'admin-link3',
           icon: <PiStudent />,
           link: '/dashboard/etudiants',
         },
         {
-          title: 'Tab. Coachs',
-          id: 'admin-link4',
-          icon: <FaChalkboardTeacher />,
-          link: '/dashboard/coachs',
+          title: 'Inscription',
+          id: 'admin-link7',
+          icon: <BsFillSignIntersectionFill />,
+          link: '/dashboard/inscription',
         },
-        {
-          title: 'Domaines',
-          id: 'admin-link5',
-          icon: <GrDomain />,
-          link: '/dashboard/table',
-        },
+        // {
+        //   title: 'Assignation',
+        //   icon: <RiMiniProgramFill />,
+        //   id: 'admin-link2',
+        //   link: '/dashboard/table',
+        // },
         {
           title: 'Certificats',
           id: 'admin-link6',
           icon: <PiCertificateDuotone />,
           link: '/dashboard/admin',
-        },
-        {
-          title: 'Inscrire',
-          id: 'admin-link7',
-          link: '/dashboard/inscription',
         },
         // ... other admin specific items
       ];
