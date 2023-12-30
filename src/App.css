@@ -744,14 +744,15 @@ body {
   text-decoration: none;
   color: #fff;
 }
-.sidebar .list-group-item:focus {
+.sidebar .list-group-item:focus,
+.active-link {
   background-color: #48a93c !important;
   color: #fff;
   font-weight: bold;
   border-right: 10px solid #308425 !important;
   /* transition: 0.5s; */
 }
-.sidebar .list-group-item.active-link {
+.sidebar .active {
   background-color: #48a93c !important;
   color: #fff;
   font-weight: bold;

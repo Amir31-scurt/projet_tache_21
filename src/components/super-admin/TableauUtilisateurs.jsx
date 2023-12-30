@@ -333,7 +333,7 @@ export default function TableauUtilisateurs() {
 
       {/* Affichage du tableau */}
       <div className="TableUtilisateurs d-flex flex-column justify-content-center align-items-center w-100 ms-0 ms-lg-4">
-        <h1 className="my-3 shadowTable">Tableaux utilisateur</h1>
+        <h1 className="my-3 shadowTable mt-5">Tableaux utilisateur</h1>
         <div className="myTable ">
           <MaterialReactTable table={table} className="" />
         </div>

@@ -6,7 +6,7 @@ function SidebarCompo({ title, icon, id, link }) {
     <NavLink
       to={link}
       className="list-group-item px-2 LienSidBar list-group-item bg-transparent border-0 px-2"
-      activeClassName="active-link"
+      activeClassName="active"
       style={{ textDecoration: 'none' }}
       id={id}
     >

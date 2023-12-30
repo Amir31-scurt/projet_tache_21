@@ -105,7 +105,7 @@ export default function TemplateDemo() {
   const options = domaines.map((domaine) => ({
     label: domaine.domaine,
     value: domaine.domaine, // Utiliser la valeur du domaine comme "value"
-    children: Object.keys(domaine.sousDomaine).map((sousDomaineKey) => {
+    children: Object.keys(domaine.sousDomaine || {}).map((sousDomaineKey) => {
       const sousDomaine = domaine.sousDomaine[sousDomaineKey];
       // Filtrer les coachs correspondant à ce sous-domaine
       const coachsForSousDomaine = users.filter(
