@@ -118,13 +118,14 @@ export default function FormConnect() {
       // Check if the user is an admin or a coach
       const isAdmin = adminEmails.includes(userEmail);
       const isCoach = coachEmails.includes(userEmail);
+      const isStudent = studentEmails.includes(userEmail);
       // Navigate based on the user role
       if (isAdmin) {
         navigate('/dashboard/admin');
       } else if (isCoach) {
-        navigate('/dashboard/');
-      } else {
-        navigate('/dashboard/'); // Assuming this is the route for students
+        navigate('/dashboard/coach');
+      } else if (isStudent) {
+        navigate('/dashboard'); // Assuming this is the route for students
       }
     } catch (error) {
       // alert('Échec de la connexion. Veuillez vérifier vos informations.');
@@ -149,7 +150,7 @@ export default function FormConnect() {
 
   return (
     <form onSubmit={handleLogin}>
-      <div className=" tire mb-4">
+      <div className="m-5 mb-4">
         <div className="input-group  flex-nowrap">
           <span class="input-group-text" id="addon-wrapping">
             <CiMail />
@@ -165,8 +166,7 @@ export default function FormConnect() {
           />
         </div>
       </div>
-
-      <div className=" tire ">
+      <div className=" m-5 ">
         <div className="input-group mb-3  flex-nowrap">
           <span class="input-group-text" id="addon-wrapping">
             <RiLockPasswordFill />
