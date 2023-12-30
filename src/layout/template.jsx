@@ -1,17 +1,47 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NavBarCompo } from '../components/CompoDashCoach/Sous_CompoNavBar/NavBarCompo';
-import { Outlet, useLocation, Navigate } from 'react-router-dom';
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import SideBar from '../components/CompoDashCoach/Sous_CompoSideBar/SideBar';
 import { AuthContext } from '../contexte/AuthContext';
 import Card from '../utils/cards_reusable';
+import logo from '../assets/images/logo.png';
 
 export default function Template() {
   const { currentUser } = useContext(AuthContext);
+  // const [currentUser, setCurrentUser] = useState(initialUser);
   const location = useLocation();
+  const navigate = useNavigate();
   const timelinePath = '/dashboard';
   const isDashboard = location.pathname === timelinePath;
+  const [isLoading, setIsLoading] = useState(true);
+
+  // useEffect(() => {
+  //   const initializeData = async () => {
+  //     const storedUser = localStorage.getItem('user');
+  //     if (storedUser) {
+  //       // Parse the stored data and set it to the current user
+  //       setCurrentUser(JSON.parse(storedUser));
+  //     }
+  //     setIsLoading(false);
+  //   };
+  //   initializeData();
+  // }, []);
+
+  // useEffect(() => {
+  //   // When the currentUser changes, store it in local storage
+  //   localStorage.setItem('user', JSON.stringify(currentUser));
+  // }, [currentUser]);
+
+  // if (isLoading) {
+  //   return (
+  //     <div className="loadingPageLogo">
+  //       <img src={logo} alt="logo" />
+  //     </div>
+  //   );
+  // }
+
   if (!currentUser) {
-    return <Navigate to="/" />;
+    return <Navigate to="/" />; // Redirect to home page
   }
 
   return (

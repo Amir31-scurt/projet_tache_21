@@ -25,6 +25,8 @@ export const NavBarCompo = () => {
     try {
       await signOut(auth);
       navigate('/');
+      localStorage.removeItem('currentUser');
+      // ... any other logout logic
     } catch (error) {
       console.log(error);
     }
@@ -41,7 +43,7 @@ export const NavBarCompo = () => {
             <div className="LogoConta2 ">
               <div className="img-logo d-flex align-items-center justify-content-center">
                 <img src={LogoTech} className="img-fluid " alt="" />
-                <h3 className="" style={{ color: '#3084b5' }}>
+                <h3 className="GandalTitle" style={{ color: '#3084b5' }}>
                   Gandal
                 </h3>
               </div>

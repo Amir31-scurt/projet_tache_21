@@ -18,6 +18,8 @@ import { EmailContext } from '../../../contexte/EmailContexte';
 import { fetchCoachEmails } from '../../../utils/fetchCoachEmails';
 import { fetchStudentEmails } from '../../../utils/fetchStudentEmails';
 import SidebarCompo from './SidebarCompo';
+import { Placeholder } from 'rsuite';
+import { width } from '@mui/system';
 
 export const GetSidebarMenu = () => {
   const { email } = useContext(EmailContext);
@@ -58,36 +60,36 @@ export const GetSidebarMenu = () => {
         {
           title: 'Programmes',
           icon: <RiMiniProgramFill />,
-          id: 'admin-link1',
+          id: 'admin-link2',
           link: '/dashboard/table',
         },
         {
           title: 'Tab. Etudiants',
-          id: 'admin-link1',
+          id: 'admin-link3',
           icon: <PiStudent />,
           link: '/dashboard/etudiants',
         },
         {
           title: 'Tab. Coachs',
-          id: 'admin-link1',
+          id: 'admin-link4',
           icon: <FaChalkboardTeacher />,
           link: '/dashboard/coachs',
         },
         {
           title: 'Domaines',
-          id: 'admin-link1',
+          id: 'admin-link5',
           icon: <GrDomain />,
           link: '/dashboard/table',
         },
         {
           title: 'Certificats',
-          id: 'admin-link1',
+          id: 'admin-link6',
           icon: <PiCertificateDuotone />,
           link: '/dashboard/admin',
         },
         {
           title: 'Inscrire',
-          id: 'admin-link1',
+          id: 'admin-link7',
           link: '/dashboard/inscription',
         },
         // ... other admin specific items
@@ -98,40 +100,42 @@ export const GetSidebarMenu = () => {
           title: 'Dashboard',
           icon: <MdOutlineSpaceDashboard />,
           id: 'link1',
+          link: '/dashboard/coach',
         },
         {
           title: 'Programme',
           icon: <MdOutlineLibraryBooks />,
-          id: 'link1',
+          id: 'link2',
           link: '/dashboard/programme',
         },
         {
           title: 'Livrable',
           icon: <PiFilesBold />,
-          id: 'link2',
+          id: 'link3',
           link: '/dashboard/livrable',
         },
         {
           title: 'Assignation',
           icon: <MdOutlineAssignment />,
-          id: 'link3',
+          id: 'link4',
           link: '/dashboard/assignation',
         },
         {
           title: 'Etudiants',
           icon: <PiStudentBold />,
-          id: 'link4',
+          id: 'link5',
         },
         {
           title: 'Certificats',
           icon: <TbCertificate />,
-          id: 'link5',
+          id: 'link6',
           link: '/dashboard/certificat',
         },
         {
           title: 'Parametre',
           icon: <LuSettings />,
-          id: 'link6',
+          id: 'link7',
+          link: '/dashboard/coach',
         },
       ];
     } else if (isStudent) {
@@ -172,12 +176,43 @@ export const GetSidebarMenu = () => {
   };
   const menuItems = getMenuItems();
   return isReady ? (
-    <div>
+    <div id="contentSidebar">
       {menuItems.map((item, index) => (
         <SidebarCompo key={index} {...item} />
       ))}
     </div>
   ) : (
-    <div>Loading...</div>
+    <div className="mx-4 d-flex gap-3 flex-column">
+      <Placeholder.Paragraph
+        style={{ marginTop: 30 }}
+        rows={1}
+        graph="square"
+        active
+      />
+      <Placeholder.Paragraph
+        style={{ marginTop: 30 }}
+        rows={1}
+        graph="square"
+        active
+      />
+      <Placeholder.Paragraph
+        style={{ marginTop: 30 }}
+        rows={1}
+        graph="square"
+        active
+      />
+      <Placeholder.Paragraph
+        style={{ marginTop: 30 }}
+        rows={1}
+        graph="square"
+        active
+      />
+      <Placeholder.Paragraph
+        style={{ marginTop: 30 }}
+        rows={1}
+        graph="square"
+        active
+      />
+    </div>
   );
 };
