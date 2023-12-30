@@ -8,7 +8,7 @@ import {
 import { TbCertificate } from 'react-icons/tb';
 import { LuSettings } from 'react-icons/lu';
 import { FaUsers } from 'react-icons/fa';
-import { LiaUsersSolid } from 'react-icons/lia';
+import { PiUsersFourFill } from "react-icons/pi";
 export const menuSidebar = [
   {
     title: 'Dashboard',
@@ -22,7 +22,7 @@ export const menuSidebar = [
     link: '/dashboard/programme',
   },
   {
-    title: 'Livrable',
+    title: 'Livraison',
     icon: <PiFilesBold />,
     id: 'link2',
     link: '/dashboard/livrable',
@@ -48,7 +48,7 @@ export const menuSidebar = [
     title: 'Parametre',
     icon: <LuSettings />,
     id: 'link6',
-    link : '/dashboard/dashboardapprenant/programme'
+    link : '/dashboard/quizz'
   },
 ];
 
@@ -56,7 +56,7 @@ export const ContenuCardDsb = [
   {
     ChiffreCardDsb: '26',
     IconeCardDsb: (
-      <FaUsers style={{ fontSize: "68px", opacity: "0.6", color: "#432705" }} />
+      <FaUsers style={{ fontSize: "68px", opacity: "1", color: "#fff" }} />
     ),
     TextCardDsb: 'Professeurs',
     couleurCarte: 'CouleurA',
@@ -64,9 +64,8 @@ export const ContenuCardDsb = [
   {
     ChiffreCardDsb: '134',
     IconeCardDsb: (
-      <LiaUsersSolid
-        style={{ fontSize: '56px', opacity: '0.6', color: '#432705' }}
-      />
+      <PiUsersFourFill  style={{ fontSize: '56px', opacity: '1', color: '#fff' }} />
+
     ),
     TextCardDsb: 'Etudiants',
     couleurCarte: 'CouleurB',
@@ -74,7 +73,7 @@ export const ContenuCardDsb = [
   {
     ChiffreCardDsb: '32',
     IconeCardDsb: (
-      <MdTask style={{ fontSize: '72px', opacity: '0.6', color: '#432705' }} />
+      <MdTask style={{ fontSize: '72px', opacity: '1', color: '#fff' }} />
     ),
     TextCardDsb: 'Taches',
     couleurCarte: 'CouleurC',
