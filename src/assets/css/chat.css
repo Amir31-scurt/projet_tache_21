@@ -11,6 +11,7 @@ Maron
 .chatHome{
     overflow: hidden;
     background-color: #432705;
+    /* background-image: url("../images/A1.png"); */
 }
 .chatHomeContainer {
   width: 400px;
@@ -170,10 +171,12 @@ Maron
 .messages .message .messageContent p {
   max-width: fit-content;
   border-radius: 0 10px 10px 10px;
+  background-color: rgb(2, 119, 196) !important;
 }
 .messages .owner .messageContent p {
   max-width: fit-content;
   border-radius: 10px 0 10px 10px;
+  background-color: rgb(2, 172, 31) !important;
 }
 /* Styles pour la barre de défilement */
 .messages::-webkit-scrollbar {
@@ -209,5 +212,8 @@ Maron
   background-color: #e16d07;
 }
 .chatInput .btn:hover{
+  background-color: #e16d07;
+}
+.chatInput .btn:disabled{
   background-color: #e16d07;
 }

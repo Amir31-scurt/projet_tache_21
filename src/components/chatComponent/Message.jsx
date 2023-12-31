@@ -1,12 +1,20 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import pp from "../../assets/images/user.png";
-import messageTexto from "../../assets/images/affiche.jpg";
+// import messageTexto from "../../assets/images/affiche.jpg";
 import { ChatAuthCtx } from "../../contexte/ChatAuthCtx";
 
 export default function Message({ message }) {
   const { currentUser } = useContext(ChatAuthCtx);
+
+  const mess = useRef();
+
+  useEffect(() => {
+    mess.current?.scrollIntoView({ behavior: "smooth" });
+  }, [message]);
+
   return (
     <div
+      ref={mess}
       className={`message my-2 d-flex ${
         message ? message?.senderId !== currentUser?.uid && "owner" : ""
       }`}

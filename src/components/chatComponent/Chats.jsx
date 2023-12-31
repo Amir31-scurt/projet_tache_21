@@ -32,9 +32,6 @@ export default function Chats() {
     dispatch({ type: "CHANGE_USER", payload: u });
   };
 
-  // chats
-  //   ? Object.entries(chats) && console.log(Object.entries(chats))
-  //   : console.log("Sa chats bi amoul dara...");
   return (
     <div className="chats d-flex px-2 pt-2">
       {chats
