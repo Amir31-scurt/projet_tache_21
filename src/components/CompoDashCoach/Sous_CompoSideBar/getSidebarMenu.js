@@ -70,12 +70,6 @@ export const GetSidebarMenu = () => {
           icon: <BsFillSignIntersectionFill />,
           link: '/dashboard/inscription',
         },
-        // {
-        //   title: 'Assignation',
-        //   icon: <RiMiniProgramFill />,
-        //   id: 'admin-link2',
-        //   link: '/dashboard/table',
-        // },
         {
           title: 'Certificats',
           id: 'admin-link6',
@@ -99,7 +93,7 @@ export const GetSidebarMenu = () => {
           link: '/dashboard/programme',
         },
         {
-          title: 'Livrable',
+          title: 'Livraison',
           icon: <PiFilesBold />,
           id: 'link3',
           link: '/dashboard/livrable',
@@ -145,7 +139,7 @@ export const GetSidebarMenu = () => {
           link: 'programme-apprenant',
         },
         {
-          title: 'Livrable',
+          title: 'Livraison',
           icon: <PiFilesBold />,
           id: 'link2',
           link: 'livrable',
