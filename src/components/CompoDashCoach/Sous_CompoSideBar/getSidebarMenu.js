@@ -53,7 +53,7 @@ export const GetSidebarMenu = () => {
       return [
         // Admin specific menu items here
         {
-          title: 'Dashboard',
+          title: 'Base de données',
           icon: <MdOutlineSpaceDashboard />,
           id: 'admin-link1',
           link: '/dashboard/admin',
@@ -65,28 +65,16 @@ export const GetSidebarMenu = () => {
           link: '/dashboard/createDomaine',
         },
         {
-          title: 'Utilisateurs',
-          id: 'admin-link3',
-          icon: <PiStudent />,
-          link: '/dashboard/etudiants',
-        },
-        {
           title: 'Inscription',
           id: 'admin-link7',
           icon: <BsFillSignIntersectionFill />,
           link: '/dashboard/inscription',
         },
-        // {
-        //   title: 'Assignation',
-        //   icon: <RiMiniProgramFill />,
-        //   id: 'admin-link2',
-        //   link: '/dashboard/table',
-        // },
         {
           title: 'Certificats',
           id: 'admin-link6',
           icon: <PiCertificateDuotone />,
-          link: '/dashboard/admin',
+          link: '/dashboard/coachs',
         },
         // ... other admin specific items
       ];
@@ -105,7 +93,7 @@ export const GetSidebarMenu = () => {
           link: '/dashboard/programme',
         },
         {
-          title: 'Livrable',
+          title: 'Livraison',
           icon: <PiFilesBold />,
           id: 'link3',
           link: '/dashboard/livrable',
@@ -120,7 +108,7 @@ export const GetSidebarMenu = () => {
           title: 'Etudiants',
           icon: <PiStudentBold />,
           id: 'link5',
-          link: '/dashboard/coach',
+          link: '',
         },
         {
           title: 'Certificats',
@@ -132,7 +120,7 @@ export const GetSidebarMenu = () => {
           title: 'Parametre',
           icon: <LuSettings />,
           id: 'link7',
-          link: '/dashboard/coach',
+          link: '',
         },
       ];
     } else if (isStudent) {
@@ -151,7 +139,7 @@ export const GetSidebarMenu = () => {
           link: 'programme-apprenant',
         },
         {
-          title: 'Livrable',
+          title: 'Livraison',
           icon: <PiFilesBold />,
           id: 'link2',
           link: 'livrable',
@@ -166,6 +154,7 @@ export const GetSidebarMenu = () => {
           title: 'Parametre',
           icon: <LuSettings />,
           id: 'link6',
+          link: '',
         },
         // ... other items for regular users
       ];

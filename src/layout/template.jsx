@@ -5,15 +5,25 @@ import SideBar from '../components/CompoDashCoach/Sous_CompoSideBar/SideBar';
 import { AuthContext } from '../contexte/AuthContext';
 import Card from '../utils/cards_reusable';
 import logo from '../assets/images/logo.png';
+import { EmailContext } from '../contexte/EmailContexte';
 
 export default function Template() {
   const { currentUser } = useContext(AuthContext);
+  const { setEmail } = useContext(EmailContext);
   // const [currentUser, setCurrentUser] = useState(initialUser);
   const location = useLocation();
   const navigate = useNavigate();
   const timelinePath = '/dashboard';
   const isDashboard = location.pathname === timelinePath;
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem('userEmail');
+    if (storedEmail) {
+      setEmail(storedEmail);
+      setIsLoading(false);
+    }
+  }, [setEmail]);
 
   // useEffect(() => {
   //   const initializeData = async () => {
@@ -32,13 +42,13 @@ export default function Template() {
   //   localStorage.setItem('user', JSON.stringify(currentUser));
   // }, [currentUser]);
 
-  // if (isLoading) {
-  //   return (
-  //     <div className="loadingPageLogo">
-  //       <img src={logo} alt="logo" />
-  //     </div>
-  //   );
-  // }
+  if (isLoading) {
+    return (
+      <div className="loadingPageLogo">
+        <img src={logo} alt="logo" />
+      </div>
+    );
+  }
 
   if (!currentUser) {
     return <Navigate to="/" />; // Redirect to home page
