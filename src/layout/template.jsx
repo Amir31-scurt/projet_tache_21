@@ -23,7 +23,7 @@ export default function Template() {
         <div className="SideSection">
           <SideBar />
         </div>
-        <div className="bodyContent d-flex">
+        <div className="bodyContent col d-flex">
           <div className="col">
             <Outlet />
             {/* Outlet Position */}
