@@ -1,5 +1,5 @@
 import React from 'react';
-import Domaine from './CreateDomaine';
+import Domaine from './Domaine';
 import FormikDoc from './FormCreateDomaine';
 
 function CreateDomaine() {
