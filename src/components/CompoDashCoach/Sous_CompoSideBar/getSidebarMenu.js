@@ -105,22 +105,10 @@ export const GetSidebarMenu = () => {
           link: '/dashboard/assignation',
         },
         {
-          title: 'Etudiants',
-          icon: <PiStudentBold />,
-          id: 'link5',
-          link: '',
-        },
-        {
-          title: 'Certificats',
+          title: 'Bulletin',
           icon: <TbCertificate />,
           id: 'link6',
           link: '/dashboard/certificat',
-        },
-        {
-          title: 'Parametre',
-          icon: <LuSettings />,
-          id: 'link7',
-          link: '',
         },
       ];
     } else if (isStudent) {
