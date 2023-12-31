@@ -53,7 +53,7 @@ export const GetSidebarMenu = () => {
       return [
         // Admin specific menu items here
         {
-          title: 'Dashboard',
+          title: 'Base de données',
           icon: <MdOutlineSpaceDashboard />,
           id: 'admin-link1',
           link: '/dashboard/admin',
@@ -63,12 +63,6 @@ export const GetSidebarMenu = () => {
           id: 'admin-link5',
           icon: <GrDomain />,
           link: '/dashboard/createDomaine',
-        },
-        {
-          title: 'Utilisateurs',
-          id: 'admin-link3',
-          icon: <PiStudent />,
-          link: '/dashboard/etudiants',
         },
         {
           title: 'Inscription',
@@ -86,7 +80,7 @@ export const GetSidebarMenu = () => {
           title: 'Certificats',
           id: 'admin-link6',
           icon: <PiCertificateDuotone />,
-          link: '/dashboard/admin',
+          link: '/dashboard/coachs',
         },
         // ... other admin specific items
       ];
@@ -120,7 +114,7 @@ export const GetSidebarMenu = () => {
           title: 'Etudiants',
           icon: <PiStudentBold />,
           id: 'link5',
-          link: '/dashboard/coach',
+          link: '',
         },
         {
           title: 'Certificats',
@@ -132,7 +126,7 @@ export const GetSidebarMenu = () => {
           title: 'Parametre',
           icon: <LuSettings />,
           id: 'link7',
-          link: '/dashboard/coach',
+          link: '',
         },
       ];
     } else if (isStudent) {
@@ -166,6 +160,7 @@ export const GetSidebarMenu = () => {
           title: 'Parametre',
           icon: <LuSettings />,
           id: 'link6',
+          link: '',
         },
         // ... other items for regular users
       ];

@@ -25,7 +25,7 @@ export const NavBarCompo = () => {
     try {
       await signOut(auth);
       navigate('/');
-      localStorage.removeItem('currentUser');
+      localStorage.removeItem('userEmail');
       // ... any other logout logic
     } catch (error) {
       console.log(error);
