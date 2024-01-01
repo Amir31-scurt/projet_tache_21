@@ -151,7 +151,7 @@ export const AssignationEtudiant = () => {
  return (
    <div
      className="p-2 d-flex justify-content-center"
-     style={{ width: "100%", background: "#eeee" }}
+     style={{ width: "100%"}}
    >
 
      <div className="ComtaTabAss m-auto" style={{ padding: "20px" }}>

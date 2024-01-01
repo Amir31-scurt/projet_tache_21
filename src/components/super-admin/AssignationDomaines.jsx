@@ -146,8 +146,9 @@ const AssignationPage = () => {
   return (
     <div
       className=" d-flex justify-content-center flex-column"
-      style={{ width: '100%', background: '#eee', borderRadius: '15px' }}
+      style={{ width: '100%' }}
     >
+      <hr />
       <div className=" w-100 text-center">
         <p className="fs-3 mb-2 fst-italic fw-bold text-dark">
           Tableau D'assignation de Domaines de L'administrateur{' '}
