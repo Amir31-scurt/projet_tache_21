@@ -156,7 +156,7 @@ export const GetSidebarMenu = () => {
       ))}
     </div>
   ) : (
-    <div className="mx-4 d-flex gap-3 flex-column">
+    <div className="mx-4 d-flex gap-3 flex-row flex-lg-column">
       <Placeholder.Paragraph
         style={{ marginTop: 30 }}
         rows={1}
