@@ -10,6 +10,20 @@ body {
   box-sizing: 0;
   background-color: #fff;
 }
+.SmallMsg {
+  color: red;
+  margin-top: 10px;
+  display: block;
+  font-weight: bold;
+  text-align: center;
+}
+.AdmLineDif {
+  width: 100%;
+  height: 7px;
+  background-color: #30842593;
+  border-radius: 20px;
+  margin: 45px 0;
+}
 
 /* Quizzs CSS */
 
@@ -540,12 +554,17 @@ body {
 .BigContainer {
   background-color: #fff;
 }
-
+.ComtaTabAss {
+  width: 50%;
+}
 @media screen and (max-width: 692px) {
   .WidthCardDsb {
     width: 100%;
     display: flex;
     justify-content: center;
+  }
+  .ComtaTabAss {
+    width: 100%;
   }
 }
 
@@ -862,7 +881,7 @@ body {
     border-radius: 0;
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     position: fixed;
     bottom: 0;
     height: auto;
@@ -950,7 +969,6 @@ body {
 
 /* Css ajout de l'utilisateur côté admin par oury */
 .form-demo {
-  display: flex;
   margin-top: 20px;
 }
 .form-demo .card {
