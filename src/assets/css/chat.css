@@ -1,14 +1,35 @@
+/* Bleu
+ #1283ed : foncée
+#e16d07: claire 
+Maron
+#e16d07 : claire
+#432705 : foncée
+*/
 /* ================================================== 
                     CHAT HOME
    ================================================== */
 .chatHome {
-  /* border: 0.01rem solid #333; */
   overflow: hidden;
   background-color: #432705;
-  transition: 0.2s ease-in-out;
+}
+.chatHomeContainer {
+  width: 400px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+.chatHomeContainer #btn-toggle {
+  float: right;
+  outline: none !important;
+  background-color: #e16d07;
 }
 .chatHomeDisplay {
+  transition: 0.9s ease;
   transform: translateY(-1000%);
+}
+.chatHomeDisplayYes {
+  transition: 0.4s ease;
+  transform: translateY(0%);
 }
 /* ================================================== 
                     CHAT HEADER
@@ -23,16 +44,39 @@
 .chatHeader .chatHeaderBtnContainer {
   background-color: #e16d07;
 }
+
+/* ================================================== 
+                SEARCH-FORM 
+   ================================================== */
+/* .search{
+  border-bottom: 1px solid #e16d07 !important;
+} */
+.searchForm #navbar-input-container input {
+  outline: none !important;
+  background-color: transparent;
+  border-bottom: 1px solid #e16d07 !important;
+}
+
+.searchForm #navbar-input-container input::placeholder {
+  color: #fff;
+  font-style: italic;
+}
+
+.searchForm #navbar-input-container input:focus {
+  box-shadow: none;
+}
+
+.userChat .userChatInfo .userChatInfoName {
+  font-size: 12px;
+}
+.search .searchForm #searchFormBtn,
+.search .userChatContainer {
+  cursor: pointer;
+}
+
 /* ================================================== 
                     CHATS 
    ================================================== */
-.chatHomeContainer {
-  width: 400px;
-  position: absolute;
-  bottom: 15px;
-  right: 20px;
-}
-
 .chats {
   overflow-x: scroll;
 }
@@ -50,24 +94,6 @@
 .chats::-webkit-scrollbar-track {
   background-color: transparent;
 }
-
-.chatHomeContainer #btn-toggle {
-  float: right;
-  outline: none !important;
-  background-color: #e16d07;
-}
-.chatHomeContainer {
-  width: 400px;
-  position: fixed;
-  bottom: 30px;
-  right: 20px;
-}
-/* .chatHome{
-    width: 400px;
-    position: absolute;
-    bottom: 60px;
-    right: 30px;
-} */
 .chats {
   overflow-x: scroll;
 }
@@ -83,20 +109,17 @@
 .userChat img {
   width: 40px;
 }
-/* ================================================== 
-                SEARCH-FORM 
-   ================================================== */
-.searchForm #navbar-input-container input {
-  outline: none !important;
-  background-color: transparent;
-  border-bottom: 1px solid #e16d07 !important;
+.chats .userChat {
+  cursor: pointer;
+  width: 60px;
+  overflow-x: hidden;
+  /* flex-wrap: nowrap; */
 }
-.searchForm #navbar-input-container input::placeholder {
-  color: #fff;
-  font-style: italic;
+.chats .userChat span {
+  font-size: 12px;
 }
-.form-control:focus {
-  box-shadow: none;
+.userChat .userChatInfo .userChatInfolastMessage {
+  font-size: 10px;
 }
 
 /* ================================================== 
@@ -149,4 +172,40 @@
 .messages .owner .messageContent p {
   max-width: fit-content;
   border-radius: 10px 0 10px 10px;
+}
+/* Styles pour la barre de défilement */
+.messages::-webkit-scrollbar {
+  width: 6px;
+  margin-bottom: 22px;
+}
+
+.messages::-webkit-scrollbar-thumb {
+  background-color: #e16d07;
+  border-radius: 10px;
+}
+
+.messages::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* ================================================== 
+                CHAT-INPUT
+   ================================================== */
+.chatInput input {
+  background-color: transparent;
+  border: 1px solid #e16d07;
+}
+.chatInput input:focus {
+  background-color: transparent;
+  box-shadow: none;
+  border: 1px solid #e16d07;
+}
+.chatInput input::placeholder {
+  color: #fff;
+}
+.chatInput .btn {
+  background-color: #e16d07;
+}
+.chatInput .btn:hover {
+  background-color: #e16d07;
 }
