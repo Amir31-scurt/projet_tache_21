@@ -11,7 +11,7 @@ import {
   updateDoc,
   doc,
   onSnapshot,
-} from "firebase/firestore";
+} from 'firebase/firestore';
 
 import { db, storage } from '../../config/firebase-config';
 import Domaine from './Domaine';
@@ -23,20 +23,19 @@ const FormikDoc = () => {
   const [selectedDomaine, setSelectedDomaine] = useState(null);
   const [isAdding, setIsAdding] = useState(true);
 
-
   const toggleSousDomainesInput = () => {
     setShowSousDomainesInput((prev) => !prev);
   };
 
   const loadDomaines = useCallback(() => {
-    const unsubscribe = onSnapshot(collection(db, "domaines"), (snapshot) => {
+    const unsubscribe = onSnapshot(collection(db, 'domaines'), (snapshot) => {
       const updatedDomaines = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
       setDomaines(updatedDomaines);
     });
-  
+
     return () => {
       // Nettoyez le listener lors du démontage du composant
       unsubscribe();
@@ -167,10 +166,10 @@ const FormikDoc = () => {
     },
     validate: (data) => {
       let errors = {};
-      if(isAdding && !isAdding){
+      if (isAdding && !isAdding) {
         if (!data.sousDomaines && !data.name) {
-          errors.sousDomaines = "Sous domaines is required.";
-          errors.name = "Name is required.";
+          errors.sousDomaines = 'Sous domaines is required.';
+          errors.name = 'Name is required.';
         }
       }
 
@@ -203,7 +202,7 @@ const FormikDoc = () => {
   };
 
   return (
-    <div className="card border-0 flex justify-content-center p-3 domaine">
+    <div className="card border-0 d-flex justify-content-center p-3 domaine">
       <Toast ref={toast} />
       <form
         onSubmit={formik.handleSubmit}
@@ -287,7 +286,12 @@ const FormikDoc = () => {
           label={isAdding ? 'Ajouter' : 'Modifier'}
           type="submit"
           icon="pi pi-check"
-          className={isAdding ? "col-md-4 text-white rounded" : "col-md-4 text-white rounded bg-warning"}
+          style={{ backgroundColor: '#3084b5' }}
+          className={
+            isAdding
+              ? 'col-md-4 text-white rounded'
+              : 'col-md-4 text-white rounded bg-warning'
+          }
         />
       </form>
       <Domaine
