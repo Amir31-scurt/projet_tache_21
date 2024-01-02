@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 // import affiche from "../assets/images/affiche.jpg";
-import LogoTech from '../../assets/images/logo2.png';
-import FormConnect from '../Connected/formConnect';
+import LogoTech from "../../assets/images/logo2.png";
+import FormConnect from "../Connected/formConnect";
 
 export default function Connexion() {
-  const state = 'true';
+  const state = "true";
   const [connected, setConnected] = useState(state);
   return (
     <div class="container-fluid contain-connect  ">
@@ -16,7 +16,7 @@ export default function Connexion() {
               <div className="d-flex flex-column justify-content-center align-items-center">
                 <div className="imagel d-flex flex-column justify-content-center align-items-center">
                   <img src={LogoTech} className="img-fluid" alt="" />
-                  <h3 className="" style={{ color: '#3084b5' }}>
+                  <h3 className="" style={{ color: "#3084b5" }}>
                     Gaandal
                   </h3>
                 </div>
