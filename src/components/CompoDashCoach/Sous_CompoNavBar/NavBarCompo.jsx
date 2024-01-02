@@ -13,7 +13,6 @@ import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Notifications from "./Notifications";
 
-
 export const NavBarCompo = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -45,7 +44,7 @@ export const NavBarCompo = () => {
               <div className="img-logo d-flex align-items-center justify-content-center">
                 <img src={LogoTech} className="img-fluid " alt="" />
                 <h3 className="GandalTitle" style={{ color: "#3084b5" }}>
-                  Gandal
+                  Gaandal
                 </h3>
               </div>
             </div>

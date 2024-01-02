@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { InputText } from 'primereact/inputtext';
@@ -11,8 +12,7 @@ import { auth, db } from '../../config/firebase-config';
 import { Dropdown } from 'primereact/dropdown';
 import { addDoc, collection } from 'firebase/firestore';
 import emailjs from 'emailjs-com';
-import randomString from 'crypto-random-string';
-import TemplateDemo from '../super-admin/AssignationDomaines';
+import AssignationPage from '../super-admin/AssignationDomaines';
 
 emailjs.init('iyzQvt6sAJkX_ndas');
 
@@ -21,23 +21,31 @@ const Inscription = () => {
   const roles = ['Administrateur', 'Coach', 'Étudiant'];
   const [showMessage, setShowMessage] = useState(false);
 
+  // Fonction pour générer un mot de passe aléatoire
+  const generateRandomPassword = () => {
+    const length = 8;
+    const charset =
+      'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-+=';
+    let password = '';
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      password += charset[randomIndex];
+    }
+
+    return password;
+  };
+
   const [formData, setFormData] = useState({
     name: '',
     address: '',
     number: '',
     email: '',
-    password: '',
+    password: generateRandomPassword(),
     role: '',
-    accept: false,
+    archived: false,
     active: true,
   });
-
-  useEffect(() => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      password: generateRandomPassword(),
-    }));
-  }, []);
 
   const defaultValues = {
     name: '',
@@ -46,26 +54,15 @@ const Inscription = () => {
     email: '',
     password: '',
     role: '',
-    accept: false,
+    archived: false,
     active: true,
   };
 
-  const generateRandomPassword = () => {
-    // Vous pouvez personnaliser la longueur et les caractères autorisés selon vos besoins
-    const newPassword = randomString({
-      length: 12,
-      characters:
-        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()',
-    });
-
-    // Mettez à jour la valeur du mot de passe dans le state
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      password: newPassword,
-    }));
-
-    return newPassword;
-  };
+  // Générer un nouveau mot de passe lors du montage du composant
+  useEffect(() => {
+    const newPassword = generateRandomPassword();
+    setFormData((prevData) => ({ ...prevData, password: newPassword }));
+  }, []);
 
   // Contrôle des champs
   const {
@@ -78,10 +75,11 @@ const Inscription = () => {
   // Soummission du formulaire pour inscrire
   const onSubmit = async (data) => {
     try {
+      const randomPassword = generateRandomPassword();
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         data.email,
-        data.password
+        formData.password
       );
 
       // Récupérez l'ID de l'utilisateur créé
@@ -95,8 +93,9 @@ const Inscription = () => {
         number: data.number,
         email: data.email,
         role: data.role,
+        archived: data.archived,
         active: data.active,
-        password: data.password,
+        password: formData.password,
       });
 
       setFormData(data);
@@ -107,7 +106,7 @@ const Inscription = () => {
       const templateParams = {
         to_email: data.email,
         subject: 'Vos identifiants',
-        message: `Bonjour ${data.name}, \n\nVotre compte a été créé avec succès. Vos identifiants sont: \nEmail: ${data.email} \nMot de passe: ${data.password}`,
+        message: `Bonjour ${data.name}, \n\nVotre compte a été créé avec succès. Vos identifiants sont: \nEmail: ${data.email} \nMot de passe: ${formData.password} \n\nCliquez sur le lien suivant pour accéder à notre site: https://projet-tache-21-5thn.vercel.app/`,
       };
 
       emailjs
@@ -171,10 +170,9 @@ const Inscription = () => {
           ></i>
           <h5>Inscription réussie!</h5>
           <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
-            Votre compte est enrégistré sous le nom <b>{formData.name}</b>. Il
-            sera valable pour les 30 prochains jours sans activation. Veuillez
-            consulter
-            <b>{formData.email}</b> pour obtenir des inscturctions d'activation.
+            Vous venez de créer un compte sous le nom <b>{formData.name}</b> et
+            sous l'email {''}
+            <b>{formData.email}</b>.
           </p>
         </div>
       </Dialog>
@@ -290,13 +288,13 @@ const Inscription = () => {
                   render={({ field, fieldState }) => (
                     <Password
                       id={field.name}
-                      value={formData.password}
                       {...field}
                       toggleMask
                       placeholder="Mot de passe"
                       className={classNames({
                         'p-invalid': fieldState.invalid,
                       })}
+                      value={formData.password}
                       header={passwordHeader}
                       footer={passwordFooter}
                     />
@@ -330,12 +328,12 @@ const Inscription = () => {
             <Button
               type="submit"
               label="Inscrire"
-              className="mt-2 last text-light"
+              className="mt-2 inscributton text-light"
             />
           </form>
         </div>
       </div>
-      <TemplateDemo />
+      <AssignationPage />
     </div>
   );
 };

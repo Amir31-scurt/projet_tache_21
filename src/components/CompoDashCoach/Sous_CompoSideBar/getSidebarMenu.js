@@ -105,22 +105,10 @@ export const GetSidebarMenu = () => {
           link: '/dashboard/assignation',
         },
         {
-          title: 'Etudiants',
-          icon: <PiStudentBold />,
-          id: 'link5',
-          link: '',
-        },
-        {
-          title: 'Certificats',
+          title: 'Bulletin',
           icon: <TbCertificate />,
           id: 'link6',
           link: '/dashboard/certificat',
-        },
-        {
-          title: 'Parametre',
-          icon: <LuSettings />,
-          id: 'link7',
-          link: '',
         },
       ];
     } else if (isStudent) {
@@ -168,7 +156,7 @@ export const GetSidebarMenu = () => {
       ))}
     </div>
   ) : (
-    <div className="mx-4 d-flex gap-3 flex-column">
+    <div className="mx-4 holder">
       <Placeholder.Paragraph
         style={{ marginTop: 30 }}
         rows={1}

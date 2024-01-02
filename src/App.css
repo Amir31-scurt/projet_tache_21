@@ -10,17 +10,17 @@ body {
   box-sizing: 0;
   background-color: #fff;
 }
-.SmallMsg{
+.SmallMsg {
   color: red;
   margin-top: 10px;
   display: block;
   font-weight: bold;
   text-align: center;
 }
-.AdmLineDif{
+.AdmLineDif {
   width: 100%;
-  height: 7px;
-  background-color: #30842593;
+  height: 2px;
+  background-color: #3084b5;
   border-radius: 20px;
   margin: 45px 0;
 }
@@ -563,7 +563,7 @@ body {
 .BigContainer {
   background-color: #fff;
 }
-.ComtaTabAss{
+.ComtaTabAss {
   width: 50%;
 }
 @media screen and (max-width: 692px) {
@@ -572,7 +572,7 @@ body {
     display: flex;
     justify-content: center;
   }
-  .ComtaTabAss{
+  .ComtaTabAss {
     width: 100%;
   }
 }
@@ -892,7 +892,7 @@ body {
     border-radius: 0;
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     position: fixed;
     bottom: 0;
     height: auto;
@@ -980,7 +980,6 @@ body {
 
 /* Css ajout de l'utilisateur côté admin par oury */
 .form-demo {
-  display: flex;
   margin-top: 20px;
 }
 .form-demo .card {
@@ -992,16 +991,40 @@ body {
 .form-demo .card .field {
   margin-bottom: 1.5rem;
 }
-@media screen and (max-width: 1024px) {
+.form-demo .inscributton {
+  background-color: #3084b5;
+  border-radius: 9px;
+}
+.boutonAssign {
+  background-color: #3084b5;
+  border-radius: 9px;
+}
+.holder {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (max-width: 1024px) {
   .form-demo .card {
     width: 80%;
-    min-width: 95vw;
+    min-width: 92vw;
+  }
+  .domaine {
+    width: 92vw;
+  }
+  .holder {
+    display: flex;
+    flex-direction: row;
   }
 }
 @media screen and (max-width: 640px) {
   .form-demo .card {
     width: 100%;
-    min-width: 93vw;
+    min-width: 90vw;
+  }
+  .domaine {
+    width: 90vw;
   }
 }
 
@@ -1009,3 +1032,15 @@ body {
   background-color: rgb(247, 239, 239) !important;
 }
 /*Fin */
+
+.myTable {
+  max-height: 500px;
+}
+
+@media (max-width: 1024px) {
+  /* Adjust the min-width as needed for 'large screens' */
+  .myTable {
+    overflow: scroll;
+    max-width: 90vw;
+  }
+}
