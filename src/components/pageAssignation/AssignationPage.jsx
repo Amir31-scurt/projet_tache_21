@@ -8,8 +8,8 @@ const AssignationPage = () => {
 
   return (
     <div
-      className="container text-center mt-5 w-100"
-      style={{ display: 'block', width: 500, paddingLeft: 30 }}
+      className="container justify-content-center flex-wrap text-center mt-5 w-100"
+      style={{ display: "block", width: 500 }}
     >
       <div className="text-center text">
         <h2 className="text-bolder">Tableau de bord du coach</h2>
@@ -20,7 +20,7 @@ const AssignationPage = () => {
         style={{
           width: 600,
           marginTop: 20, // Ajoute un espace en haut du tableau
-          border: '1px solid #ccc', // Ajoute une bordure
+          border: "1px solid #ccc", // Ajoute une bordure
           borderRadius: 5, // Ajoute des coins arrondis
         }}
         placeholder="Sélectionnez"
@@ -28,7 +28,7 @@ const AssignationPage = () => {
         // Ajoutez des styles spécifiques à la liste déroulante si nécessaire
         menuStyle={{
           maxHeight: 200, // Limite la hauteur de la liste déroulante
-          overflowY: 'auto', // Ajoute une barre de défilement en cas de dépassement de la hauteur
+          overflowY: "auto", // Ajoute une barre de défilement en cas de dépassement de la hauteur
         }}
       />
     </div>
