@@ -9,7 +9,7 @@ import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
 
 const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
+const ITEM_PADDING_TOP =8;
 const MenuProps = {
   PaperProps: {
     style: {
@@ -60,7 +60,7 @@ export default function FilterStudents() {
     <div className="d-flex justify-content-end mx-2 mt-5">
       <FormControl
         sx={{ m: 1, width: 300 }}
-        className="filterStudent rounded border-0"
+        className="filterStudent  border-0"
       >
         <InputLabel
           id="demo-multiple-chip-label"
@@ -76,7 +76,7 @@ export default function FilterStudents() {
           onChange={handleChange}
           input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
           renderValue={(selected) => (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
               {selected.map((value) => (
                 <Chip key={value} label={value} />
               ))}

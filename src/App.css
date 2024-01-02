@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 * {
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 body {
@@ -9,6 +9,157 @@ body {
   padding: 0;
   box-sizing: 0;
   background-color: #fff;
+}
+
+/* Quizzs CSS */
+
+.module-container {
+  display: flex;
+}
+
+.module-container .sidebar {
+  /* width: 25%;  */
+  background-color: #f0f2f5;
+  height: 100vh;
+  position: fixed;
+  overflow-y: scroll;
+}
+
+.module-container .file {
+  padding: 0px 10px;
+}
+.module-container .titre {
+  font-size: 32px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.module-container .main-content {
+  width: 100%;
+  padding: 20px;
+  margin: 10px;
+  margin-left: 40%;
+  text-align: left !important;
+}
+
+.module-container input[type='radio'] {
+  --webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  /* background-color: #48a93c !important;  */
+  border: 2px solid #999;
+}
+
+.module-container input:checked {
+  border: 2px solid #007bff !important;
+  background-color: #48a93c;
+}
+
+.module-container .lesson-item {
+  background-color: white;
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+  border-left: 5px solid #48a93c !important;
+  /* Blue border for active item */
+}
+
+.content-block {
+  background-color: white;
+  width: 100%;
+  margin-bottom: 10px;
+  cursor: pointer;
+  padding: 20px;
+  border-left: 5px solid #48a93c !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.introduction {
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: left;
+  margin-left: 8%;
+}
+
+.module-container .label {
+  margin-left: 5px;
+  font-family: Montserrat;
+  font-size: 16px;
+  color: #000000;
+}
+
+.module-container .paragraph {
+  margin-top: 5%;
+  color: black;
+  width: 100%;
+  margin-left: 5px;
+}
+
+.dig {
+  /* background-color: #3084b5;  */
+  color: black;
+  font-size: 16px;
+  width: 100%;
+  height: 10vh;
+  padding-left: 10px;
+  padding-top: 20px;
+}
+
+.sous {
+  border-radius: 20px;
+  height: 50px;
+  font-size: 22px;
+  width: 30%;
+  margin-left: 25%;
+  margin-top: 30px;
+  background-color: #48a93c;
+  border: none;
+  color: white;
+  font-weight: bold;
+}
+
+.paragraph {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+@media (max-width: 1024px) {
+  .module-container {
+    flex-direction: column;
+    /* width: 100%; */
+  }
+
+  .module-container .sidebar {
+    width: 100%;
+    position: relative;
+  }
+
+  .module-container .main-content {
+    width: 100%;
+    margin-left: 30%;
+  }
+
+  .module-container .lesson-item {
+    background-color: white;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 50%;
+    border-left: 5px solid #e16d07;
+    /* Blue border for active item */
+  }
+
+  .module-container .content-block {
+    width: 53%;
+  }
+
+  .sous {
+    width: 40%;
+  }
 }
 
 .cardpcc {
@@ -266,24 +417,9 @@ body {
 .mainBackgrounColor {
   color: #e16b07;
 }
-
-/* .Lbtn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 150px;
-    height: 30px;
-    background: #e16b07;
-    color: white;
-    font-size: 12px;
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 10rem;
-    transition: transform 400ms;
-    &:hover {
-        transform: scale(1.15);
-    }
-} */
+.tableShadow {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
 /* Fin Cheikh CSS */
 
 /* Mariama CSS */
@@ -301,33 +437,16 @@ body {
   background-position: center;
 }
 .height-form {
-  /* width: 40% !important; */
   display: flex;
   align-items: center;
   justify-content: center;
   margin: auto;
   height: 100vh;
 }
-
-.bouton-switch button {
-  flex: 1;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  background-color: transparent;
+.imagel {
+  height: 200px;
+  width: 200px;
 }
-
-.bouton-switch {
-  background-color: #432705;
-  border-radius: 30px;
-}
-.bouton-switch .active {
-  /* height: 30px; */
-  border-radius: 33px !important;
-  background-color: #e16d07 !important;
-}
-/* background-color: #49BBBD; */
-
 .tire {
   border-radius: 33px !important;
 }
@@ -335,7 +454,7 @@ body {
   height: 40px;
   border-radius: 33px !important;
   width: 30%;
-  background-color: #e16d07 !important;
+  background-color: #3084b5 !important;
 }
 .first {
   background-color: #f5f5f5;
@@ -350,6 +469,17 @@ body {
 }
 .oubli {
   color: #189ab4;
+}
+.inputStyle {
+  border: 1px solid #3084b5;
+  padding: 3px;
+  color: white;
+  background-color: #3084b5 !important;
+  border-radius: 6px;
+}
+.output {
+  height: 100px;
+  width: 100px;
 }
 /* Suivi du programme */
 .category-card {
@@ -393,13 +523,13 @@ body {
   box-shadow: 1px 1px 7px 1px rgba(255, 255, 255, 0.582);
 }
 .CouleurA {
-  background-color: #b3b3b396;
+  background-color: #9ad3f4;
 }
 .CouleurB {
-  background-color: #82c55592;
+  background-color: #48a93c;
 }
 .CouleurC {
-  background-color: #a62ac877;
+  background-color: #3084b5;
 }
 .ContaCardDsb {
   flex-wrap: wrap;
@@ -425,7 +555,8 @@ body {
 
 .NavBarContainer {
   width: 100%;
-  background-color: #432705;
+  background-color: #fff;
+
   height: 80px;
   border-radius: 2px;
 }
@@ -449,7 +580,7 @@ body {
   align-items: center;
   justify-content: center;
   height: 100%;
-  width: 80px;
+  width: 110px;
 }
 .SecRightNav {
   width: 80%;
@@ -461,7 +592,7 @@ body {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 2px solid #4a2801;
+  border: 1px solid #3084b5;
   cursor: pointer;
 }
 
@@ -486,7 +617,7 @@ body {
 }
 
 .IcoColor {
-  color: #fc7b09;
+  color: #3084b5;
   font-size: 20px;
 }
 .ContImputUser {
@@ -527,6 +658,15 @@ body {
   background-color: #502906db;
   color: #fff;
 }
+
+.last {
+  background-color: #3084b5;
+  border-radius: 15px;
+}
+.last:hover {
+  background-color: #4c9aff;
+}
+
 /* =============== Je crée ici le CSS que je vais Utilisé Fin =============== */
 
 /* Buttons :  #6B240C */
@@ -558,7 +698,7 @@ body {
 }
 
 .program-card button {
-  background-color: #e16d07;
+  background-color: #3084b5;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -567,7 +707,7 @@ body {
 }
 
 .program-card button:hover {
-  background-color: #ca6206;
+  background-color: #9ad3f4;
 }
 
 .program-list {
@@ -576,13 +716,23 @@ body {
   justify-content: center;
 }
 
+/* CardLivraison */
+/* .cardLivraison{
+  margin-left: 200px;
+}
+
+@media (min-width: 412px) {
+  .cardLivraison{
+  margin-left: 40px;
+}
+} */
 /*-----------------------Sidebar---------------------*/
 .sidebar {
   height: 100vh;
   padding: 1%;
 }
 .sidebar .list-group-item:hover {
-  background-color: #ff7700 !important;
+  background-color: #48a93c !important;
   color: #fff;
   text-decoration: none;
 }
@@ -594,12 +744,12 @@ body {
   text-decoration: none;
   color: #fff;
 }
-.sidebar .list-group-item:focus {
-  background-color: #ff7700 !important;
-  color: #552704;
+.sidebar .active {
+  background-color: #48a93c !important;
+  color: #fff;
   font-weight: bold;
-  border-right: 15px solid #5a2a00;
-  transition: 1s;
+  border-right: 10px solid #308425 !important;
+  /* transition: 0.5s; */
 }
 
 .sidebar .icon {
@@ -607,7 +757,7 @@ body {
 }
 
 #contentSidebar {
-  background-color: #8b510a;
+  background-color: #3084b5;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   position: fixed;
@@ -616,7 +766,6 @@ body {
   height: 90vh;
   z-index: 100;
 }
-
 .modal-dialog {
   max-width: 60% !important;
 }
@@ -636,7 +785,7 @@ body {
 }
 
 .filterStudent {
-  background-color: #ca6206;
+  background-color: #3084b5;
   color: white !important;
   border: none !important;
 }
@@ -646,7 +795,7 @@ body {
 }
 
 .filterStudent fieldset {
-  border: 1px solid #ca6206 !important;
+  border: 1px solid #3084b5 !important;
 }
 
 .filterStudent .MuiChip-label {
@@ -714,7 +863,6 @@ body {
     width: 100%;
     display: flex;
     justify-content: center;
-    justify-content: space-around;
     position: fixed;
     bottom: 0;
     height: auto;
@@ -725,6 +873,9 @@ body {
   .sidebar .linkSidebar {
     display: flex;
     margin-left: 4px;
+  }
+  .GandalTitle {
+    display: none;
   }
 }
 
@@ -744,6 +895,30 @@ body {
 .car img {
   height: 150px;
   width: 100%;
+}
+.loadingPageLogo {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loadingPageLogo img {
+  animation: pulse 2s infinite ease-in-out;
+  width: 150px;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -765,10 +940,42 @@ body {
   background-color: #e16d07;
 }
 .bg-cours {
-  background-color: #f0c5a939;
   height: 100vh;
 }
 .divard {
   display: flex !important;
 }
 /*   Fin Mariama Css */
+/*  */
+
+/* Css ajout de l'utilisateur côté admin par oury */
+.form-demo {
+  display: flex;
+  margin-top: 20px;
+}
+.form-demo .card {
+  min-width: 450px;
+}
+.form-demo .card form {
+  margin-top: 2rem;
+}
+.form-demo .card .field {
+  margin-bottom: 1.5rem;
+}
+@media screen and (max-width: 1024px) {
+  .form-demo .card {
+    width: 80%;
+    min-width: 95vw;
+  }
+}
+@media screen and (max-width: 640px) {
+  .form-demo .card {
+    width: 100%;
+    min-width: 93vw;
+  }
+}
+
+.archived td {
+  background-color: rgb(247, 239, 239) !important;
+}
+/*Fin */
