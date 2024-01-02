@@ -85,6 +85,9 @@ const Inscription = () => {
       // Récupérez l'ID de l'utilisateur créé
       const userId = userCredential.user.uid;
 
+      await updateProfile(userCredential.user, {
+        displayName: data.name,
+      });
       // Enregistrez les données dans Firestore
       await addDoc(collection(db, 'utilisateurs'), {
         userId: userId,
