@@ -10,9 +10,9 @@ export default function DashboardCompo({
   return (
     <div className="WidthCardDsb">
       <div
-        className={`CardDashBoard d-flex justify-content-center align-items-center my-3 ${couleurCarte}`}
+        className={`CardDashBoard d-flex justify-content-center align-items-center pb-3 my-3 ${couleurCarte}`}
       >
-        <div className=" px-4">
+        <div className="px-4">
           <div className="d-flex justify-content-between ">
             <div className="me-5 d-flex align-items-center pt-3">
               <p

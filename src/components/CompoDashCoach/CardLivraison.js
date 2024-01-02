@@ -24,7 +24,6 @@ function CardLivraison() {
           <i
             className="bi bi-eye-fill fs-3"
             onClick={handleShow}
-            id="viewDetails"
             role="button"
           ></i>
           <span className="d-flex align-items-center">Il y'a 1 jour</span>

@@ -94,12 +94,12 @@ export default function CardLivraison() {
   return (
     <div className="">
       <div className="container containerApprenant w-100 my-5">
-        <div className="row rowAppenant">
+        <div className="row rowAppenant align-items-center">
           <div className="col-md-12 d-flex colApprenant my-3">
             <img src={userProfile} alt="" className="icon" />
             <div className="mySpan">
-              <h6 className=" px-3 pt-2 mainColor">{apprenant}</h6>
-              <p className="m-0 px-3 pt-2 mainColor">{date}</p>
+              <h6 className=" px-3 pt-2 dark">{apprenant}</h6>
+              <p className="m-0 px-3 pt-2 dark">{date}</p>
             </div>
           </div>
 

@@ -9,7 +9,7 @@ export default function Programme() {
   return (
     <div className='bg-cours'>
     <div className='container ' >
-      <h2 className='text-start'>Programme</h2>
+      <h2 className='text-start'>Mon Programme</h2>
       <div className='row'>
         <div className='col-md-3'>
          <CompoHtml/>
