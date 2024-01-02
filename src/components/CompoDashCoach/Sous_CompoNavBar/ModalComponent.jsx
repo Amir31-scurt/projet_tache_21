@@ -7,34 +7,29 @@ import FormComponent from "./FormComponent";
 import { toast } from "react-toastify";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../../config/firebase-config";
+// import { onAuthStateChanged } from "firebase/auth";
+// import { doc, getDoc, collection, getDocs } from "firebase/firestore";
+// import { auth, db } from "../../../config/firebase-config";
 
 const ModalComponent = () => {
   const { open, handleClose } = useContext(NavBarContext);
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
-      if (authUser) {
-        setUser({
-          name: authUser.displayName,
-          email: authUser.email,
-          uid: authUser.uid,
-        });
-
-        try {
-          // ...
-        } catch (error) {
-          toast.error("Error loading profile photo:", error);
-        }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log(user);
+      if (user) {
+        // L'utilisateur est connecté
+        setUser(user);
       } else {
+        // L'utilisateur n'est pas connecté
         setUser(null);
       }
     });
 
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+    // Nettoyer l'abonnement lors du démontage du composant
+    return () => unsubscribe();
+  }, []); // A
 
   return (
     <Modal open={open} onClose={handleClose}>
@@ -54,6 +49,7 @@ const ModalComponent = () => {
               type="image"
               src={UserProfil}
               className="ProfilUser img-fluid"
+              alt="Profil de l'utilisateur"
             />
           </div>
           {/*===============Bouton Modifier le Profil debut========= */}
@@ -68,10 +64,10 @@ const ModalComponent = () => {
 
         <div className="w-100 mt-2">
           <h4 className="PrenomUser fs-5 text-center  text-secondary fst-italic">
-            <p>{user.name}</p>
+            {user ? user.displayName : "Nom non disponible"}
           </h4>
           <h4 className="EmailUser fs-6 text-center text-secondary fst-italic">
-            <p>{user.email}</p>
+            {user ? user.email : "Email non disponible"}
           </h4>
         </div>
 

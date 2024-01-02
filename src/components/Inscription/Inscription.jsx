@@ -7,7 +7,7 @@ import { Password } from "primereact/password";
 import { Dialog } from "primereact/dialog";
 import { Divider } from "primereact/divider";
 import { classNames } from "primereact/utils";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, db } from "../../config/firebase-config";
 import { Dropdown } from "primereact/dropdown";
 import { addDoc, collection } from "firebase/firestore";
@@ -80,6 +80,10 @@ const Inscription = () => {
         data.email,
         formData.password
       );
+
+      await updateProfile(userCredential.user, {
+        displayName: data.name,
+      });
 
       // Récupérez l'ID de l'utilisateur créé
       const userId = userCredential.user.uid;

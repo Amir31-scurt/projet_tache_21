@@ -4,8 +4,8 @@ import LogoTech from "../../assets/images/logo2.png";
 import FormConnect from "../Connected/formConnect";
 
 export default function Connexion() {
-  const state = "true";
-  const [connected, setConnected] = useState(state);
+  // const state = "true";
+  // const [connected, setConnected] = useState(state);
   return (
     <div class="container-fluid contain-connect  ">
       <div class="row d-flex justify-content-center align-items-center ">
