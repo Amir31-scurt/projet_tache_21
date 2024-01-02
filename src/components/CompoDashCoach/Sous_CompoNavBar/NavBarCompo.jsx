@@ -12,9 +12,12 @@ import NavBarContext from "./context";
 import { auth } from "../../../config/firebase-config";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { EmailContext } from "../../../contexte/EmailContexte";
 
 export const NavBarCompo = () => {
+  const { email, setEmail } = useContext(EmailContext);
   const [open, setOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState(UserProfil);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -25,6 +28,7 @@ export const NavBarCompo = () => {
     try {
       await signOut(auth);
       navigate("/");
+      setEmail("");
       localStorage.removeItem("userEmail");
       // ... any other logout logic
     } catch (error) {
@@ -51,7 +55,6 @@ export const NavBarCompo = () => {
           </div>
           {/*=====================SECOND PARTIE DU NavBar Debut============= */}
           <div className="SecRightNav">
-            {/* <div className="Lbtn me-5 me-sm-3 ">Livrer une tache</div> */}
             <div className="MessageIcone d-flex align-items-center justify-content-center">
               <MdMessage className="fs-4" style={{ color: "#3084b5" }} />
             </div>
@@ -67,13 +70,10 @@ export const NavBarCompo = () => {
             {/*================Icone du DropDown========= */}
             <Dropdown
               title={
-                <input
-                  type="image"
-                  src={UserProfil}
+                <img
+                  src={profileImage}
                   className="img-fluid ProfilSpace"
-                  // <TbTriangleInvertedFilled
-                  //   className="fs-5"
-                  //   style={{ color: "#d4f1f4" }}
+                  alt=""
                 />
               }
               placement="bottomEnd"
@@ -94,7 +94,11 @@ export const NavBarCompo = () => {
           </div>
 
           {/*====== Le Bouton Modal  ======*/}
-          <ModalComponent />
+          <ModalComponent
+            onProfileImageChange={(newProfileImage) =>
+              setProfileImage(newProfileImage)
+            }
+          />
           {/*====== Le Bouton Modal  ======*/}
         </div>
       </div>

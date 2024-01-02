@@ -328,7 +328,11 @@ const Inscription = () => {
               </span>
               {getFormErrorMessage("role")}
             </div>
-            <Button type="submit" label="Inscrire" className="mt-2" />
+            <Button
+              type="submit"
+              label="Inscrire"
+              className="mt-2 inscributton text-light"
+            />
           </form>
         </div>
       </div>

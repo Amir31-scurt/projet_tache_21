@@ -242,7 +242,7 @@ export default function FormConnect() {
           <center>
             <button
               type="submit"
-              className="btn d-flex justify-content-center align-items-center fs-6 btn-lg btn-block text-white log"
+              className="btn d-flex justify-content-center align-items-center fs-6 btn-lg btn-block col-7 text-white log"
               disabled={loading}
             >
               {loading ? "Chargement..." : "Se connecter"}
