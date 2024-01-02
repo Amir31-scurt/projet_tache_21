@@ -183,7 +183,7 @@ const ProgramList = () => {
               className="d-flex flex-wrap col-lg-3 col justify-content-center car"
               key={index}
             >
-              <ProgramCard
+              <ProgramCard className='last'
                 title={program.title}
                 description={program.description}
                 imageUrl={program.imageUrl}

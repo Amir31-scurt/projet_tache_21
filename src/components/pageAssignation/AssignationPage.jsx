@@ -8,7 +8,7 @@ const AssignationPage = () => {
 
   return (
     <div
-      className="container justify-content-center flex-wrap text-center mt-5 w-100"
+      className="container justify-content-center align-items-center flex-wrap text-center mt-5 w-100"
       style={{ display: "block", width: 500 }}
     >
       <div className="text-center text">
@@ -18,8 +18,8 @@ const AssignationPage = () => {
       {/* Utilise le composant MultiCascader de rsuite avec les options récupérées */}
       <MultiCascader
         style={{
-          width: '100%',
-          maxwidth: '500px',
+          width: '60%',
+          maxwidth: '600px',
           marginTop: 20, // Ajoute un espace en haut du tableau
           border: "1px solid #ccc", // Ajoute une bordure
           borderRadius: 5, // Ajoute des coins arrondis
