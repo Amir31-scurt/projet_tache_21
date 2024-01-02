@@ -88,15 +88,15 @@ const ProgramList = () => {
   // Example data that would be fetched from an API or defined in your application
   const programs = [
     {
-      title: 'Design',
+      title: 'Gestion Internationale',
       description:
         'Learn the principles of user experience and user interface design.',
       imageUrl:
-        'https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg',
+        'https://cdn.shopify.com/s/files/1/0070/7032/files/Introduction_To_Marketing.jpg?v=1648057035',
       buttonText: 'Les cours',
     },
     {
-      title: 'Bureautique',
+      title: 'Finance',
       description:
         'Learn the principles of user experience and user interface design.',
       imageUrl:
@@ -104,7 +104,7 @@ const ProgramList = () => {
       buttonText: 'Les cours',
     },
     {
-      title: 'Programmation',
+      title: 'Gestion Entreprise',
       description:
         'Learn the principles of user experience and user interface design.',
       imageUrl:
@@ -112,7 +112,7 @@ const ProgramList = () => {
       buttonText: 'Les cours',
     },
     {
-      title: 'Marketing Digital',
+      title: 'Marketing ',
       description:
         'Learn the principles of user experience and user interface design.',
       imageUrl:

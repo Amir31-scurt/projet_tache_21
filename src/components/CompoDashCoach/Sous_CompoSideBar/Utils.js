@@ -54,13 +54,13 @@ export const menuSidebar = [
 
 export const ContenuCardDsb = [
   {
-    ChiffreCardDsb: '26',
-    IconeCardDsb: (
-      <FaUsers style={{ fontSize: '68px', opacity: '1', color: '#fff' }} />
-    ),
-    TextCardDsb: 'Professeurs',
-    couleurCarte: 'CouleurA',
-  },
+     ChiffreCardDsb: '26',
+     IconeCardDsb: (
+       <FaUsers style={{ fontSize: '68px', opacity: '1', color: '#fff' }} />
+     ),
+     TextCardDsb: 'Professeurs',
+     couleurCarte: 'CouleurA',
+   },
   {
     ChiffreCardDsb: '134',
     IconeCardDsb: (
