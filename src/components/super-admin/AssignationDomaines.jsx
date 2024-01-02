@@ -6,7 +6,9 @@ import {
   updateDoc,
   doc,
   where,
+  serverTimestamp,
   query,
+  addDoc,
 } from 'firebase/firestore';
 import { db } from '../../config/firebase-config';
 import { ToastContainer, toast } from 'react-toastify';
@@ -21,6 +23,9 @@ const AssignationPage = () => {
   const [value, setValue] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [notificationsCollection,setNotificationsCollection] = useState(
+    collection(db, "notifications")
+  );
 
   const handleAssign = async (e) => {
     e.preventDefault();
@@ -56,11 +61,20 @@ const AssignationPage = () => {
 
         if (coachDocs.size > 0) {
           const coachDoc = coachDocs.docs[0];
+          const notificationMessage = `Le domaine ${domaine} et les sous domaines ${sousDomaines} vous ont été assigné`;
           const coachDocRef = doc(db, 'utilisateurs', coachDoc.id);
           await updateDoc(coachDocRef, {
             domaine: domaine,
             sousDomaines,
           });
+
+          await addDoc(notificationsCollection, {
+            messageForAdmin: notificationMessage,
+            timestamp: serverTimestamp(),
+            newNotif: true,
+            email: userEmail,
+          });
+
 
           setErrorMessage(null);
           toast.success(

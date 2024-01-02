@@ -249,8 +249,8 @@ const FormikDoc = () => {
             <i
               className={`pi ${
                 showSousDomainesInput ? 'pi-minus' : 'pi-plus'
-              } bg-primary p-3 rounded`}
-              style={{ fontSize: '1rem' }}
+              } p-3 rounded`}
+              style={{ fontSize: '1rem', backgroundColor: "#3084b5", color: "#fff"}}
               role="button"
             ></i>
           </div>
@@ -278,6 +278,7 @@ const FormikDoc = () => {
               icon="pi pi-check"
               className="text-white"
               onClick={addSousDomaine}
+              style={{backgroundColor: "#3084b5"}}
             />
           </div>
         )}
@@ -288,6 +289,7 @@ const FormikDoc = () => {
           type="submit"
           icon="pi pi-check"
           className={isAdding ? "col-md-4 text-white rounded" : "col-md-4 text-white rounded bg-warning"}
+          style={{backgroundColor: "#3084b5"}}
         />
       </form>
       <Domaine

@@ -6,7 +6,7 @@ import { Password } from 'primereact/password';
 import { Dialog } from 'primereact/dialog';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db } from '../../config/firebase-config';
 import { Dropdown } from 'primereact/dropdown';
 import { addDoc, collection } from 'firebase/firestore';

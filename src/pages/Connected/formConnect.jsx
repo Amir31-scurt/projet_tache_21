@@ -112,7 +112,7 @@ export default function FormConnect() {
         password
       );
       const userEmail = userCredential.user.email; // Assuming this is how you get the email
-
+      console.log(userCredential.user);
       setEmail(userEmail);
       setPassword('');
 

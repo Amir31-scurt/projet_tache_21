@@ -142,6 +142,15 @@ body {
   font-weight: 700;
 }
 
+/*------------Notifications-----------*/
+.notifs{
+  background-color: whitesmoke !important;
+}
+/* .css-g3hgs1-MuiBackdrop-root-MuiModal-backdrop{
+  width: 500px !important;
+} */
+
+
 @media (max-width: 1024px) {
   .module-container {
     flex-direction: column;
@@ -745,6 +754,8 @@ body {
   margin-left: 40px;
 }
 } */
+
+
 /*-----------------------Sidebar---------------------*/
 .sidebar {
   height: 100vh;
