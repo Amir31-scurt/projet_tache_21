@@ -18,7 +18,8 @@ const AssignationPage = () => {
       {/* Utilise le composant MultiCascader de rsuite avec les options récupérées */}
       <MultiCascader
         style={{
-          width: 600,
+          width: '100%',
+          maxwidth: '500px',
           marginTop: 20, // Ajoute un espace en haut du tableau
           border: "1px solid #ccc", // Ajoute une bordure
           borderRadius: 5, // Ajoute des coins arrondis

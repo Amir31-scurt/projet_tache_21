@@ -145,7 +145,7 @@ const AssignationPage = () => {
 
   return (
     <div
-      className=" d-flex justify-content-center flex-column"
+      className=" d-flex justify-content-center flex-wrap flex-column"
       style={{ width: '100%' }}
     >
       <div className="AdmLineDif"></div>
