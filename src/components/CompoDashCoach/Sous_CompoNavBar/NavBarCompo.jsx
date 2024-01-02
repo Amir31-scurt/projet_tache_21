@@ -12,8 +12,23 @@ import { auth } from "../../../config/firebase-config";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Notifications from "./Notifications";
+import React, { useContext, useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import LogoTech from '../../../assets/images/logo.png';
+import UserProfil from '../../../assets/images/user.png';
+import { MdMessage } from 'react-icons/md';
+import { Dropdown } from 'rsuite';
+import { FaUserCog } from 'react-icons/fa';
+import { IoMdLogOut } from 'react-icons/io';
+import ModalComponent from './ModalComponent';
+import NavBarContext from './context';
+import { auth } from '../../../config/firebase-config';
+import { signOut } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import { EmailContext } from '../../../contexte/EmailContexte';
 
 export const NavBarCompo = () => {
+  const { email, setEmail } = useContext(EmailContext);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -24,8 +39,9 @@ export const NavBarCompo = () => {
   const logOut = async () => {
     try {
       await signOut(auth);
-      navigate("/");
-      localStorage.removeItem("userEmail");
+      navigate('/');
+      setEmail('');
+      localStorage.removeItem('userEmail');
       // ... any other logout logic
     } catch (error) {
       console.log(error);
@@ -43,7 +59,7 @@ export const NavBarCompo = () => {
             <div className="LogoConta2 ">
               <div className="img-logo d-flex align-items-center justify-content-center">
                 <img src={LogoTech} className="img-fluid " alt="" />
-                <h3 className="GandalTitle" style={{ color: "#3084b5" }}>
+                <h3 className="GandalTitle" style={{ color: '#3084b5' }}>
                   Gaandal
                 </h3>
               </div>
@@ -53,7 +69,7 @@ export const NavBarCompo = () => {
           <div className="SecRightNav">
             {/* <div className="Lbtn me-5 me-sm-3 ">Livrer une tache</div> */}
             <div className="MessageIcone d-flex align-items-center justify-content-center">
-              <MdMessage className="fs-4" style={{ color: "#3084b5" }} />
+              <MdMessage className="fs-4" style={{ color: '#3084b5' }} />
             </div>
             <Notifications />
 

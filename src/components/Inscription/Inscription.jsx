@@ -12,7 +12,6 @@ import { auth, db } from '../../config/firebase-config';
 import { Dropdown } from 'primereact/dropdown';
 import { addDoc, collection } from 'firebase/firestore';
 import emailjs from 'emailjs-com';
-import AssignationPage from '../super-admin/AssignationDomaines';
 
 emailjs.init('iyzQvt6sAJkX_ndas');
 
@@ -336,7 +335,6 @@ const Inscription = () => {
           </form>
         </div>
       </div>
-      <AssignationPage />
     </div>
   );
 };
