@@ -1,32 +1,46 @@
-import React, { useContext, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import LogoTech from '../../../assets/images/logo.png';
-import UserProfil from '../../../assets/images/user.png';
-import { MdMessage } from 'react-icons/md';
-import { IoNotifications } from 'react-icons/io5';
-import { Dropdown } from 'rsuite';
-import { FaUserCog } from 'react-icons/fa';
-import { IoMdLogOut } from 'react-icons/io';
-import ModalComponent from './ModalComponent';
-import NavBarContext from './context';
-import { auth } from '../../../config/firebase-config';
-import { signOut } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import LogoTech from "../../../assets/images/logo.png";
+import UserProfil from "../../../assets/images/user.png";
+import { MdMessage } from "react-icons/md";
+import { IoNotifications } from "react-icons/io5";
+import { Dropdown } from "rsuite";
+import { FaUserCog } from "react-icons/fa";
+import { IoMdLogOut } from "react-icons/io";
+import ModalComponent from "./ModalComponent";
+import NavBarContext from "./context";
+import { auth } from "../../../config/firebase-config";
+import { signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { EmailContext } from "../../../contexte/EmailContexte";
 
 export const NavBarCompo = () => {
+  const { email, setEmail } = useContext(EmailContext);
   const [open, setOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState(UserProfil);
+  const navigate = useNavigate();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  // Deconnexion
-  const navigate = useNavigate();
+  const getProfileImageFromLocalStorage = () => {
+    const storedProfileImage = localStorage.getItem("profileImage");
+    if (storedProfileImage) {
+      setProfileImage(storedProfileImage);
+    }
+  };
+
+  useEffect(() => {
+    getProfileImageFromLocalStorage();
+  }, []);
 
   const logOut = async () => {
     try {
       await signOut(auth);
-      navigate('/');
-      localStorage.removeItem('userEmail');
-      // ... any other logout logic
+      navigate("/");
+      setEmail("");
+      localStorage.removeItem("userEmail");
+      localStorage.removeItem("profileImage");
     } catch (error) {
       console.log(error);
     }
@@ -43,23 +57,22 @@ export const NavBarCompo = () => {
             <div className="LogoConta2 ">
               <div className="img-logo d-flex align-items-center justify-content-center">
                 <img src={LogoTech} className="img-fluid " alt="" />
-                <h3 className="GandalTitle" style={{ color: '#3084b5' }}>
-                  Gandal
+                <h3 className="GandalTitle" style={{ color: "#3084b5" }}>
+                  Gaandal
                 </h3>
               </div>
             </div>
           </div>
           {/*=====================SECOND PARTIE DU NavBar Debut============= */}
           <div className="SecRightNav">
-            {/* <div className="Lbtn me-5 me-sm-3 ">Livrer une tache</div> */}
             <div className="MessageIcone d-flex align-items-center justify-content-center">
-              <MdMessage className="fs-4" style={{ color: '#3084b5' }} />
+              <MdMessage className="fs-4" style={{ color: "#3084b5" }} />
             </div>
             <div className="NotifIcone d-flex align-items-center justify-content-center me-2">
               <div className="">
                 <IoNotifications
                   className="fs-4"
-                  style={{ color: '#3084b5' }}
+                  style={{ color: "#3084b5" }}
                 />
               </div>
             </div>
@@ -67,13 +80,10 @@ export const NavBarCompo = () => {
             {/*================Icone du DropDown========= */}
             <Dropdown
               title={
-                <input
-                  type="image"
-                  src={UserProfil}
+                <img
+                  src={profileImage}
                   className="img-fluid ProfilSpace"
-                  // <TbTriangleInvertedFilled
-                  //   className="fs-5"
-                  //   style={{ color: "#d4f1f4" }}
+                  alt=""
                 />
               }
               placement="bottomEnd"
@@ -94,7 +104,13 @@ export const NavBarCompo = () => {
           </div>
 
           {/*====== Le Bouton Modal  ======*/}
-          <ModalComponent />
+          <ModalComponent
+            onProfileImageChange={(newProfileImage) => {
+              setProfileImage(newProfileImage);
+              localStorage.setItem("profileImage", newProfileImage);
+            }}
+          />
+
           {/*====== Le Bouton Modal  ======*/}
         </div>
       </div>

@@ -25,23 +25,6 @@ export default function Template() {
     }
   }, [setEmail]);
 
-  // useEffect(() => {
-  //   const initializeData = async () => {
-  //     const storedUser = localStorage.getItem('user');
-  //     if (storedUser) {
-  //       // Parse the stored data and set it to the current user
-  //       setCurrentUser(JSON.parse(storedUser));
-  //     }
-  //     setIsLoading(false);
-  //   };
-  //   initializeData();
-  // }, []);
-
-  // useEffect(() => {
-  //   // When the currentUser changes, store it in local storage
-  //   localStorage.setItem('user', JSON.stringify(currentUser));
-  // }, [currentUser]);
-
   if (isLoading) {
     return (
       <div className="loadingPageLogo">
@@ -63,7 +46,7 @@ export default function Template() {
         <div className="SideSection">
           <SideBar />
         </div>
-        <div className="bodyContent d-flex">
+        <div className="bodyContent col d-flex">
           <div className="col">
             <Outlet />
             {/* Outlet Position */}

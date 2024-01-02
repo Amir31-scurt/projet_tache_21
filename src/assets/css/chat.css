@@ -8,7 +8,6 @@ Vert
 /* ================================================== 
                     CHAT HOME
    ================================================== */
-
 .chatHomeContainer {
   width: 400px;
   position: absolute;
@@ -38,7 +37,12 @@ Vert
   border-bottom: 3px solid #0071bd;
 }
 .chatHomeDisplay {
+  transition: 0.9s ease;
   transform: translateY(-1000%);
+}
+.chatHomeDisplayYes {
+  transition: 0.4s ease;
+  transform: translateY(0%);
 }
 /* ================================================== 
                     CHAT HEADER
@@ -75,11 +79,11 @@ Vert
   box-shadow: none;
 }
 
-.userChat .userChatInfo .userChatInfoName{
+.userChat .userChatInfo .userChatInfoName {
   font-size: 12px;
 }
 .search .searchForm #searchFormBtn,
-.search .userChatContainer{
+.search .userChatContainer {
   cursor: pointer;
 }
 
@@ -146,16 +150,16 @@ Vert
 .userChat img {
   width: 40px;
 }
-.chats .userChat{
+.chats .userChat {
   cursor: pointer;
   width: 60px;
   overflow-x: hidden;
   /* flex-wrap: nowrap; */
 }
-.chats .userChat span{
+.chats .userChat span {
   font-size: 12px;
 }
-.userChat .userChatInfo .userChatInfolastMessage{
+.userChat .userChatInfo .userChatInfolastMessage {
   font-size: 10px;
 }
 /* ================================================== 
@@ -245,16 +249,16 @@ Vert
 /* ================================================== 
                 CHAT-INPUT
    ================================================== */
-.chatInput input{
+.chatInput input {
   background-color: transparent;
   border: 1px solid #0071bd;
 }
-.chatInput input:focus{
+.chatInput input:focus {
   background-color: transparent;
   box-shadow: none;
   border: 1px solid #0071bd;
 }
-.chatInput input::placeholder{
+.chatInput input::placeholder {
   color: #fff;
 }
 .chatInput .btn{
@@ -266,4 +270,10 @@ Vert
 .chatInput .btn:disabled{
   background-color: #0071bd;
   border: #0071bd !important;
+}
+.chatInput .btn {
+  background-color: #e16d07;
+}
+.chatInput .btn:hover {
+  background-color: #e16d07;
 }

@@ -1,43 +1,53 @@
-import { Button } from 'primereact/button';
-import { Column } from 'primereact/column';
-import { TreeTable } from 'primereact/treetable';
-// import { NodeService } from "./service/NodeService";
-import 'primereact/resources/themes/lara-light-cyan/theme.css';
-import { classNames } from 'primereact/utils';
-
-//========= Imports Assignation debut =========/
-
+import { MultiCascader } from 'rsuite';
+import { useEffect, useState } from 'react';
 import {
   collection,
-  doc,
   getDocs,
-  query,
   updateDoc,
+  doc,
   where,
+  query,
 } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
-import { MultiCascader } from 'rsuite';
-import 'rsuite/dist/rsuite.css';
 import { db } from '../../config/firebase-config';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import 'rsuite/dist/rsuite.css';
+import { ClipLoader, PulseLoader } from 'react-spinners';
+import { AssignationEtudiant } from './AssignationEtudiant';
 
-//========= Imports Assignation  Fin=========/
-
-export default function TemplateDemo() {
+const AssignationPage = () => {
   const [domaines, setDomaines] = useState([]);
   const [users, setUsers] = useState([]);
-  const [cascade, setCascade] = useState(false);
   const [value, setValue] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleAssign = async (e) => {
     e.preventDefault();
 
     if (value.length > 0) {
-      // Obtenez le dernier élément sélectionné (le coach)
+      setLoading(true); // Activer le chargement
+
       const selectedCoach = value[value.length - 1];
-      const [domaine, sousDomaine, userEmail] = selectedCoach.split('-');
+      const [domaine, sousDomaines, userEmail] = selectedCoach.split('-');
+
+      // Vérification du sous-domaine
+      if (!sousDomaines) {
+        setErrorMessage(
+          'Veuillez choisir un domaine / sous-domaine et un coach pour pouvoir assigner.'
+        );
+        setLoading(false); // Désactiver le chargement en cas d'erreur
+        return;
+      }
+
+      // Vérification du coach
+      if (!userEmail) {
+        setErrorMessage('Veuillez choisir un coach pour pouvoir assigner.');
+        setLoading(false); // Désactiver le chargement en cas d'erreur
+        return;
+      }
 
       try {
-        // Requête pour récupérer le document du coach par e-mail
         const coachQuery = query(
           collection(db, 'utilisateurs'),
           where('email', '==', userEmail)
@@ -45,33 +55,40 @@ export default function TemplateDemo() {
         const coachDocs = await getDocs(coachQuery);
 
         if (coachDocs.size > 0) {
-          // Utilisez le premier document trouvé (vous pouvez ajuster cela en fonction de vos besoins)
           const coachDoc = coachDocs.docs[0];
-
-          // Mettez à jour le document du coach avec les clés "domaine" et "sousDomaine"
           const coachDocRef = doc(db, 'utilisateurs', coachDoc.id);
           await updateDoc(coachDocRef, {
             domaine: domaine,
-            sousDomaine,
+            sousDomaines,
           });
 
-          alert('Assignation réussie !');
+          setErrorMessage(null);
+          toast.success(
+            'Assignation de domaine / sous-domaine au coach réussie !'
+          );
         } else {
-          alert("Aucun document de coach trouvé avec l'e-mail spécifié.");
+          setErrorMessage(
+            "Aucun document de coach trouvé avec l'e-mail spécifié."
+          );
         }
       } catch (error) {
         console.error("Erreur lors de l'assignation :", error);
-        alert("Erreur lors de l'assignation. Veuillez réessayer.");
+        setErrorMessage("Erreur lors de l'assignation. Veuillez réessayer.");
+      } finally {
+        setLoading(false); // Désactiver le chargement une fois la requête terminée
       }
     } else {
-      alert('Aucun coach sélectionné. Veuillez sélectionner un coach.');
+      setErrorMessage(
+        'Aucun coach sélectionné. Veuillez sélectionner un coach.'
+      );
     }
+
+    setValue([]);
   };
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        // Charger les domaines
         const domaineCollection = collection(db, 'domaines');
         const domainesSnapshot = await getDocs(domaineCollection);
         const domainesData = domainesSnapshot.docs.map((doc) => ({
@@ -80,7 +97,6 @@ export default function TemplateDemo() {
         }));
         setDomaines(domainesData);
 
-        // Charger les utilisateurs (coachs)
         const collectionUtilisateurs = collection(db, 'utilisateurs');
         const utilisateursSnapshot = await getDocs(collectionUtilisateurs);
         const utilisateursData = utilisateursSnapshot.docs.map((doc) =>
@@ -89,6 +105,9 @@ export default function TemplateDemo() {
         setUsers(utilisateursData);
       } catch (error) {
         console.error('Erreur lors du chargement des données :', error);
+        setErrorMessage(
+          'Erreur lors du chargement des données. Veuillez réessayer.'
+        );
       }
     };
 
@@ -98,16 +117,17 @@ export default function TemplateDemo() {
       console.error(
         "Erreur: La base de données Firebase n'est pas initialisée."
       );
+      setErrorMessage(
+        "Erreur: La base de données Firebase n'est pas initialisée."
+      );
     }
   }, [db]);
 
-  // Générer les options pour MultiCascader
   const options = domaines.map((domaine) => ({
     label: domaine.domaine,
-    value: domaine.domaine, // Utiliser la valeur du domaine comme "value"
-    children: Object.keys(domaine.sousDomaine || {}).map((sousDomaineKey) => {
-      const sousDomaine = domaine.sousDomaine[sousDomaineKey];
-      // Filtrer les coachs correspondant à ce sous-domaine
+    value: domaine.domaine,
+    children: Object.keys(domaine.sousDomaines).map((sousDomaineKey) => {
+      const sousDomaines = domaine.sousDomaines[sousDomaineKey];
       const coachsForSousDomaine = users.filter(
         (coach) => coach.role === 'Coach'
       );
@@ -124,31 +144,68 @@ export default function TemplateDemo() {
   }));
 
   return (
-    <div className="w-100">
-      <div
-        style={{
-          width: '40%',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          gap: '10px',
-          position: 'absolute',
-          marginTop: '20px', // Added to ensure the container takes the full viewport height
-        }}
-      >
-        <MultiCascader
-          data={options}
-          cascade={false}
-          onChange={setValue}
-          value={value}
-          appearance="default"
-          menuWidth={'220px'}
-          placeholder="Assigner un domaine à un coach"
-        />
-        <button className="btn btn-primary" onClick={handleAssign}>
-          Assigner
-        </button>
+    <div
+      className=" d-flex justify-content-center flex-column"
+      style={{ width: '100%' }}
+    >
+      <div className=" w-100 text-center">
+        <p className="fs-3 mb-2 fst-italic fw-bold text-dark">
+          Tableau D'assignation de Domaines de L'administrateur{' '}
+        </p>
+        <p className="fs-5 fst-italic fw-medium text-secondary w-75 m-auto">
+          Sélectionnez un Domaine, un Sous-Domaine et un Coach pour lui assigner
+          un Domaine et un Sous-Domaine
+        </p>
       </div>
+
+      <div className="ComtaTabAss m-auto" style={{ padding: '20px' }}>
+        <div className="mt-5" style={{ marginBottom: '250px' }}>
+          <MultiCascader
+            style={{ width: '100%' }}
+            data={options}
+            cascade={false}
+            onChange={setValue}
+            value={value}
+            appearance="default"
+            menuWidth={'200px'}
+            menuHeight={'auto'}
+            placeholder="Assigner un domaine à un coach"
+            size="lg"
+            classPrefix="picker"
+          />
+          {errorMessage && <small className="SmallMsg">{errorMessage}</small>}
+        </div>
+        <div className="mt-5 d-flex align-items-center w-100 wmd">
+          <button
+            className="btn w-100 text-white fw-bold boutonAssign py-2"
+            style={{ backgroundColor: ' #3084b5' }}
+            onClick={handleAssign}
+            disabled={loading} // Désactiver le clic si le chargement est actif
+          >
+            {loading ? 'Assignation' : 'Assigner'}
+          </button>
+          {loading && (
+            <PulseLoader className="ms-1" color={'#0057d0'} size={12} />
+          )}
+        </div>
+        <ToastContainer /> {/* Container pour les toasts */}
+      </div>
+
+      <div className="AdmLineDif"></div>
+
+      <div className=" w-100 text-center">
+        <p className="fs-3 mb-2 fst-italic fw-bold text-dark">
+          Tableau D'assignation d'étudiant(s) de L'administrateur{' '}
+        </p>
+        <p className="fs-5 fst-italic fw-medium text-secondary w-75 m-auto">
+          Sélectionnez un Coach et un ou plusieurs Etudiant(s) pour le(s)
+          assigner au Coach Selectionné .
+        </p>
+      </div>
+
+      <AssignationEtudiant />
     </div>
   );
-}
+};
+
+export default AssignationPage;
