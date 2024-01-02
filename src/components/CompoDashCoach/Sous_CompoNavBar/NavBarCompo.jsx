@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import LogoTech from "../../../assets/images/logo.png";
 import UserProfil from "../../../assets/images/user.png";
@@ -18,11 +18,21 @@ export const NavBarCompo = () => {
   const { email, setEmail } = useContext(EmailContext);
   const [open, setOpen] = useState(false);
   const [profileImage, setProfileImage] = useState(UserProfil);
+  const navigate = useNavigate();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  // Deconnexion
-  const navigate = useNavigate();
+  const getProfileImageFromLocalStorage = () => {
+    const storedProfileImage = localStorage.getItem("profileImage");
+    if (storedProfileImage) {
+      setProfileImage(storedProfileImage);
+    }
+  };
+
+  useEffect(() => {
+    getProfileImageFromLocalStorage();
+  }, []);
 
   const logOut = async () => {
     try {
@@ -30,7 +40,7 @@ export const NavBarCompo = () => {
       navigate("/");
       setEmail("");
       localStorage.removeItem("userEmail");
-      // ... any other logout logic
+      localStorage.removeItem("profileImage");
     } catch (error) {
       console.log(error);
     }
@@ -95,10 +105,12 @@ export const NavBarCompo = () => {
 
           {/*====== Le Bouton Modal  ======*/}
           <ModalComponent
-            onProfileImageChange={(newProfileImage) =>
-              setProfileImage(newProfileImage)
-            }
+            onProfileImageChange={(newProfileImage) => {
+              setProfileImage(newProfileImage);
+              localStorage.setItem("profileImage", newProfileImage);
+            }}
           />
+
           {/*====== Le Bouton Modal  ======*/}
         </div>
       </div>
