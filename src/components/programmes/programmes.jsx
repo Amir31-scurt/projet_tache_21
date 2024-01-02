@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import CategoryList from './Domaines';
 import { Link } from 'react-router-dom';
+import { db } from '../../config/firebase-config';
+import { collection, getDoc, getDocs } from 'firebase/firestore';
 
 // Define a reusable ProgramCard component
 const ProgramCard = ({ title, description, imageUrl, buttonText }) => {
   return (
     <div className="program-card bg-light">
-      <img src={imageUrl} alt={title} />
       <h3>{title}</h3>
       <p className="mb-3">{description}</p>
       <button>
@@ -86,41 +87,32 @@ const ProgramList = () => {
   // const [currentPage, setCurrentPage] = useState(1);
   // const pageSize = 4; // Number of cards per page
   // Example data that would be fetched from an API or defined in your application
-  const programs = [
-    {
-      title: 'Design',
-      description:
-        'Learn the principles of user experience and user interface design.',
-      imageUrl:
-        'https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg',
-      buttonText: 'Les cours',
-    },
-    {
-      title: 'Bureautique',
-      description:
-        'Learn the principles of user experience and user interface design.',
-      imageUrl:
-        'https://kiluz.com/wp-content/uploads/2021/05/bureautique-1.png',
-      buttonText: 'Les cours',
-    },
-    {
-      title: 'Programmation',
-      description:
-        'Learn the principles of user experience and user interface design.',
-      imageUrl:
-        'https://cdn4.iconfinder.com/data/icons/apply-pixels-glyphs/40/Code_Tag-512.png',
-      buttonText: 'Les cours',
-    },
-    {
-      title: 'Marketing Digital',
-      description:
-        'Learn the principles of user experience and user interface design.',
-      imageUrl:
-        'https://cdn.shopify.com/s/files/1/0070/7032/files/Introduction_To_Marketing.jpg?v=1648057035',
-      buttonText: 'Les cours',
-    },
-    // ...other programs
-  ];
+  const [programmes, setProgrammes] = useState([]);
+
+  useEffect(() => {
+    const fetchProgrammes = async () => {
+      try {
+        const domainesSnapshot = await getDocs(collection(db, 'domaines'));
+        let allProgrammes = [];
+
+        for (const doc of domainesSnapshot.docs) {
+          const domaineSnapshot = await getDocs(
+            collection(db, 'domaines', doc, 'domaine')
+          );
+          domaineSnapshot.forEach((domaineDoc) => {
+            allProgrammes.push(domaineDoc.data());
+          });
+        }
+
+        setProgrammes(allProgrammes);
+      } catch (error) {
+        console.error('Error fetching programmes: ', error);
+      }
+    };
+
+    fetchProgrammes();
+  }, []);
+
   const coursesData = [
     {
       category: { name: 'UX Design', color: '#FFB572' },
@@ -178,18 +170,14 @@ const ProgramList = () => {
       <div className="contain1 py-5">
         <h2 className="mb-5 text-center">Programmes</h2>
         <div className="d-flex flex-wrap justify-content-center">
-          {programs.map((program, index) => (
-            <div
-              className="d-flex flex-wrap col-lg-3 col justify-content-center car"
+          {programmes.map((program, index) => (
+            <ProgramCard
               key={index}
-            >
-              <ProgramCard
-                title={program.title}
-                description={program.description}
-                imageUrl={program.imageUrl}
-                buttonText={program.buttonText}
-              />
-            </div>
+              title={program.title} // assuming each item in 'programme' has a 'title'
+              description={program.description} // and other fields like 'description'
+              imageUrl={program.imageUrl}
+              buttonText={program.buttonText}
+            />
           ))}
         </div>
       </div>
