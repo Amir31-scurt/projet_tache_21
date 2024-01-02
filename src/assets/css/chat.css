@@ -1,28 +1,26 @@
-/* Bleu
- #1283ed : foncée
-#e16d07: claire 
-Maron
-#e16d07 : claire
-#432705 : foncée
+/* 
+Bleu
+#0071bd: foncée
+#3084b5: claire 
+Vert 
+#48a93c: foncée
 */
 /* ================================================== 
                     CHAT HOME
    ================================================== */
-.chatHome{
-    overflow: hidden;
-    background-color: #432705;
-    /* background-image: url("../images/A1.png"); */
-}
+
 .chatHomeContainer {
   width: 400px;
   position: absolute;
-  bottom: 20px;
+  /* bottom: 20px; */
+  bottom: 7px;
   right: 20px;
+  z-index: 1000000000000;
 }
 .chatHomeContainer #btn-toggle {
   float: right;
   outline: none !important;
-  background-color: #e16d07;
+  background-color: #0071bd;
 }
 .chatHomeDisplay{
     transition: 0.9s ease;
@@ -35,8 +33,9 @@ Maron
 .chatHome {
   /* border: 0.01rem solid #333; */
   overflow: hidden;
-  background-color: #432705;
+  background-color: #fff;
   transition: 0.2s ease-in-out;
+  border-bottom: 3px solid #0071bd;
 }
 .chatHomeDisplay {
   transform: translateY(-1000%);
@@ -52,19 +51,19 @@ Maron
   transition: all 0.3s ease;
 }
 .chatHeader .chatHeaderBtnContainer {
-  background-color: #e16d07;
+  background-color: #0071bd;
 }
 
 /* ================================================== 
                 SEARCH-FORM 
    ================================================== */
 /* .search{
-  border-bottom: 1px solid #e16d07 !important;
+  border-bottom: 1px solid #0071bd !important;
 } */
 .searchForm #navbar-input-container input {
   outline: none !important;
   background-color: transparent;
-  border-bottom: 1px solid #e16d07 !important;
+  border-bottom: 1px solid #0071bd !important;
 }
 
 .searchForm #navbar-input-container input::placeholder {
@@ -118,7 +117,7 @@ Maron
 .chatHomeContainer #btn-toggle {
   float: right;
   outline: none !important;
-  background-color: #e16d07;
+  background-color: #0071bd;
 }
 .chatHomeContainer {
   width: 400px;
@@ -138,7 +137,7 @@ Maron
 .chatHomeContainer #btn-toggle {
   float: right;
   outline: none !important;
-  background-color: #e16d07;
+  background-color: #0071bd;
   color: white;
 }
 .chatHome .chatHeader .chatNavbar .user img {
@@ -165,7 +164,7 @@ Maron
 .searchForm #navbar-input-container input {
   outline: none !important;
   background-color: transparent;
-  border-bottom: 1px solid #e16d07 !important;
+  border-bottom: 1px solid #0071bd !important;
 }
 .searchForm #navbar-input-container input::placeholder {
   color: #fff;
@@ -179,7 +178,7 @@ Maron
                         CHAT
    ================================================== */
 .chatHome .chat .chatInfo {
-  background-color: #e16d07;
+  background-color: #0071bd;
   color: #333;
 }
 
@@ -235,7 +234,7 @@ Maron
 }
 
 .messages::-webkit-scrollbar-thumb {
-  background-color: #e16d07;
+  background-color: #0071bd;
   border-radius: 10px;
 }
 
@@ -248,22 +247,23 @@ Maron
    ================================================== */
 .chatInput input{
   background-color: transparent;
-  border: 1px solid #e16d07;
+  border: 1px solid #0071bd;
 }
 .chatInput input:focus{
   background-color: transparent;
   box-shadow: none;
-  border: 1px solid #e16d07;
+  border: 1px solid #0071bd;
 }
 .chatInput input::placeholder{
   color: #fff;
 }
 .chatInput .btn{
-  background-color: #e16d07;
+  background-color: #0071bd;
 }
 .chatInput .btn:hover{
-  background-color: #e16d07;
+  background-color: #0071bd;
 }
 .chatInput .btn:disabled{
-  background-color: #e16d07;
+  background-color: #0071bd;
+  border: #0071bd !important;
 }

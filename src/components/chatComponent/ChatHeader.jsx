@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import ChatNavbar from "./ChatNavbar";
 import Chats from "./Chats";
 import Search from "./Search";
 import { ChatAuthCtx } from "../../contexte/ChatAuthCtx";
@@ -8,6 +7,7 @@ export default function ChatHeader() {
   const [openSearch, setOpenSearch] = useState(false);
 
   const { currentUser } = useContext(ChatAuthCtx);
+  console.log("Essaie d'affichage du currentUser dans le ChatHeader");
   console.log(currentUser);
 
   return (
