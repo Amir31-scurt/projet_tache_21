@@ -144,6 +144,12 @@ export const GetSidebarMenu = () => {
           id: 'link6',
           link: '',
         },
+        {
+          title: 'Quizz',
+          icon: <TbCertificate />,
+          id: 'link6',
+          link: 'quizz',
+        },
         // ... other items for regular users
       ];
     }

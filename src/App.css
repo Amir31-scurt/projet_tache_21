@@ -52,7 +52,7 @@ body {
   width: 100%;
   padding: 20px;
   margin: 10px;
-  margin-left: 40%;
+  margin-left: 32%;
   text-align: left !important;
 }
 
@@ -104,14 +104,17 @@ body {
   margin-left: 5px;
   font-family: Montserrat;
   font-size: 16px;
+  width: 65%;
   color: #000000;
 }
 
 .module-container .paragraph {
   margin-top: 5%;
   color: black;
-  width: 100%;
+  width: 65%;
   margin-left: 5px;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .dig {
@@ -128,8 +131,8 @@ body {
   border-radius: 20px;
   height: 50px;
   font-size: 22px;
-  width: 30%;
-  margin-left: 25%;
+  width: 20%;
+  margin-left: 20%;
   margin-top: 30px;
   background-color: #48a93c;
   border: none;
