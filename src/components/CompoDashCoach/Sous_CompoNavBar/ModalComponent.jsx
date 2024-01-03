@@ -4,8 +4,13 @@ import { Modal } from "rsuite";
 import { FaUserEdit } from "react-icons/fa";
 import UserProfil from "../../../../src/assets/images/user.png";
 import FormComponent from "./FormComponent";
-import { toast } from "react-toastify";
-import { onAuthStateChanged } from "firebase/auth";
+import { ToastContainer, toast } from "react-toastify";
+import {
+  onAuthStateChanged,
+  updatePassword,
+  updateProfile,
+  reauthenticateWithCredential,
+} from "firebase/auth";
 import { auth, storage } from "../../../config/firebase-config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
@@ -16,6 +21,8 @@ const ModalComponent = ({ onProfileImageChange }) => {
   const [tempProfileImage, setTempProfileImage] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const fileInputRef = useRef(null);
+  const [newDisplayName, setNewDisplayName] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -39,7 +46,7 @@ const ModalComponent = ({ onProfileImageChange }) => {
 
     // Nettoyer l'abonnement lors du démontage du composant
     return () => unsubscribe();
-  }, []); // A
+  }, [newDisplayName, newPassword]);
 
   // Fonction pour mettre à jour la photo de profil
   const handleProfileImageChange = (event) => {
@@ -64,14 +71,44 @@ const ModalComponent = ({ onProfileImageChange }) => {
   };
 
   const handleCancelChanges = () => {
-    // Annuler les changements et restaurer l'image de profil temporaire
     setProfileImage(tempProfileImage);
     setTempProfileImage(null);
   };
 
+  const handleUpdateProfile = async () => {
+    try {
+      // Mettez à jour le nom d'utilisateur s'il y a un nouveau nom
+      if (newDisplayName !== "") {
+        await updateProfile(auth.currentUser, { displayName: newDisplayName });
+      }
+
+      // Mettez à jour le mot de passe s'il y a un nouveau mot de passe
+      if (newPassword !== "") {
+        // Re-authentifiez l'utilisateur avant de mettre à jour le mot de passe
+        const credentials =
+          /* Obtenez les informations d'authentification nécessaires */
+          await reauthenticateWithCredential(auth.currentUser, credentials);
+
+        // Mettez à jour le mot de passe
+        await updatePassword(auth.currentUser, newPassword);
+      }
+
+      // Affichez un message de succès
+      toast.success("Profil mis à jour avec succès !");
+
+      // Fermez le modal
+      handleClose();
+    } catch (error) {
+      // Gérez les erreurs
+      console.error("Error updating profile:", error.message);
+      toast.error("Erreur lors de la mise à jour du profil.");
+    }
+    handleCloseModal();
+  };
+
   const handleCloseModal = () => {
     if (tempProfileImage) {
-      // Valider les changements lors de la fermeture seulement si des changements temporaires existent
+      // Valider les changements seulement si des changements temporaires existent
       onProfileImageChange(profileImage);
       toast.success("Modifications enregistrées avec succès !");
     }
@@ -127,23 +164,36 @@ const ModalComponent = ({ onProfileImageChange }) => {
           </h4>
         </div>
         <div className="my-3 ContImputUser">
-          {/*============ Le Formulaire ========= */}
-          <FormComponent />
-          {/*============ Le Formulaire ========= */}
+          <label>Nouveau Nom</label>
+          <input
+            type="text"
+            value={newDisplayName}
+            onChange={(e) => setNewDisplayName(e.target.value)}
+          />
+
+          <label>Nouveau Mot de Passe</label>
+          <input
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+          {/* <FormComponent
+            newDisplayName={newDisplayName}
+            newPassword={newPassword}
+            onDisplayNameChange={handleDisplayNameChange}
+            onPasswordChange={handlePasswordChange}
+          /> */}
         </div>
       </Modal.Body>
 
       <Modal.Footer>
-        {/*====== Bouton Sauvegarder Modifications Profil ====== */}
         <button
-          onClick={handleCloseModal}
+          onClick={handleUpdateProfile}
           style={{ backgroundColor: "#3084b5" }}
           className="btn py-2 px-3 me-2"
         >
           Modifier
         </button>
-
-        {/*====== Bouton Annuler Modifications Profil ====== */}
         <button
           onClick={handleCancelChanges}
           className="btn btn-secondary py-2 px-3"
