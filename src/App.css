@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 * {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 body {
@@ -56,7 +56,7 @@ body {
   text-align: left !important;
 }
 
-.module-container input[type='radio'] {
+.module-container input[type="radio"] {
   --webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -988,10 +988,12 @@ body {
 
 /* Css ajout de l'utilisateur côté admin par oury */
 .form-demo {
+  display: flex;
   margin-top: 20px;
 }
 .form-demo .card {
-  min-width: 450px;
+  min-width: 500px;
+  border: none !important;
 }
 .form-demo .card form {
   margin-top: 2rem;
