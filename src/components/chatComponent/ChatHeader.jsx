@@ -7,14 +7,12 @@ export default function ChatHeader() {
   const [openSearch, setOpenSearch] = useState(false);
 
   const { currentUser } = useContext(ChatAuthCtx);
-  console.log("Essaie d'affichage du currentUser dans le ChatHeader");
-  console.log(currentUser);
 
   return (
     <div className="chatHeader">
       {/* <ChatNavbar /> */}
       <div className="d-flex justify-content-between chatHeaderBtnContainer text-white p-1">
-        <span>{currentUser && currentUser.displayName}</span>
+        <span className="ms-2">{currentUser && currentUser.displayName}</span>
         {openSearch ? (
           <i
             className="bi bi-x-lg my-auto me-3"

@@ -19,6 +19,11 @@ export default function Chats() {
         doc(db, "userChats", currentUser?.uid),
         (doc) => {
           setChats(doc.data());
+
+          console.log(
+            "Afficher les userChats depuis le composant Chats",
+            chats
+          );
         }
       );
       return () => {
@@ -31,29 +36,37 @@ export default function Chats() {
   const handleSelect = (u) => {
     dispatch({ type: "CHANGE_USER", payload: u });
   };
-
+  console.log(
+    "Afficher les userChats depuis le composant Chats, essaie 3",
+    chats
+  );
   return (
     <div className="chats d-flex px-2 pt-2">
       {chats
         ? Object.entries(chats)
             ?.sort((a, b) => b[1].date - a[1].date)
-            .map((chat) => (
-              <div
-                className="userChat text-center me-2"
-                key={chat[0]}
-                onClick={() => handleSelect(chat[1]?.userInfo)}
-              >
-                <img src={pp} alt="" className="" />
-                <div className="userChatInfo">
-                  <span className="text-center text-nowrap">
-                    {chat[1]?.userInfo.displayName}{" "}
-                  </span>
-                  <p className="userChatInfolastMessage text-nowrap">
-                    {chat[1].lastMessage?.text}{" "}
-                  </p>
-                </div>
-              </div>
-            ))
+            .map(
+              (chat) =>
+                // {
+                chat[1]?.userInfo.uid !== currentUser?.uid && (
+                  <div
+                    className="userChat text-center me-2"
+                    key={chat[0]}
+                    onClick={() => handleSelect(chat[1]?.userInfo)}
+                  >
+                    <img src={pp} alt="" className="" />
+                    <div className="userChatInfo">
+                      <span className="text-center text-nowrap">
+                        {chat[1]?.userInfo.displayName}{" "}
+                      </span>
+                      <p className="userChatInfolastMessage text-nowrap">
+                        {chat[1].lastMessage?.text}{" "}
+                      </p>
+                    </div>
+                  </div>
+                )
+                // }
+            )
         : null}
     </div>
   );

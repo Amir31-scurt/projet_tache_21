@@ -47,14 +47,19 @@ export default function ChatInput({ activeBtn }) {
     }
   };
 
+  const handleKeyEnter = (e) => {
+    e.code === "Enter" && handleSend();
+  };
+
   return (
     <div className="chatInput d-flex p-1">
       <input
         type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}
-        className="form-control text-white rounded-pill me-1"
+        className="form-control rounded-pill me-1"
         placeholder="Envoyer.."
+        onKeyDown={handleKeyEnter}
       />
       {/* <div className="send bg-danger"> */}
       <button

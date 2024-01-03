@@ -34,9 +34,7 @@ export default function Search() {
     try {
       const querySnapchot = await getDocs(q);
       querySnapchot.forEach((doc) => {
-        setUser(doc.data());
-        // console.log(doc.data());
-        console.log("photo de pp ", user.photoURL);
+        setUser((prevUser) => ({ ...prevUser, ...doc.data() }));
       });
     } catch (err) {
       setErr(true);
@@ -50,11 +48,17 @@ export default function Search() {
 
   // Définir la fonction qui permet de sélectionner le compte rechercher
   const handleSelect = async () => {
+    console.log("Le user existant dans le handleSelect: ", user);
+    console.log("Le currentUser existant dans le handleSelect: ", currentUser);
+    console.log(
+      "Le role du currentUser existant dans le handleSelect: ",
+      currentUser.role
+    );
     // Combinaison d'identifiant
     const combinedId =
-      currentUser.uid > user.uid
-        ? currentUser.uid + user.uid
-        : user.uid + currentUser.uid;
+      currentUser.uid > user.userId
+        ? currentUser.uid + user.userId
+        : user.userId + currentUser.uid;
     try {
       // Récupérer le chat existant (évetuellement) entre les user du  combinedId
       const res = await getDoc(doc(db, "chats", combinedId));
@@ -67,18 +71,20 @@ export default function Search() {
         // Mise à jour d userChats (Contenant des infos élémentaires du chat d'1 user avk 1autre)
         await updateDoc(doc(db, "userChats", currentUser.uid), {
           [combinedId + ".userInfo"]: {
-            uid: user.uid,
-            displayName: user.displayName,
-            photoURL: user.photoURL,
+            uid: user.userId,
+            displayName: user.name,
+            role: user.role,
+            // photoURL: user.photoURL,
           },
           [combinedId + ".date"]: serverTimestamp(),
         });
 
-        await updateDoc(doc(db, "userChats", user.uid), {
+        await updateDoc(doc(db, "userChats", user.userId), {
           [combinedId + ".userInfo"]: {
             uid: currentUser.uid,
             displayName: currentUser.displayName,
-            photoURL: currentUser.photoURL,
+
+            // photoURL: currentUser.photoURL,
           },
           [combinedId + ".date"]: serverTimestamp(),
         });
@@ -96,7 +102,7 @@ export default function Search() {
           id="navbar-input-container"
         >
           <i
-            className="bi bi-search my-auto "
+            className="bi bi-search fw-bold my-auto "
             onClick={handleSearch}
             id="searchFormBtn"
           ></i>
@@ -120,11 +126,13 @@ export default function Search() {
               <img src={pp} alt="" className="d-block mx-auto" />
             )}
             <div className="userChatInfo">
-              <span className="userChatInfoName">{user.displayName}</span>
+              <span className="userChatInfoName">{user.name}</span>
             </div>
           </div>
         </div>
-      ) : null}
+      ) : (
+        <span className="text-danger">Pas de compte(s) trouvé(s) ...</span>
+      )}
     </div>
   );
 }

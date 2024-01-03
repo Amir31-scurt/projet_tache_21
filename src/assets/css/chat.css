@@ -66,13 +66,13 @@ Vert
 } */
 .searchForm #navbar-input-container input {
   outline: none !important;
-  color: #0071bd; 
+  color: #333; 
   background-color: transparent;
   border-bottom: 1px solid #0071bd !important;
 }
 
 .searchForm #navbar-input-container input::placeholder {
-  color: #0071bd;
+  color: #333;
   font-style: italic;
 }
 
@@ -82,10 +82,10 @@ Vert
 
 .userChat .userChatInfo .userChatInfoName {
   font-size: 12px;
-  color: #0071bd;
+  color: #333;
 }
 .search .searchForm #searchFormBtn{
-  color: #0071bd;
+  color: #333;
 }
 .search .searchForm #searchFormBtn,
 .search .userChatContainer {
@@ -134,12 +134,6 @@ Vert
   bottom: 30px;
   right: 20px;
 }
-/* .chatHome{
-    width: 400px;
-    position: absolute;
-    bottom: 60px;
-    right: 30px;
-} */
 .chats {
   overflow-x: scroll;
 }
@@ -163,9 +157,11 @@ Vert
 }
 .chats .userChat span {
   font-size: 12px;
+  color: #333;
 }
 .userChat .userChatInfo .userChatInfolastMessage {
   font-size: 10px;
+  color: #333;
 }
 /* ================================================== 
                 SEARCH-FORM 
@@ -174,9 +170,10 @@ Vert
   outline: none !important;
   background-color: transparent;
   border-bottom: 1px solid #0071bd !important;
+  color: #161616;
 }
 .searchForm #navbar-input-container input::placeholder {
-  color: #fff;
+  color: #333;
   font-style: italic;
 }
 .form-control:focus {
@@ -190,7 +187,13 @@ Vert
   background-color: #0071bd;
   color: #333;
 }
-
+#crown{
+  color: #FFD700;
+  /* box-shadow: 2px 2px 24px #FFD700; */
+}
+#teacher{
+  color: #C0C0C0;
+}
 /* ================================================== 
                 MESSAGES
    ================================================== */
@@ -264,7 +267,7 @@ Vert
   border: 1px solid #0071bd;
 }
 .chatInput input::placeholder {
-  color: #fff;
+  color: #333;
 }
 .chatInput .btn{
   background-color: #0071bd;
@@ -274,11 +277,11 @@ Vert
 }
 .chatInput .btn:disabled{
   background-color: #0071bd;
-  border: #0071bd !important;
+  border: #3084b5 !important;
 }
 .chatInput .btn {
-  background-color: #e16d07;
+  background-color: #0071bd;
 }
 .chatInput .btn:hover {
-  background-color: #e16d07;
+  background-color: #0071bd;
 }
