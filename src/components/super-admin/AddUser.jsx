@@ -1,50 +1,31 @@
-import React, { useState } from "react";
-
-import { db } from "../../config/firebase-config";
-import { collection, addDoc } from "firebase/firestore";
-
+import React, { useState, useEffect } from "react";
 import { Dialog } from "primereact/dialog";
-import { InputText } from "primereact/inputtext";
-import { Button } from "primereact/button";
-
 import ajouter from "../../assets/images/ajouter-un-utilisateur.png";
+import Inscription from "../Inscription/Inscription";
 
-export default function AddUser({ reloadData }) {
+export default function AddUser() {
   const [visible, setVisible] = useState(false);
-  const [userData, setUserData] = useState({
-    name: "",
-    number: "",
-    email: "",
-    //   password: "",
-    address: "",
-    role: "Étudiant", // Valeur par défaut
-    archiver: false,
-    active: true,
-  });
+  const [dialogClass, setDialogClass] = useState("col-md-6");
 
-  const handleAddUser = async (e) => {
-    e.preventDefault(); // Empêcher le comportement par défaut du formulaire
-    try {
-      const utilisateursRef = collection(db, "utilisateurs");
-      await addDoc(utilisateursRef, userData);
-      console.log("Utilisateur ajouté avec succès!");
-      setVisible(false);
-      reloadData(); // Rechargez les données après l'ajout d'utilisateur
-    } catch (error) {
-      console.error("Erreur lors de l'ajout de l'utilisateur:", error);
+  useEffect(() => {
+    function handleResize() {
+      // Mettre à jour la classe du Dialog en fonction de la largeur de l'écran
+      if (window.innerWidth <= "1024px") {
+        setDialogClass({ width: "100%" }); // Ajuster la classe pour une largeur maximale sur les petits écrans
+      } else {
+        setDialogClass({ width: "100%" }); // Revenir à la classe par défaut sur les écrans plus larges
+      }
     }
-  };
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setUserData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
-  };
+    // Ajouter un event listener pour détecter le changement de taille de l'écran
+    window.addEventListener("resize", handleResize);
+
+    // Retirer l'event listener lorsque le composant est démonté
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
-    <>
+    <div>
       <div
         className="d-flex justify-content-center align-items-center"
         onClick={() => setVisible(true)}
@@ -58,81 +39,18 @@ export default function AddUser({ reloadData }) {
         />
         <p className="m-0 px-2">Ajouter</p>
       </div>
-      <Dialog
-        header="Nouvel utilisateur"
-        visible={visible}
-        style={{ width: "50vw" }}
-        onHide={() => setVisible(false)}
-      >
-        <form
-          action=""
-          className="formAdd d-flex flex-column justify-content-center align-items-center"
-        >
-          <h6 className="mb-5">Ajouter utilisateur</h6>
-          <div className="p-float" style={{ width: "100%" }}>
-            <span className="p-float-label my-5">
-              <InputText
-                id="name"
-                value={userData.name}
-                onChange={handleChange}
-                style={{ width: "100%" }}
-              />
-              <label htmlFor="name">Prénom & Nom</label>
-            </span>
-            <span className="p-float-label my-5">
-              <InputText
-                keyfilter="int"
-                id="number"
-                value={userData.number}
-                onChange={handleChange}
-                style={{ width: "100%" }}
-              />
-              <label htmlFor="number">Téléphone</label>
-            </span>
-            <span className="p-float-label my-5">
-              <InputText
-                id="email"
-                value={userData.email}
-                onChange={handleChange}
-                style={{ width: "100%" }}
-              />
-              <label htmlFor="email">Email</label>
-            </span>
-            <span className="p-float-label my-5">
-              <InputText
-                id="address"
-                value={userData.address}
-                onChange={handleChange}
-                style={{ width: "100%" }}
-              />
-              <label htmlFor="address">Adresse</label>
-            </span>
-            <span className="p-float-label my-5">
-              <select
-                className="form-select my-3"
-                aria-label="Default select example"
-                id="role"
-                value={userData.role}
-                onChange={handleChange}
-                style={{ width: "100%" }}
-              >
-                <option value="Administrateur">Administrateur</option>
-                <option value="Coach">Coachs</option>
-                <option value="Étudiant">Étudiants</option>
-              </select>
-              <label htmlFor="Role"></label>
-            </span>
-          </div>
-          <div className="card flex flex-wrap justify-content-center gap-3">
-            <Button
-              rounded
-              label="Ajouter"
-              icon="pi-plus-cercle"
-              onClick={(e) => handleAddUser(e)}
-            />
-          </div>
-        </form>
-      </Dialog>
+      <div className="container-fluid">
+        <div className="row">
+          <Dialog
+            header="Nouvelle utilisateur"
+            visible={visible}
+            onHide={() => setVisible(false)}
+            className={dialogClass} // Utiliser la classe dynamique pour ajuster la taille du Dialog
+          >
+            <Inscription />
+          </Dialog>
+        </div>
+      </div>
     </>
   );
 }

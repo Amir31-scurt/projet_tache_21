@@ -30,6 +30,7 @@ import StudentProgram from '../components/ProEtudiant/Programme';
 import Cours from '../components/ProEtudiant/Cours';
 import UserTable from '../components/super-admin/TableauUtilisateurs';
 import logo from '../assets/images/logo.png';
+import Quizz from '../components/quizzs/quizzs'
 
 export default function ProtectedRoutes() {
   const { email } = useContext(EmailContext);
@@ -146,6 +147,10 @@ export default function ProtectedRoutes() {
         {
           path: 'cours',
           element: <Cours />,
+        },
+        {
+          path: 'quizz',
+          element: <Quizz />,
         },
       ]
     : [];
