@@ -6,9 +6,7 @@ import { ContenuCardDsb } from './CompoDashCoach/Sous_CompoSideBar/Utils';
 export default function DashboardApprenant() {
   return (
     <div className="d-flex flex-column flex-wrap ms-3 justify-content-center">
-      <h1
-        className="fst-italic text-secondary fs-3 fw-bold ps-2 pt-3" 
-      >
+      <h1 className="fst-italic text-secondary fs-3 fw-bold ps-2 pt-3">
         Dashboard
       </h1>
       {/*========= Les cartes du dashboard Debut =========*/}
