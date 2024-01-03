@@ -27,8 +27,8 @@ export default function Search() {
   const handleSearch = async () => {
     // Définir la requette
     const q = query(
-      collection(db, "users"),
-      where("displayName", "==", userName)
+      collection(db, "utilisateurs"),
+      where("name", "==", userName)
     );
     // Gestion de la réponse
     try {
@@ -102,7 +102,7 @@ export default function Search() {
           ></i>
           <input
             type="text"
-            className="form-control text-white border-0"
+            className="form-control border-0"
             placeholder="Chercher un compte..."
             autoFocus
             value={userName}
