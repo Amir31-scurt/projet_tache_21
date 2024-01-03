@@ -64,22 +64,11 @@ const ProgramList = () => {
           {programmes.map((program, index) => (
             <ProgramCard
               key={index}
-<<<<<<< HEAD
-            >
-              <ProgramCard className='last'
-                title={program.title}
-                description={program.description}
-                imageUrl={program.imageUrl}
-                buttonText={program.buttonText}
-              />
-            </div>
-=======
               title={program.title}
               description={program.description}
               buttonText={program.buttonText}
               courseId={program.id} // Assuming each program has a unique identifier
             />
->>>>>>> 7f2fab2f5702b0653fbe7ae4fff470218301eb83
           ))}
         </div>
       </div>
