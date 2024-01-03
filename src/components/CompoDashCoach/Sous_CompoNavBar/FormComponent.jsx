@@ -16,16 +16,20 @@ const FormComponent = () => {
         <InputGroup.Addon>
           <AvatarIcon className="IcoColor" />
         </InputGroup.Addon>
-        <Input className="border border-0" placeholder="Changer votre Nom" />
+        <Input
+          type="text"
+          className="border border-0"
+          placeholder="Changer votre Nom"
+        />
       </InputGroup>
 
-      {/*============ Champ Modifier Email ========= */}
+      {/* ============ Champ Modifier Email =========
       <InputGroup className="mb-2 order border-3">
         <InputGroup.Addon>
           <MdAlternateEmail className="IcoColor" />
         </InputGroup.Addon>
         <Input placeholder="Changer Votre E-mail " />
-      </InputGroup>
+      </InputGroup> */}
 
       {/*============ Champ Modifier Password ========= */}
       <InputGroup className="mb-2 order border-3">

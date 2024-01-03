@@ -1,35 +1,46 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import LogoTech from "../../../assets/images/logo.png";
+import UserProfil from "../../../assets/images/user.png";
+import { MdMessage } from "react-icons/md";
+import { Dropdown } from "rsuite";
+import { FaUserCog } from "react-icons/fa";
+import { IoMdLogOut } from "react-icons/io";
 import ModalComponent from "./ModalComponent";
+import NavBarContext from "./context";
 import { auth } from "../../../config/firebase-config";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import Notifications from "./Notifications";
-import LogoTech from '../../../assets/images/logo.png';
-import UserProfil from '../../../assets/images/user.png';
-import { MdMessage } from 'react-icons/md';
-import { Dropdown } from 'rsuite';
-import { FaUserCog } from 'react-icons/fa';
-import { IoMdLogOut } from 'react-icons/io';
-import NavBarContext from './context';
-import { EmailContext } from '../../../contexte/EmailContexte';
+import { EmailContext } from "../../../contexte/EmailContexte";
+import Notifications from "./Notifications"
 
 export const NavBarCompo = () => {
   const { email, setEmail } = useContext(EmailContext);
   const [open, setOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState(UserProfil);
+  const navigate = useNavigate();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  // Deconnexion
-  const navigate = useNavigate();
+  const getProfileImageFromLocalStorage = () => {
+    const storedProfileImage = localStorage.getItem("profileImage");
+    if (storedProfileImage) {
+      setProfileImage(storedProfileImage);
+    }
+  };
+
+  useEffect(() => {
+    getProfileImageFromLocalStorage();
+  }, []);
 
   const logOut = async () => {
     try {
       await signOut(auth);
-      navigate('/');
-      setEmail('');
-      localStorage.removeItem('userEmail');
-      // ... any other logout logic
+      navigate("/");
+      setEmail("");
+      localStorage.removeItem("userEmail");
+      localStorage.removeItem("profileImage");
     } catch (error) {
       console.log(error);
     }
@@ -54,7 +65,6 @@ export const NavBarCompo = () => {
           </div>
           {/*=====================SECOND PARTIE DU NavBar Debut============= */}
           <div className="SecRightNav">
-            {/* <div className="Lbtn me-5 me-sm-3 ">Livrer une tache</div> */}
             <div className="MessageIcone d-flex align-items-center justify-content-center">
               <MdMessage className="fs-4" style={{ color: '#3084b5' }} />
             </div>
@@ -63,13 +73,10 @@ export const NavBarCompo = () => {
             {/*================Icone du DropDown========= */}
             <Dropdown
               title={
-                <input
-                  type="image"
-                  src={UserProfil}
+                <img
+                  src={profileImage}
                   className="img-fluid ProfilSpace"
-                  // <TbTriangleInvertedFilled
-                  //   className="fs-5"
-                  //   style={{ color: "#d4f1f4" }}
+                  alt=""
                 />
               }
               placement="bottomEnd"
@@ -90,7 +97,13 @@ export const NavBarCompo = () => {
           </div>
 
           {/*====== Le Bouton Modal  ======*/}
-          <ModalComponent />
+          <ModalComponent
+            onProfileImageChange={(newProfileImage) => {
+              setProfileImage(newProfileImage);
+              localStorage.setItem("profileImage", newProfileImage);
+            }}
+          />
+
           {/*====== Le Bouton Modal  ======*/}
         </div>
       </div>

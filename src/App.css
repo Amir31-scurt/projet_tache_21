@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 * {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 body {
@@ -56,7 +56,7 @@ body {
   text-align: left !important;
 }
 
-.module-container input[type='radio'] {
+.module-container input[type="radio"] {
   --webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -237,6 +237,13 @@ body {
   width: 300px; /* or any desired width */
   margin: 8px;
 }
+.program-card1 {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  width: 290px; /* or any desired width */
+  margin: 5px;
+}
 .program-card2 {
   border: 1px solid #ccc;
   padding: 16px;
@@ -267,9 +274,21 @@ body {
   border-radius: 4px;
   cursor: pointer;
 }
+.program-card1 button {
+  background-color: #3084b5;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
 
 .program-card button:hover {
   background-color: #0056b3;
+}
+.program-card1 button:hover {
+  background-color: #4c9aff;
 }
 .program-card2 img {
   width: 100%;
@@ -980,10 +999,12 @@ body {
 
 /* Css ajout de l'utilisateur côté admin par oury */
 .form-demo {
+  display: flex;
   margin-top: 20px;
 }
 .form-demo .card {
-  min-width: 450px;
+  min-width: 500px;
+  border: none !important;
 }
 .form-demo .card form {
   margin-top: 2rem;

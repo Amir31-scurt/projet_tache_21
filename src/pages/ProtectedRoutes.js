@@ -104,7 +104,7 @@ export default function ProtectedRoutes() {
           element: <ChatHome />,
         },
         {
-          path: '/dashboard/programme/cours',
+          path: '/dashboard/programme/cours/:courseId',
           element: <SpecificPro />,
         },
         {

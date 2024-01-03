@@ -1,21 +1,21 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useState, useContext, useEffect } from 'react';
-import { CiMail } from 'react-icons/ci';
-import { RiLockPasswordFill } from 'react-icons/ri';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { ToastContainer, toast } from 'react-toastify';
-import { auth, db } from '../../config/firebase-config';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import { EmailContext } from '../../contexte/EmailContexte';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import 'react-toastify/dist/ReactToastify.css';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
+import { CiMail } from "react-icons/ci";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { ToastContainer, toast } from "react-toastify";
+import { auth, db } from "../../config/firebase-config";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import { EmailContext } from "../../contexte/EmailContexte";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function FormConnect() {
   // Les states pour la connexion / login
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   // Emails d'admin
@@ -41,8 +41,8 @@ export default function FormConnect() {
 
   // Recuperer les emails de l'admin
   const fetchAdminEmails = async () => {
-    const usersRef = collection(db, 'utilisateurs');
-    const q = query(usersRef, where('role', '==', 'Administrateur'));
+    const usersRef = collection(db, "utilisateurs");
+    const q = query(usersRef, where("role", "==", "Administrateur"));
     const querySnapshot = await getDocs(q);
     const adminEmails = [];
 
@@ -55,8 +55,8 @@ export default function FormConnect() {
   };
   // Recuperer les emails de coach
   const fetchCoachEmails = async () => {
-    const usersRef = collection(db, 'utilisateurs');
-    const coachQuery = query(usersRef, where('role', '==', 'Coach'));
+    const usersRef = collection(db, "utilisateurs");
+    const coachQuery = query(usersRef, where("role", "==", "Coach"));
     const querySnapshot = await getDocs(coachQuery);
     const coachEmails = [];
 
@@ -68,8 +68,8 @@ export default function FormConnect() {
   };
   // Recuperer les emails des etudiants
   const fetchStudentEmails = async () => {
-    const usersRef = collection(db, 'utilisateurs');
-    const studentQuery = query(usersRef, where('role', '==', 'Étudiant'));
+    const usersRef = collection(db, "utilisateurs");
+    const studentQuery = query(usersRef, where("role", "==", "Étudiant"));
     const querySnapshot = await getDocs(studentQuery);
     const studentEmails = [];
 
@@ -111,11 +111,11 @@ export default function FormConnect() {
         email,
         password
       );
-      const userEmail = userCredential.user.email; // Assuming this is how you get the email
+      const userEmail = userCredential.user.email;
       const user = userCredential.user;
-      localStorage.setItem("userName", user.displayName || "");
+      localStorage.setItem("userName", user.displayName || "");
       setEmail(userEmail);
-      setPassword('');
+      setPassword("");
 
       // Check if the user is an admin or a coach
       const isAdmin = adminEmails.includes(userEmail);
@@ -123,25 +123,25 @@ export default function FormConnect() {
       const isStudent = studentEmails.includes(userEmail);
       // Navigate based on the user role
       if (isAdmin) {
-        navigate('/dashboard/admin');
+        navigate("/dashboard/admin");
       } else if (isCoach) {
-        navigate('/dashboard/coach');
+        navigate("/dashboard/coach");
       } else if (isStudent) {
-        navigate('/dashboard'); // Assuming this is the route for students
+        navigate("/dashboard"); // Assuming this is the route for students
       }
     } catch (error) {
       // alert('Échec de la connexion. Veuillez vérifier vos informations.');
       toast.error(
-        'Échec de la connexion. Veuillez vérifier vos informations.',
+        "Échec de la connexion. Veuillez vérifier vos informations.",
         {
-          position: 'top-right',
+          position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: 'light',
+          theme: "light",
         }
       );
       console.error(error);
@@ -202,7 +202,7 @@ export default function FormConnect() {
             <div className="modal-content">
               <div className="modal-header">
                 <h1 className="modal-title fs-5" id="exampleModalLabel">
-                  Mot de pass oublié{' '}
+                  Mot de pass oublié{" "}
                 </h1>
                 <button
                   type="button"
@@ -244,7 +244,7 @@ export default function FormConnect() {
               className="btn d-flex justify-content-center align-items-center fs-6 btn-lg btn-block col-7 text-white log"
               disabled={loading}
             >
-              {loading ? 'Chargement...' : 'Se connecter'}
+              {loading ? "Chargement..." : "Se connecter"}
             </button>
           </center>
         </div>
