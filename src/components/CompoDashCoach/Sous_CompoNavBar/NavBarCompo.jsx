@@ -57,7 +57,7 @@ export const NavBarCompo = () => {
             <div className="LogoConta2 ">
               <div className="img-logo d-flex align-items-center justify-content-center">
                 <img src={LogoTech} className="img-fluid " alt="" />
-                <h3 className="GandalTitle" style={{ color: "#3084b5" }}>
+                <h3 className="GandalTitle" style={{ color: '#3084b5' }}>
                   Gaandal
                 </h3>
               </div>
@@ -66,13 +66,13 @@ export const NavBarCompo = () => {
           {/*=====================SECOND PARTIE DU NavBar Debut============= */}
           <div className="SecRightNav">
             <div className="MessageIcone d-flex align-items-center justify-content-center">
-              <MdMessage className="fs-4" style={{ color: "#3084b5" }} />
+              <MdMessage className="fs-4" style={{ color: '#3084b5' }} />
             </div>
             <div className="NotifIcone d-flex align-items-center justify-content-center me-2">
               <div className="">
                 <IoNotifications
                   className="fs-4"
-                  style={{ color: "#3084b5" }}
+                  style={{ color: '#3084b5' }}
                 />
               </div>
             </div>

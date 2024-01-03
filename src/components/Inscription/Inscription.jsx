@@ -1,17 +1,17 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { InputText } from "primereact/inputtext";
-import { Button } from "primereact/button";
-import { Password } from "primereact/password";
-import { Dialog } from "primereact/dialog";
-import { Divider } from "primereact/divider";
-import { classNames } from "primereact/utils";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth, db } from "../../config/firebase-config";
-import { Dropdown } from "primereact/dropdown";
-import { addDoc, collection } from "firebase/firestore";
-import emailjs from "emailjs-com";
+
+import React, { useEffect, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+import { Password } from 'primereact/password';
+import { Dialog } from 'primereact/dialog';
+import { Divider } from 'primereact/divider';
+import { classNames } from 'primereact/utils';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from '../../config/firebase-config';
+import { Dropdown } from 'primereact/dropdown';
+import { addDoc, collection } from 'firebase/firestore';
+import emailjs from 'emailjs-com';
 
 emailjs.init("iyzQvt6sAJkX_ndas");
 
