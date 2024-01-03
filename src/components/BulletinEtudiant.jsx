@@ -1,159 +1,306 @@
-import React from 'react';
-import { FaFilePdf } from 'react-icons/fa';
-import jsPDF from 'jspdf';
+import React, { useState, useEffect } from "react";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../config/firebase-config";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import useAuth from "../utils/auth";
 
 const BulletinEtudiant = () => {
-  const studentInfo = {
-    nom: 'Moha',
-    prenom: 'Meed',
-    email: 'meed@gmail.com',
-    numero: '77-777-77-77',
-    domaine: 'Programmation',
-    coach: 'Kalika',
-    trimestre: '2',
+  // Utilisation de useAuth 
+  const { user } = useAuth(); 
+
+  // States pour stocker la liste des étudiants, l'étudiant sélectionné, et les informations du bulletin
+  const [students, setStudents] = useState([]);
+  const [selectedStudent, setSelectedStudent] = useState("");
+  const [bulletinInfo, setBulletinInfo] = useState({
+    notes: {
+      javascript: 0,
+      flutter: 0,
+      laravel: 0,
+      examen: 0,
+      projet: 0,
+      devoirs: 0,
+    },
+    appreciation: "",
+  });
+
+  // Effet pour récupérer la liste des étudiants 
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const usersQuery = query(collection(db, "utilisateurs"), where("role", "==", "Étudiant"));
+        const usersSnapshot = await getDocs(usersQuery);
+        const userList = usersSnapshot.docs.map((doc) => ({
+          userId: doc.id, 
+          name: doc.data().name, // Assurez-vous d'ajuster cela en fonction de la structure de vos données
+        }));
+        setStudents(userList);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des étudiants :", error);
+      }
+    };
+
+    fetchStudents();
+  }, []);
+
+
+  // fonction de changement de l'étudiant sélectionné
+  const handleChangeStudent = (e) => {
+    const selectedValue = e.target.value;
+    console.log("ID :", selectedValue);
+
+    // Obtenir les données de l'étudiant 
+    const selectedStudentData = students.find(
+      (student) => student.userId === selectedValue
+    );
+
+    console.log("Nom:", selectedStudentData?.name);
+
+    setSelectedStudent(selectedValue);
+
+    setBulletinInfo({
+      notes: {
+        javascript: 0,
+        flutter: 0,
+        laravel: 0,
+        examen: 0,
+        projet: 0,
+        devoirs: 0,
+      },
+      appreciation: "",
+    });
   };
 
-  const bulletins = [
-    {
-      domaine: 'JavaScript',
-      note: '14',
-      ponctualite: 'Excellent',
-      assiduite: '90%',
-      notes: { examen: 18, projet: 16, devoirs: 20 },
-    },
-    {
-      domaine: 'Laravel',
-      note: '12',
-      ponctualite: 'Bien',
-      assiduite: '85%',
-      notes: { examen: 14, projet: 18, devoirs: 16 },
-    },
-    {
-      domaine: 'Flutter',
-      note: '16',
-      ponctualite: 'Très bien',
-      assiduite: '95%',
-      notes: { examen: 16, projet: 20, devoirs: 18 },
-    },
-  ];
-
-  const calculerMoyenne = (notes) => {
-    const total = notes.reduce((acc, note) => acc + note, 0);
-    return total / notes.length;
-  };
-
-  const moyenneGenerale = calculerMoyenne(
-    bulletins.map((bulletin) => bulletin.notes.examen)
-  );
-
-  const choisirAppreciation = (moyenne) => {
-    if (moyenne >= 16) {
-      return 'Très bien, excellent travail !';
-    } else if (moyenne >= 12) {
-      return 'Bien, continuez vos efforts.';
+  // fonction de changement pour les champs 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (
+      [
+        "javascript",
+        "flutter",
+        "laravel",
+        "examen",
+        "projet",
+        "devoirs",
+      ].includes(name)
+    ) {
+      
+      setBulletinInfo((prevInfo) => ({
+        ...prevInfo,
+        notes: {
+          ...prevInfo.notes,
+          [name]: parseInt(value, 10),
+        },
+      }));
     } else {
-      return 'Peut faire mieux, travaillons ensemble pour améliorer.';
+      setBulletinInfo((prevInfo) => ({
+        ...prevInfo,
+        [name]: value,
+      }));
     }
   };
 
-  const appreciation = choisirAppreciation(moyenneGenerale);
-
-  const handleDownload = () => {
-    const pdf = new jsPDF();
-
-    // En tete
-    pdf.text("Bulletin de l'étudiant", 15, 15);
-
-    // Infos de l'etudiant
-    pdf.text(`Nom: ${studentInfo.nom}`, 15, 30);
-    pdf.text(`Prénom: ${studentInfo.prenom}`, 15, 45);
-    pdf.text(`Email: ${studentInfo.email}`, 15, 60);
-    pdf.text(`Domaine: ${studentInfo.domaine}`, 15, 75);
-
-    // Bulletin
-    let yOffset = 90;
-    bulletins.forEach((bulletin, index) => {
-      pdf.text(`Domaine: ${bulletin.domaine}`, 15, yOffset);
-      pdf.text(`Note : ${bulletin.note}`, 15, yOffset + 10);
-
-      if (['JavaScript', 'Laravel', 'Flutter'].includes(bulletin.domaine)) {
-        pdf.text(
-          `Notes : Examen: ${bulletin.notes.examen}, Projet: ${bulletin.notes.projet}, Devoirs: ${bulletin.notes.devoirs}`,
-          15,
-          yOffset + 20
-        );
+  //Fonction pour sauvegarder le bulletin
+  const handleSave = async () => {
+    try {
+      // Vérifier si un utilisateur est connecté
+      if (!user) {
+        toast.warning("Veuillez vous connecter.");
+        return;
       }
 
-      yOffset += 40;
-    });
+      const studentId = selectedStudent;
 
-    // Infos
-    pdf.text(`Moyenne générale : ${moyenneGenerale.toFixed(2)}`, 15, yOffset);
-    pdf.text(
-      `Appréciation des professeurs : ${appreciation}`,
-      15,
-      yOffset + 10
-    );
-    pdf.text(
-      `Décision : ${moyenneGenerale >= 10 ? 'Passer' : 'Redoubler'}`,
-      15,
-      yOffset + 20
-    );
+      // Vérifier si un bulletin existe déjà pour cet étudiant
+      const existingBulletinQuery = query(
+        collection(db, 'bulletins'),
+        where('studentId', '==', studentId)
+      );
 
-    // nom du pdf
-    pdf.save('bulletin_etudiant.pdf');
+      const existingBulletinSnapshot = await getDocs(existingBulletinQuery);
+
+      if (!existingBulletinSnapshot.empty) {
+        toast.warning("Un bulletin existe déjà pour cet étudiant.");
+        return;
+      }
+
+      const selectedStudentData = students.find(
+        (student) => student.userId === studentId
+      );
+      const studentName = selectedStudentData?.name || "Nom inconnu";
+
+      const bulletinData = {
+        studentId: studentId,
+        studentName: studentName,
+        notes: bulletinInfo.notes,
+        appreciation: bulletinInfo.appreciation,
+      };
+
+      console.log("Données du bulletin à enregistrer :", bulletinData);
+
+      // Ajouter les données du bulletin à la collection "bulletins"
+      await addDoc(collection(db, "bulletins"), bulletinData);
+
+      console.log("Bulletin enregistré avec succès!");
+      toast.success("Bulletin enregistré avec succès!");
+    } catch (error) {
+      console.error("Erreur lors de l'enregistrement du bulletin :", error);
+      toast.error(
+        "Une erreur s'est produite lors de l'enregistrement du bulletin."
+      );
+    }
   };
-
+  
   return (
-    <div className="container mt-4" id="bulletin-container">
+    <div className="container mt-4">
+      <ToastContainer />
       <div className="letter-format p-4">
-        <div className="d-flex justify-content-between align-items-center">
-          <h2 className="mb-4">Bulletin de l'étudiant</h2>
-          <button onClick={handleDownload} className="btn btn-primary mb-4 rounded-5">
-            <FaFilePdf className="mr-2" /> Télécharger le bulletin
-          </button>
-        </div>
-        <div className="row">
-          <div className="col-md-12 mb-4">
-            <div className="card">
-              <div className="card-body">
-                <h3 className="card-title">Informations de l'étudiant</h3>
-                <p className="card-text">Nom: {studentInfo.nom}</p>
-                <p className="card-text">Prénom: {studentInfo.prenom}</p>
-                <p className="card-text">Email: {studentInfo.email}</p>
-                <p className="card-text">Numéro: {studentInfo.numero}</p>
-                <p className="card-text">Domaine: {studentInfo.domaine}</p>
-                <p className="card-text">Coach: {studentInfo.coach}</p>
-                <p className="card-text">Trimestre: {studentInfo.trimestre}</p>
-              </div>
-            </div>
+        <h2 className="mb-4">Remplir le bulletin</h2>
+        <form>
+          <div className="form-group">
+            <label htmlFor="studentSelect">Choisir un étudiant :</label>
+            <select
+              id="studentSelect"
+              name="studentId"
+              value={selectedStudent}
+              onChange={handleChangeStudent}
+              className="form-control text-dark"
+              style={{ color: "black", backgroundColor: "white" }}
+            >
+              <option value="" disabled>
+                Sélectionner un étudiant
+              </option>
+              {students.map((student) => (
+                <option
+                  key={student.userId}
+                  className="text-dark"
+                  value={student.userId}
+                >
+                  {student.name}
+                </option>
+              ))}
+            </select>
           </div>
-          {bulletins.map((bulletin, index) => (
-            <div key={index} className="col-md-4">
-              <div className="card mb-4">
-                <div className="card-body">
-                  <h3 className="card-title">{bulletin.domaine}</h3>
-                  <p className="card-text">Note : {bulletin.note}</p>
-                  <p className="card-text">
-                    Ponctualité : {bulletin.ponctualite}
-                  </p>
-                  <p className="card-text">Assiduité : {bulletin.assiduite}</p>
-                  <p className="card-text">
-                    Notes :
-                    <br />- Examen : {bulletin.notes.examen}
-                    <br />- Projet : {bulletin.notes.projet}
-                    <br />- Devoirs : {bulletin.notes.devoirs}
-                  </p>
-                </div>
+          {selectedStudent && (
+            <div>
+              <h4>Notes de l'étudiant :</h4>
+              <div className="form-group">
+                <label htmlFor="javascript">JavaScript :</label>
+                <select
+                  id="javascript"
+                  name="javascript"
+                  value={bulletinInfo.notes.javascript}
+                  onChange={handleChange}
+                  className="form-control"
+                >
+                  {Array.from({ length: 21 }, (_, i) => i).map((value) => (
+                    <option key={value} value={value}>
+                      {value}
+                    </option>
+                  ))}
+                </select>
               </div>
+              <div className="form-group">
+                <label htmlFor="flutter">Flutter :</label>
+                <select
+                  id="flutter"
+                  name="flutter"
+                  value={bulletinInfo.notes.flutter}
+                  onChange={handleChange}
+                  className="form-control"
+                >
+                  {Array.from({ length: 21 }, (_, i) => i).map((value) => (
+                    <option key={value} value={value}>
+                      {value}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="laravel">Laravel :</label>
+                <select
+                  id="laravel"
+                  name="laravel"
+                  value={bulletinInfo.notes.laravel}
+                  onChange={handleChange}
+                  className="form-control"
+                >
+                  {Array.from({ length: 21 }, (_, i) => i).map((value) => (
+                    <option key={value} value={value}>
+                      {value}
+                    </option> 
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="examen">Notes Examen :</label>
+                <select
+                  id="examen"
+                  name="examen"
+                  value={bulletinInfo.notes.examen}
+                  onChange={handleChange}
+                  className="form-control"
+                >
+                  {Array.from({ length: 21 }, (_, i) => i).map((value) => (
+                    <option key={value} value={value}>
+                      {value}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="projet">Notes Projet :</label>
+                <select
+                  id="projet"
+                  name="projet"
+                  value={bulletinInfo.notes.projet}
+                  onChange={handleChange}
+                  className="form-control"
+                >
+                  {Array.from({ length: 21 }, (_, i) => i).map((value) => (
+                    <option key={value} value={value}>
+                      {value}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="devoirs">Notes Devoirs :</label>
+                <select
+                  id="devoirs"
+                  name="devoirs"
+                  value={bulletinInfo.notes.devoirs}
+                  onChange={handleChange}
+                  className="form-control"
+                >
+                  {Array.from({ length: 21 }, (_, i) => i).map((value) => (
+                    <option key={value} value={value}>
+                      {value}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="appreciation">Appréciation :</label>
+                <input
+                  type="text"
+                  id="appreciation"
+                  name="appreciation"
+                  value={bulletinInfo.appreciation}
+                  onChange={handleChange}
+                  className="form-control"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={handleSave}
+                className="btn btn-primary mt-2"
+              >
+                Enregistrer le bulletin
+              </button>
             </div>
-          ))}
-        </div>
-        <div className="mt-4">
-          <p>Moyenne générale : {moyenneGenerale.toFixed(2)}</p>
-          <p>Appréciation des professeurs : {appreciation}</p>
-          <p>Décision : {moyenneGenerale >= 10 ? 'Passer' : 'Redoubler'}</p>
-        </div>
+          )}
+        </form>
       </div>
     </div>
   );
