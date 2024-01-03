@@ -114,13 +114,10 @@ const ModalComponent = ({ onProfileImageChange }) => {
               />
             ) : null}
           </div>
-          {/*===============Bouton Modifier le Profil debut========= */}
           <button className="EditBtn" onClick={handleEditProfile}>
             <FaUserEdit className="fs-5 text-secondary " />
           </button>
-          {/*===============Bouton Modifier le Profil Fin========= */}
         </div>
-
         <div className="w-100 mt-2">
           <h4 className="PrenomUser fs-5 text-center  text-secondary fst-italic">
             {user ? user.displayName : "Nom non disponible"}
@@ -129,7 +126,6 @@ const ModalComponent = ({ onProfileImageChange }) => {
             {user ? user.email : "Email non disponible"}
           </h4>
         </div>
-
         <div className="my-3 ContImputUser">
           {/*============ Le Formulaire ========= */}
           <FormComponent />

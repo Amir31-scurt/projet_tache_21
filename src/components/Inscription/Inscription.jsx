@@ -1,17 +1,17 @@
-
-import React, { useEffect, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
-import { Password } from 'primereact/password';
-import { Dialog } from 'primereact/dialog';
-import { Divider } from 'primereact/divider';
-import { classNames } from 'primereact/utils';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from '../../config/firebase-config';
-import { Dropdown } from 'primereact/dropdown';
-import { addDoc, collection } from 'firebase/firestore';
-import emailjs from 'emailjs-com';
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
+import { Password } from "primereact/password";
+import { Dialog } from "primereact/dialog";
+import { Divider } from "primereact/divider";
+import { classNames } from "primereact/utils";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, db } from "../../config/firebase-config";
+import { Dropdown } from "primereact/dropdown";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import emailjs from "emailjs-com";
 
 emailjs.init("iyzQvt6sAJkX_ndas");
 
@@ -101,6 +101,11 @@ const Inscription = () => {
         password: formData.password,
       });
 
+      // // Créez la collection userChats
+      // const userChatsCollectionRef = collection(db, "userChats");
+      // const userChatDocRef = doc(userChatsCollectionRef, userId);
+      // await setDoc(userChatDocRef, { chats: [] });
+
       setFormData(data);
       setShowMessage(true);
       reset();
@@ -179,7 +184,7 @@ const Inscription = () => {
           </p>
         </div>
       </Dialog>
-      <div className="flex justify-content-center">
+      <div className="flex justify-content-center mx-auto">
         <div className="card">
           <h5 className="text-center">Inscription</h5>
           <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
@@ -292,7 +297,6 @@ const Inscription = () => {
                     <Password
                       id={field.name}
                       {...field}
-                      toggleMask
                       placeholder="Mot de passe"
                       className={classNames({
                         "p-invalid": fieldState.invalid,
