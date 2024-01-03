@@ -38,15 +38,18 @@ const ProgramList = () => {
     const fetchProgrammes = async () => {
       try {
         const domainesSnapshot = await getDocs(collection(db, 'domaines'));
-        const allProgrammes = domainesSnapshot.docs.map((doc) => {
-          const data = doc.data();
-          return {
-            title: data.domaine,
-            description: formatDescription(data.sousDomaines),
-            buttonText: data.buttonText || 'Les cours',
-            id: doc.id,
-          };
-        });
+        const allProgrammes = domainesSnapshot.docs
+          .filter((doc) => !doc.data().archived) // Filter out documents where 'archived' is true
+          .map((doc) => {
+            const data = doc.data();
+            return {
+              title: data.domaine,
+              description: formatDescription(data.sousDomaines),
+              buttonText: data.buttonText || 'Les cours',
+              id: doc.id,
+            };
+          });
+
         setProgrammes(allProgrammes);
       } catch (error) {
         console.error('Error fetching programmes: ', error);
