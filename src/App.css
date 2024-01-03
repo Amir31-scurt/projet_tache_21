@@ -228,6 +228,13 @@ body {
   width: 300px; /* or any desired width */
   margin: 8px;
 }
+.program-card1 {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  width: 290px; /* or any desired width */
+  margin: 5px;
+}
 .program-card2 {
   border: 1px solid #ccc;
   padding: 16px;
@@ -258,9 +265,21 @@ body {
   border-radius: 4px;
   cursor: pointer;
 }
+.program-card1 button {
+  background-color: #3084b5;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
 
 .program-card button:hover {
   background-color: #0056b3;
+}
+.program-card1 button:hover {
+  background-color: #4c9aff;
 }
 .program-card2 img {
   width: 100%;
