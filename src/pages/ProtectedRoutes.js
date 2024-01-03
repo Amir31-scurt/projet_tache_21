@@ -17,7 +17,8 @@ import ContentCardLivraison from '../components/ContentCardLivraison';
 import AssignationPage from '../components/pageAssignation/AssignationPage';
 import '../App.css';
 import Table from '../components/super-admin/Table';
-import TemplateDemo from '../components/super-admin/Domaine';
+import TemplateDemo from '../components/super-admin/AssignationDomaines';
+import CreateDomaine from '../components/super-admin/CreateDomaine';
 import NewCoach from '../components/super-admin/NewCoach';
 import StudentTable from '../components/super-admin/StudentTable';
 import { EmailContext } from '../contexte/EmailContexte';
@@ -27,6 +28,8 @@ import { fetchCoachEmails } from '../utils/fetchCoachEmails';
 import { fetchStudentEmails } from '../utils/fetchStudentEmails';
 import StudentProgram from '../components/ProEtudiant/Programme';
 import Cours from '../components/ProEtudiant/Cours';
+import UserTable from '../components/super-admin/TableauUtilisateurs';
+import logo from '../assets/images/logo.png';
 
 export default function ProtectedRoutes() {
   const { email } = useContext(EmailContext);
@@ -50,6 +53,14 @@ export default function ProtectedRoutes() {
     });
   }, []);
 
+  if (!isReady) {
+    return (
+      <div className="loadingPageLogo">
+        <img src={logo} alt="logo" />
+      </div>
+    ); // or any other loading indicator
+  }
+
   const isAdmin = adminEmails.includes(email);
   const isCoach = coachEmails.includes(email);
   const isStudent = studentEmails.includes(email);
@@ -58,23 +69,23 @@ export default function ProtectedRoutes() {
     ? [
         {
           path: '/dashboard/admin',
-          element: <Table />,
-        },
-        {
-          path: '/dashboard/table',
-          element: <TemplateDemo />,
+          element: <UserTable />,
         },
         {
           path: '/dashboard/coachs',
           element: <NewCoach />,
         },
         {
-          path: '/dashboard/etudiants',
-          element: <StudentTable />,
-        },
-        {
           path: '/dashboard/inscription',
           element: <Inscription />,
+        },
+        {
+          path: '/dashboard/assignationAdmin',
+          element: <TemplateDemo />,
+        },
+        {
+          path: '/dashboard/createDomaine',
+          element: <CreateDomaine />,
         },
       ]
     : [];
@@ -93,7 +104,7 @@ export default function ProtectedRoutes() {
           element: <ChatHome />,
         },
         {
-          path: '/dashboard/programme/cours',
+          path: '/dashboard/programme/cours/:courseId',
           element: <SpecificPro />,
         },
         {

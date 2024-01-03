@@ -2,13 +2,7 @@ import React, { useState } from 'react';
 import { Card } from 'primereact/card';
 import {
   Modal,
-  ButtonToolbar,
-  Button,
-  RadioGroup,
-  Radio,
-  Placeholder,
 } from 'rsuite';
-import { ChangeCircle } from '@mui/icons-material';
 import { useEffect } from 'react';
 
 export default function Cours() {
@@ -86,8 +80,8 @@ export default function Cours() {
               {previews &&
                 previews.map((pic) => {
                   return (
-                    <div className="d-flex ">
-                      <img src={pic} className="output gap-3" />
+                    <div className="d-flex m-3 ">
+                      <img src={pic} className="output " />
                     </div>
                   );
                 })}
