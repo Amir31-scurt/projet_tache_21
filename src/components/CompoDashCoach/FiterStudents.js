@@ -57,7 +57,7 @@ export default function FilterStudents() {
   };
 
   return (
-    <div className="d-flex justify-content-end mx-2 mt-5">
+    <div className="d-flex flex-wrap justify-content-end mx-2 mt-5">
       <FormControl
         sx={{ m: 1, width: 300 }}
         className="filterStudent  border-0"

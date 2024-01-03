@@ -67,7 +67,7 @@ const SpecificPro = () => {
               placeholder="Le lien des cours"
               className="w-100 rounded p-1 border-secondary border-opacity-25 border-1"
             />
-            <button className="learn-more-btn">Ajouter</button>
+            <button className="learn-more-btn rounded-5">Ajouter</button>
           </div>
         </div>
       </section>

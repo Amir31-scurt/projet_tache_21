@@ -331,7 +331,7 @@ const Inscription = () => {
             <Button
               type="submit"
               label="Inscrire"
-              className="mt-2 inscributton text-light"
+              className="mt-2 inscributton text-light "
             />
           </form>
         </div>

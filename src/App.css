@@ -786,10 +786,10 @@ body {
   color: #fff;
 }
 .sidebar .active {
-  background-color: #48a93c !important;
-  color: #fff;
+  background-color:  #0834c4b7 !important;
+  color: #fff !important;
   font-weight: bold;
-  border-right: 10px solid #308425 !important;
+  border-right: 10px solid  #0a0da7 !important;
   /* transition: 0.5s; */
 }
 

@@ -13,10 +13,10 @@ function CardLivraison() {
   const handleShow = () => setShow(true);
   return (
     <Card
-      style={{ width: '23rem' }}
-      className="cardLivraison col-md-4 mx-3 my-3"
+      style={{ width: '20rem' }}
+      className="cardLivraison flex-wrap bg-white shadow-4 rounded-4 col-md-4 mx-3 my-3"
     >
-      <Card.Img variant="top" src={image} className="imgCard" />
+      <Card.Img variant="top" src={image} className="imgCard rounded-3" />
       <Card.Body>
         <Card.Title>Tache 02 JavaScript</Card.Title>
         <p>Serigne Mourtalla Syll</p>
@@ -42,8 +42,8 @@ function CardLivraison() {
           <CarouselCard />
         </Modal.Body>
         <Modal.Footer>
-          <Button className="border-0" style={{backgroundColor:'#48a93c'}} >Valider</Button>
-          <Button className=" border-0"  style={{backgroundColor:'#3084b5'}}>Invalider</Button>
+          <Button className="border-0 rounded-5" style={{backgroundColor:'#48a93c'}} >Valider</Button>
+          <Button className=" border-0 rounded-5"  style={{backgroundColor:'#3084b5'}}>Invalider</Button>
         </Modal.Footer>
       </Modal>
     </Card>

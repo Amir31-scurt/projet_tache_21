@@ -25,7 +25,7 @@ export default function AddUser() {
   }, []);
 
   return (
-    <>
+    <div>
       <div
         className="d-flex justify-content-center align-items-center"
         onClick={() => setVisible(true)}
