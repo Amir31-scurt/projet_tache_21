@@ -14,7 +14,7 @@ import { db } from '../../config/firebase-config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'rsuite/dist/rsuite.css';
-import { ClipLoader, PulseLoader } from 'react-spinners';
+import { PulseLoader } from 'react-spinners';
 import { AssignationEtudiant } from './AssignationEtudiant';
 
 const AssignationPage = () => {
@@ -23,7 +23,7 @@ const AssignationPage = () => {
   const [value, setValue] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [notificationsCollection,setNotificationsCollection] = useState(
+  const [notificationsCollection] = useState(
     collection(db, "notifications")
   );
 

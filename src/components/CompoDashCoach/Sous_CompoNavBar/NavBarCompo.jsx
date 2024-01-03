@@ -1,30 +1,17 @@
 import React, { useContext, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import LogoTech from "../../../assets/images/logo.png";
-import UserProfil from "../../../assets/images/user.png";
-import { MdMessage } from "react-icons/md";
-import { Dropdown } from "rsuite";
-import { FaUserCog } from "react-icons/fa";
-import { IoMdLogOut } from "react-icons/io";
 import ModalComponent from "./ModalComponent";
-import NavBarContext from "./context";
 import { auth } from "../../../config/firebase-config";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Notifications from "./Notifications";
-import React, { useContext, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import LogoTech from '../../../assets/images/logo.png';
 import UserProfil from '../../../assets/images/user.png';
 import { MdMessage } from 'react-icons/md';
 import { Dropdown } from 'rsuite';
 import { FaUserCog } from 'react-icons/fa';
 import { IoMdLogOut } from 'react-icons/io';
-import ModalComponent from './ModalComponent';
 import NavBarContext from './context';
-import { auth } from '../../../config/firebase-config';
-import { signOut } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
 import { EmailContext } from '../../../contexte/EmailContexte';
 
 export const NavBarCompo = () => {

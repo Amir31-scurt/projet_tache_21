@@ -13,7 +13,7 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 
-import { db, storage } from '../../config/firebase-config';
+import { db } from '../../config/firebase-config';
 import Domaine from './Domaine';
 const FormikDoc = () => {
   const toast = useRef(null);

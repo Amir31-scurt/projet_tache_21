@@ -24,11 +24,9 @@ function Notifications() {
   const isMenuOpenNotif = Boolean(anchorElNotif);
 
   const menuId = "primary-search-account-menu";
-  console.log(email);
   //Fonction pour l'ouverture de l'historique des notifs
   const handleProfileMenuOpenNotif = (event) => {
     setAnchorElNotif(event.currentTarget);
-    console.log(notifs);
   };
   const handleMenuClose = () => {
     setAnchorElNotif(null);
@@ -45,7 +43,11 @@ function Notifications() {
     try {
       const notifCollection = collection(db, "notifications");
       const unsubscribe = onSnapshot(
-        query(notifCollection, where("email", "==", email)),
+        query(
+          notifCollection,
+          where("email", "==", email),
+          orderBy("timestamp", "desc")
+        ),
         (snapshot) => {
           const notifData = snapshot.docs.map((doc) => ({
             id: doc.id,
@@ -128,7 +130,7 @@ function Notifications() {
                   style={{
                     maxWidth: "300px",
                     whiteSpace: "pre-line",
-                    boxShadow: "1.4px 1.4px 1px 1px #3084b5"
+                    boxShadow: "1.4px 1.4px 1px 1px #3084b5",
                   }}
                 >
                   {notif.messageForAdmin}
