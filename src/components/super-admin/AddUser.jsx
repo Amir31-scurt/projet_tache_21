@@ -44,7 +44,7 @@ export default function AddUser({ reloadData }) {
   };
 
   return (
-    <>
+    <div>
       <div
         className="d-flex justify-content-center align-items-center"
         onClick={() => setVisible(true)}
@@ -123,9 +123,8 @@ export default function AddUser({ reloadData }) {
               <label htmlFor="Role"></label>
             </span>
           </div>
-          <div className="card flex flex-wrap justify-content-center gap-3">
-            <Button
-              rounded
+          <div className=" flex flex-wrap justify-content-center gap-3">
+            <Button className="rounded-5 text-white"
               label="Ajouter"
               icon="pi-plus-cercle"
               onClick={(e) => handleAddUser(e)}
@@ -133,6 +132,6 @@ export default function AddUser({ reloadData }) {
           </div>
         </form>
       </Dialog>
-    </>
+    </div>
   );
 }

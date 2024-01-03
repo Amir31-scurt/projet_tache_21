@@ -42,8 +42,8 @@ function CardLivraison() {
           <CarouselCard />
         </Modal.Body>
         <Modal.Footer>
-          <Button className="border-0" style={{backgroundColor:'#48a93c'}} >Valider</Button>
-          <Button className=" border-0"  style={{backgroundColor:'#3084b5'}}>Invalider</Button>
+          <Button className="border-0 rounded-5" style={{backgroundColor:'#48a93c'}} >Valider</Button>
+          <Button className=" border-0 rounded-5"  style={{backgroundColor:'#3084b5'}}>Invalider</Button>
         </Modal.Footer>
       </Modal>
     </Card>
