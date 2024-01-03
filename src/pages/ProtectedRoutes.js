@@ -72,16 +72,16 @@ export default function ProtectedRoutes() {
           element: <UserTable />,
         },
         {
-          path: '/dashboard/table',
-          element: <TemplateDemo />,
-        },
-        {
           path: '/dashboard/coachs',
           element: <NewCoach />,
         },
         {
           path: '/dashboard/inscription',
           element: <Inscription />,
+        },
+        {
+          path: '/dashboard/assignationAdmin',
+          element: <TemplateDemo />,
         },
         {
           path: '/dashboard/createDomaine',
@@ -104,7 +104,7 @@ export default function ProtectedRoutes() {
           element: <ChatHome />,
         },
         {
-          path: '/dashboard/programme/cours',
+          path: '/dashboard/programme/cours/:courseId',
           element: <SpecificPro />,
         },
         {
