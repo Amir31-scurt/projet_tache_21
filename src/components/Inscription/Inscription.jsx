@@ -7,7 +7,7 @@ import { Password } from 'primereact/password';
 import { Dialog } from 'primereact/dialog';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db } from '../../config/firebase-config';
 import { Dropdown } from 'primereact/dropdown';
 import { addDoc, collection } from 'firebase/firestore';
@@ -42,7 +42,7 @@ const Inscription = () => {
     email: "",
     password: generateRandomPassword(),
     role: "",
-    archived: false,
+    archiver: false,
     active: true,
   });
 
@@ -53,7 +53,7 @@ const Inscription = () => {
     email: "",
     password: "",
     role: "",
-    archived: false,
+    archiver: false,
     active: true,
   };
 
@@ -164,7 +164,7 @@ const Inscription = () => {
         footer={dialogFooter}
         showHeader={false}
         breakpoints={{ "960px": "80vw" }}
-        style={{ width: "30vw" }}
+        // style={{ width: "30vw" }}
       >
         <div className="flex justify-content-center flex-column pt-6 px-3">
           <i
@@ -179,10 +179,10 @@ const Inscription = () => {
           </p>
         </div>
       </Dialog>
-      <div className="flex justify-content-center">
-        <div className="card">
+      <div className="flex justify-content-center mx-0 w-100">
+        <div className="card w-100">
           <h5 className="text-center">Inscription</h5>
-          <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
+          <form onSubmit={handleSubmit(onSubmit)} className="p-fluid ">
             <div className="field">
               <span className="p-float-label p-input-icon-right">
                 <i className="pi pi-user" />
