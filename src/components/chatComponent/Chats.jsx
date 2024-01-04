@@ -19,11 +19,6 @@ export default function Chats() {
         doc(db, "userChats", currentUser?.uid),
         (doc) => {
           setChats(doc.data());
-
-          console.log(
-            "Afficher les userChats depuis le composant Chats",
-            chats
-          );
         }
       );
       return () => {
@@ -36,10 +31,7 @@ export default function Chats() {
   const handleSelect = (u) => {
     dispatch({ type: "CHANGE_USER", payload: u });
   };
-  console.log(
-    "Afficher les userChats depuis le composant Chats, essaie 3",
-    chats
-  );
+  console.log(Object.entries(chats)[1]);
   return (
     <div className="chats d-flex px-2 pt-2">
       {chats
@@ -50,7 +42,17 @@ export default function Chats() {
                 // {
                 chat[1]?.userInfo.uid !== currentUser?.uid && (
                   <div
-                    className="userChat text-center me-2"
+                    className={`
+                      userChat text-center me-2 py-1
+                      ${
+                        chat[1]?.userInfo?.role === "Coach"
+                          ? "coach"
+                          : chat[1]?.userInfo?.role === "Administrateutr"
+                          ? "admin"
+                          : chat[1]?.userInfo?.role === "Étudiant"
+                          ? "etudiant"
+                          : ""
+                      }`}
                     key={chat[0]}
                     onClick={() => handleSelect(chat[1]?.userInfo)}
                   >
@@ -65,7 +67,7 @@ export default function Chats() {
                     </div>
                   </div>
                 )
-                // }
+              // }
             )
         : null}
     </div>
