@@ -1,6 +1,6 @@
 import Table from "react-bootstrap/Table";
 import * as Icon from "react-bootstrap-icons";
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { Button } from "primereact/button";
 import ModalDetailsDomaines from "./ModalDetailsDomaines";
 
