@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState , useEffect} from "react";
 import { quizzes } from "./question";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from "../../config/firebase-config";
 import  { AuthContext } from "../../contexte/AuthContext";
 
@@ -13,23 +13,44 @@ const ContentBlock = ({ title, content, onClick, icons }) => (
 );
 
 const Quiz = ({ questions, onFinish }) => {
-
- 
   const [selectedAnswers, setSelectedAnswers] = useState(Array(questions.length).fill([]));
   const [userScore, setUserScore] = useState(0);
+  const [quizFinished, setQuizFinished] = useState(false);
+  const [result, setResult] = useState('');
 
-  const handleAnswerChange = (questionIndex, answerIndex, correct) => {
+  // Effacer les réponses et marquer le quiz comme non terminé lorsque les questions changent
+  useEffect(() => {
+    setSelectedAnswers(Array(questions.length).fill([]));
+    setUserScore(0);
+    setQuizFinished(false);
+  }, [questions]);
+
+  const handleAnswerChange = (questionIndex, answerIndex, correct, ) => {
+    // Vérifier si le quiz est terminé
+    if (quizFinished) {
+      return;
+    }
+
     const newAnswers = [...selectedAnswers];
-    const currentAnswer = newAnswers[questionIndex];
 
     // Basculer la sélection de la réponse
     newAnswers[questionIndex] = { answerIndex, correct };
 
     setSelectedAnswers(newAnswers);
-
-    if (correct) {
-      setUserScore((prevScore) => prevScore + 2);
+    if (answerIndex === '') {
+      setUserScore(userScore + 2);
+      setResult('Bonne réponse! Vous avez gagné 2 points.');
+    } else {
+      setResult('Mauvaise réponse! Aucun point gagné.');
     }
+  };
+  
+
+  const handleFinishClick = () => {
+    // Marquer le quiz comme terminé
+    setQuizFinished(true);
+    // Appeler la fonction onFinish avec le score
+    onFinish(userScore);
   };
 
   return (
@@ -44,6 +65,7 @@ const Quiz = ({ questions, onFinish }) => {
                 checked={selectedAnswers[questionIndex]?.answerIndex === answerIndex}
                 onChange={(e) => handleAnswerChange(questionIndex, answerIndex, e.target.checked)}
                 id={`answer-${questionIndex}-${answerIndex}`}
+                disabled={quizFinished} // Désactiver les inputs si le quiz est terminé
               />
               <label className="label">{answer}</label>
             </div>
@@ -51,50 +73,56 @@ const Quiz = ({ questions, onFinish }) => {
         </div>
       ))}
       <div className="">
-        <button type="button" className="sous" onClick={() => onFinish(userScore)}>
+        <button type="submit" className="sous" onClick={handleFinishClick}>
           TERMINER
         </button>
       </div>
     </div>
   );
 };
-
 export default function Score() {
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [finalScore, setFinalScore] = useState(null);
   const [selectedAnswers, setSelectedAnswers] = useState(Array(10).fill(null));
-  const {uid} = useContext(AuthContext);
-  console.log("Le userUid =", uid);
+  const {uid, currentUser} = useContext(AuthContext);
+  // console.log("Le userUid =", uid);
 
-  const handleContentBlockClick = (index) => {
+  const handleContentBlockClick = (index,) => {
     setSelectedQuiz(index);
   };
 
-  const handleQuizFinish = async (score, utilisateurs,) => {
+const handleQuizFinish = async (score) => {
     setFinalScore(score);
-
+  
     if (selectedQuiz !== null) {
       // stocker les réponses des utilisateurs 
-      const userResponsesRef = collection(db, 'utilisateurs');
 
       // Stocker les données dans Firestore
       const userResponsesData = {
-        userId: uid,
+        userId: currentUser,
         quizTitle: quizzes[selectedQuiz].title,
         userScore: score,
         userAnswers: quizzes[selectedAnswers, 0],
         correctAnswers: quizzes[selectedQuiz].questions.map((question) => question.correctAnswer),
         timestamp: new Date(),
       };
-      console.log(userResponsesData)
+      console.log(userResponsesData);
+
+      const userResponsesRef = collection(db, 'utilisateurs');
 
       // Ajouter les réponses des utilisateurs à Firestore
       try {
-        const docRef = await addDoc(userResponsesRef, userResponsesData , );
+        const docRef = await getDoc(userResponsesRef, userResponsesData);
+        if (docRef.exists()) {
+          await addDoc(userResponsesRef, userResponsesData, { merge: true });
+        } else {
+          await addDoc(userResponsesRef, userResponsesData);
+        }
         console.log('User responses added with ID: ', docRef.uid);
       } catch (error) {
         console.error('Error adding user responses: ', error);
       }
+     
     }
   };
 
@@ -125,13 +153,13 @@ export default function Score() {
           {quizzes && (
             <>
 
-              {quizzes.map((quiz, index) => (
+              {quizzes.map((quiz, id) => (
                 <ContentBlock
-                  key={`quiz-${index}`}
+                  key={`quiz-${id}`}
                   title={quiz.title}
                   icons={quiz.icons}
                   content={quiz.description}
-                  onClick={() => handleContentBlockClick(index)}
+                  onClick={() => handleContentBlockClick(id)}
                 />
               ))}
             </>
