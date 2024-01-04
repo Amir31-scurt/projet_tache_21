@@ -145,6 +145,18 @@ body {
   font-weight: 700;
 }
 
+/*------------Notifications-----------*/
+.notifs{
+  background-color: whitesmoke !important;
+}
+.suppNotif{
+  border-radius: 0px 10px 10px 1px;
+}
+
+.transition-fade {
+  transition: 2s ease-in-out;
+}
+
 @media (max-width: 1024px) {
   .module-container {
     flex-direction: column;
@@ -767,6 +779,8 @@ body {
   margin-left: 40px;
 }
 } */
+
+
 /*-----------------------Sidebar---------------------*/
 .sidebar {
   height: 100vh;
