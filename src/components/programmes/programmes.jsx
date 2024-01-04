@@ -7,7 +7,7 @@ import { collection, getDocs } from 'firebase/firestore';
 // Define a reusable ProgramCard component
 const ProgramCard = ({ title, description, buttonText, courseId }) => {
   return (
-    <div className="program-card1 bg-light">
+    <div className="program-card1 bg-white rounded-4 shadow-4">
       <h5>{title}</h5>
       <hr />
       <div className="mb-3">
@@ -18,7 +18,7 @@ const ProgramCard = ({ title, description, buttonText, courseId }) => {
             </p>
           ))}
       </div>
-      <button>
+      <button className='rounded-5'>
         <Link
           to={`/dashboard/programme/cours/${courseId}`}
           className="text-light text-decoration-none"
@@ -38,15 +38,18 @@ const ProgramList = () => {
     const fetchProgrammes = async () => {
       try {
         const domainesSnapshot = await getDocs(collection(db, 'domaines'));
-        const allProgrammes = domainesSnapshot.docs.map((doc) => {
-          const data = doc.data();
-          return {
-            title: data.domaine,
-            description: formatDescription(data.sousDomaines),
-            buttonText: data.buttonText || 'Les cours',
-            id: doc.id,
-          };
-        });
+        const allProgrammes = domainesSnapshot.docs
+          .filter((doc) => !doc.data().archived) // Filter out documents where 'archived' is true
+          .map((doc) => {
+            const data = doc.data();
+            return {
+              title: data.domaine,
+              description: formatDescription(data.sousDomaines),
+              buttonText: data.buttonText || 'Les cours',
+              id: doc.id,
+            };
+          });
+
         setProgrammes(allProgrammes);
       } catch (error) {
         console.error('Error fetching programmes: ', error);

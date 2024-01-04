@@ -142,7 +142,7 @@ const ModalComponent = ({ onProfileImageChange }) => {
         <button
           onClick={handleCloseModal}
           style={{ backgroundColor: "#3084b5" }}
-          className="btn py-2 px-3 me-2"
+          className="btn py-2 px-3 text-white me-2 rounded-5"
         >
           Modifier
         </button>
@@ -150,7 +150,7 @@ const ModalComponent = ({ onProfileImageChange }) => {
         {/*====== Bouton Annuler Modifications Profil ====== */}
         <button
           onClick={handleCancelChanges}
-          className="btn btn-secondary py-2 px-3"
+          className="btn btn-success py-2 px-3 rounded-5"
         >
           Annuler
         </button>
