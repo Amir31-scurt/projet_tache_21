@@ -8,8 +8,8 @@ export const quizzes = [
           title: "Management International",
           question: "Qu'est-ce que la mondialisation et quel impact a-t-elle sur les entreprises internationales?",
           answers: [
-            "Uniquement l'ouverture des marchés financiers.",
             "Le processus d'interconnexion mondiale des marchés,cultures et sociétés. ",
+            "Uniquement l'ouverture des marchés financiers.",
             "La réduction des échanges commerciaux entre les pays",
             
           ],
@@ -18,8 +18,8 @@ export const quizzes = [
         {
           question: "Quels sont les avantages de la diversification géographique pour une entreprise?",
           answers: [
-            "Risque sectoriel accru.",
             "Accès à de nouveaux marchés.",
+            "Risque sectoriel accru.",
             "Coûts opérationnels constants.",
           ],
         },
@@ -27,8 +27,8 @@ export const quizzes = [
         {
           question: "Comment la culture organisationnelle peut-elle influencer la gestion internationale?",
           answers: [
-            "Elle n'a pas d'impact.",
             " Influence la communication et la prise de décision.",
+            "Elle n'a pas d'impact.",
             "Affecte uniquement la gestion des ressources humaines.",
           ],
         },

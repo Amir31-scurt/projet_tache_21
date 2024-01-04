@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { quizzes } from "./question";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { db } from "../../config/firebase-config";
+import  { AuthContext } from "../../contexte/AuthContext";
 
 const ContentBlock = ({ title, content, onClick, icons }) => (
   <div className="content-block" onClick={onClick}>
@@ -9,40 +12,48 @@ const ContentBlock = ({ title, content, onClick, icons }) => (
   </div>
 );
 
-const Quiz = ({ questions }) => {
-  const [selectedAnswers, setSelectedAnswers] = useState(Array(questions.length).fill(false));
+const Quiz = ({ questions, onFinish }) => {
 
-  const handleAnswerChange = (index) => {
+ 
+  const [selectedAnswers, setSelectedAnswers] = useState(Array(questions.length).fill([]));
+  const [userScore, setUserScore] = useState(0);
+
+  const handleAnswerChange = (questionIndex, answerIndex, correct) => {
     const newAnswers = [...selectedAnswers];
-    newAnswers[index] = !newAnswers[index];
+    const currentAnswer = newAnswers[questionIndex];
+
+    // Basculer la sélection de la réponse
+    newAnswers[questionIndex] = { answerIndex, correct };
+
     setSelectedAnswers(newAnswers);
+
+    if (correct) {
+      setUserScore((prevScore) => prevScore + 2);
+    }
   };
-  const titres = ["Titre 1"];
 
   return (
     <div className="espace-tru">
-          {titres.map((titre, index) => (
-        <h1 key={index}>{titre}</h1>
-      ))}
-      {questions.map((questionObj, index, id) => (
-        <div key={`question-${index}`}>
+      {questions.map((questionObj, questionIndex) => (
+        <div key={`question-${questionIndex}`}>
           <h6 className="paragraph">{questionObj.question}</h6>
           {questionObj.answers.map((answer, answerIndex) => (
             <div key={`answer-${answerIndex}`} className="dig">
               <input
                 type="radio"
-                checked={selectedAnswers[id]}
-                onChange={() => handleAnswerChange(index)}
-                id="port"
-                style={{ backgroundColor: selectedAnswers[id] }}
+                checked={selectedAnswers[questionIndex]?.answerIndex === answerIndex}
+                onChange={(e) => handleAnswerChange(questionIndex, answerIndex, e.target.checked)}
+                id={`answer-${questionIndex}-${answerIndex}`}
               />
               <label className="label">{answer}</label>
             </div>
           ))}
         </div>
       ))}
-      <div classNme="">
-        <button type="button" className="sous">SOUMETTRE</button>
+      <div className="">
+        <button type="button" className="sous" onClick={() => onFinish(userScore)}>
+          TERMINER
+        </button>
       </div>
     </div>
   );
@@ -50,10 +61,43 @@ const Quiz = ({ questions }) => {
 
 export default function Score() {
   const [selectedQuiz, setSelectedQuiz] = useState(null);
+  const [finalScore, setFinalScore] = useState(null);
+  const [selectedAnswers, setSelectedAnswers] = useState(Array(10).fill(null));
+  const {uid} = useContext(AuthContext);
+  console.log("Le userUid =", uid);
 
   const handleContentBlockClick = (index) => {
     setSelectedQuiz(index);
   };
+
+  const handleQuizFinish = async (score, utilisateurs,) => {
+    setFinalScore(score);
+
+    if (selectedQuiz !== null) {
+      // stocker les réponses des utilisateurs 
+      const userResponsesRef = collection(db, 'utilisateurs');
+
+      // Stocker les données dans Firestore
+      const userResponsesData = {
+        userId: uid,
+        quizTitle: quizzes[selectedQuiz].title,
+        userScore: score,
+        userAnswers: quizzes[selectedAnswers, 0],
+        correctAnswers: quizzes[selectedQuiz].questions.map((question) => question.correctAnswer),
+        timestamp: new Date(),
+      };
+      console.log(userResponsesData)
+
+      // Ajouter les réponses des utilisateurs à Firestore
+      try {
+        const docRef = await addDoc(userResponsesRef, userResponsesData , );
+        console.log('User responses added with ID: ', docRef.uid);
+      } catch (error) {
+        console.error('Error adding user responses: ', error);
+      }
+    }
+  };
+
 
   // Titre des domaines de la programmation
   const lessons = ["Programmation 01: Management International",
@@ -95,7 +139,11 @@ export default function Score() {
         </div>
       </div>
       <div className=" col-md-9 main-content">
-        {selectedQuiz !== null && <Quiz questions={quizzes[selectedQuiz].questions} />}
+         {/* {selectedQuiz !== null && <Quiz questions={quizzes[selectedQuiz].questions} />}  */}
+        {selectedQuiz !== null && <Quiz questions={quizzes[selectedQuiz].questions} onFinish={handleQuizFinish} />}
+        {finalScore !== null && <h3 className="final-score">Note finale : {finalScore} / 20</h3>}
+        
+        
       </div>
     </div>
   );
