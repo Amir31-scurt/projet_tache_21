@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState , useEffect} from "react";
 import { quizzes } from "./question";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
@@ -13,14 +13,24 @@ const ContentBlock = ({ title, content, onClick, icons }) => (
 );
 
 const Quiz = ({ questions, onFinish }) => {
-
- 
   const [selectedAnswers, setSelectedAnswers] = useState(Array(questions.length).fill([]));
   const [userScore, setUserScore] = useState(0);
+  const [quizFinished, setQuizFinished] = useState(false);
+
+  // Effacer les réponses et marquer le quiz comme non terminé lorsque les questions changent
+  useEffect(() => {
+    setSelectedAnswers(Array(questions.length).fill([]));
+    setUserScore(0);
+    setQuizFinished(false);
+  }, [questions]);
 
   const handleAnswerChange = (questionIndex, answerIndex, correct) => {
+    // Vérifier si le quiz est terminé
+    if (quizFinished) {
+      return;
+    }
+
     const newAnswers = [...selectedAnswers];
-    const currentAnswer = newAnswers[questionIndex];
 
     // Basculer la sélection de la réponse
     newAnswers[questionIndex] = { answerIndex, correct };
@@ -30,6 +40,13 @@ const Quiz = ({ questions, onFinish }) => {
     if (correct) {
       setUserScore((prevScore) => prevScore + 2);
     }
+  };
+
+  const handleFinishClick = () => {
+    // Marquer le quiz comme terminé
+    setQuizFinished(true);
+    // Appeler la fonction onFinish avec le score
+    onFinish(userScore);
   };
 
   return (
@@ -44,6 +61,7 @@ const Quiz = ({ questions, onFinish }) => {
                 checked={selectedAnswers[questionIndex]?.answerIndex === answerIndex}
                 onChange={(e) => handleAnswerChange(questionIndex, answerIndex, e.target.checked)}
                 id={`answer-${questionIndex}-${answerIndex}`}
+                disabled={quizFinished} // Désactiver les inputs si le quiz est terminé
               />
               <label className="label">{answer}</label>
             </div>
@@ -51,14 +69,13 @@ const Quiz = ({ questions, onFinish }) => {
         </div>
       ))}
       <div className="">
-        <button type="button" className="sous" onClick={() => onFinish(userScore)}>
+        <button type="button" className="sous" onClick={handleFinishClick}>
           TERMINER
         </button>
       </div>
     </div>
   );
 };
-
 export default function Score() {
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [finalScore, setFinalScore] = useState(null);
