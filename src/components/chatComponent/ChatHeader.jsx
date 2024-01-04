@@ -9,7 +9,7 @@ export default function ChatHeader() {
   const { currentUser } = useContext(ChatAuthCtx);
 
   return (
-    <div className="chatHeader">
+    <div className="chatHeader position-relative">
       {/* <ChatNavbar /> */}
       <div className="d-flex justify-content-between chatHeaderBtnContainer text-white p-1">
         <span className="ms-2">{currentUser && currentUser.displayName}</span>

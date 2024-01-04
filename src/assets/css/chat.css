@@ -62,7 +62,19 @@ Vert
                 SEARCH-FORM 
    ================================================== */
 /* .search{
-  border-bottom: 1px solid #0071bd !important;
+  position: absolute;
+  background-color: #fff;
+  width: 100%;
+  transition: 1s ease-in-out;
+  height: auto;
+}
+.searchHidden{
+    position: absolute;
+    background-color: #48a93c;
+    transition: 1s ease-in-out;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
 } */
 .searchForm #navbar-input-container input {
   outline: none !important;
@@ -115,7 +127,7 @@ Vert
 }
 
 .chats::-webkit-scrollbar-thumb {
-  background-color: #fff;
+  background-color: #48a93c;
   border-radius: 10px;
 }
 
@@ -166,16 +178,6 @@ Vert
 /* ================================================== 
                 SEARCH-FORM 
    ================================================== */
-.searchForm #navbar-input-container input {
-  outline: none !important;
-  background-color: transparent;
-  border-bottom: 1px solid #0071bd !important;
-  color: #161616;
-}
-.searchForm #navbar-input-container input::placeholder {
-  color: #333;
-  font-style: italic;
-}
 .form-control:focus {
   box-shadow: none;
 }
@@ -200,6 +202,7 @@ Vert
 .messages {
   height: 250px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .messages .owner {
   flex-direction: row-reverse;
@@ -220,8 +223,8 @@ Vert
 .messages .owner .messageInfo img {
   width: 25px;
 }
-.messages .message .messageInfo span,
-.messages .owner .messageInfo span {
+.messages .message span,
+.messages .owner span {
   font-size: 12px;
 }
 .messages .message .messageContent img,
@@ -232,12 +235,12 @@ Vert
 .messages .message .messageContent p {
   max-width: fit-content;
   border-radius: 0 10px 10px 10px;
-  background-color: rgb(2, 119, 196) !important;
+  background-color: #3084b5 !important;
 }
 .messages .owner .messageContent p {
   max-width: fit-content;
   border-radius: 10px 0 10px 10px;
-  background-color: rgb(2, 172, 31) !important;
+  background-color: #48a93c !important;
 }
 /* Styles pour la barre de défilement */
 .messages::-webkit-scrollbar {

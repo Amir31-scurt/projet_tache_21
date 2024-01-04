@@ -15,16 +15,16 @@ export default function Message({ message }) {
   return (
     <div
       ref={mess}
-      className={`message my-2 d-flex ${
+      className={`message my-3 d-flex ${
         message ? message?.senderId !== currentUser?.uid && "owner" : ""
       }`}
     >
       <div className="messageInfo d-flex flex-column">
         <img src={pp} alt="" />
-        <span>just now</span>
       </div>
       <div className="messageContent">
-        <p className="bg-primary text-white p-2"> {message?.text}</p>
+        <span className="text-dark">just now </span>
+        <p className="bg-primary text-white text-wrap p-2"> {message?.text}</p>
         {/* <img src={messageTexto} alt="" /> */}
       </div>
     </div>

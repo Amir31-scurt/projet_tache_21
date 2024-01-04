@@ -15,11 +15,12 @@ import {
 import { db } from "../../config/firebase-config";
 // import { Dangerous } from "@mui/icons-material";
 
-export default function Search() {
+export default function Search({ openSearch }) {
   // Définir les etats
   const [userName, setUserName] = useState(); // L'user qu'on cherche
   const [user, setUser] = useState(null); // L'user trouvé
   const [err, setErr] = useState(false); // Gestion de des erreurs éventuelles
+  const [closeSearch, setCloseSearch] = useState(false);
   // Récupérer le contexte
   const { currentUser } = useContext(ChatAuthCtx);
 
@@ -48,12 +49,7 @@ export default function Search() {
 
   // Définir la fonction qui permet de sélectionner le compte rechercher
   const handleSelect = async () => {
-    console.log("Le user existant dans le handleSelect: ", user);
-    console.log("Le currentUser existant dans le handleSelect: ", currentUser);
-    console.log(
-      "Le role du currentUser existant dans le handleSelect: ",
-      currentUser.role
-    );
+    setCloseSearch(true);
     // Combinaison d'identifiant
     const combinedId =
       currentUser.uid > user.userId
@@ -95,7 +91,7 @@ export default function Search() {
     setUser(null);
   };
   return (
-    <div className="search">
+    <div className={`search ${(openSearch || closeSearch) && "searchHidden"}`}>
       <div className="searchForm ">
         <div
           className="input-group d-flex align-items-center p-2"
@@ -131,7 +127,9 @@ export default function Search() {
           </div>
         </div>
       ) : (
-        <span className="text-danger">Pas de compte(s) trouvé(s) ...</span>
+        <span className="text-danger ms-2 fs-6 pb-2">
+          Pas de résultat(s) ...
+        </span>
       )}
     </div>
   );
