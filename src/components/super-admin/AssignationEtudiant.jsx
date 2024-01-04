@@ -251,8 +251,8 @@ export const AssignationEtudiant = () => {
   // Rendu du composant Assignation
   return (
     <div
-      className="p-3 d-flex justify-content-center flex-column"
-      style={{ width: "100%", background: "#eee" }}
+      className="p-2 d-flex justify-content-center flex-wrap"
+      style={{ width: '100%' }}
     >
       <div className="ComtaTabAss m-auto" style={{ padding: "20px" }}>
         <div className="mt-5" style={{ marginBottom: "250px" }}>
@@ -283,7 +283,7 @@ export const AssignationEtudiant = () => {
         {/* Bouton d'assignation avec gestion de chargement */}
         <div className="mt-5 d-flex align-items-center w-100">
           <button
-            className="btn w-100 text-white boutonAssign fw-bold"
+            className="btn w-100 text-white boutonAssign rounded-5 fw-bold"
             style={{ backgroundColor: " #3084b5" }}
             onClick={handleAssign}
             disabled={loading}

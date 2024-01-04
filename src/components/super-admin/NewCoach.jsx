@@ -64,10 +64,18 @@ const NewCoach = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={handleClose} appearance="primary">
+          <Button
+            onClick={handleClose}
+            appearance="primary"
+            className="btn btn-bg-primary rounded-5"
+          >
             Confirm
           </Button>
-          <Button onClick={handleClose} appearance="subtle">
+          <Button
+            onClick={handleClose}
+            appearance="subtle"
+            className="btn btn-success"
+          >
             Cancel
           </Button>
         </Modal.Footer>

@@ -14,10 +14,10 @@ function CardLivraison() {
   const handleShow = () => setShow(true);
   return (
     <Card
-      style={{ width: '23rem' }}
-      className="cardLivraison col-md-4 mx-3 my-3"
+      style={{ width: '20rem' }}
+      className="cardLivraison flex-wrap bg-white shadow-4 rounded-4 col-md-4 mx-3 my-3"
     >
-      <Card.Img variant="top" src={image} className="imgCard" />
+      <Card.Img variant="top" src={image} className="imgCard rounded-3" />
       <Card.Body>
         <Card.Title>Tache 02 JavaScript</Card.Title>
         <p>Serigne Mourtalla Syll</p>

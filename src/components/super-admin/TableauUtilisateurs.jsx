@@ -42,6 +42,7 @@ export default function TableauUtilisateurs() {
   const [roleValue, setRoleValue] = useState("");
   const [notificationsCollection] = useState(collection(db, "notifications"));
   const [roleFilter, setRoleFilter] = useState("Tous les utilisateurs");
+  const [tabType, setTabType] = useState("utilisateurs");
 
   // Affiche les détails de l'utilisateur sélectionné
   const showDetails = (utilisateur) => {
@@ -183,6 +184,13 @@ export default function TableauUtilisateurs() {
     const selectedValue = e.target.value;
     setRoleFilter(selectedValue);
     localStorage.setItem(localStorageKey, selectedValue);
+
+    // Mettez à jour tabType en fonction de la valeur du filtre sélectionné
+    if (selectedValue === "Archivés") {
+      setTabType("utilisateurs archivées");
+    } else {
+      setTabType(selectedValue);
+    }
   };
 
   // Définition des colonnes pour le tableau
@@ -412,7 +420,9 @@ export default function TableauUtilisateurs() {
 
       {/* Affichage du tableau */}
       <div className="TableUtilisateurs d-flex flex-column justyfy-content-center align-items-center w-100">
-        <h1 className="my-3 shadowTable">Tableaux utilisateur</h1>
+        <h1 className="my-3 shadowTable">
+          Tableaux <span>{tabType}</span>
+        </h1>
         <div className="myTable ">
           <div className="add filter d-flex justify-content-start align-items-center">
             <select

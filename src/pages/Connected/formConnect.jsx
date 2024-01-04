@@ -224,12 +224,12 @@ export default function FormConnect() {
               <div className="modal-footer">
                 <button
                   type="button"
-                  className="btn btn-secondary"
+                  className="btn btn-success rounded-5"
                   data-bs-dismiss="modal"
                 >
                   Close
                 </button>
-                <button type="button" className="btn btn-primary">
+                <button type="button" className="btn btn-primary rounded-5">
                   Save changes
                 </button>
               </div>
