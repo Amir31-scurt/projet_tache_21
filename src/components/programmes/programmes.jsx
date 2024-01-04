@@ -5,11 +5,12 @@ import { db } from '../../config/firebase-config';
 import { collection, getDocs } from 'firebase/firestore';
 
 // Define a reusable ProgramCard component
-const ProgramCard = ({ title, description, buttonText, courseId }) => {
+const ProgramCard = ({ title, description, buttonText, courseId, url }) => {
   return (
     <div className="program-card1 bg-white rounded-4 shadow-4">
       <h5>{title}</h5>
-      <hr />
+      <hr /> 
+      <img src={url} alt='img' className='w-100 img-fluid' style={{height: "40%"}} />
       <div className="mb-3">
         {description &&
           description.map((desc, index) => (
@@ -46,6 +47,7 @@ const ProgramList = () => {
               title: data.domaine,
               description: formatDescription(data.sousDomaines),
               buttonText: data.buttonText || 'Les cours',
+              url: data.url,
               id: doc.id,
             };
           });
@@ -70,6 +72,7 @@ const ProgramList = () => {
               title={program.title}
               description={program.description}
               buttonText={program.buttonText}
+              url={program.url}
               courseId={program.id} // Assuming each program has a unique identifier
             />
           ))}
