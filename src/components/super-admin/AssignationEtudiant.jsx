@@ -8,6 +8,8 @@ import {
   where,
   query,
   arrayUnion,
+  serverTimestamp,
+  addDoc,
 } from "firebase/firestore";
 import { db } from "../../config/firebase-config";
 import { ToastContainer, toast } from "react-toastify";
@@ -29,7 +31,9 @@ export const AssignationEtudiant = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [dataLoading, setDataLoading] = useState(false);
-
+  const [notificationsCollection] = useState(
+    collection(db, "notifications")
+  );
   // Fonction de tri personnalisée pour les options du MultiCascader
   const customSortFunction = (a, b) => {
     const windowA = a.split(".")[0];
@@ -104,6 +108,7 @@ export const AssignationEtudiant = () => {
 
               if (etudiantDocs.size > 0) {
                 const etudiantDoc = etudiantDocs.docs[0];
+                
 
                 // Mise à jour des informations de l'étudiant
                 await updateDoc(etudiantDoc.ref, {
@@ -122,6 +127,20 @@ export const AssignationEtudiant = () => {
             // Mise à jour des informations du coach avec la liste des étudiants assignés
             await updateDoc(coachDoc.ref, {
               etudiants: arrayUnion(...etudiantsSelectionnes),
+            });
+
+            let notificationMessage;
+
+            if(etudiantsSelectionnes.length > 1){
+              notificationMessage = `Les étudiants ${etudiantsSelectionnes} vous ont étés assignés`
+            }else{
+              notificationMessage = `L' étudiant ${etudiantsSelectionnes} vous a été assigné`
+            }
+            await addDoc(notificationsCollection, {
+              messageForAdmin: notificationMessage,
+              timestamp: serverTimestamp(),
+              newNotif: true,
+              email: selectedCoach,
             });
 
             setErrorMessage(null);

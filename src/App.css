@@ -146,10 +146,13 @@ body {
 .notifs{
   background-color: whitesmoke !important;
 }
-/* .css-g3hgs1-MuiBackdrop-root-MuiModal-backdrop{
-  width: 500px !important;
-} */
+.suppNotif{
+  border-radius: 0px 10px 10px 1px;
+}
 
+.transition-fade {
+  transition: 2s ease-in-out;
+}
 
 @media (max-width: 1024px) {
   .module-container {
