@@ -12,23 +12,22 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { EmailContext } from "../../contexte/EmailContexte";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import "react-toastify/dist/ReactToastify.css";
+import Restaurer from "./Restaurer";
 
 export default function FormConnect() {
-  // Les states pour la connexion / login
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
-  // Emails d'admin
   const [adminEmails, setAdminEmails] = useState([]);
-  // Email de coachs
   const [coachEmails, setCoachEmails] = useState([]);
-  // Email des etudiants
   const [studentEmails, setStudentEmails] = useState([]);
-
   const { email, setEmail } = useContext(EmailContext);
-
-  // UseNavigate pour les redirections
+  const [showRestaurerModal, setShowRestaurerModal] = useState(false);
   const navigate = useNavigate();
+
+  // Ouvre le modal du composant Restaurer
+  const openRestaurerModal = () => {
+    setShowRestaurerModal(true);
+  };
 
   // les changements dans les champs
   const handleEmailChange = (e) => {
@@ -74,7 +73,7 @@ export default function FormConnect() {
     const studentEmails = [];
 
     querySnapshot.forEach((doc) => {
-      studentEmails.push(doc.data().email); // Assuming the email field is named 'email'
+      studentEmails.push(doc.data().email);
     });
 
     return studentEmails;
@@ -128,10 +127,9 @@ export default function FormConnect() {
       } else if (isCoach) {
         navigate("/dashboard/coach");
       } else if (isStudent) {
-        navigate("/dashboard"); // Assuming this is the route for students
+        navigate("/dashboard");
       }
     } catch (error) {
-      // alert('Échec de la connexion. Veuillez vérifier vos informations.');
       toast.error(
         "Échec de la connexion. Veuillez vérifier vos informations.",
         {
@@ -152,105 +150,60 @@ export default function FormConnect() {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <div className="m-5 mb-4">
-        <div className="input-group  flex-nowrap">
-          <span className="input-group-text" id="addon-wrapping">
-            <CiMail />
-          </span>
-          <input
-            type="email"
-            class="form-control "
-            placeholder="Email"
-            value={email}
-            onChange={handleEmailChange}
-            aria-label="Username"
-            aria-describedby="addon-wrapping"
-          />
-        </div>
-      </div>
-      <div className=" m-5 ">
-        <div className="input-group mb-3  flex-nowrap">
-          <span className="input-group-text" id="addon-wrapping">
-            <RiLockPasswordFill />
-          </span>
-          <input
-            type="password"
-            class="form-control "
-            placeholder="Mot de passe"
-            value={password}
-            onChange={handlePasswordChange}
-            aria-label="Username"
-            aria-describedby="addon-wrapping"
-          />
-        </div>
-        <p
-          className="m-0 p-0 text-end oubli"
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModal"
-        >
-          Mot de passe oublié?
-        </p>
-        {/* <!-- Modal --> */}
-        <div
-          className="modal fade"
-          id="exampleModal"
-          tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h1 className="modal-title fs-5" id="exampleModalLabel">
-                  Mot de pass oublié{" "}
-                </h1>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div className="modal-body">
-                <div className="form-outline text-start mb-4">
-                  <input
-                    type="email"
-                    id="email"
-                    className="form-control p-2"
-                    placeholder="Saisissez votre mail"
-                  />
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button type="button" className="btn btn-primary">
-                  Save changes
-                </button>
-              </div>
-            </div>
+    <div className="m-0">
+      {showRestaurerModal && (
+        <Restaurer setShowRestaurerModal={setShowRestaurerModal} />
+      )}
+      <form onSubmit={handleLogin}>
+        <div className="m-5 mb-2">
+          <div className="input-group flex-nowrap">
+            <span className="input-group-text" id="addon-wrapping">
+              <CiMail />
+            </span>
+            <input
+              type="email"
+              class="form-control "
+              placeholder="Email"
+              value={email}
+              onChange={handleEmailChange}
+              aria-label="Username"
+              aria-describedby="addon-wrapping"
+            />
           </div>
-          <p className="m-0 p-0 text-end oubli">Mot de passe oublié?</p>
         </div>
-        <div className="pt-1 mt-4 text-end">
-          <center>
-            <button
-              type="submit"
-              className="btn d-flex justify-content-center align-items-center fs-6 btn-lg btn-block col-7 text-white log"
-              disabled={loading}
-            >
-              {loading ? "Chargement..." : "Se connecter"}
-            </button>
-          </center>
+        <div className="m-5 ">
+          <div className="input-group mb-2 flex-nowrap">
+            <span className="input-group-text" id="addon-wrapping">
+              <RiLockPasswordFill />
+            </span>
+            <input
+              type="password"
+              class="form-control "
+              placeholder="Mot de passe"
+              value={password}
+              onChange={handlePasswordChange}
+              aria-label="Username"
+              aria-describedby="addon-wrapping"
+            />
+          </div>
         </div>
+      </form>
+      <p className="m-0 p-0 text-end oubli" onClick={openRestaurerModal}>
+        Mot de passe oublié ?
+      </p>
+
+      <div className="pt-1 mt-4 text-end">
+        <center>
+          <button
+            type="submit"
+            className="btn d-flex justify-content-center align-items-center fs-6 btn-lg btn-block col-7 text-white log"
+            disabled={loading}
+          >
+            {loading ? "Chargement..." : "Se connecter"}
+          </button>
+        </center>
       </div>
       <ToastContainer />
-    </form>
+    </div>
   );
 }

@@ -15,7 +15,7 @@ import emailjs from "emailjs-com";
 
 emailjs.init("iyzQvt6sAJkX_ndas");
 
-// Composant principal
+// Méthode principale
 const Inscription = () => {
   const roles = ["Administrateur", "Coach", "Étudiant"];
   const [showMessage, setShowMessage] = useState(false);
@@ -101,10 +101,7 @@ const Inscription = () => {
         password: formData.password,
       });
 
-      // // Créez la collection userChats
-      // const userChatsCollectionRef = collection(db, "userChats");
-      // const userChatDocRef = doc(userChatsCollectionRef, userId);
-      // await setDoc(userChatDocRef, { chats: [] });
+      await setDoc(doc(db, "userChats", userCredential.user.uid), {});
 
       setFormData(data);
       setShowMessage(true);
@@ -136,6 +133,7 @@ const Inscription = () => {
     );
   };
 
+  // Modal de validation
   const dialogFooter = (
     <div className="flex justify-content-center">
       <Button
@@ -160,6 +158,7 @@ const Inscription = () => {
     </React.Fragment>
   );
 
+  // Affichage
   return (
     <div className="form-demo">
       <Dialog
