@@ -117,9 +117,6 @@ Vert
   right: 20px;
 }
 
-.chats {
-  overflow-x: scroll;
-}
 /* Styles pour la barre de défilement */
 .chats::-webkit-scrollbar {
   height: 6px;
