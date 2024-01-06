@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../../assets/css/single-program.css'; // This is where you'd put your CSS
 import { SelectPicker } from 'rsuite';
 import { useParams } from 'react-router-dom';
@@ -13,33 +13,49 @@ import {
 } from 'firebase/firestore';
 import { db } from '../../../config/firebase-config';
 import { ToastContainer, toast } from 'react-toastify';
-import { auth } from '../../../config/firebase-config';
 
 const SpecificPro = () => {
   const { courseId } = useParams();
   const [courseData, setCourseData] = useState(null);
   const [newCourseLink, setNewCourseLink] = useState('');
-  const [selectedSousDomaine, setSelectedSousDomaine] = useState(null);
+  const [selectedSousDomaine, setSelectedSousDomaine] = useState();
   const coachEmail = localStorage.getItem('userEmail');
 
-  const [coachSousDomaine, setCoachSousDomaine] = useState();
+  const [coachSousDomaine, setCoachSousDomaine] = useState('');
 
   useEffect(() => {
     const fetchCoachDetails = async () => {
-      const user = auth.currentUser;
-      if (user) {
-        try {
-          const docRef = doc(db, 'utilisateurs', user.uid); // Using the user's UID as the document ID
-          const docSnap = await getDoc(docRef);
+      // Replace this with the actual email or how you get the email
+      const coachEmail = localStorage.getItem('userEmail');
+      console.log('Fetching details for email:', coachEmail);
 
-          if (docSnap.exists() && docSnap.data().role === 'coach') {
-            setCoachSousDomaine(docSnap.data().sousDomaines);
+      if (coachEmail) {
+        try {
+          const q = query(
+            collection(db, 'utilisateurs'),
+            where('email', '==', coachEmail)
+          );
+
+          const querySnapshot = await getDocs(q);
+          console.log(`Number of documents found: ${querySnapshot.size}`);
+
+          if (!querySnapshot.empty) {
+            querySnapshot.forEach((docSnapshot) => {
+              const userData = docSnapshot.data();
+              console.log('Document found:', userData);
+              if (userData.role === 'Coach') {
+                setCoachSousDomaine(userData.sousDomaines);
+                console.log(coachSousDomaine);
+              }
+            });
+          } else {
+            console.log('No coach found with the provided email');
           }
         } catch (error) {
           console.error('Error fetching coach details:', error);
         }
       } else {
-        console.log('No authenticated user found');
+        console.log('No coach email provided');
       }
     };
 
@@ -54,7 +70,6 @@ const SpecificPro = () => {
 
         if (docSnapshot.exists()) {
           console.log(docSnapshot.data()); // Add this line to log the fetched data
-          console.log(selectedSousDomaine);
           setCourseData(docSnapshot.data());
         } else {
           console.log('No such document!');
