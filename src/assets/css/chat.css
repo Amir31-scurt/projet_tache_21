@@ -1,27 +1,40 @@
-/* Bleu
- #1283ed : foncée
-#e16d07: claire 
-Maron
-#e16d07 : claire
-#432705 : foncée
+/* 
+Bleu
+#0071bd: foncée
+#3084b5: claire 
+Vert 
+#48a93c: foncée
 */
 /* ================================================== 
                     CHAT HOME
    ================================================== */
-.chatHome {
-  overflow: hidden;
-  background-color: #432705;
-}
 .chatHomeContainer {
   width: 400px;
   position: absolute;
-  bottom: 20px;
+  /* bottom: 20px; */
+  bottom: 7px;
   right: 20px;
+  z-index: 1000000000000;
 }
 .chatHomeContainer #btn-toggle {
   float: right;
   outline: none !important;
-  background-color: #e16d07;
+  background-color: #0071bd;
+}
+.chatHomeDisplay{
+    transition: 0.9s ease;
+    transform: translateY(-1000%); 
+}
+.chatHomeDisplayYes{
+    transition: 0.4s ease;
+    transform: translateY(0%); 
+}
+.chatHome {
+  /* border: 0.01rem solid #333; */
+  overflow: hidden;
+  background-color: #fff;
+  transition: 0.2s ease-in-out;
+  border-bottom: 3px solid #0071bd;
 }
 .chatHomeDisplay {
   transition: 0.9s ease;
@@ -42,23 +55,36 @@ Maron
   transition: all 0.3s ease;
 }
 .chatHeader .chatHeaderBtnContainer {
-  background-color: #e16d07;
+  background-color: #0071bd;
 }
 
 /* ================================================== 
                 SEARCH-FORM 
    ================================================== */
 /* .search{
-  border-bottom: 1px solid #e16d07 !important;
+  position: absolute;
+  background-color: #fff;
+  width: 100%;
+  transition: 1s ease-in-out;
+  height: auto;
+}
+.searchHidden{
+    position: absolute;
+    background-color: #48a93c;
+    transition: 1s ease-in-out;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
 } */
 .searchForm #navbar-input-container input {
   outline: none !important;
+  color: #333; 
   background-color: transparent;
-  border-bottom: 1px solid #e16d07 !important;
+  border-bottom: 1px solid #0071bd !important;
 }
 
 .searchForm #navbar-input-container input::placeholder {
-  color: #fff;
+  color: #333;
   font-style: italic;
 }
 
@@ -68,6 +94,10 @@ Maron
 
 .userChat .userChatInfo .userChatInfoName {
   font-size: 12px;
+  color: #333;
+}
+.search .searchForm #searchFormBtn{
+  color: #333;
 }
 .search .searchForm #searchFormBtn,
 .search .userChatContainer {
@@ -77,9 +107,16 @@ Maron
 /* ================================================== 
                     CHATS 
    ================================================== */
-.chats {
-  overflow-x: scroll;
+.chats{
+    overflow-x: scroll;
+}  
+.chatHomeContainer {
+  width: 400px;
+  position: absolute;
+  bottom: 15px;
+  right: 20px;
 }
+
 /* Styles pour la barre de défilement */
 .chats::-webkit-scrollbar {
   height: 6px;
@@ -87,12 +124,24 @@ Maron
 }
 
 .chats::-webkit-scrollbar-thumb {
-  background-color: #fff;
+  background-color: #48a93c;
   border-radius: 10px;
 }
 
 .chats::-webkit-scrollbar-track {
   background-color: transparent;
+}
+
+.chatHomeContainer #btn-toggle {
+  float: right;
+  outline: none !important;
+  background-color: #0071bd;
+}
+.chatHomeContainer {
+  width: 400px;
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
 }
 .chats {
   overflow-x: scroll;
@@ -100,7 +149,7 @@ Maron
 .chatHomeContainer #btn-toggle {
   float: right;
   outline: none !important;
-  background-color: #e16d07;
+  background-color: #0071bd;
   color: white;
 }
 .chatHome .chatHeader .chatNavbar .user img {
@@ -111,31 +160,55 @@ Maron
 }
 .chats .userChat {
   cursor: pointer;
-  width: 60px;
+  width: 75px;
   overflow-x: hidden;
   /* flex-wrap: nowrap; */
 }
+/* .chats .admin:hover{
+  background-color: rgba(255, 215, 0, 0.3);
+}
+.chats .coach:hover{
+  background-image: linear-gradient(90deg, #ffb338 10%, #77571d 25%, #3e2904 75%);
+}
+.chats .etudiant:hover{
+  background-color: #48a93c;
+} */
 .chats .userChat span {
   font-size: 12px;
+  color: #333;
 }
 .userChat .userChatInfo .userChatInfolastMessage {
   font-size: 10px;
+  color: #333;
+}
+/* ================================================== 
+                
+   ================================================== */
+.form-control:focus {
+  box-shadow: none;
 }
 
 /* ================================================== 
                         CHAT
    ================================================== */
 .chatHome .chat .chatInfo {
-  background-color: #e16d07;
+  background-color: #0071bd;
   color: #333;
 }
-
+#crown{
+  color: #FFD700;
+  /* box-shadow: 2px 2px 24px #FFD700; */
+}
+#teacher{
+  color: #C0C0C0;
+}
 /* ================================================== 
                 MESSAGES
    ================================================== */
 .messages {
   height: 250px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .messages .owner {
   flex-direction: row-reverse;
@@ -156,8 +229,8 @@ Maron
 .messages .owner .messageInfo img {
   width: 25px;
 }
-.messages .message .messageInfo span,
-.messages .owner .messageInfo span {
+.messages .message span,
+.messages .owner span {
   font-size: 12px;
 }
 .messages .message .messageContent img,
@@ -168,10 +241,12 @@ Maron
 .messages .message .messageContent p {
   max-width: fit-content;
   border-radius: 0 10px 10px 10px;
+  background-color: #3084b5 !important;
 }
 .messages .owner .messageContent p {
   max-width: fit-content;
   border-radius: 10px 0 10px 10px;
+  background-color: #48a93c !important;
 }
 /* Styles pour la barre de défilement */
 .messages::-webkit-scrollbar {
@@ -180,7 +255,7 @@ Maron
 }
 
 .messages::-webkit-scrollbar-thumb {
-  background-color: #e16d07;
+  background-color: #0071bd;
   border-radius: 10px;
 }
 
@@ -193,19 +268,29 @@ Maron
    ================================================== */
 .chatInput input {
   background-color: transparent;
-  border: 1px solid #e16d07;
+  border: 1px solid #0071bd;
 }
 .chatInput input:focus {
   background-color: transparent;
   box-shadow: none;
-  border: 1px solid #e16d07;
+  border: 1px solid #0071bd;
 }
 .chatInput input::placeholder {
-  color: #fff;
+  color: #333;
+}
+.chatInput .btn{
+  background-color: #0071bd;
+}
+.chatInput .btn:hover{
+  background-color: #0071bd;
+}
+.chatInput .btn:disabled{
+  background-color: #0071bd;
+  border: #3084b5 !important;
 }
 .chatInput .btn {
-  background-color: #e16d07;
+  background-color: #0071bd;
 }
 .chatInput .btn:hover {
-  background-color: #e16d07;
+  background-color: #0071bd;
 }
