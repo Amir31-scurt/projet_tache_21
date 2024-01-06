@@ -1,7 +1,7 @@
 import React from 'react';
 // import html from '../assets/images/htmlcss.jpg'
 import { Link } from 'react-router-dom';
-export default function CompoHtml() {
+export default function CompoHtml({title, url}) {
   const link = '/dashboard/cours';
   return (
     <Link to={link} className="text-decoration-none">
@@ -9,13 +9,13 @@ export default function CompoHtml() {
         <div className="card rounded-4 shadow">
           <div className="program-img">
             <img
-              src=""
-              className="card-img-top img-fluid rounded-4"
-              alt="Sunset Over the Sea"
+              src={url}
+              className="card-img-top img-fluid rounded-4 w-100"
+              alt="img"
             />
           </div>
           <div className="card-body border-top">
-            <h4>Html/Css/Bootstrap</h4>
+            <h4>{title}</h4>
             <div
               className="progress"
               role="progressbar"

@@ -1,12 +1,11 @@
 import React from 'react';
-// import Card from ''
-
 export default function DashboardCompo({
   ChiffreCardDsb,
   IconeCardDsb,
   TextCardDsb,
   couleurCarte,
 }) {
+
   return (
     <div className="WidthCardDsb">
       <div

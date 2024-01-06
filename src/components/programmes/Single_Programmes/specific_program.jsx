@@ -1,16 +1,50 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import '../../../assets/css/single-program.css'; // This is where you'd put your CSS
 import { SelectPicker } from 'rsuite';
 import { useParams } from 'react-router-dom';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  getDocs,
+  query,
+  collection,
+  where,
+} from 'firebase/firestore';
 import { db } from '../../../config/firebase-config';
 import { ToastContainer, toast } from 'react-toastify';
+import { auth } from '../../../config/firebase-config';
 
 const SpecificPro = () => {
   const { courseId } = useParams();
   const [courseData, setCourseData] = useState(null);
   const [newCourseLink, setNewCourseLink] = useState('');
   const [selectedSousDomaine, setSelectedSousDomaine] = useState(null);
+  const coachEmail = localStorage.getItem('userEmail');
+
+  const [coachSousDomaine, setCoachSousDomaine] = useState();
+
+  useEffect(() => {
+    const fetchCoachDetails = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        try {
+          const docRef = doc(db, 'utilisateurs', user.uid); // Using the user's UID as the document ID
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists() && docSnap.data().role === 'coach') {
+            setCoachSousDomaine(docSnap.data().sousDomaines);
+          }
+        } catch (error) {
+          console.error('Error fetching coach details:', error);
+        }
+      } else {
+        console.log('No authenticated user found');
+      }
+    };
+
+    fetchCoachDetails();
+  }, []);
 
   useEffect(() => {
     const fetchCourseData = async () => {
@@ -20,6 +54,7 @@ const SpecificPro = () => {
 
         if (docSnapshot.exists()) {
           console.log(docSnapshot.data()); // Add this line to log the fetched data
+          console.log(selectedSousDomaine);
           setCourseData(docSnapshot.data());
         } else {
           console.log('No such document!');
@@ -57,6 +92,26 @@ const SpecificPro = () => {
       });
       return;
     }
+
+    if (selectedSousDomaine !== coachSousDomaine) {
+      toast.error(
+        'Vous ne pouvez ajouter des cours que dans votre sous-domaine',
+        {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        }
+      );
+      return;
+    }
+
+    console.log(selectedSousDomaine);
+    console.log(coachSousDomaine);
 
     // Ensure sousDomaines is an object and contains the selected sousDomaine
     const currentSousDomaines =
