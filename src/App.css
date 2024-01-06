@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 * {
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 body {
@@ -56,7 +56,7 @@ body {
   text-align: left !important;
 }
 
-.module-container input[type="radio"] {
+.module-container input[type='radio'] {
   --webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -146,10 +146,10 @@ body {
 }
 
 /*------------Notifications-----------*/
-.notifs{
+.notifs {
   background-color: whitesmoke !important;
 }
-.suppNotif{
+.suppNotif {
   border-radius: 0px 10px 10px 1px;
 }
 
@@ -780,7 +780,6 @@ body {
 }
 } */
 
-
 /*-----------------------Sidebar---------------------*/
 .sidebar {
   height: 100vh;
@@ -800,10 +799,10 @@ body {
   color: #fff;
 }
 .sidebar .active {
-  background-color:  #0834c4b7 !important;
+  background-color: #48a93c !important;
   color: #fff !important;
   font-weight: bold;
-  border-right: 10px solid  #0a0da7 !important;
+  border-right: 10px solid #409635 !important;
   /* transition: 0.5s; */
 }
 
