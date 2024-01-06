@@ -70,6 +70,7 @@ export default function Search({ openSearch }) {
             uid: user.userId,
             displayName: user.name,
             role: user.role,
+            archived: false,
             // photoURL: user.photoURL,
           },
           [combinedId + ".date"]: serverTimestamp(),

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import pp from "../../assets/images/user.png";
 import { ChatAuthCtx } from "../../contexte/ChatAuthCtx";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../config/firebase-config";
 import { ChatContext } from "../../contexte/ChatContext";
 
@@ -27,6 +27,11 @@ export default function Chats() {
     };
     currentUser?.uid && getChats();
   }, [currentUser?.uid]);
+
+  // const handleArchived =  (e) => {
+  //   // await updateDoc(doc(db, "userChats", ))
+  //   console.log(e)
+  // }
 
   const handleSelect = (u) => {
     dispatch({ type: "CHANGE_USER", payload: u });
@@ -56,7 +61,23 @@ export default function Chats() {
                     key={chat[0]}
                     onClick={() => handleSelect(chat[1]?.userInfo)}
                   >
-                    <img src={pp} alt="" className="" />
+                    {/* <i
+                      className="bi bi-x-lg position-absolute btnArchived"
+                      // onClick={handleArchived}
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      data-bs-title="Archiver"
+                    ></i> */}
+                    <img
+                      src={
+                        chat[1]?.userInfo?.photoURL
+                          ? "https://firebasestorage.googleapis.com/v0/b/tache21-c134b.appspot.com/o/profile_images%2F4FEGNUHDZOYnv4WvJvyr2TxLha82?alt=media&token=588074b8-639a-42de-bd4b-0199e30150d6"
+                          : pp
+                      }
+                      alt=""
+                      className="rounded-circle img-fluid"
+                    />
+
                     <div className="userChatInfo">
                       <span className="text-center text-nowrap">
                         {chat[1]?.userInfo.displayName}{" "}

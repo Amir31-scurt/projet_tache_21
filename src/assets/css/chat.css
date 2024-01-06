@@ -157,12 +157,23 @@ Vert
 }
 .userChat img {
   width: 40px;
+  height: 40px;
+  object-fit: cover;
 }
 .chats .userChat {
   cursor: pointer;
   width: 75px;
   overflow-x: hidden;
+  position: relative;
   /* flex-wrap: nowrap; */
+}
+.chats .userChat .btnArchived{
+  top: 0;
+  right: 0;
+  color: #333;
+}
+.chats .userChat .btnArchived:hover{
+  color: #f21414;
 }
 /* .chats .admin:hover{
   background-color: rgba(255, 215, 0, 0.3);
