@@ -48,6 +48,7 @@ const ProgramList = () => {
               url: data.url,
               description: formatDescription(data.sousDomaines),
               buttonText: data.buttonText || 'Les cours',
+              url: data.url,
               id: doc.id,
             };
           });
@@ -73,6 +74,7 @@ const ProgramList = () => {
               url={program.url}
               description={program.description}
               buttonText={program.buttonText}
+              url={program.url}
               courseId={program.id} // Assuming each program has a unique identifier
             />
           ))}
