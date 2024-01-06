@@ -5,6 +5,7 @@ export default function DashboardCompo({
   TextCardDsb,
   couleurCarte,
 }) {
+
   return (
     <div className="WidthCardDsb">
       <div
