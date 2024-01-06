@@ -14,7 +14,7 @@ function CardLivraison() {
   const handleShow = () => setShow(true);
   return (
     <Card
-      style={{ width: '20rem' }}
+      style={{ width: '24rem' }}
       className="cardLivraison flex-wrap bg-white shadow-4 rounded-4 col-md-4 mx-3 my-3"
     >
       <Card.Img variant="top" src={image} className="imgCard rounded-3" />
@@ -45,7 +45,7 @@ function CardLivraison() {
         </Modal.Body>
         <Modal.Footer>
           <Button className="border-0 d-flex justify-content-center bg-warning pe-auto" disabled><Icon.PauseBtn className='fs-4 me-1' /> En cours...</Button>
-          <Button className=" border-0"  style={{backgroundColor:'#3084b5'}}>Invalider</Button>
+          <Button className=" border-0"  style={{backgroundColor:'#3084b5'}}>Rejeter</Button>
         </Modal.Footer>
       </Modal>
     </Card>

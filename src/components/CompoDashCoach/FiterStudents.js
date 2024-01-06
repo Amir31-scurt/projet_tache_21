@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -7,6 +8,12 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
+import {
+  collection,
+  onSnapshot,
+} from 'firebase/firestore';
+import { db } from '../../config/firebase-config';
+
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP =8;
@@ -18,20 +25,6 @@ const MenuProps = {
     },
   },
 };
-
-const names = [
-  'Serigne Mourtalla Syll',
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
 
 function getStyles(name, personName, theme) {
   return {
@@ -45,6 +38,25 @@ function getStyles(name, personName, theme) {
 export default function FilterStudents() {
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
+  const [students, setStudents] = useState([]);
+
+  const loadStudents = useCallback(() => {
+    const unsubscribe = onSnapshot(collection(db, 'utilisateurs'), (snapshot) => {
+      const updatedUsers = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setStudents(updatedUsers);
+    });
+
+    return () => {
+      // Nettoyez le listener lors du démontage du composant
+      unsubscribe();
+    };
+  }, []);
+  useEffect(() => {
+    loadStudents();
+  }, [loadStudents]);
 
   const handleChange = (event) => {
     const {
@@ -66,7 +78,7 @@ export default function FilterStudents() {
           id="demo-multiple-chip-label"
           className="text-white norder-0"
         >
-          Selectionnez par étudiant
+          Filtrer par étudiant
         </InputLabel>
         <Select
           labelId="demo-multiple-chip-label"
@@ -84,13 +96,13 @@ export default function FilterStudents() {
           )}
           MenuProps={MenuProps}
         >
-          {names.map((name) => (
+          {students.filter((user) => user.role === "Étudiant").map((name) => (
             <MenuItem
               key={name}
-              value={name}
-              style={getStyles(name, personName, theme)}
+              value={name.name}
+              style={getStyles(name.name, personName, theme)}
             >
-              {name}
+              {name.name}
             </MenuItem>
           ))}
         </Select>
