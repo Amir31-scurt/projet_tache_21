@@ -18,6 +18,8 @@ const SpecificPro = () => {
   const { courseId } = useParams();
   const [courseData, setCourseData] = useState(null);
   const [newCourseLink, setNewCourseLink] = useState('');
+  const [newCourseTitle, setNewCourseTitle] = useState('');
+  const [newCourseDescription, setNewCourseDescription] = useState('');
   const [selectedSousDomaine, setSelectedSousDomaine] = useState();
   const coachEmail = localStorage.getItem('userEmail');
 
@@ -94,8 +96,13 @@ const SpecificPro = () => {
 
   // Ajouter des cours
   const handleAddCourse = async () => {
-    if (!newCourseLink || !selectedSousDomaine) {
-      toast.error('Pas de lien ou de sous domaines sélectionnés', {
+    if (
+      !newCourseLink ||
+      !newCourseTitle ||
+      !newCourseDescription ||
+      !selectedSousDomaine
+    ) {
+      toast.error('Tous les champs doivent être remplis', {
         position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -107,6 +114,12 @@ const SpecificPro = () => {
       });
       return;
     }
+
+    const newCourse = {
+      link: newCourseLink,
+      title: newCourseTitle,
+      description: newCourseDescription,
+    };
 
     if (selectedSousDomaine !== coachSousDomaine) {
       toast.error(
@@ -151,8 +164,8 @@ const SpecificPro = () => {
 
     // Update the cours array inside the selected sousDomaine
     const updatedCours = currentSousDomaines[selectedSousDomaine].cours
-      ? [...currentSousDomaines[selectedSousDomaine].cours, newCourseLink]
-      : [newCourseLink];
+      ? [...currentSousDomaines[selectedSousDomaine].cours, newCourse]
+      : [newCourse];
 
     const updatedSousDomaines = {
       ...currentSousDomaines,
@@ -179,6 +192,8 @@ const SpecificPro = () => {
         theme: 'light',
       });
       setNewCourseLink(''); // Clear the input field
+      setNewCourseTitle('');
+      setNewCourseDescription('');
     } catch (error) {
       console.error('Error updating document: ', error);
     }
@@ -192,108 +207,133 @@ const SpecificPro = () => {
 
     const selectedDomaine = courseData.sousDomaines[selectedSousDomaine];
     return selectedDomaine && selectedDomaine.cours
-      ? selectedDomaine.cours
+      ? selectedDomaine.cours.map((course) => course) // Make sure to map to the 'link' property
       : [];
   };
 
   const getYouTubeVideoId = (url) => {
+    if (typeof url !== 'string') {
+      return null;
+    }
+
     const regExp =
       /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
 
-    if (match && match[2].length === 11) {
-      return match[2];
-    }
-
-    return null;
+    return match && match[2].length === 11 ? match[2] : null;
   };
 
   return (
-    <div className="main-container">
-      <section className="header-section">
-        <h3 className="text-center">Les sous domaines et cours</h3>
-        <div className="d-flex flex-column">
-          <p>
-            Le coaching est un processus d'accompagnement personnalisé qui vise
-            à améliorer les performances et le bien-être d'un individu, d'un
-            groupe ou d'une organisation. Cette pratique repose sur
-            l'établissement d'une relation de confiance entre le coach et le
-            coaché. Le coach aide le coaché à identifier ses objectifs
-            personnels ou professionnels, à reconnaître ses forces et ses
-            faiblesses, et à développer des stratégies pour atteindre ses buts.
-            L'approche est centrée sur le coaché, favorisant ainsi une prise de
-            conscience et un développement personnel ou professionnel. Le
-            coaching se distingue par son orientation vers des solutions
-            concrètes et son focus sur l'action, aidant le coaché à surmonter
-            les obstacles et à réaliser pleinement son potentiel.
-          </p>
-          <hr />
-          <h5 className="mb-3 text-center">Ajouter des cours</h5>
-          <div className="d-flex flex-column flex-wrap gap-2 justify-content-center align-items-center col-lg-6 mx-auto mx-lg-0">
-            <>
-              <SelectPicker
-                data={sousDomainesData}
-                groupBy="role"
-                style={{ width: 224 }}
-                className="w-100"
-                onChange={(value) => setSelectedSousDomaine(value)}
+    <div>
+      <h1 className="fst-italic text-secondary fs-3 fw-bold ps-2 pt-3">
+        Les Cours
+      </h1>
+      <div className="main-container">
+        <section className="header-section">
+          <h3 className="text-center">Les sous domaines et cours</h3>
+          <div className="d-flex flex-column">
+            <p>
+              Le coaching est un processus d'accompagnement personnalisé qui
+              vise à améliorer les performances et le bien-être d'un individu,
+              d'un groupe ou d'une organisation. Cette pratique repose sur
+              l'établissement d'une relation de confiance entre le coach et le
+              coaché. Le coach aide le coaché à identifier ses objectifs
+              personnels ou professionnels, à reconnaître ses forces et ses
+              faiblesses, et à développer des stratégies pour atteindre ses
+              buts. L'approche est centrée sur le coaché, favorisant ainsi une
+              prise de conscience et un développement personnel ou
+              professionnel. Le coaching se distingue par son orientation vers
+              des solutions concrètes et son focus sur l'action, aidant le
+              coaché à surmonter les obstacles et à réaliser pleinement son
+              potentiel.
+            </p>
+            <hr />
+            <h5 className="mb-3 text-center">Ajouter des cours</h5>
+            <div className="d-flex flex-column flex-wrap gap-2 justify-content-center align-items-center col-lg-6 mx-auto mx-lg-0 addCours">
+              <>
+                <SelectPicker
+                  data={sousDomainesData}
+                  groupBy="role"
+                  style={{ width: 224 }}
+                  className="w-100"
+                  onChange={(value) => setSelectedSousDomaine(value)}
+                />
+              </>
+              <input
+                type="text"
+                name="coursAjout"
+                id="coursAjout"
+                placeholder="Le lien des cours"
+                className="w-100 rounded p-1 border-secondary border-opacity-25 border-1"
+                value={newCourseLink}
+                onChange={(e) => setNewCourseLink(e.target.value)}
               />
-            </>
-            <input
-              type="text"
-              name="coursAjout"
-              id="coursAjout"
-              placeholder="Le lien des cours"
-              className="w-100 rounded p-1 border-secondary border-opacity-25 border-1"
-              value={newCourseLink}
-              onChange={(e) => setNewCourseLink(e.target.value)}
-            />
-            <button className="learn-more-btn" onClick={handleAddCourse}>
-              Ajouter
-            </button>
+              <input
+                type="text"
+                name="TitreDeCours"
+                id="TitreDeCours"
+                placeholder="Titre de cours"
+                className="w-100 rounded p-1 border-secondary border-opacity-25 border-1"
+                value={newCourseTitle}
+                onChange={(e) => setNewCourseTitle(e.target.value)}
+              />
+              <input
+                type="text"
+                name="DescriptionDeCours"
+                id="DescriptionDeCours"
+                placeholder="Description cours"
+                className="w-100 rounded p-1 border-secondary border-opacity-25 border-1"
+                value={newCourseDescription}
+                onChange={(e) => setNewCourseDescription(e.target.value)}
+              />
+              <button className="learn-more-btn" onClick={handleAddCourse}>
+                Ajouter
+              </button>
+            </div>
           </div>
-        </div>
-      </section>
-      <section className="cours-section my-5">
-        <h3 className="text-center">Cours Links</h3>
-        <div className="d-flex justify-content-center flex-wrap">
-          {getCoursLinks().map((link, index) => {
-            const videoId = getYouTubeVideoId(link);
-            const isYouTubeLink = videoId !== null;
-            const embedUrl = isYouTubeLink
-              ? `https://www.youtube.com/embed/${videoId}`
-              : null;
+        </section>
+        <section className="cours-section my-5">
+          <h3 className="text-center">Cours Links</h3>
+          <div className="d-flex justify-content-center flex-wrap">
+            {getCoursLinks().map((course, index) => {
+              const videoId = getYouTubeVideoId(course.link);
+              const isYouTubeLink = videoId !== null;
+              const embedUrl = isYouTubeLink
+                ? `https://www.youtube.com/embed/${videoId}`
+                : null;
 
-            return (
-              <div key={index} className="card w-100 mx-2 my-2">
-                <div className="card-body">
-                  {/* Course Title */}
-                  <h5 className="card-title">Cours {index + 1}</h5>
-
-                  {/* YouTube Iframe or Website Link */}
-                  {isYouTubeLink ? (
-                    <iframe
-                      width="1060"
-                      height="690"
-                      src={embedUrl}
-                      title={`YouTube video player ${index + 1}`}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  ) : (
-                    <a href={link} target="_blank" rel="noopener noreferrer">
-                      {link}
-                    </a>
-                  )}
+              return (
+                <div key={index} className="card mx-2 my-2">
+                  <div className="card-body">
+                    <h5 className="card-title">{course.title}</h5>
+                    <p className="card-text">{course.description}</p>
+                    {/* YouTube Iframe or Website Link */}
+                    {isYouTubeLink ? (
+                      <iframe
+                        src={embedUrl}
+                        title={`YouTube video player for ${course.title}`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="mx-auto"
+                      ></iframe>
+                    ) : (
+                      <a
+                        href={course.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Visit Course
+                      </a>
+                    )}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+              );
+            })}
+          </div>
+        </section>
 
-      <ToastContainer />
+        <ToastContainer />
+      </div>
     </div>
   );
 };
