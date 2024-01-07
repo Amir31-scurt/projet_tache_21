@@ -1,22 +1,24 @@
 import React, { useContext, useState , useEffect} from "react";
 import { quizzes } from "./question";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { getFirestore, collection, addDoc, getDoc, setDoc } from 'firebase/firestore';
+import {collection, addDoc, getDoc, } from 'firebase/firestore';
 import { db } from "../../config/firebase-config";
 import  { AuthContext } from "../../contexte/AuthContext";
 
 const ContentBlock = ({ title, content, onClick, icons }) => (
   <div className="content-block" onClick={onClick}>
-    <h2>{title}</h2>
+    <h2 className="fs-3">{title}</h2>
     <p>{content}</p>
   </div>
 );
 
-const Quiz = ({ questions, onFinish }) => {
+const Quiz = ({ questions, onFinish, quiz }) => {
+  const [points, setPoints] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState(Array(questions.length).fill([]));
   const [userScore, setUserScore] = useState(0);
   const [quizFinished, setQuizFinished] = useState(false);
-  const [result, setResult] = useState('');
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  
 
   // Effacer les réponses et marquer le quiz comme non terminé lorsque les questions changent
   useEffect(() => {
@@ -25,7 +27,9 @@ const Quiz = ({ questions, onFinish }) => {
     setQuizFinished(false);
   }, [questions]);
 
-  const handleAnswerChange = (questionIndex, answerIndex, correct, ) => {
+  const handleAnswerChange = (questionIndex, answerIndex, correct,selectedAnswers) => {
+    const correctAnswer = quiz.questions[questionIndex].correctAnswer;
+
     // Vérifier si le quiz est terminé
     if (quizFinished) {
       return;
@@ -37,14 +41,31 @@ const Quiz = ({ questions, onFinish }) => {
     newAnswers[questionIndex] = { answerIndex, correct };
 
     setSelectedAnswers(newAnswers);
-    if (answerIndex === '') {
-      setUserScore(userScore + 2);
-      setResult('Bonne réponse! Vous avez gagné 2 points.');
+    if (selectedAnswers.length === 1 && selectedAnswers[0] === correctAnswer) {
+     
+      setPoints(points + 2);
+      alert("Gagnez 2 points !");
+    } else if (selectedAnswers.length === 2 && selectedAnswers.includes(0) && selectedAnswers.includes(2)) {
+      alert("Aucun point gagné.");
     } else {
-      setResult('Mauvaise réponse! Aucun point gagné.');
+     
+      alert("Aucun point gagné.");
     }
-  };
+      }
+
+      const handleNextClick = () => {
+        
+        setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+    
   
+        if (currentQuestionIndex === questions.length - 1) {
+          setQuizFinished(true);
+        }
+      };
+
+      
+
+      
 
   const handleFinishClick = () => {
     // Marquer le quiz comme terminé
@@ -55,29 +76,44 @@ const Quiz = ({ questions, onFinish }) => {
 
   return (
     <div className="espace-tru">
-      {questions.map((questionObj, questionIndex) => (
-        <div key={`question-${questionIndex}`}>
-          <h6 className="paragraph">{questionObj.question}</h6>
-          {questionObj.answers.map((answer, answerIndex) => (
-            <div key={`answer-${answerIndex}`} className="dig">
-              <input
-                type="radio"
-                checked={selectedAnswers[questionIndex]?.answerIndex === answerIndex}
-                onChange={(e) => handleAnswerChange(questionIndex, answerIndex, e.target.checked)}
-                id={`answer-${questionIndex}-${answerIndex}`}
-                disabled={quizFinished} // Désactiver les inputs si le quiz est terminé
-              />
-              <label className="label">{answer}</label>
-            </div>
-          ))}
-        </div>
-      ))}
+    {questions.map((questionObj, questionIndex) => (
+      <div key={`question-${questionIndex}`} style={{ display: currentQuestionIndex === questionIndex ? 'block' : 'none' }}>
+        <h6 className="paragraph">{questionObj.question}</h6>
+        {questionObj.answers.map((answer, answerIndex) => (
+          <div key={`answer-${answerIndex}`} className="dig">
+            <input
+              type="radio"
+              checked={selectedAnswers[questionIndex]?.answerIndex === answerIndex}
+              onChange={(e) => handleAnswerChange(questionIndex, answerIndex, e.target.checked)}
+              id={`answer-${questionIndex}-${answerIndex}`}
+              disabled={quizFinished} // Désactiver les inputs si le quiz est terminé
+            />
+            <button htmlFor={`answer-${questionIndex}-${answerIndex}`} className="label ms-2 p-2 g-col-6">
+              {answer}
+            </button>
+          </div>
+        ))}
+        {currentQuestionIndex < questions.length - 1 && (
+          <button type="button" className="sous" onClick={handleNextClick}>
+            Suivant
+          </button>
+        )}
+      </div>
+    ))}
+    {quizFinished ? (
+      <div className="score-container">
+        
+      </div>
+    ) : (
       <div className="">
+      {currentQuestionIndex === questions.length - 1 && (
         <button type="submit" className="sous" onClick={handleFinishClick}>
           TERMINER
         </button>
+      )}
       </div>
-    </div>
+    )}
+  </div>
   );
 };
 export default function Score() {
@@ -149,7 +185,7 @@ const handleQuizFinish = async (score) => {
             </>
           )}
 
-          <h2 className="text-center">PRACTICE QUIZ</h2>
+          <h2 className="text-center fs-4">PRACTICE QUIZ</h2>
           {quizzes && (
             <>
 
@@ -169,7 +205,7 @@ const handleQuizFinish = async (score) => {
       <div className=" col-md-9 main-content">
          {/* {selectedQuiz !== null && <Quiz questions={quizzes[selectedQuiz].questions} />}  */}
         {selectedQuiz !== null && <Quiz questions={quizzes[selectedQuiz].questions} onFinish={handleQuizFinish} />}
-        {finalScore !== null && <h3 className="final-score">Note finale : {finalScore} / 20</h3>}
+        {finalScore !== null && <h3 className="final-score">Note finale : {finalScore} / 100</h3>}
         
         
       </div>
