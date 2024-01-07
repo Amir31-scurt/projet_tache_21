@@ -9,8 +9,10 @@ import {
   doc,
   getDocs,
   getDoc,
+  addDoc,
   onSnapshot,
   updateDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../config/firebase-config";
 import { FaEye, FaEdit, FaArchive } from "react-icons/fa";
@@ -29,7 +31,6 @@ export default function TableauUtilisateurs() {
   const [selectedUtilisateursForUpdate, setSelectedUtilisateursForUpdate] =
     useState(null); // Stocke l'utilisateur pour la mise à jour
   const [loading, setLoading] = useState(false); // Gère l'état de chargement
-
   // Ajoutez un nouvel état local pour gérer l'étiquette du bouton
   const [archiveLabel, setArchiveLabel] = useState("Archiver");
 
@@ -39,8 +40,9 @@ export default function TableauUtilisateurs() {
   const [emailValue, setEmailValue] = useState("");
   const [addressValue, setAddressValue] = useState("");
   const [roleValue, setRoleValue] = useState("");
-
+  const [notificationsCollection] = useState(collection(db, "notifications"));
   const [roleFilter, setRoleFilter] = useState("Tous les utilisateurs");
+  const [tabType, setTabType] = useState("utilisateurs");
 
   // Affiche les détails de l'utilisateur sélectionné
   const showDetails = (utilisateur) => {
@@ -121,9 +123,9 @@ export default function TableauUtilisateurs() {
     );
 
     fetchData(); // Récupération initiale des données
-
+    
     return () => {
-      unsubscribe(); // Nettoyage du listener lors du démontage du composant
+      unsubscribe();
     };
   }, []);
 
@@ -131,10 +133,19 @@ export default function TableauUtilisateurs() {
   const handleArchiveToggle = async (utilisateurId, isArchived) => {
     const utilisateursRef = collection(db, "utilisateurs");
     const utilisateurDoc = doc(utilisateursRef, utilisateurId);
-
+    const user = utilisateursData.find((user) => user.id === utilisateurId);
+    const coachs = utilisateursData.find((coach) => coach.name === user.coach)
+    let notificationMessage = `Votre étudiant ${user.name} a été ${!isArchived ? 'archivé': 'désarchivé'}`
     try {
       await updateDoc(utilisateurDoc, {
         archiver: !isArchived,
+      });
+
+      await addDoc(notificationsCollection, {
+        messageForAdmin: notificationMessage,
+        timestamp: serverTimestamp(),
+        newNotif: true,
+        email: coachs.email,
       });
       fetchData(); // Met à jour les données après l'archivage ou le désarchivage
       // Mettre à jour l'étiquette du bouton en fonction du nouvel état 'archiver'
@@ -173,6 +184,13 @@ export default function TableauUtilisateurs() {
     const selectedValue = e.target.value;
     setRoleFilter(selectedValue);
     localStorage.setItem(localStorageKey, selectedValue);
+
+    // Mettez à jour tabType en fonction de la valeur du filtre sélectionné
+    if (selectedValue === "Archivés") {
+      setTabType("utilisateurs archivées");
+    } else {
+      setTabType(selectedValue);
+    }
   };
 
   // Définition des colonnes pour le tableau
@@ -402,7 +420,9 @@ export default function TableauUtilisateurs() {
 
       {/* Affichage du tableau */}
       <div className="TableUtilisateurs d-flex flex-column justyfy-content-center align-items-center w-100">
-        <h1 className="my-3 shadowTable">Tableaux utilisateur</h1>
+        <h1 className="my-3 shadowTable">
+          Tableaux <span>{tabType}</span>
+        </h1>
         <div className="myTable ">
           <div className="add filter d-flex justify-content-start align-items-center">
             <select

@@ -5,6 +5,7 @@ export const ChatContext = createContext();
 
 export const ChatContextProvider = ({ children }) => {
   const { currentUser } = useContext(ChatAuthCtx);
+  console.log("Le currentUser du chatContext", currentUser);
 
   const INITIAL_STATE = {
     chatId: null,

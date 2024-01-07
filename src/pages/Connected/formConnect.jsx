@@ -113,7 +113,6 @@ export default function FormConnect() {
       const userEmail = userCredential.user.email;
       const user = userCredential.user;
       localStorage.setItem("userName", user.displayName || "");
-
       setEmail(userEmail);
       setPassword("");
 
@@ -187,22 +186,24 @@ export default function FormConnect() {
             />
           </div>
         </div>
+        <div className="pt-1 mt-4 text-end">
+          <center>
+            <button
+              type="submit"
+              className="btn d-flex justify-content-center align-items-center fs-6 btn-lg btn-block col-7 text-white log"
+              disabled={loading}
+            >
+              {loading ? "Chargement..." : "Se connecter"}
+            </button>
+          </center>
+        </div>
       </form>
-      <p className="m-0 p-0 text-end oubli" onClick={openRestaurerModal}>
-        Mot de passe oublié ?
+      <p className="mt-3 mx-5 p-0 text-end fw-bold">
+        Mot de passe oublié ?{" "}
+        <span className="oubli" onClick={openRestaurerModal}>
+          restaurer le ici !
+        </span>
       </p>
-
-      <div className="pt-1 mt-4 text-end">
-        <center>
-          <button
-            type="submit"
-            className="btn d-flex justify-content-center align-items-center fs-6 btn-lg btn-block col-7 text-white log"
-            disabled={loading}
-          >
-            {loading ? "Chargement..." : "Se connecter"}
-          </button>
-        </center>
-      </div>
       <ToastContainer />
     </div>
   );
