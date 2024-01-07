@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import { CiMail } from "react-icons/ci";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -10,7 +10,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { EmailContext } from "../../contexte/EmailContexte";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import "react-toastify/dist/ReactToastify.css";
 import Restaurer from "./Restaurer";
 
@@ -60,7 +67,7 @@ export default function FormConnect() {
     const coachEmails = [];
 
     querySnapshot.forEach((doc) => {
-      coachEmails.push(doc.data().email); // Assuming the email field is named 'email'
+      coachEmails.push(doc.data().email);
     });
 
     return coachEmails;
@@ -77,6 +84,19 @@ export default function FormConnect() {
     });
 
     return studentEmails;
+  };
+
+  // Nouvelle fonction pour récupérer les détails de l'utilisateur
+  const getUserDetails = async (userEmail) => {
+    const usersRef = collection(db, "utilisateurs");
+    const userQuery = query(usersRef, where("email", "==", userEmail));
+    const querySnapshot = await getDocs(userQuery);
+
+    if (querySnapshot.size === 0) {
+      return null; // L'utilisateur n'a pas été trouvé
+    }
+
+    return querySnapshot.docs[0].data();
   };
 
   // Define email lists for different roles
@@ -112,15 +132,36 @@ export default function FormConnect() {
       );
       const userEmail = userCredential.user.email;
       const user = userCredential.user;
+
+      // Récupérer les détails de l'utilisateur
+      const userDetails = await getUserDetails(userEmail);
+
+      // Vérifier si l'utilisateur n'existe pas ou est archivé
+      if (!userDetails || userDetails.archived) {
+        toast.error("Impossible de se connecter. Utilisateur archivé.", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setLoading(false);
+        return;
+      }
+
       localStorage.setItem("userName", user.displayName || "");
       setEmail(userEmail);
       setPassword("");
 
-      // Check if the user is an admin or a coach
+      // Vérifier si l'utilisateur est un admin, un coach ou un étudiant
       const isAdmin = adminEmails.includes(userEmail);
       const isCoach = coachEmails.includes(userEmail);
       const isStudent = studentEmails.includes(userEmail);
-      // Navigate based on the user role
+
+      // Rédirectionner en fonction de l'utilisateur connecté
       if (isAdmin) {
         navigate("/dashboard/admin");
       } else if (isCoach) {
