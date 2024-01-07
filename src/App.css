@@ -509,6 +509,7 @@ body {
 }
 .oubli {
   color: #189ab4;
+  cursor: pointer;
 }
 .inputStyle {
   border: 1px solid #3084b5;
