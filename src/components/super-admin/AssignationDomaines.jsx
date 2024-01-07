@@ -7,8 +7,11 @@ import {
   updateDoc,
   doc,
   where,
+  serverTimestamp,
   query,
-} from "firebase/firestore"; 
+  addDoc,
+} from 'firebase/firestore';
+
 import { db } from "../../config/firebase-config"; 
 import { ToastContainer, toast } from "react-toastify"; 
 import "react-toastify/dist/ReactToastify.css";
@@ -24,11 +27,15 @@ const headers = ["Domaines", "Sous-Domaines", "Coachs"];
 const AssignationPage = () => {
   // Déclaration des états
   const [domaines, setDomaines] = useState([]);
+  const [notificationsCollection] = useState(
+    collection(db, "notifications")
+  );
   const [users, setUsers] = useState([]); 
   const [value, setValue] = useState([]); // Valeur sélectionnée dans le MultiCascader
   const [errorMessage, setErrorMessage] = useState(null); // Message d'erreur
   const [loading, setLoading] = useState(false); 
   const [dataLoading, setDataLoading] = useState(false);
+
 
   // Fonction de gestion de l'assignation
   const handleAssign = async (e) => {
@@ -68,11 +75,21 @@ const AssignationPage = () => {
         // Mise à jour du document du coach avec le domaine et sous-domaine
         if (coachDocs.size > 0) {
           const coachDoc = coachDocs.docs[0];
-          const coachDocRef = doc(db, "utilisateurs", coachDoc.id);
+          const notificationMessage = `Le domaine ${domaine} et les sous domaines ${sousDomaines} vous ont été assigné`;
+          const coachDocRef = doc(db, 'utilisateurs', coachDoc.id);
+
           await updateDoc(coachDocRef, {
             domaine: domaine,
             sousDomaines,
           });
+
+          await addDoc(notificationsCollection, {
+            messageForAdmin: notificationMessage,
+            timestamp: serverTimestamp(),
+            newNotif: true,
+            email: userEmail,
+          });
+
 
           setErrorMessage(null);
           toast.success(

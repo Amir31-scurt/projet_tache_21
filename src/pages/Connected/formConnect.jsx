@@ -114,7 +114,6 @@ export default function FormConnect() {
       const userEmail = userCredential.user.email;
       const user = userCredential.user;
       localStorage.setItem("userName", user.displayName || "");
-
       setEmail(userEmail);
       setPassword("");
 
