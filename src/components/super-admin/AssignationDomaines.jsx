@@ -203,12 +203,14 @@ const AssignationPage = () => {
           <MultiCascader
             style={{ width: "100%" }}
             data={options}
-            cascade={false}
+            cascade={true}
             onChange={setValue}
             value={value}
             appearance="default"
             menuWidth={{ width: "100%" }}
             menuHeight={"auto"}
+            open={true}
+            defaultOpen={true}
             placeholder="Assigner un domaine à un coach"
             size="lg"
             classPrefix="picker"
