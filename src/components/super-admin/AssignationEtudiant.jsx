@@ -275,6 +275,7 @@ export const AssignationEtudiant = () => {
             menuHeight={"auto"}
             placeholder="Assigner un ou des étudiant(s) à un coach"
             size="lg"
+            open={true}
             classPrefix="picker"
             renderMenu={renderMenu}
           />
