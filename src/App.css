@@ -509,6 +509,7 @@ body {
 }
 .oubli {
   color: #189ab4;
+  cursor: pointer;
 }
 .inputStyle {
   border: 1px solid #3084b5;
@@ -975,8 +976,8 @@ body {
   }
 }
 .program-img {
-  width: 250px;
-  height: 200px;
+  width: 100%;
+  height: 180px;
 }
 .program-img img {
   width: 100%;
