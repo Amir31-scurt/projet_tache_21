@@ -21,6 +21,7 @@ import SidebarCompo from './SidebarCompo';
 import { Placeholder } from 'rsuite';
 import { width } from '@mui/system';
 import { BsFillSignIntersectionFill } from 'react-icons/bs';
+import { MdAssignmentAdd } from 'react-icons/md';
 
 export const GetSidebarMenu = () => {
   const { email } = useContext(EmailContext);
@@ -69,6 +70,12 @@ export const GetSidebarMenu = () => {
           id: 'admin-link7',
           icon: <BsFillSignIntersectionFill />,
           link: '/dashboard/inscription',
+        },
+        {
+          title: 'Assignation',
+          id: 'admin-link7',
+          icon: <MdAssignmentAdd />,
+          link: '/dashboard/assignationAdmin',
         },
         {
           title: 'Certificats',
@@ -143,6 +150,12 @@ export const GetSidebarMenu = () => {
           icon: <LuSettings />,
           id: 'link6',
           link: '',
+        },
+        {
+          title: 'Quizz',
+          icon: <TbCertificate />,
+          id: 'link6',
+          link: 'quizz',
         },
         // ... other items for regular users
       ];

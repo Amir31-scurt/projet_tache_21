@@ -52,7 +52,7 @@ body {
   width: 100%;
   padding: 20px;
   margin: 10px;
-  margin-left: 40%;
+  margin-left: 32%;
   text-align: left !important;
 }
 
@@ -104,14 +104,17 @@ body {
   margin-left: 5px;
   font-family: Montserrat;
   font-size: 16px;
+  width: 65%;
   color: #000000;
 }
 
 .module-container .paragraph {
   margin-top: 5%;
   color: black;
-  width: 100%;
+  width: 65%;
   margin-left: 5px;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .dig {
@@ -128,8 +131,8 @@ body {
   border-radius: 20px;
   height: 50px;
   font-size: 22px;
-  width: 30%;
-  margin-left: 25%;
+  width: 20%;
+  margin-left: 20%;
   margin-top: 30px;
   background-color: #48a93c;
   border: none;
@@ -140,6 +143,18 @@ body {
 .paragraph {
   font-size: 18px;
   font-weight: 700;
+}
+
+/*------------Notifications-----------*/
+.notifs {
+  background-color: whitesmoke !important;
+}
+.suppNotif {
+  border-radius: 0px 10px 10px 1px;
+}
+
+.transition-fade {
+  transition: 2s ease-in-out;
 }
 
 @media (max-width: 1024px) {
@@ -228,6 +243,14 @@ body {
   width: 300px; /* or any desired width */
   margin: 8px;
 }
+.program-card1 {
+  border: 1px solid #ccc;
+  background: linear-gradient(to bottom, #3084b5, #1a638e);
+
+  border-radius: 8px;
+  width: 290px; /* or any desired width */
+  margin: 5px;
+}
 .program-card2 {
   border: 1px solid #ccc;
   padding: 16px;
@@ -261,6 +284,9 @@ body {
 
 .program-card button:hover {
   background-color: #0056b3;
+}
+.program-card1 button:hover {
+  background-color: #4c9aff;
 }
 .program-card2 img {
   width: 100%;
@@ -483,6 +509,7 @@ body {
 }
 .oubli {
   color: #189ab4;
+  cursor: pointer;
 }
 .inputStyle {
   border: 1px solid #3084b5;
@@ -745,6 +772,7 @@ body {
   margin-left: 40px;
 }
 } */
+
 /*-----------------------Sidebar---------------------*/
 .sidebar {
   height: 100vh;
@@ -765,9 +793,9 @@ body {
 }
 .sidebar .active {
   background-color: #48a93c !important;
-  color: #fff;
+  color: #fff !important;
   font-weight: bold;
-  border-right: 10px solid #308425 !important;
+  border-right: 10px solid #3e9133 !important;
   /* transition: 0.5s; */
 }
 
@@ -948,8 +976,8 @@ body {
   }
 }
 .program-img {
-  width: 250px;
-  height: 200px;
+  width: 100%;
+  height: 180px;
 }
 .program-img img {
   width: 100%;
@@ -969,10 +997,12 @@ body {
 
 /* Css ajout de l'utilisateur côté admin par oury */
 .form-demo {
+  display: flex;
   margin-top: 20px;
 }
 .form-demo .card {
-  min-width: 450px;
+  min-width: 500px;
+  border: none !important;
 }
 .form-demo .card form {
   margin-top: 2rem;
@@ -992,6 +1022,24 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+.titleHolder {
+  background: linear-gradient(to bottom, #3084b5, #1a638e);
+  padding: 5px 10px;
+  width: fit-content;
+  text-align: end;
+  color: white;
+  font-size: 10px;
+  display: flex;
+  float: right;
+  position: absolute;
+  right: 0;
+  margin-right: 10px;
+}
+.bodyCoursCards {
+  background: linear-gradient(to bottom, #3084b5, #1a638e);
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 1024px) {

@@ -30,6 +30,7 @@ import StudentProgram from '../components/ProEtudiant/Programme';
 import Cours from '../components/ProEtudiant/Cours';
 import UserTable from '../components/super-admin/TableauUtilisateurs';
 import logo from '../assets/images/logo.png';
+import Quizz from '../components/quizzs/quizzs';
 
 export default function ProtectedRoutes() {
   const { email } = useContext(EmailContext);
@@ -72,16 +73,16 @@ export default function ProtectedRoutes() {
           element: <UserTable />,
         },
         {
-          path: '/dashboard/table',
-          element: <TemplateDemo />,
-        },
-        {
           path: '/dashboard/coachs',
           element: <NewCoach />,
         },
         {
           path: '/dashboard/inscription',
           element: <Inscription />,
+        },
+        {
+          path: '/dashboard/assignationAdmin',
+          element: <TemplateDemo />,
         },
         {
           path: '/dashboard/createDomaine',
@@ -104,7 +105,7 @@ export default function ProtectedRoutes() {
           element: <ChatHome />,
         },
         {
-          path: '/dashboard/programme/cours',
+          path: '/dashboard/programme/cours/:courseId',
           element: <SpecificPro />,
         },
         {
@@ -144,8 +145,12 @@ export default function ProtectedRoutes() {
           element: <ContentCardLivraison />,
         },
         {
-          path: 'cours',
+          path: 'cours/:domaineId/:sousDomaineName',
           element: <Cours />,
+        },
+        {
+          path: 'quizz',
+          element: <Quizz />,
         },
       ]
     : [];

@@ -1,224 +1,184 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import CategoryList from './Domaines';
 import { Link } from 'react-router-dom';
+import { db } from '../../config/firebase-config';
+import { collection, getDocs } from 'firebase/firestore';
 
 // Define a reusable ProgramCard component
-const ProgramCard = ({ title, description, imageUrl, buttonText }) => {
+const ProgramCard = ({ title, description, url, buttonText, courseId }) => {
+  const cardStyles = `
+.program-card1 {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Ensure the card is a stacking context for absolute positioning */
+  transform: translateZ(0);
+  transition: box-shadow 0.3s;
+}
+
+.program-card1:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.program-card1::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.3); /* Dark overlay */
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 1; /* Below the content and button */
+}
+
+.program-card1:hover::before {
+  opacity: 1;
+}
+
+.program-card1-content {
+  transition: filter 0.3s;
+}
+
+.program-card1:hover .program-card1-content {
+  filter: blur(5px);
+}
+
+.program-card1 img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.program-card1 h5, .program-card1 hr, .program-card1 p {
+  position: relative;
+  z-index: 2; /* Above the overlay */
+}
+
+.program-card1 hr {
+  margin: 0;
+}
+
+.start-button {
+  position: absolute;
+  background-color: #3084b5;
+  color: white;
+  text-align: center;
+  padding: 12px 20px;
+  border: none;
+  left: 50%;
+  bottom: 50%;
+  transform: translate(-50%, 50%) translateY(100%);
+  opacity: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s, opacity 0.2s;
+  z-index: 10; /* Ensure the button is above the overlay and content */
+}
+
+.program-card1:hover .start-button {
+  transform: translate(-50%, 50%) translateY(0);
+  opacity: 1;
+}
+
+`;
   return (
-    <div className="program-card bg-light">
-      <img src={imageUrl} alt={title} />
-      <h3>{title}</h3>
-      <p className="mb-3">{description}</p>
-      <button>
+    <div className="program-card1 shadow-sm">
+      <style>{cardStyles}</style>
+      <button className="start-button">
         <Link
-          to="/dashboard/programme/cours"
-          className="text-light text-decoration-none"
+          to={`/dashboard/programme/cours/${courseId}`}
+          className="text-light text-decoration-none d-block w-100 h-100"
         >
           {buttonText}
         </Link>
       </button>
-    </div>
-  );
-};
-const CourseCard = ({
-  category,
-  title,
-  author,
-  progress,
-  imageUrl,
-  progressColor,
-}) => {
-  return (
-    <div className="card course-card" style={{ width: '19rem' }}>
-      <div className="img-container">
-        <img src={imageUrl} alt={title} className="card-img-top" />
-      </div>
-      <div className="card-body">
-        <h5 className="card-title">{title}</h5>
-        <h6 className="text-muted">{category.name}</h6>
-        <p className="card-text">{author}</p>
-        <div className="d-flex align-items-center">
-          <div className="progress col-10" style={{ height: '10px' }}>
-            <div
-              className="progress-bar"
-              role="progressbar"
-              style={{ width: `${progress}%`, backgroundColor: progressColor }}
-              aria-valuenow={progress}
-              aria-valuemin="0"
-              aria-valuemax="100"
-            ></div>
-          </div>
-          <div className="col-2">
-            <p>{progress} %</p>
-          </div>
+      <div className="program-card1-content">
+        <button className="rounded rounded-pill titleHolder mt-2">
+          {title}
+        </button>
+        <img src={url} alt={title} />
+        <hr />
+        <div className="py-3 px-3 bodyCoursCards">
+          {description &&
+            description.map((desc, index) => (
+              <p className="pb-2 fw-bold text-light" key={index}>
+                {desc}
+              </p>
+            ))}
         </div>
       </div>
     </div>
   );
 };
-// const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-//   return (
-//     <div className="pagination d-flex gap-3 align-items-center">
-//       <button
-//         onClick={() => onPageChange(currentPage - 1)}
-//         disabled={currentPage <= 1}
-//         className="btn"
-//       >
-//         {'<'}
-//       </button>
-//       <span>
-//         Page {currentPage} of {totalPages}
-//       </span>
-//       <button
-//         onClick={() => onPageChange(currentPage + 1)}
-//         disabled={currentPage >= totalPages}
-//         className="btn"
-//       >
-//         {'>'}
-//       </button>
-//     </div>
-//   );
-// };
 
 // Main component that uses ProgramCard to display a list of programs
 const ProgramList = () => {
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const pageSize = 4; // Number of cards per page
-  // Example data that would be fetched from an API or defined in your application
-  const programs = [
-    {
-      title: 'Design',
-      description:
-        'Learn the principles of user experience and user interface design.',
-      imageUrl:
-        'https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg',
-      buttonText: 'Les cours',
-    },
-    {
-      title: 'Bureautique',
-      description:
-        'Learn the principles of user experience and user interface design.',
-      imageUrl:
-        'https://kiluz.com/wp-content/uploads/2021/05/bureautique-1.png',
-      buttonText: 'Les cours',
-    },
-    {
-      title: 'Programmation',
-      description:
-        'Learn the principles of user experience and user interface design.',
-      imageUrl:
-        'https://cdn4.iconfinder.com/data/icons/apply-pixels-glyphs/40/Code_Tag-512.png',
-      buttonText: 'Les cours',
-    },
-    {
-      title: 'Marketing Digital',
-      description:
-        'Learn the principles of user experience and user interface design.',
-      imageUrl:
-        'https://cdn.shopify.com/s/files/1/0070/7032/files/Introduction_To_Marketing.jpg?v=1648057035',
-      buttonText: 'Les cours',
-    },
-    // ...other programs
-  ];
-  const coursesData = [
-    {
-      category: { name: 'UX Design', color: '#FFB572' },
-      title: 'UX & Web Design Master Course A-Z',
-      author: 'Sheikh Ali',
-      progress: 79,
-      progressColor: '#189AB4', // Use a color that matches the progress bar color
-      imageUrl:
-        'https://www.appsdevpro.com/blog/wp-content/uploads/2022/06/Ui-ux-cover-imge.jpg',
-    },
-    {
-      category: { name: 'UX Design', color: '#FFB572' },
-      title: 'Programmation Master Course A-Z',
-      author: 'Sheikh Ali',
-      progress: 18,
-      progressColor: '#189AB4', // Use a color that matches the progress bar color
-      imageUrl:
-        'https://cdn4.iconfinder.com/data/icons/apply-pixels-glyphs/40/Code_Tag-512.png',
-    },
-    {
-      category: { name: 'UX Design', color: '#FFB572' },
-      title: 'Digital marketing Master Course A-Z',
-      author: 'Sheikh Ali',
-      progress: 88,
-      progressColor: '#189AB4', // Use a color that matches the progress bar color
-      imageUrl:
-        'https://cdn.shopify.com/s/files/1/0070/7032/files/Introduction_To_Marketing.jpg?v=1648057035',
-    },
-    {
-      category: { name: 'UX Design', color: '#FFB572' },
-      title: 'Project gestion Master Course A-Z',
-      author: 'Sheikh Ali',
-      progress: 48,
-      progressColor: '#189AB4', // Use a color that matches the progress bar color
-      imageUrl:
-        'https://kiluz.com/wp-content/uploads/2021/05/bureautique-1.png',
-    },
-    // ... other courses
-  ];
-  // Pagination
-  // const pageCount = Math.ceil(programs.length / pageSize);
+  const [programmes, setProgrammes] = useState([]);
 
-  // Slice the array of programs based on pagination
-  // const displayedPrograms = programs.slice(
-  //   (currentPage - 1) * pageSize,
-  //   currentPage * pageSize
-  // );
+  useEffect(() => {
+    const fetchProgrammes = async () => {
+      try {
+        const domainesSnapshot = await getDocs(collection(db, 'domaines'));
+        const allProgrammes = domainesSnapshot.docs
+          .filter((doc) => !doc.data().archived) // Filter out documents where 'archived' is true
+          .map((doc) => {
+            const data = doc.data();
+            return {
+              title: data.domaine,
+              url: data.url,
+              description: formatDescription(data.sousDomaines),
+              buttonText: data.buttonText || 'Les cours',
+              url: data.url,
+              id: doc.id,
+            };
+          });
 
-  // const handlePageChange = (newPage) => {
-  //   setCurrentPage(newPage);
-  // };
+        setProgrammes(allProgrammes);
+      } catch (error) {
+        console.error('Error fetching programmes: ', error);
+      }
+    };
+
+    fetchProgrammes();
+  }, []);
 
   return (
     <div className="containerProgramme d-flex flex-column justify-content-center align-items-center">
       <div className="contain1 py-5">
         <h2 className="mb-5 text-center">Programmes</h2>
         <div className="d-flex flex-wrap justify-content-center">
-          {programs.map((program, index) => (
-            <div
-              className="d-flex flex-wrap col-lg-3 col justify-content-center car"
+          {programmes.map((program, index) => (
+            <ProgramCard
               key={index}
-            >
-              <ProgramCard
-                title={program.title}
-                description={program.description}
-                imageUrl={program.imageUrl}
-                buttonText={program.buttonText}
-              />
-            </div>
+              title={program.title}
+              url={program.url}
+              description={program.description}
+              buttonText={program.buttonText}
+              courseId={program.id} // Assuming each program has a unique identifier
+            />
           ))}
         </div>
-      </div>
-      {/* <div className="d-flex flex-wrap justify-content-center flex-column align-items-center my-5">
-        <h2 className="my-3">Choice </h2>
-        <div className="d-flex flex-wrap gap-2  justify-content-center">
-          {coursesData.map((course, index) => (
-            <div className="" key={index}>
-              <CourseCard {...course} />
-            </div>
-          ))}
-        </div>
-      </div> */}
-      {/* <div className="pagi d-flex justify-content-end w-100">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={pageCount}
-            onPageChange={handlePageChange}
-          />
-        </div> */}
-      <div className="py-5">
-        <h2 className="text-center">
-          Choix du cours de la catégorie supérieure
-        </h2>
-        <CategoryList />
-        {/* ... other components */}
       </div>
     </div>
   );
 };
+
+// Helper function to format the description from a map
+function formatDescription(sousDomaines) {
+  if (!sousDomaines || typeof sousDomaines !== 'object') {
+    return [];
+  }
+
+  return Object.entries(sousDomaines).map(([key]) => {
+    // Assuming each value in the map is a string
+    return `${key}`;
+  });
+}
 
 export default ProgramList;
