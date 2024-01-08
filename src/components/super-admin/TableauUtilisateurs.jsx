@@ -3,6 +3,7 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
+import { Toaster, toast } from "react-hot-toast";
 import sim from "../../assets/images/sim.jpeg";
 import {
   collection,
@@ -84,6 +85,10 @@ export default function TableauUtilisateurs() {
       utilisateursRef,
       selectedUtilisateursForUpdate.id
     );
+    const user = utilisateursData.find(
+      (user) => user.id === selectedUtilisateursForUpdate.id
+    );
+    let notificationMessageMisAJour = `Les information sur ${user.name} ont étaient mis a jour avec succes`;
 
     try {
       await updateDoc(utilisateurDoc, {
@@ -93,7 +98,9 @@ export default function TableauUtilisateurs() {
         address: addressValue,
         role: roleValue,
       });
-
+      toast.success(notificationMessageMisAJour, {
+        duration: 4000,
+      });
       setFormVisible(false);
       fetchData(); // Met à jour les données après la modification
     } catch (error) {
@@ -135,7 +142,7 @@ export default function TableauUtilisateurs() {
     const utilisateurDoc = doc(utilisateursRef, utilisateurId);
     const user = utilisateursData.find((user) => user.id === utilisateurId);
     const coachs = utilisateursData.find((coach) => coach.name === user.coach)
-    let notificationMessage = `Votre étudiant ${user.name} a été ${!isArchived ? 'archivé': 'désarchivé'}`
+    let notificationMessage = `${user.name} a été ${!isArchived ? 'archivé': 'désarchivé'} avec succes`
     try {
       await updateDoc(utilisateurDoc, {
         archiver: !isArchived,
@@ -150,6 +157,9 @@ export default function TableauUtilisateurs() {
       fetchData(); // Met à jour les données après l'archivage ou le désarchivage
       // Mettre à jour l'étiquette du bouton en fonction du nouvel état 'archiver'
       setArchiveLabel(isArchived ? "Désarchiver" : "Archiver");
+      toast.success(notificationMessage, {
+        duration: 3000,
+      });
     } catch (error) {
       console.error("Error archiving student:", error);
     }
@@ -240,44 +250,37 @@ export default function TableauUtilisateurs() {
       addresse: utilisateur.address,
       role: utilisateur.role,
       actions: (
-        <div className="d-flex align-items-center">
+        <div className={`d-flex align-items-center`}>
           <button
             type="button"
-            className="d-flex justify-content-center align-items-center btn btn-outline-primary rounded-pill me-3"
+            className="d-flex justify-content-center align-items-center btn btn-outline-primary rounded-3 me-3"
             onClick={() => showDetails(utilisateur)}
           >
-            <FaEye className="me-1" style={{ width: "20px", height: "20px" }} />
-            Voir
+            <FaEye className="" style={{ width: "30px", height: "30px" }} />
           </button>
           <button
             type="button"
-            className="d-flex justify-content-center align-items-center btn btn-outline-primary rounded-pill me-3"
+            className="d-flex justify-content-center align-items-center btn btn-outline-success rounded-3 me-3"
             onClick={() => {
               showUpdateForm(utilisateur);
               setFormVisible(true);
             }}
           >
-            <FaEdit
-              className="me-1"
-              style={{ width: "20px", height: "20px" }}
-            />
-            Modifier
+            <FaEdit className="" style={{ width: "30px", height: "30px" }} />
           </button>
           <button
             type="button"
-            className="d-flex justify-content-center align-items-center btn btn-outline-primary rounded-pill me-3"
+            className={`d-flex justify-content-center align-items-center btn btn-outline-danger rounded-3 me-3`}
             onClick={() =>
               handleArchiveToggle(utilisateur.id, utilisateur.archiver || false)
             }
           >
-            <FaArchive
-              className="me-1"
-              style={{ width: "20px", height: "20px" }}
-            />
-            {utilisateur.archiver ? "Désarchiver" : "Archiver"}
+            <FaArchive className="" style={{ width: "30px", height: "30px" }} />
+            {utilisateur.archiver ? "Désarchiver" : ""}
           </button>
         </div>
       ),
+      className: utilisateur.archiver ? "tableRowArchived bg-info" : "",
     }));
   }, [filteredData]);
 
@@ -290,6 +293,7 @@ export default function TableauUtilisateurs() {
   // Rendu du composant
   return (
     <>
+      <Toaster />
       {/* Dialogue pour afficher les détails de l'utilisateur */}
       <Dialog
         header={`Informations sur ${
@@ -338,7 +342,7 @@ export default function TableauUtilisateurs() {
 
       {/* Formulaire de mise à jour */}
       <Dialog
-        header={`Mis à jour du profil`}
+        header={`Profil`}
         visible={formVisible}
         style={{ width: "50vw" }}
         onHide={() => setFormVisible(false)}
@@ -403,8 +407,9 @@ export default function TableauUtilisateurs() {
               <label htmlFor="Role"></label>
             </span>
           </div>
-          <div className="card flex flex-wrap justify-content-center gap-3">
+          <div className="card flex flex-wrap justify-content-center p-0">
             <Button
+              className="m-0 text-light"
               rounded
               label="Mis à jour"
               icon="pi pi-check"
