@@ -32,6 +32,7 @@ const ModalComponent = ({ onProfileImageChange }) => {
   const fileInputRef = useRef(null);
   const [newDisplayName, setNewDisplayName] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -87,21 +88,21 @@ const ModalComponent = ({ onProfileImageChange }) => {
       }
 
       // Mettre à jour le nom
-      const newDisplayName = "Nouveau Nom";
       await updateProfile(user, { displayName: newDisplayName });
       toast.success("Nom mis à jour avec succès !");
 
-      // Re-authentifier l'utilisateur
-      const newPassword = "NouveauMotDePasse";
-      const credentials = EmailAuthProvider.credential(
-        user.email,
-        "MotDePasseActuel"
-      );
-      await reauthenticateWithCredential(user, credentials);
+      // Re-authentifier l'utilisateur seulement si le mot de passe est modifié
+      if (newPassword) {
+        const credentials = EmailAuthProvider.credential(
+          user.email,
+          currentPassword
+        );
+        await reauthenticateWithCredential(user, credentials);
 
-      // Mettre à jour le mot de passe
-      await updatePassword(user, newPassword);
-      toast.success("Mot de passe mis à jour avec succès !");
+        // Mettre à jour le mot de passe
+        await updatePassword(user, newPassword);
+        toast.success("Mot de passe mis à jour avec succès !");
+      }
 
       // Fermer le modal
       handleCloseModal();
@@ -120,7 +121,6 @@ const ModalComponent = ({ onProfileImageChange }) => {
         const userDocRef = doc(db, "utilisateurs", user.uid);
         const userDocSnapshot = await getDoc(userDocRef);
         if (userDocSnapshot.exists()) {
-          // Mettre à jour le document utilisateur
           await updateDoc(userDocRef, {
             displayName: newDisplayName,
             newPassword: newPassword,
@@ -199,7 +199,12 @@ const ModalComponent = ({ onProfileImageChange }) => {
               value={newDisplayName}
               onChange={(e) => setNewDisplayName(e.target.value)}
             />
-
+            <label>Mot de passe actuel</label>
+            <input
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+            />
             <label>Nouveau Mot de Passe</label>
             <input
               type="password"
