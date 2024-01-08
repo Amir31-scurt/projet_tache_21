@@ -16,7 +16,7 @@ export default function AuthContextProvider({ children }) {
     };
   }, []);
   return (
-    <AuthContext.Provider value={{ currentUser, setCurrentUser }}>
+    <AuthContext.Provider value={{currentUser, uid: currentUser ? currentUser.uid :null, setCurrentUser }}>
       {children}
     </AuthContext.Provider>
   );

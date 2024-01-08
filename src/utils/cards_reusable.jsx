@@ -5,7 +5,7 @@ export default function Card({ title, description, imageUrl, buttonText }) {
     <div className="program-card2 card bg-light">
       <img src={imageUrl} alt={title} />
       <h3>Coach</h3>
-      <p>{description}</p>
+      <p>{description}ijjjoiiuuu</p>
       <button>{buttonText}</button>
     </div>
   );
