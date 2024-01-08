@@ -32,7 +32,7 @@ const BulletinEtudiant = () => {
         const usersSnapshot = await getDocs(usersQuery);
         const userList = usersSnapshot.docs.map((doc) => ({
           userId: doc.id, 
-          name: doc.data().name, // Assurez-vous d'ajuster cela en fonction de la structure de vos données
+          name: doc.data().name, 
         }));
         setStudents(userList);
       } catch (error) {
