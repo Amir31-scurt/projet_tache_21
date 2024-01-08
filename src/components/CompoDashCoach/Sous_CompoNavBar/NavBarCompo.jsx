@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import LogoTech from "../../../assets/images/logo.png";
 import UserProfil from "../../../assets/images/user.png";
@@ -8,9 +8,11 @@ import { FaUserCog } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
 import ModalComponent from "./ModalComponent";
 import NavBarContext from "./context";
+import { Link } from "react-router-dom";
 import { auth } from "../../../config/firebase-config";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+
 import { EmailContext } from "../../../contexte/EmailContexte";
 import Notifications from "./Notifications";
 
@@ -19,6 +21,8 @@ export const NavBarCompo = () => {
   const [open, setOpen] = useState(false);
   const [profileImage, setProfileImage] = useState(UserProfil);
   const navigate = useNavigate();
+
+ 
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -46,6 +50,7 @@ export const NavBarCompo = () => {
     }
   };
 
+
   // Fin Deconnexion
 
   return (
@@ -56,7 +61,7 @@ export const NavBarCompo = () => {
           <div className="LogoConta d-flex align-items-center justify-content-center">
             <div className="LogoConta2 ">
               <div className="img-logo d-flex align-items-center justify-content-center">
-                <img src={LogoTech} className="img-fluid " alt="" />
+                  <img src={LogoTech} className="img-fluid " alt="" />
                 <h3 className="GandalTitle" style={{ color: "#3084b5" }}>
                   Gaandal
                 </h3>
@@ -65,8 +70,7 @@ export const NavBarCompo = () => {
           </div>
           {/*=====================SECOND PARTIE DU NavBar Debut============= */}
           <div className="SecRightNav">
-            <div className="MessageIcone d-flex align-items-center justify-content-center">
-            </div>
+            <div className="MessageIcone d-flex align-items-center justify-content-center"></div>
             <Notifications />
 
             {/*================Icone du DropDown========= */}
