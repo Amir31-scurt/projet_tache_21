@@ -21,7 +21,7 @@ import SpinnerIcon from "@rsuite/icons/legacy/Spinner";
 const headers = ["Domaines", "Sous-Domaines", "Coachs"];
 
 // Définition du composant AssignationPage
-const AssignationPage = () => {
+const AssignationDomaines = () => {
   // Déclaration des états
   const [domaines, setDomaines] = useState([]);
   const [users, setUsers] = useState([]); 
@@ -271,4 +271,4 @@ const AssignationPage = () => {
 };
 
 // Exportation du composant AssignationPage
-export default AssignationPage;
+export default AssignationDomaines;
