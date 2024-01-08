@@ -67,19 +67,19 @@ export default function Cours() {
           if (docSnap.exists()) {
             const domaineData = docSnap.data();
             const sousDomaine = domaineData.sousDomaines[sousDomaineName];
-            console.log(sousDomaine);
+            console.log(sousDomaine.Array);
 
             // Check if sousDomaine and sousDomaine.cours exist
             if (sousDomaine && Array.isArray(sousDomaine.cours)) {
               setCourses(sousDomaine.cours); // Assuming cours is already an array
-              console.log(sousDomaine.cours);
+              console.log(sousDomaine.cours.title);
 
               // Map over the cours array
-              courses.forEach((course) => {
-                console.log(`Title: ${course.title}`);
-                console.log(`Link: ${course.link}`);
-                console.log(`Description: ${course.description}`);
-              });
+              // courses.forEach((course) => {
+              //   console.log(`Title: ${course.title}`);
+              //   console.log(`Link: ${course.link}`);
+              //   console.log(`Description: ${course.description}`);
+              // });
             } else {
               console.log('No courses found for the provided sous-domaine');
             }
