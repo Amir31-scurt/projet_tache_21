@@ -66,12 +66,6 @@ export const GetSidebarMenu = () => {
           link: '/dashboard/createDomaine',
         },
         {
-          title: 'Inscription',
-          id: 'admin-link7',
-          icon: <BsFillSignIntersectionFill />,
-          link: '/dashboard/inscription',
-        },
-        {
           title: 'Assignation',
           id: 'admin-link7',
           icon: <MdAssignmentAdd />,
@@ -144,12 +138,6 @@ export const GetSidebarMenu = () => {
           icon: <TbCertificate />,
           id: 'link5',
           link: 'certificat',
-        },
-        {
-          title: 'Parametre',
-          icon: <LuSettings />,
-          id: 'link6',
-          link: '',
         },
         {
           title: 'Quizz',
