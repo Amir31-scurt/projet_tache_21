@@ -163,11 +163,11 @@ export default function FormConnect() {
 
       // Rédirectionner en fonction de l'utilisateur connecté
       if (isAdmin) {
-        navigate("/dashboard/admin");
+        navigate("admin/dashboard");
       } else if (isCoach) {
-        navigate("/dashboard/coach");
+        navigate("/coach/dashboard");
       } else if (isStudent) {
-        navigate("/dashboard");
+        navigate("/etudiant/dashboard");
       }
     } catch (error) {
       toast.error(

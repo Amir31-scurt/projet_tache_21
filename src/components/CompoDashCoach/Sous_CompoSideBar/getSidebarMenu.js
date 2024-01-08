@@ -57,25 +57,25 @@ export const GetSidebarMenu = () => {
           title: 'Base de données',
           icon: <MdOutlineSpaceDashboard />,
           id: 'admin-link1',
-          link: '/dashboard/admin',
+          link: '/admin/dashboard',
         },
         {
           title: 'Domaines',
           id: 'admin-link5',
           icon: <GrDomain />,
-          link: '/dashboard/createDomaine',
+          link: '/admin/createDomaine',
         },
         {
           title: 'Assignation',
           id: 'admin-link7',
           icon: <MdAssignmentAdd />,
-          link: '/dashboard/assignationAdmin',
+          link: '/admin/assignation',
         },
         {
           title: 'Certificats',
           id: 'admin-link6',
           icon: <PiCertificateDuotone />,
-          link: '/dashboard/coachs',
+          link: '/admin/certificats',
         },
         // ... other admin specific items
       ];
@@ -85,31 +85,31 @@ export const GetSidebarMenu = () => {
           title: 'Dashboard',
           icon: <MdOutlineSpaceDashboard />,
           id: 'link1',
-          link: '/dashboard/coach',
+          link: '/coach/dashboard',
         },
         {
           title: 'Programme',
           icon: <MdOutlineLibraryBooks />,
           id: 'link2',
-          link: '/dashboard/programme',
+          link: '/coach/programme',
         },
         {
           title: 'Livraison',
           icon: <PiFilesBold />,
           id: 'link3',
-          link: '/dashboard/livrable',
+          link: '/coach/livrable',
         },
         {
           title: 'Assignation',
           icon: <MdOutlineAssignment />,
           id: 'link4',
-          link: '/dashboard/assignation',
+          link: '/coach/assignation',
         },
         {
           title: 'Bulletin',
           icon: <TbCertificate />,
           id: 'link6',
-          link: '/dashboard/certificat',
+          link: '/coach/certificat',
         },
       ];
     } else if (isStudent) {
@@ -119,31 +119,31 @@ export const GetSidebarMenu = () => {
           title: 'Dashboard',
           icon: <MdOutlineSpaceDashboard />,
           id: 'link1',
-          link: '/dashboard',
+          link: 'etudiant/dashboard',
         },
         {
           title: 'Programme',
           icon: <MdOutlineLibraryBooks />,
           id: 'link1',
-          link: 'programme-apprenant',
+          link: 'etudiant/programme-apprenant',
         },
         {
           title: 'Livraison',
           icon: <PiFilesBold />,
           id: 'link2',
-          link: 'livrable',
+          link: 'etudiant/livrable',
         },
         {
           title: 'Certificats',
           icon: <TbCertificate />,
           id: 'link5',
-          link: 'certificat',
+          link: 'etudiant/certificat',
         },
         {
           title: 'Quizz',
           icon: <TbCertificate />,
           id: 'link6',
-          link: 'quizz',
+          link: 'etudiant/quizz',
         },
         // ... other items for regular users
       ];
