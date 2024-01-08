@@ -16,7 +16,6 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { Password } from "primereact/password";
 import { InputText } from "primereact/inputtext";
-import { Form, ButtonToolbar, Button, Input } from "rsuite";
 
 const ModalComponent = ({ onProfileImageChange }) => {
   const { open, handleClose } = useContext(NavBarContext);
