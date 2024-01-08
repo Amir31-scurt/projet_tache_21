@@ -245,7 +245,8 @@ body {
 }
 .program-card1 {
   border: 1px solid #ccc;
-  padding: 16px;
+  background: linear-gradient(to bottom, #3084b5, #1a638e);
+
   border-radius: 8px;
   width: 290px; /* or any desired width */
   margin: 5px;
@@ -279,15 +280,6 @@ body {
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
-}
-.program-card1 button {
-  background-color: #3084b5;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
 }
 
 .program-card button:hover {
@@ -517,6 +509,7 @@ body {
 }
 .oubli {
   color: #189ab4;
+  cursor: pointer;
 }
 .inputStyle {
   border: 1px solid #3084b5;
@@ -983,8 +976,8 @@ body {
   }
 }
 .program-img {
-  width: 250px;
-  height: 200px;
+  width: 100%;
+  height: 180px;
 }
 .program-img img {
   width: 100%;
@@ -1029,6 +1022,24 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+.titleHolder {
+  background: linear-gradient(to bottom, #3084b5, #1a638e);
+  padding: 5px 10px;
+  width: fit-content;
+  text-align: end;
+  color: white;
+  font-size: 10px;
+  display: flex;
+  float: right;
+  position: absolute;
+  right: 0;
+  margin-right: 10px;
+}
+.bodyCoursCards {
+  background: linear-gradient(to bottom, #3084b5, #1a638e);
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 1024px) {
