@@ -5,8 +5,9 @@ import image2 from "../../assets/images/image2.png";
 
 
 function CarouselCard() {
+  
   return (
-    <Carousel autoplay className="carouselImg">
+    <Carousel className="carouselImg">
       <img src={image} alt='img'/>
       <img src={image2} alt='img' />
     </Carousel>

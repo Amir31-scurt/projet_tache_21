@@ -1,21 +1,21 @@
-
-import React, { useEffect, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
-import { Password } from 'primereact/password';
-import { Dialog } from 'primereact/dialog';
-import { Divider } from 'primereact/divider';
-import { classNames } from 'primereact/utils';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth, db } from '../../config/firebase-config';
-import { Dropdown } from 'primereact/dropdown';
-import { addDoc, collection } from 'firebase/firestore';
-import emailjs from 'emailjs-com';
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
+import { Password } from "primereact/password";
+import { Dialog } from "primereact/dialog";
+import { Divider } from "primereact/divider";
+import { classNames } from "primereact/utils";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, db } from "../../config/firebase-config";
+import { Dropdown } from "primereact/dropdown";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import emailjs from "emailjs-com";
 
 emailjs.init("iyzQvt6sAJkX_ndas");
 
-// Composant principal
+// Méthode principale
 const Inscription = () => {
   const roles = ["Administrateur", "Coach", "Étudiant"];
   const [showMessage, setShowMessage] = useState(false);
@@ -88,6 +88,9 @@ const Inscription = () => {
       // Récupérez l'ID de l'utilisateur créé
       const userId = userCredential.user.uid;
 
+      await updateProfile(userCredential.user, {
+        displayName: data.name,
+      });
       // Enregistrez les données dans Firestore
       await addDoc(collection(db, "utilisateurs"), {
         userId: userId,
@@ -100,6 +103,8 @@ const Inscription = () => {
         active: data.active,
         password: formData.password,
       });
+
+      await setDoc(doc(db, "userChats", userCredential.user.uid), {});
 
       setFormData(data);
       setShowMessage(true);
@@ -131,6 +136,7 @@ const Inscription = () => {
     );
   };
 
+  // Modal de validation
   const dialogFooter = (
     <div className="flex justify-content-center">
       <Button
@@ -155,6 +161,7 @@ const Inscription = () => {
     </React.Fragment>
   );
 
+  // Affichage
   return (
     <div className="form-demo">
       <Dialog
@@ -292,7 +299,6 @@ const Inscription = () => {
                     <Password
                       id={field.name}
                       {...field}
-                      toggleMask
                       placeholder="Mot de passe"
                       className={classNames({
                         "p-invalid": fieldState.invalid,
