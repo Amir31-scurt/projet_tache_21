@@ -16,7 +16,7 @@ import emailjs from "emailjs-com";
 emailjs.init("iyzQvt6sAJkX_ndas");
 
 // Méthode principale
-const Inscription = () => {
+const Inscription = ({ onRegisterSuccess }) => {
   const roles = ["Administrateur", "Coach", "Étudiant"];
   const [showMessage, setShowMessage] = useState(false);
 
@@ -140,7 +140,10 @@ const Inscription = () => {
         label="OK"
         className="p-button-text"
         autoFocus
-        onClick={() => setShowMessage(false)}
+        onClick={() => {
+          setShowMessage(false); // Cacher le dialogue
+          onRegisterSuccess(); // Appeler onRegisterSuccess() ici
+        }}
       />
     </div>
   );
