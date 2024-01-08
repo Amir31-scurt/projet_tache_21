@@ -107,25 +107,13 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { useCallback, useState, useEffect} from "react";
+import { useCallback, useEffect} from "react";
 import Chip from "@mui/material/Chip";
-import { initializeApp } from "firebase/app";
-import { getFirestore, onSnapshot, collection, getDocs } from "firebase/firestore";
-import { log } from "util";
+  import { getFirestore, onSnapshot, collection} from "firebase/firestore";
 
 
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCCtNZzWXbYO14laq7FpInNfK5Y8Oslqw4",
-  authDomain: "tache21-c134b.firebaseapp.com",
-  projectId: "tache21-c134b",
-  storageBucket: "tache21-c134b.appspot.com",
-  messagingSenderId: "325530473681",
-  appId: "1:325530473681:web:9096dc86660f089e0a21f0",
-  measurementId: "G-4T02XMFXF2",
-};
 
-const app = initializeApp(firebaseConfig);
 const db = getFirestore();
 
 const ITEM_HEIGHT = 48;
@@ -176,13 +164,14 @@ console.log(studentNames.filter((user) => user.role === "Étudiant"));
         <InputLabel
           id="demo-multiple-chip-label"
           className="text-white border-0"
+          shrink={personName.length > 0}
         >
-          Sélectionnez par étudiant
+          {personName.length > 0 ? "" : "Sélectionnez par étudiant"}
         </InputLabel>
         <Select
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
-          multiple
+          
           value={personName}
           onChange={handleChange}
           input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
@@ -195,15 +184,17 @@ console.log(studentNames.filter((user) => user.role === "Étudiant"));
           )}
           MenuProps={MenuProps}
         >
-          {studentNames.filter((user) => user.role === 'Étudiant').map((name) => (
-            <MenuItem
-              key={name}
-              value={name.name}
-              style={getStyles(name.name, personName, theme)}
-            >
-              {name.name}
-            </MenuItem>
-          ))}
+          {studentNames
+            .filter((user) => user.role === "Étudiant")
+            .map((name) => (
+              <MenuItem
+                key={name}
+                value={name.name}
+                style={getStyles(name.name, personName, theme)}
+              >
+                {name.name}
+              </MenuItem>
+            ))}
         </Select>
       </FormControl>
     </div>

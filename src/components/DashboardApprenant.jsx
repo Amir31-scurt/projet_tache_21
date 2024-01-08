@@ -1,9 +1,10 @@
 import React from 'react';
 import CardLivraison from './CardLivraison';
 import DashboardCompo from './programmes/Single_Programmes/DashboardCompo';
-import { ContenuCardDsb } from './CompoDashCoach/Sous_CompoSideBar/Utils';
+import { ContenuCardDsb , Users } from './CompoDashCoach/Sous_CompoSideBar/Utils';
 
 export default function DashboardApprenant() {
+
   return (
     <div className="d-flex flex-column flex-wrap ms-3 justify-content-center">
       <h1 className="fst-italic text-secondary fs-3 fw-bold ps-2 pt-3">
