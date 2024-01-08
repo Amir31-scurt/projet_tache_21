@@ -146,12 +146,6 @@ export const GetSidebarMenu = () => {
           link: 'certificat',
         },
         {
-          title: 'Parametre',
-          icon: <LuSettings />,
-          id: 'link6',
-          link: '',
-        },
-        {
           title: 'Quizz',
           icon: <TbCertificate />,
           id: 'link6',
