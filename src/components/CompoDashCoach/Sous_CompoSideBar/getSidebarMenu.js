@@ -66,12 +66,6 @@ export const GetSidebarMenu = () => {
           link: '/dashboard/createDomaine',
         },
         {
-          title: 'Inscription',
-          id: 'admin-link7',
-          icon: <BsFillSignIntersectionFill />,
-          link: '/dashboard/inscription',
-        },
-        {
           title: 'Assignation',
           id: 'admin-link7',
           icon: <MdAssignmentAdd />,
