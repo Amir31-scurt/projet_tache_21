@@ -8,6 +8,8 @@ import {
   where,
   query,
   arrayUnion,
+  serverTimestamp,
+  addDoc,
 } from "firebase/firestore";
 import { db } from "../../config/firebase-config";
 import { ToastContainer, toast } from "react-toastify";
@@ -29,7 +31,9 @@ export const AssignationEtudiant = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [dataLoading, setDataLoading] = useState(false);
-
+  const [notificationsCollection] = useState(
+    collection(db, "notifications")
+  );
   // Fonction de tri personnalisée pour les options du MultiCascader
   const customSortFunction = (a, b) => {
     const windowA = a.split(".")[0];
@@ -104,6 +108,7 @@ export const AssignationEtudiant = () => {
 
               if (etudiantDocs.size > 0) {
                 const etudiantDoc = etudiantDocs.docs[0];
+                
 
                 // Mise à jour des informations de l'étudiant
                 await updateDoc(etudiantDoc.ref, {
@@ -122,6 +127,20 @@ export const AssignationEtudiant = () => {
             // Mise à jour des informations du coach avec la liste des étudiants assignés
             await updateDoc(coachDoc.ref, {
               etudiants: arrayUnion(...etudiantsSelectionnes),
+            });
+
+            let notificationMessage;
+
+            if(etudiantsSelectionnes.length > 1){
+              notificationMessage = `Les étudiants ${etudiantsSelectionnes} vous ont étés assignés`
+            }else{
+              notificationMessage = `L' étudiant ${etudiantsSelectionnes} vous a été assigné`
+            }
+            await addDoc(notificationsCollection, {
+              messageForAdmin: notificationMessage,
+              timestamp: serverTimestamp(),
+              newNotif: true,
+              email: selectedCoach,
             });
 
             setErrorMessage(null);
@@ -232,8 +251,8 @@ export const AssignationEtudiant = () => {
   // Rendu du composant Assignation
   return (
     <div
-      className="p-3 d-flex justify-content-center flex-column"
-      style={{ width: "100%", background: "#eee" }}
+      className="p-2 d-flex justify-content-center flex-wrap"
+      style={{ width: '100%' }}
     >
       <div className="ComtaTabAss m-auto" style={{ padding: "20px" }}>
         <div className="mt-5" style={{ marginBottom: "250px" }}>
@@ -264,7 +283,7 @@ export const AssignationEtudiant = () => {
         {/* Bouton d'assignation avec gestion de chargement */}
         <div className="mt-5 d-flex align-items-center w-100">
           <button
-            className="btn w-100 text-white boutonAssign fw-bold"
+            className="btn w-100 text-white boutonAssign rounded-5 fw-bold"
             style={{ backgroundColor: " #3084b5" }}
             onClick={handleAssign}
             disabled={loading}
