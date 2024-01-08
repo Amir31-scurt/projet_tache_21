@@ -14,7 +14,7 @@ function CardLivraison() {
   const handleShow = () => setShow(true);
   return (
     <Card
-      style={{ width: '24rem' }}
+      style={{ width: '22rem' }}
       className="cardLivraison flex-wrap bg-white shadow-4 rounded-4 col-md-4 mx-3 my-3"
     >
       <Card.Img variant="top" src={image} className="imgCard rounded-3" />
