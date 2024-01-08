@@ -3,7 +3,6 @@ import NavBarContext from "./context";
 import { Modal } from "rsuite";
 import { FaUserEdit } from "react-icons/fa";
 import UserProfil from "../../../../src/assets/images/user.png";
-// import FormComponent from "./FormComponent";
 import { ToastContainer, toast } from "react-toastify";
 import {
   onAuthStateChanged,
@@ -11,17 +10,12 @@ import {
   updateProfile,
   reauthenticateWithCredential,
   EmailAuthProvider,
-  getAuth,
 } from "firebase/auth";
 import { auth, storage, db } from "../../../config/firebase-config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import {
-  collection,
-  doc,
-  getDoc,
-  onSnapshot,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { Password } from "primereact/password";
+import { InputText } from "primereact/inputtext";
 
 const ModalComponent = ({ onProfileImageChange }) => {
   const { open, handleClose } = useContext(NavBarContext);
@@ -106,6 +100,11 @@ const ModalComponent = ({ onProfileImageChange }) => {
 
       // Fermer le modal
       handleCloseModal();
+
+      // Réinitialiser les champs après la mise à jour réussie
+      setNewDisplayName("");
+      setCurrentPassword("");
+      setNewPassword("");
     } catch (error) {
       console.error("Error updating profile:", error.message);
 
@@ -193,30 +192,32 @@ const ModalComponent = ({ onProfileImageChange }) => {
             </h4>
           </div>
           <div className="my-3 ContImputUser">
-            <label>Nouveau Nom</label>
-            <input
-              type="text"
-              value={newDisplayName}
-              onChange={(e) => setNewDisplayName(e.target.value)}
-            />
-            <label>Mot de passe actuel</label>
-            <input
-              type="password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-            />
-            <label>Nouveau Mot de Passe</label>
-            <input
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-            {/* <FormComponent
-            newDisplayName={newDisplayName}
-            newPassword={newPassword}
-            onDisplayNameChange={handleDisplayNameChange}
-            onPasswordChange={handlePasswordChange}
-          /> */}
+            <div className="flex justify-content-center mb-3">
+              {" "}
+              <InputText
+                placeholder="Nouveau Nom ici"
+                value={newDisplayName}
+                onChange={(e) => setNewDisplayName(e.target.value)}
+              />
+            </div>
+            <div className="flex justify-content-center mb-3">
+              {" "}
+              <Password
+                value={currentPassword}
+                placeholder="Mot de passe actuel"
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                toggleMask
+              />
+            </div>
+            <div className="flex justify-content-center">
+              {" "}
+              <Password
+                value={newPassword}
+                placeholder="Nouveau mot de passe"
+                onChange={(e) => setNewPassword(e.target.value)}
+                toggleMask
+              />
+            </div>
           </div>
         </Modal.Body>
 
