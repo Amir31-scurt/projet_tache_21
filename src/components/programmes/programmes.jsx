@@ -92,7 +92,7 @@ const ProgramCard = ({ title, description, url, buttonText, courseId }) => {
       <style>{cardStyles}</style>
       <button className="start-button">
         <Link
-          to={`/dashboard/programme/cours/${courseId}`}
+          to={`/coach/programme/cours/${courseId}`}
           className="text-light text-decoration-none d-block w-100 h-100"
         >
           {buttonText}
