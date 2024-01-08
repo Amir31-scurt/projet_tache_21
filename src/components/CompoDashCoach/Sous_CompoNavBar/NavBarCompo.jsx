@@ -8,11 +8,12 @@ import { FaUserCog } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
 import ModalComponent from "./ModalComponent";
 import NavBarContext from "./context";
-import { auth } from "../../../config/firebase-config";
-import { signOut } from "firebase/auth";
+import { auth, storage } from "../../../config/firebase-config";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { EmailContext } from "../../../contexte/EmailContexte";
 import Notifications from "./Notifications";
+import { getDownloadURL, ref } from "firebase/storage";
 
 export const NavBarCompo = () => {
   const { email, setEmail } = useContext(EmailContext);
@@ -23,15 +24,24 @@ export const NavBarCompo = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const getProfileImageFromLocalStorage = () => {
-    const storedProfileImage = localStorage.getItem("profileImage");
-    if (storedProfileImage) {
-      setProfileImage(storedProfileImage);
-    }
-  };
-
+  // Utilisez useEffect pour mettre à jour l'image de profil après la reconnexion
   useEffect(() => {
-    getProfileImageFromLocalStorage();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Mettez à jour l'image de profil après la reconnexion
+        const storageRef = ref(storage, `profile_images/${user.uid}`);
+        getDownloadURL(storageRef)
+          .then((url) => {
+            setProfileImage(url);
+            localStorage.setItem("profileImage", url);
+          })
+          .catch((error) => {
+            console.error("Error loading profile image:", error.message);
+          });
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const logOut = async () => {
@@ -40,7 +50,6 @@ export const NavBarCompo = () => {
       navigate("/");
       setEmail("");
       localStorage.removeItem("userEmail");
-      localStorage.removeItem("profileImage");
     } catch (error) {
       console.log(error);
     }

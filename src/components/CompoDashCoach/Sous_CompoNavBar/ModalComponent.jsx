@@ -3,7 +3,6 @@ import NavBarContext from "./context";
 import { Modal } from "rsuite";
 import { FaUserEdit } from "react-icons/fa";
 import UserProfil from "../../../../src/assets/images/user.png";
-// import FormComponent from "./FormComponent";
 import { ToastContainer, toast } from "react-toastify";
 import {
   onAuthStateChanged,
@@ -11,17 +10,12 @@ import {
   updateProfile,
   reauthenticateWithCredential,
   EmailAuthProvider,
-  getAuth,
 } from "firebase/auth";
 import { auth, storage, db } from "../../../config/firebase-config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import {
-  collection,
-  doc,
-  getDoc,
-  onSnapshot,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { Password } from "primereact/password";
+import { InputText } from "primereact/inputtext";
 
 const ModalComponent = ({ onProfileImageChange }) => {
   const { open, handleClose } = useContext(NavBarContext);
@@ -32,6 +26,7 @@ const ModalComponent = ({ onProfileImageChange }) => {
   const fileInputRef = useRef(null);
   const [newDisplayName, setNewDisplayName] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -87,24 +82,29 @@ const ModalComponent = ({ onProfileImageChange }) => {
       }
 
       // Mettre à jour le nom
-      const newDisplayName = "Nouveau Nom";
       await updateProfile(user, { displayName: newDisplayName });
       toast.success("Nom mis à jour avec succès !");
 
-      // Re-authentifier l'utilisateur
-      const newPassword = "NouveauMotDePasse";
-      const credentials = EmailAuthProvider.credential(
-        user.email,
-        "MotDePasseActuel"
-      );
-      await reauthenticateWithCredential(user, credentials);
+      // Re-authentifier l'utilisateur seulement si le mot de passe est modifié
+      if (newPassword) {
+        const credentials = EmailAuthProvider.credential(
+          user.email,
+          currentPassword
+        );
+        await reauthenticateWithCredential(user, credentials);
 
-      // Mettre à jour le mot de passe
-      await updatePassword(user, newPassword);
-      toast.success("Mot de passe mis à jour avec succès !");
+        // Mettre à jour le mot de passe
+        await updatePassword(user, newPassword);
+        toast.success("Mot de passe mis à jour avec succès !");
+      }
 
       // Fermer le modal
       handleCloseModal();
+
+      // Réinitialiser les champs après la mise à jour réussie
+      setNewDisplayName("");
+      setCurrentPassword("");
+      setNewPassword("");
     } catch (error) {
       console.error("Error updating profile:", error.message);
 
@@ -120,7 +120,6 @@ const ModalComponent = ({ onProfileImageChange }) => {
         const userDocRef = doc(db, "utilisateurs", user.uid);
         const userDocSnapshot = await getDoc(userDocRef);
         if (userDocSnapshot.exists()) {
-          // Mettre à jour le document utilisateur
           await updateDoc(userDocRef, {
             displayName: newDisplayName,
             newPassword: newPassword,
@@ -136,7 +135,7 @@ const ModalComponent = ({ onProfileImageChange }) => {
 
   const handleCloseModal = () => {
     if (tempProfileImage) {
-      onProfileImageChange(profileImage);
+      onProfileImageChange(tempProfileImage);
       toast.success("Modifications enregistrées avec succès !");
     }
 
@@ -193,25 +192,32 @@ const ModalComponent = ({ onProfileImageChange }) => {
             </h4>
           </div>
           <div className="my-3 ContImputUser">
-            <label>Nouveau Nom</label>
-            <input
-              type="text"
-              value={newDisplayName}
-              onChange={(e) => setNewDisplayName(e.target.value)}
-            />
-
-            <label>Nouveau Mot de Passe</label>
-            <input
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-            {/* <FormComponent
-            newDisplayName={newDisplayName}
-            newPassword={newPassword}
-            onDisplayNameChange={handleDisplayNameChange}
-            onPasswordChange={handlePasswordChange}
-          /> */}
+            <div className="flex justify-content-center mb-3">
+              {" "}
+              <InputText
+                placeholder="Nouveau Nom ici"
+                value={newDisplayName}
+                onChange={(e) => setNewDisplayName(e.target.value)}
+              />
+            </div>
+            <div className="flex justify-content-center mb-3">
+              {" "}
+              <Password
+                value={currentPassword}
+                placeholder="Mot de passe actuel"
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                toggleMask
+              />
+            </div>
+            <div className="flex justify-content-center">
+              {" "}
+              <Password
+                value={newPassword}
+                placeholder="Nouveau mot de passe"
+                onChange={(e) => setNewPassword(e.target.value)}
+                toggleMask
+              />
+            </div>
           </div>
         </Modal.Body>
 
