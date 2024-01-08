@@ -135,7 +135,7 @@ const ModalComponent = ({ onProfileImageChange }) => {
 
   const handleCloseModal = () => {
     if (tempProfileImage) {
-      onProfileImageChange(profileImage);
+      onProfileImageChange(tempProfileImage);
       toast.success("Modifications enregistrées avec succès !");
     }
 
