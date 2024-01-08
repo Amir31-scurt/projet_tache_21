@@ -48,7 +48,7 @@ export default function ChatInput({ activeBtn }) {
   };
 
   const handleKeyEnter = (e) => {
-    e.code === "Enter" && handleSend();
+    !activeBtn && e.code === "Enter" && handleSend();
   };
 
   return (
