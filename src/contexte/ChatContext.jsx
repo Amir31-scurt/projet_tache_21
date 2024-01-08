@@ -1,11 +1,11 @@
-import React, { createContext, useContext, useReducer } from "react";
-import { ChatAuthCtx } from "./ChatAuthCtx";
+import React, { createContext, useContext, useReducer } from 'react';
+import { ChatAuthCtx } from './ChatAuthCtx';
 
 export const ChatContext = createContext();
 
 export const ChatContextProvider = ({ children }) => {
   const { currentUser } = useContext(ChatAuthCtx);
-  console.log("Le currentUser du chatContext", currentUser);
+  console.log('Le currentUser du chatContext', currentUser);
 
   const INITIAL_STATE = {
     chatId: null,
@@ -14,7 +14,7 @@ export const ChatContextProvider = ({ children }) => {
 
   const chatReducer = (state, action) => {
     switch (action.type) {
-      case "CHANGE_USER":
+      case 'CHANGE_USER':
         return {
           user: action.payload,
           chatId:
