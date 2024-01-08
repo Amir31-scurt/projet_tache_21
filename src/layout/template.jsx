@@ -6,6 +6,7 @@ import { AuthContext } from '../contexte/AuthContext';
 import Card from '../utils/cards_reusable';
 import logo from '../assets/images/logo.png';
 import { EmailContext } from '../contexte/EmailContexte';
+import Chat from '../components/chatComponent/Chat';
 
 export default function Template() {
   const { currentUser } = useContext(AuthContext);
@@ -49,6 +50,7 @@ export default function Template() {
         <div className="bodyContent col d-flex">
           <div className="col">
             <Outlet />
+            {/* <Chat /> */}
             {/* Outlet Position */}
           </div>
           {isDashboard && (

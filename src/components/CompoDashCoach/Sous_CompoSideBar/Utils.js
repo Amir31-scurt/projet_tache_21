@@ -7,8 +7,10 @@ import {
 } from 'react-icons/md';
 import { TbCertificate } from 'react-icons/tb';
 import { LuSettings } from 'react-icons/lu';
-// import { FaUsers } from 'react-icons/fa';
-// import { PiUsersFourFill } from 'react-icons/pi';
+import { FaUsers } from 'react-icons/fa';
+import { PiUsersFourFill } from 'react-icons/pi';
+
+
 export const menuSidebar = [
   {
     title: 'Dashboard',
