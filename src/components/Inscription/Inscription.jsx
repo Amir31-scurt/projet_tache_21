@@ -42,7 +42,7 @@ const Inscription = () => {
     email: "",
     password: generateRandomPassword(),
     role: "",
-    archiver: false,
+    archived: false,
     active: true,
   });
 
@@ -53,7 +53,7 @@ const Inscription = () => {
     email: "",
     password: "",
     role: "",
-    archiver: false,
+    archived: false,
     active: true,
   };
 
