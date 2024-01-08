@@ -123,7 +123,6 @@ function Notifications() {
   const signalNewNotif = async (date) => {
     // Récupérez la première notification non lue
     const firstUnreadNotif = notifs.find((notif) => notif.timestamp === date);
-    console.log(firstUnreadNotif);
     // Si une notification non lue a été trouvée, mettez à jour le document Firestore
     await updateDoc(doc(db, "notifications", firstUnreadNotif.id), {
       newNotif: false,
