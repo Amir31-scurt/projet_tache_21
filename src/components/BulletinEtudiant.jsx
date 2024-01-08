@@ -27,6 +27,9 @@ const BulletinEtudiant = () => {
         const userList = usersSnapshot.docs.map((doc) => ({
           userId: doc.data().userId, 
           name: doc.data().name,
+          email: doc.data().email,
+          number: doc.data().number,
+          address: doc.data().address,
         }));
         setStudents(userList);
       } catch (error) {
@@ -58,6 +61,9 @@ const BulletinEtudiant = () => {
         devoirs: 0,
       },
       appreciation: "",
+      address: selectedStudentData?.address || "",
+      email: selectedStudentData?.email || "",
+      number: selectedStudentData?.number || "",
     });
   };
 
@@ -109,13 +115,22 @@ const BulletinEtudiant = () => {
   
       // Récupérez les informations de l'étudiant sélectionné
       const studentName = selectedStudentData?.name || "Nom inconnu";
+      const studentAddress = selectedStudentData?.address || "Adresse inconnue";
+      const studentEmail = selectedStudentData?.email || "Email inconnu";
+      const studentNumber = selectedStudentData?.number || "Numéro inconnu";
   
       console.log("Nom de l'étudiant sélectionné :", studentName);
+      console.log("Adresse de l'étudiant sélectionné :", studentAddress);
+      console.log("Email de l'étudiant sélectionné :", studentEmail);
+      console.log("Numéro de l'étudiant sélectionné :", studentNumber);
   
       //  les données du bulletin
       const bulletinData = {
         studentId: studentUid,
         studentName: studentName,
+        address: studentAddress,
+        email: studentEmail,
+        number: studentNumber,
         notes: bulletinInfo.notes,
         appreciation: bulletinInfo.appreciation,
       };
@@ -126,6 +141,23 @@ const BulletinEtudiant = () => {
       await addDoc(collection(db, "bulletins"), bulletinData);
   
       toast.success("Bulletin enregistré avec succès!");
+
+        // Réinitialisez les états après la soumission réussie
+    setSelectedStudentData(null);
+    setBulletinInfo({
+      notes: {
+        javascript: 0,
+        flutter: 0,
+        laravel: 0,
+        examen: 0,
+        projet: 0,
+        devoirs: 0,
+      },
+      appreciation: "",
+      address: "",
+      email: "",
+      number: "",
+    });
     } catch (error) {
       console.error("Erreur lors de l'enregistrement du bulletin :", error);
       toast.error("Une erreur s'est produite lors de l'enregistrement du bulletin.");

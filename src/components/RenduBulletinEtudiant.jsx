@@ -48,11 +48,11 @@ const RenduBulletinEtudiant = () => {
 
   const determineAppreciation = (average) => {
     if (average >= 16) {
-      return 'Très bien';
+      return 'Excellent Travail';
     } else if (average >= 14) {
-      return 'Bien';
+      return 'Trés Bien';
     } else if (average >= 12) {
-      return 'Assez bien';
+      return 'Bien';
     } else {
       return 'Peux mieux faire';
     }
@@ -110,7 +110,16 @@ const RenduBulletinEtudiant = () => {
               <h3 className="m-0">{`Bulletin de ${studentData.studentName}`}</h3>
               <button className='btn btn-info btn-sm' onClick={downloadPdf}>Télécharger le bulletin</button>
             </div>
-        
+
+            <div className='mt-3'>
+            <div>
+              <h5>Informations personnelles :</h5>
+              <p>Email : {studentData.email}</p>
+              <p>Numéro de téléphone : {studentData.number}</p>
+              <p>Adresse : {studentData.address}</p>
+            </div>
+          </div>
+                  
           <div className='mt-3'>
             <h4>Notes :</h4>
             <table className="table">
