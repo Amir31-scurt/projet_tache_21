@@ -75,7 +75,6 @@ export const NavBarCompo = () => {
           {/*=====================SECOND PARTIE DU NavBar Debut============= */}
           <div className="SecRightNav">
             <div className="MessageIcone d-flex align-items-center justify-content-center">
-              <MdMessage className="fs-4" style={{ color: "#3084b5" }} />
             </div>
             <Notifications />
 
