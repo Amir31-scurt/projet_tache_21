@@ -67,18 +67,14 @@ export default function CardLivraison() {
       <img
         src={item.itemImageSrc}
         alt={item.alt}
-        style={{ width: '100%', height: '100px%' }}
+        className='w-100'
       />
     );
   };
 
   const thumbnailTemplate = (item) => {
     return (
-      <img
-        src={item.thumbnailImageSrc}
-        alt={item.alt}
-        style={{ width: '140px', height: '100px' }}
-      />
+      <img src={item.thumbnailImageSrc} alt={item.alt} className="w-100" />
     );
   };
 
@@ -92,8 +88,8 @@ export default function CardLivraison() {
   }
 
   return (
-    <div className="cardLivraison">
-      <div className="container containerApprenant w-100 my-5">
+    <div className="">
+      <div className="container d-flex justify-content-center flex-wrap containerApprenant my-5">
         <div className="row rowAppenant align-items-center">
           <div className="col-md-12 d-flex colApprenant my-3">
             <img src={userProfile} alt="" className="icon" />

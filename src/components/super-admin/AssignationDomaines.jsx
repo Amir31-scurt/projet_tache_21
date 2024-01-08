@@ -7,8 +7,11 @@ import {
   updateDoc,
   doc,
   where,
+  serverTimestamp,
   query,
-} from "firebase/firestore"; 
+  addDoc,
+} from 'firebase/firestore';
+
 import { db } from "../../config/firebase-config"; 
 import { ToastContainer, toast } from "react-toastify"; 
 import "react-toastify/dist/ReactToastify.css";
@@ -24,11 +27,15 @@ const headers = ["Domaines", "Sous-Domaines", "Coachs"];
 const AssignationPage = () => {
   // Déclaration des états
   const [domaines, setDomaines] = useState([]);
+  const [notificationsCollection] = useState(
+    collection(db, "notifications")
+  );
   const [users, setUsers] = useState([]); 
   const [value, setValue] = useState([]); // Valeur sélectionnée dans le MultiCascader
   const [errorMessage, setErrorMessage] = useState(null); // Message d'erreur
   const [loading, setLoading] = useState(false); 
   const [dataLoading, setDataLoading] = useState(false);
+
 
   // Fonction de gestion de l'assignation
   const handleAssign = async (e) => {
@@ -68,11 +75,21 @@ const AssignationPage = () => {
         // Mise à jour du document du coach avec le domaine et sous-domaine
         if (coachDocs.size > 0) {
           const coachDoc = coachDocs.docs[0];
-          const coachDocRef = doc(db, "utilisateurs", coachDoc.id);
+          const notificationMessage = `Le domaine ${domaine} et les sous domaines ${sousDomaines} vous ont été assigné`;
+          const coachDocRef = doc(db, 'utilisateurs', coachDoc.id);
+
           await updateDoc(coachDocRef, {
             domaine: domaine,
             sousDomaines,
           });
+
+          await addDoc(notificationsCollection, {
+            messageForAdmin: notificationMessage,
+            timestamp: serverTimestamp(),
+            newNotif: true,
+            email: userEmail,
+          });
+
 
           setErrorMessage(null);
           toast.success(
@@ -166,8 +183,8 @@ const AssignationPage = () => {
   // Rendu du composant AssignationPage
   return (
     <div
-      className="d-flex justify-content-center flex-column"
-      style={{ width: "100%" }}
+      className=" d-flex justify-content-center flex-wrap flex-column"
+      style={{ width: '100%' }}
     >
       <div className=" w-100 text-center">
         <p className="fs-3 mb-2 fst-italic fw-bold text-dark">
@@ -234,7 +251,7 @@ const AssignationPage = () => {
         {/* Bouton d'assignation avec indicateur de chargement */}
         <div className="mt-5 d-flex align-items-center w-100 wmd">
           <button
-            className="btn w-100 text-white fw-bold boutonAssign py-2"
+            className="btn w-100 text-white fw-bold rounded-5 boutonAssign py-2"
             style={{ backgroundColor: " #3084b5" }}
             onClick={handleAssign}
             disabled={loading} // Désactiver le clic si le chargement est actif
