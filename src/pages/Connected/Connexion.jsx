@@ -16,9 +16,7 @@ export default function Connexion() {
               <div className="d-flex flex-column justify-content-center align-items-center">
                 <div className="imagel d-flex flex-column justify-content-center align-items-center">
                   <img src={LogoTech} className="img-fluid" alt="" />
-                  <h3 className="" style={{ color: "#3084b5" }}>
-                    Gaandal
-                  </h3>
+                  <h3 style={{ color: "#3084b5" }}>Gaandal</h3>
                 </div>
                 <h3>Connectez-vous</h3>
               </div>

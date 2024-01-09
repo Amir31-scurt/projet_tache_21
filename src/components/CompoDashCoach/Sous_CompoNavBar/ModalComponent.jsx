@@ -73,9 +73,9 @@ const ModalComponent = ({ onProfileImageChange }) => {
     setTempProfileImage(null);
   };
 
+  // Mettre à jour le profil
   const handleUpdateProfile = async () => {
     try {
-      // Vérifier si l'utilisateur est connecté
       if (!user) {
         toast.error("Utilisateur non connecté !");
         return;

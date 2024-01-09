@@ -54,7 +54,7 @@ export const GetSidebarMenu = () => {
       return [
         // Admin specific menu items here
         {
-          title: 'Base de données',
+          title: 'Dashboard',
           icon: <MdOutlineSpaceDashboard />,
           id: 'admin-link1',
           link: '/admin/dashboard',
