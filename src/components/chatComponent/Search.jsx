@@ -70,42 +70,42 @@ export default function Search({ openSearch }) {
         // Créer le chat dans la collection chats
         await setDoc(doc(db, "chats", combinedId), { messages: [] });
 
-        // const storageRef = ref(storage, `profile_images/${user.userId}`);
+        const storageRef = ref(storage, `profile_images/${user.userId}`);
 
-        // if (storageRef.exists()) {
-        //   await getDownloadURL(storageRef).then(async (download) => {
-        //     try {
-        //       console.log(
-        //         "Je teste au niveau du getDownloadURL du composant Search la pp de Mass: ",
-        //         download
-        //       );
-        // Mise à jour d userChats (Contenant des infos élémentaires du chat d'1 user avk 1autre)
-        // await updateDoc(doc(db, "userChats", currentUser.uid), {
-        //   [combinedId + ".userInfo"]: {
-        //     uid: user.userId,
-        //     displayName: user.name,
-        //     role: user.role,
-        //     archived: false,
-        //     photoURL: download,
-        //   },
-        //   [combinedId + ".date"]: serverTimestamp(),
-        // });
-        //     } catch (error) {
-        //       console.log(error);
-        //     }
-        //   });
-        // } else {
-        // Mise à jour d userChats (Contenant des infos élémentaires du chat d'1 user avk 1autre)
-        await updateDoc(doc(db, "userChats", currentUser.uid), {
-          [combinedId + ".userInfo"]: {
-            uid: user.userId,
-            displayName: user.name,
-            role: user.role,
-            archived: false,
-          },
-          [combinedId + ".date"]: serverTimestamp(),
-        });
-        // }
+        if (storageRef.exists()) {
+          await getDownloadURL(storageRef).then(async (download) => {
+            try {
+              console.log(
+                "Je teste au niveau du getDownloadURL du composant Search la pp de Mass: ",
+                download
+              );
+              // Mise à jour d userChats (Contenant des infos élémentaires du chat d'1 user avk 1autre)
+              await updateDoc(doc(db, "userChats", currentUser.uid), {
+                [combinedId + ".userInfo"]: {
+                  uid: user.userId,
+                  displayName: user.name,
+                  role: user.role,
+                  archived: false,
+                  photoURL: download,
+                },
+                [combinedId + ".date"]: serverTimestamp(),
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          });
+        } else {
+          // Mise à jour d userChats (Contenant des infos élémentaires du chat d'1 user avk 1autre)
+          await updateDoc(doc(db, "userChats", currentUser.uid), {
+            [combinedId + ".userInfo"]: {
+              uid: user.userId,
+              displayName: user.name,
+              role: user.role,
+              archived: false,
+            },
+            [combinedId + ".date"]: serverTimestamp(),
+          });
+        }
 
         await updateDoc(doc(db, "userChats", user.userId), {
           [combinedId + ".userInfo"]: {

@@ -60,10 +60,10 @@ export default function Message({ message }) {
         <img src={pp} alt="" />
       </div>
       <div className="messageContent">
-        <span className="text-dark">{`${jourSemaine} ${date} ${mois} `}</span>
+        <span className="text-dark">{message?.jour}</span>
         <p className="bg-primary text-white text-wrap px-2 pt-2 pb-3">
           {message?.text}
-          <span className="">{`${heures}:${minutes}`}</span>
+          <span className="">{message?.heures}</span>
         </p>
         {/* <img src={messageTexto} alt="" /> */}
       </div>
