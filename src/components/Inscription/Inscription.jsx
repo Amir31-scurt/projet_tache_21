@@ -16,7 +16,7 @@ import emailjs from "emailjs-com";
 emailjs.init("iyzQvt6sAJkX_ndas");
 
 // Méthode principale
-const Inscription = () => {
+const Inscription = ({ onRegisterSuccess }) => {
   const roles = ["Administrateur", "Coach", "Étudiant"];
   const [showMessage, setShowMessage] = useState(false);
 
@@ -88,9 +88,6 @@ const Inscription = () => {
       // Récupérez l'ID de l'utilisateur créé
       const userId = userCredential.user.uid;
 
-      await updateProfile(userCredential.user, {
-        displayName: data.name,
-      });
       // Enregistrez les données dans Firestore
       await addDoc(collection(db, "utilisateurs"), {
         userId: userId,
@@ -143,7 +140,10 @@ const Inscription = () => {
         label="OK"
         className="p-button-text"
         autoFocus
-        onClick={() => setShowMessage(false)}
+        onClick={() => {
+          setShowMessage(false); // Cacher le dialogue
+          onRegisterSuccess(); // Appeler onRegisterSuccess() ici
+        }}
       />
     </div>
   );

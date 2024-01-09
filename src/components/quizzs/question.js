@@ -37,7 +37,7 @@ export const quizzes = [
           question: "Quelles sont les différences clés entre le management national et le management international?",
           answers: [
             "Aucune différence.",
-            "Le management national se concentre sur un pays, le management international sur plusieurs.",
+            "Le management national se concentre sur un pays.",
             "Le management national est plus efficace.",
           ],
         },
@@ -45,7 +45,7 @@ export const quizzes = [
           question: "Qu'est-ce que la stratégie de transnationalisation dans le contexte du management international?",
           answers: [
             "Se concentrer uniquement sur le marché domestique.",
-            "Intégration des opérations à l'échelle mondiale tout en tenant compte des spécificités locales.",
+            "Intégration des opérations à l'échelle mondiale locales.",
             "Ignorer les différences culturelles.",
           ],
         },
@@ -62,7 +62,7 @@ export const quizzes = [
           question: "Qu'est-ce que le risque politique dans le contexte du management international?",
           answers: [
             "Aucun risque lié à la politique.",
-            "Risque lié aux changements politiques qui peuvent affecter les opérations.",
+            "Risque lié aux changements politiques.",
             "Risque uniquement dans le secteur financier.",
           ],
         },
@@ -71,7 +71,7 @@ export const quizzes = [
           question: "Quelles sont les étapes du processus de prise de décision stratégique dans un contexte international?",
           answers: [
             " Aucune étape.",
-            "Analyse de la situation, formulation de la stratégie, mise en œuvre et évaluation.",
+            "Analyse de la situation, formulation de la stratégie.",
             "La prise de décision se fait uniquement au niveau local.",
           ],
         },
@@ -80,7 +80,7 @@ export const quizzes = [
           question: "Qu'est-ce que le commerce international par rapport à l'investissement direct à l'étranger (IDE)?",
           answers: [
             "Aucune différence.",
-            " Le commerce international concerne l'échange de biens et de services, l'IDE implique l'acquisition d'actifs à l'étranger.",
+            " Le commerce international concerne l'échange de biens et de services.",
             "L'IDE concerne uniquement les transferts de technologie.",
            
           ],
@@ -90,7 +90,7 @@ export const quizzes = [
           question: "Quel rôle joue l'éthique dans le management international?",
           answers: [
             "Aucun rôle.",
-            "L'éthique est importante pour gagner la confiance des parties prenantes et respecter les normes internationales.",
+            "L'éthique est importante pour les normes internationales.",
             "L'éthique n'est pertinente que sur le marché national.",
 
           ],
@@ -110,7 +110,7 @@ export const quizzes = [
           question: "Qu'est-ce que le 'paradoxe de la distance psychique' dans le contexte du management international?",
           answers: [
             "Une distance physique entre les bureaux internationaux.",
-             "<La difficulté à comprendre les différences culturelles et psychologiques entre les pays.",
+             "La difficulté à comprendre les différences entre les pays.",
               "Un concept sans importance dans le management international.",
              
             ],
@@ -138,7 +138,7 @@ export const quizzes = [
           question: "Quelle est la différence entre le risque financier et le risque politique pour une entreprise internationale?",
           answers: [
             "Aucune différence.",
-             "Le risque financier concerne les fluctuations des taux de change, le risque politique concerne les changements politiques dans un pays.",
+             "Le risque financier concerne les changements politiques dans un pays.",
              "Le risque politique concerne uniquement les questions liées aux élections.",
              
             ],
@@ -149,7 +149,7 @@ export const quizzes = [
           question: "Quelle est l'importance de la standardisation dans le développement d'une stratégie internationale?",
           answers: [
             "Aucune importance.",
-             "La standardisation peut réduire les coûts en utilisant des approches uniformes sur les marchés.",
+             "La standardisation peut uniformés sur les marchés.",
              "La standardisation ne s'applique qu'aux entreprises locales.",
             ],
         },
@@ -158,7 +158,7 @@ export const quizzes = [
           question: "Qu'est-ce qu'une alliance stratégique dans le contexte du management international?",
           answers: [
             "Une coopération qui n'influence pas la stratégie globale de l'entreprise.",
-             "Une collaboration entre deux entreprises pour atteindre des objectifs communs tout en restant des entités distinctes.",
+             "Une collaboration entre deux entreprises distinctes.",
              " Une fusion complète de deux entreprises.",
             ],
         },
@@ -167,7 +167,7 @@ export const quizzes = [
           question: "Quelles sont les principales compétences nécessaires pour un gestionnaire travaillant dans un environnement international?",
           answers: [
             "Uniquement des compétences techniques spécifiques au pays d'origine",
-             "Compétences linguistiques et culturelles, adaptabilité et compréhension des marchés internationaux",
+             "Compétences linguistiques et culturelles, marchés internationaux",
              "Les compétences nationales sont suffisantes dans le contexte international.",
              
             ],
@@ -187,7 +187,7 @@ export const quizzes = [
           question: "Quel est l'impact des différences de réglementation sur la gestion internationale des entreprises?",
           answers: [
             "Aucun impact",
-             "Les différences de réglementation peuvent créer des défis logistiques et financiers.",
+             "Les différences de réglementation créent défis financiers.",
              " La réglementation est uniforme dans tous les pays.",
             
             ],
@@ -197,7 +197,7 @@ export const quizzes = [
           question: "Comment les entreprises peuvent-elles gérer les fluctuations des taux de change dans un contexte international?",
           answers: [
             "En ignorant les variations de change.",
-             "En utilisant des instruments financiers tels que les contrats à terme pour se protéger contre les fluctuations.",
+             "En utilisant des instruments protegeant contre les fluctuations.",
              "En évitant les marchés internationaux.",
             ],
         },
