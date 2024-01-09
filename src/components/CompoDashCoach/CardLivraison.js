@@ -6,7 +6,7 @@ import { useState } from 'react';
 import CarouselCard from './CarouselCard';
 import * as Icon from "react-bootstrap-icons";
 //Composant de Cartes contenus dans la partie Livraison du coach
-function CardLivraison() {
+function CardLivraison({role}) {
   const [show, setShow] = useState(false);
   //Fonction pour l'ouverture du modal
   const handleClose = () => setShow(false);
@@ -43,10 +43,11 @@ function CardLivraison() {
         <Modal.Body className="content-modal">
           <CarouselCard />
         </Modal.Body>
+        {role && role.role === 'Coach'? 
         <Modal.Footer>
           <Button className="border-0 d-flex justify-content-center bg-warning pe-auto" disabled><Icon.PauseBtn className='fs-4 me-1' /> En cours...</Button>
-          <Button className=" border-0"  style={{backgroundColor:'#3084b5'}}>Rejeter</Button>
-        </Modal.Footer>
+          <Button className="bg-danger border-0">Rejeter</Button>
+        </Modal.Footer> : ""}
       </Modal>
     </Card>
   );

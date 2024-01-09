@@ -105,7 +105,12 @@ body {
   font-family: Montserrat;
   font-size: 16px;
   width: 65%;
+  text-align: left;
+  border-radius: 20px;
   color: #000000;
+}
+
+.label{
 }
 
 .module-container .paragraph {
@@ -463,6 +468,13 @@ body {
 }
 .tableShadow {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.tableRowArchived {
+  opacity: 0.5;
+  /* Rendre la ligne transparente */
+  background-color: #ccc;
+  /* Rendre la ligne grisée */
+  /* ... Autres styles ... */
 }
 /* Fin Cheikh CSS */
 
@@ -1028,17 +1040,18 @@ body {
   gap: 10px;
 }
 .titleHolder {
+  background: #3084b5;
   padding: 5px 10px;
   width: fit-content;
   text-align: end;
-  color: black;
+  color: white;
   font-size: 15px;
+  top: 7.47em;
   display: flex;
   float: right;
   font-weight: bold;
   position: absolute;
   right: 0;
-  margin-right: 10px;
 }
 .bodyCoursCards {
   background: linear-gradient(to bottom, #3084b5, #1a638e);
