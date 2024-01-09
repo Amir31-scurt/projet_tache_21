@@ -15,6 +15,17 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
+
+// const firebaseConfig = {
+//   apiKey: "AIzaSyA37NpBE2TbcB75kruIL2LKc3RFEwH5wpI",
+//   authDomain: "react-contact-6999f.firebaseapp.com",
+//   databaseURL: "https://react-contact-6999f-default-rtdb.firebaseio.com",
+//   projectId: "react-contact-6999f",
+//   storageBucket: "react-contact-6999f.appspot.com",
+//   messagingSenderId: "233706406048",
+//   appId: "1:233706406048:web:7fc1d7ead4f07613f409c5"
+// }
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);

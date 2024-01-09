@@ -30,6 +30,9 @@ import StudentProgram from '../components/ProEtudiant/Programme';
 import Cours from '../components/ProEtudiant/Cours';
 import UserTable from '../components/super-admin/TableauUtilisateurs';
 import logo from '../assets/images/logo.png';
+import Quizz from '../components/quizzs/quizzs';
+import RenduBulletinEtudiant from '../components/RenduBulletinEtudiant';
+import BulletinEtudiant from '../components/BulletinEtudiant';
 
 export default function ProtectedRoutes() {
   const { email } = useContext(EmailContext);
@@ -68,55 +71,51 @@ export default function ProtectedRoutes() {
   const adminRoutes = isAdmin
     ? [
         {
-          path: '/dashboard/admin',
+          path: '/admin/dashboard',
           element: <UserTable />,
         },
         {
-          path: '/dashboard/coachs',
-          element: <NewCoach />,
-        },
-        {
-          path: '/dashboard/inscription',
-          element: <Inscription />,
-        },
-        {
-          path: '/dashboard/assignationAdmin',
+          path: '/admin/assignation',
           element: <TemplateDemo />,
         },
         {
-          path: '/dashboard/createDomaine',
+          path: '/admin/createDomaine',
           element: <CreateDomaine />,
+        },
+        {
+          path: '/admin/certificats',
+          element: <BulletinEtudiant />,
         },
       ]
     : [];
   const coachRoutes = isCoach
     ? [
         {
-          path: '/dashboard/coach',
+          path: '/coach/dashboard',
           element: <DashboardApprenant />,
         },
         {
-          path: '/dashboard/programme', // Relative path
+          path: '/coach/programme', // Relative path
           element: <ProgrammeCoach />,
         },
         {
-          path: '/dashboard/chatHome', // Relative path
+          path: '/coach/chatHome', // Relative path
           element: <ChatHome />,
         },
         {
-          path: '/dashboard/programme/cours/:courseId',
+          path: '/coach/programme/cours/:courseId',
           element: <SpecificPro />,
         },
         {
-          path: '/dashboard/certificat',
+          path: '/coach/certificat',
           element: <Certificate />,
         },
         {
-          path: '/dashboard/livrable',
+          path: '/coach/livrable',
           element: <ContentCardLivraison />,
         },
         {
-          path: '/dashboard/assignation',
+          path: '/coach/assignation',
           element: <AssignationPage />,
         },
       ]
@@ -124,28 +123,32 @@ export default function ProtectedRoutes() {
   const studentRoutes = isStudent
     ? [
         {
-          index: true,
+          path: 'etudiant/dashboard',
           element: <DashboardApprenant />,
         },
         {
-          path: 'programme-apprenant', // Relative path
+          path: 'etudiant/programme-apprenant', // Relative path
           element: <StudentProgram />,
         },
         {
-          path: 'chatHome', // Relative path
+          path: 'etudiant/chatHome', // Relative path
           element: <ChatHome />,
         },
         {
-          path: 'certificat',
-          element: <Certificate />,
+          path: 'etudiant/certificat',
+          element: <RenduBulletinEtudiant />,
         },
         {
-          path: 'livrable',
+          path: 'etudiant/livrable',
           element: <ContentCardLivraison />,
         },
         {
-          path: 'cours',
+          path: 'etudiant/cours/:domaineId/:sousDomaineName',
           element: <Cours />,
+        },
+        {
+          path: 'etudiant/quizz',
+          element: <Quizz />,
         },
       ]
     : [];
@@ -162,7 +165,7 @@ export default function ProtectedRoutes() {
       element: <StudentProgram />,
     },
     {
-      path: '/dashboard',
+      path: '/',
       element: <Template />,
       children: [
         // Admin routes

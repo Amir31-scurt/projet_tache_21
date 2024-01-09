@@ -3,14 +3,17 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
+import { Toaster, toast } from "react-hot-toast";
 import sim from "../../assets/images/sim.jpeg";
 import {
   collection,
   doc,
   getDocs,
   getDoc,
+  addDoc,
   onSnapshot,
   updateDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../config/firebase-config";
 import { FaEye, FaEdit, FaArchive } from "react-icons/fa";
@@ -29,7 +32,6 @@ export default function TableauUtilisateurs() {
   const [selectedUtilisateursForUpdate, setSelectedUtilisateursForUpdate] =
     useState(null); // Stocke l'utilisateur pour la mise à jour
   const [loading, setLoading] = useState(false); // Gère l'état de chargement
-
   // Ajoutez un nouvel état local pour gérer l'étiquette du bouton
   const [archiveLabel, setArchiveLabel] = useState("Archiver");
 
@@ -39,8 +41,9 @@ export default function TableauUtilisateurs() {
   const [emailValue, setEmailValue] = useState("");
   const [addressValue, setAddressValue] = useState("");
   const [roleValue, setRoleValue] = useState("");
-
+  const [notificationsCollection] = useState(collection(db, "notifications"));
   const [roleFilter, setRoleFilter] = useState("Tous les utilisateurs");
+  const [tabType, setTabType] = useState("utilisateurs");
 
   // Affiche les détails de l'utilisateur sélectionné
   const showDetails = (utilisateur) => {
@@ -82,6 +85,10 @@ export default function TableauUtilisateurs() {
       utilisateursRef,
       selectedUtilisateursForUpdate.id
     );
+    const user = utilisateursData.find(
+      (user) => user.id === selectedUtilisateursForUpdate.id
+    );
+    let notificationMessageMisAJour = `Les information sur ${user.name} ont étaient mis a jour avec succes`;
 
     try {
       await updateDoc(utilisateurDoc, {
@@ -91,7 +98,9 @@ export default function TableauUtilisateurs() {
         address: addressValue,
         role: roleValue,
       });
-
+      toast.success(notificationMessageMisAJour, {
+        duration: 4000,
+      });
       setFormVisible(false);
       fetchData(); // Met à jour les données après la modification
     } catch (error) {
@@ -121,9 +130,9 @@ export default function TableauUtilisateurs() {
     );
 
     fetchData(); // Récupération initiale des données
-
+    
     return () => {
-      unsubscribe(); // Nettoyage du listener lors du démontage du composant
+      unsubscribe();
     };
   }, []);
 
@@ -131,14 +140,26 @@ export default function TableauUtilisateurs() {
   const handleArchiveToggle = async (utilisateurId, isArchived) => {
     const utilisateursRef = collection(db, "utilisateurs");
     const utilisateurDoc = doc(utilisateursRef, utilisateurId);
-
+    const user = utilisateursData.find((user) => user.id === utilisateurId);
+    const coachs = utilisateursData.find((coach) => coach.name === user.coach)
+    let notificationMessage = `${user.name} a été ${!isArchived ? 'archivé': 'désarchivé'} avec succes`
     try {
       await updateDoc(utilisateurDoc, {
         archiver: !isArchived,
       });
+
+      await addDoc(notificationsCollection, {
+        messageForAdmin: notificationMessage,
+        timestamp: serverTimestamp(),
+        newNotif: true,
+        email: coachs.email,
+      });
       fetchData(); // Met à jour les données après l'archivage ou le désarchivage
       // Mettre à jour l'étiquette du bouton en fonction du nouvel état 'archiver'
       setArchiveLabel(isArchived ? "Désarchiver" : "Archiver");
+      toast.success(notificationMessage, {
+        duration: 3000,
+      });
     } catch (error) {
       console.error("Error archiving student:", error);
     }
@@ -173,6 +194,13 @@ export default function TableauUtilisateurs() {
     const selectedValue = e.target.value;
     setRoleFilter(selectedValue);
     localStorage.setItem(localStorageKey, selectedValue);
+
+    // Mettez à jour tabType en fonction de la valeur du filtre sélectionné
+    if (selectedValue === "Archivés") {
+      setTabType("utilisateurs archivées");
+    } else {
+      setTabType(selectedValue);
+    }
   };
 
   // Définition des colonnes pour le tableau
@@ -222,44 +250,37 @@ export default function TableauUtilisateurs() {
       addresse: utilisateur.address,
       role: utilisateur.role,
       actions: (
-        <div className="d-flex align-items-center">
+        <div className={`d-flex align-items-center`}>
           <button
             type="button"
-            className="d-flex justify-content-center align-items-center btn btn-outline-primary rounded-pill me-3"
+            className="d-flex justify-content-center align-items-center btn btn-outline-primary rounded-3 me-3"
             onClick={() => showDetails(utilisateur)}
           >
-            <FaEye className="me-1" style={{ width: "20px", height: "20px" }} />
-            Voir
+            <FaEye className="" style={{ width: "30px", height: "30px" }} />
           </button>
           <button
             type="button"
-            className="d-flex justify-content-center align-items-center btn btn-outline-primary rounded-pill me-3"
+            className="d-flex justify-content-center align-items-center btn btn-outline-success rounded-3 me-3"
             onClick={() => {
               showUpdateForm(utilisateur);
               setFormVisible(true);
             }}
           >
-            <FaEdit
-              className="me-1"
-              style={{ width: "20px", height: "20px" }}
-            />
-            Modifier
+            <FaEdit className="" style={{ width: "30px", height: "30px" }} />
           </button>
           <button
             type="button"
-            className="d-flex justify-content-center align-items-center btn btn-outline-primary rounded-pill me-3"
+            className={`d-flex justify-content-center align-items-center btn btn-outline-danger rounded-3 me-3`}
             onClick={() =>
               handleArchiveToggle(utilisateur.id, utilisateur.archiver || false)
             }
           >
-            <FaArchive
-              className="me-1"
-              style={{ width: "20px", height: "20px" }}
-            />
-            {utilisateur.archiver ? "Désarchiver" : "Archiver"}
+            <FaArchive className="" style={{ width: "30px", height: "30px" }} />
+            {utilisateur.archiver ? "Désarchiver" : ""}
           </button>
         </div>
       ),
+      className: utilisateur.archiver ? "tableRowArchived bg-info" : "",
     }));
   }, [filteredData]);
 
@@ -272,6 +293,7 @@ export default function TableauUtilisateurs() {
   // Rendu du composant
   return (
     <>
+      <Toaster />
       {/* Dialogue pour afficher les détails de l'utilisateur */}
       <Dialog
         header={`Informations sur ${
@@ -320,7 +342,7 @@ export default function TableauUtilisateurs() {
 
       {/* Formulaire de mise à jour */}
       <Dialog
-        header={`Mis à jour du profil`}
+        header={`Profil`}
         visible={formVisible}
         style={{ width: "50vw" }}
         onHide={() => setFormVisible(false)}
@@ -385,8 +407,9 @@ export default function TableauUtilisateurs() {
               <label htmlFor="Role"></label>
             </span>
           </div>
-          <div className="card flex flex-wrap justify-content-center gap-3">
+          <div className="card flex flex-wrap justify-content-center p-0">
             <Button
+              className="m-0 text-light"
               rounded
               label="Mis à jour"
               icon="pi pi-check"
@@ -402,7 +425,9 @@ export default function TableauUtilisateurs() {
 
       {/* Affichage du tableau */}
       <div className="TableUtilisateurs d-flex flex-column justyfy-content-center align-items-center w-100">
-        <h1 className="my-3 shadowTable">Tableaux utilisateur</h1>
+        <h1 className="my-3 shadowTable">
+          Tableaux <span>{tabType}</span>
+        </h1>
         <div className="myTable ">
           <div className="add filter d-flex justify-content-start align-items-center">
             <select

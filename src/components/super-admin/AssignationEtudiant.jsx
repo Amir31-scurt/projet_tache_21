@@ -12,6 +12,8 @@ import {
   where,
   query,
   arrayUnion,
+  serverTimestamp,
+  addDoc,
 } from "firebase/firestore";
 import { db } from "../../config/firebase-config";
 import "react-toastify/dist/ReactToastify.css";
@@ -266,7 +268,7 @@ export const AssignationEtudiant = () => {
         {/* Bouton d'assignation avec indication de chargement */}
         <div className="mt-5 d-flex align-items-center w-100">
           <button
-            className="btn w-100 text-white boutonAssign fw-bold"
+            className="btn w-100 text-white boutonAssign rounded-5 fw-bold"
             style={{ backgroundColor: " #3084b5" }}
             onClick={handleAssign}
             disabled={

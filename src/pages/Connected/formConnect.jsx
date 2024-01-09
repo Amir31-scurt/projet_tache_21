@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import { CiMail } from "react-icons/ci";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -10,25 +10,31 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { EmailContext } from "../../contexte/EmailContexte";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import "react-toastify/dist/ReactToastify.css";
+import Restaurer from "./Restaurer";
 
 export default function FormConnect() {
-  // Les states pour la connexion / login
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
-  // Emails d'admin
   const [adminEmails, setAdminEmails] = useState([]);
-  // Email de coachs
   const [coachEmails, setCoachEmails] = useState([]);
-  // Email des etudiants
   const [studentEmails, setStudentEmails] = useState([]);
-
   const { email, setEmail } = useContext(EmailContext);
-
-  // UseNavigate pour les redirections
+  const [showRestaurerModal, setShowRestaurerModal] = useState(false);
   const navigate = useNavigate();
+
+  // Ouvre le modal du composant Restaurer
+  const openRestaurerModal = () => {
+    setShowRestaurerModal(true);
+  };
 
   // les changements dans les champs
   const handleEmailChange = (e) => {
@@ -61,7 +67,7 @@ export default function FormConnect() {
     const coachEmails = [];
 
     querySnapshot.forEach((doc) => {
-      coachEmails.push(doc.data().email); // Assuming the email field is named 'email'
+      coachEmails.push(doc.data().email);
     });
 
     return coachEmails;
@@ -74,10 +80,23 @@ export default function FormConnect() {
     const studentEmails = [];
 
     querySnapshot.forEach((doc) => {
-      studentEmails.push(doc.data().email); // Assuming the email field is named 'email'
+      studentEmails.push(doc.data().email);
     });
 
     return studentEmails;
+  };
+
+  // Nouvelle fonction pour récupérer les détails de l'utilisateur
+  const getUserDetails = async (userEmail) => {
+    const usersRef = collection(db, "utilisateurs");
+    const userQuery = query(usersRef, where("email", "==", userEmail));
+    const querySnapshot = await getDocs(userQuery);
+
+    if (querySnapshot.size === 0) {
+      return null; // L'utilisateur n'a pas été trouvé
+    }
+
+    return querySnapshot.docs[0].data();
   };
 
   // Define email lists for different roles
@@ -113,25 +132,44 @@ export default function FormConnect() {
       );
       const userEmail = userCredential.user.email;
       const user = userCredential.user;
-      localStorage.setItem("userName", user.displayName || "");
 
+      // Récupérer les détails de l'utilisateur
+      const userDetails = await getUserDetails(userEmail);
+
+      // Vérifier si l'utilisateur n'existe pas ou est archivé
+      if (!userDetails || userDetails.archived) {
+        toast.error("Impossible de se connecter. Utilisateur archivé.", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setLoading(false);
+        return;
+      }
+
+      localStorage.setItem("userName", user.displayName || "");
       setEmail(userEmail);
       setPassword("");
 
-      // Check if the user is an admin or a coach
+      // Vérifier si l'utilisateur est un admin, un coach ou un étudiant
       const isAdmin = adminEmails.includes(userEmail);
       const isCoach = coachEmails.includes(userEmail);
       const isStudent = studentEmails.includes(userEmail);
-      // Navigate based on the user role
+
+      // Rédirectionner en fonction de l'utilisateur connecté
       if (isAdmin) {
-        navigate("/dashboard/admin");
+        navigate("admin/dashboard");
       } else if (isCoach) {
-        navigate("/dashboard/coach");
+        navigate("/coach/dashboard");
       } else if (isStudent) {
-        navigate("/dashboard"); // Assuming this is the route for students
+        navigate("/etudiant/dashboard");
       }
     } catch (error) {
-      // alert('Échec de la connexion. Veuillez vérifier vos informations.');
       toast.error(
         "Échec de la connexion. Veuillez vérifier vos informations.",
         {
@@ -152,91 +190,42 @@ export default function FormConnect() {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <div className="m-5 mb-4">
-        <div className="input-group  flex-nowrap">
-          <span className="input-group-text" id="addon-wrapping">
-            <CiMail />
-          </span>
-          <input
-            type="email"
-            class="form-control "
-            placeholder="Email"
-            value={email}
-            onChange={handleEmailChange}
-            aria-label="Username"
-            aria-describedby="addon-wrapping"
-          />
-        </div>
-      </div>
-      <div className=" m-5 ">
-        <div className="input-group mb-3  flex-nowrap">
-          <span className="input-group-text" id="addon-wrapping">
-            <RiLockPasswordFill />
-          </span>
-          <input
-            type="password"
-            class="form-control "
-            placeholder="Mot de passe"
-            value={password}
-            onChange={handlePasswordChange}
-            aria-label="Username"
-            aria-describedby="addon-wrapping"
-          />
-        </div>
-        <p
-          className="m-0 p-0 text-end oubli"
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModal"
-        >
-          Mot de passe oublié?
-        </p>
-        {/* <!-- Modal --> */}
-        <div
-          className="modal fade"
-          id="exampleModal"
-          tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h1 className="modal-title fs-5" id="exampleModalLabel">
-                  Mot de pass oublié{" "}
-                </h1>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div className="modal-body">
-                <div className="form-outline text-start mb-4">
-                  <input
-                    type="email"
-                    id="email"
-                    className="form-control p-2"
-                    placeholder="Saisissez votre mail"
-                  />
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button type="button" className="btn btn-primary">
-                  Save changes
-                </button>
-              </div>
-            </div>
+    <div className="m-0">
+      {showRestaurerModal && (
+        <Restaurer setShowRestaurerModal={setShowRestaurerModal} />
+      )}
+      <form onSubmit={handleLogin}>
+        <div className="m-5 mb-2">
+          <div className="input-group flex-nowrap">
+            <span className="input-group-text" id="addon-wrapping">
+              <CiMail />
+            </span>
+            <input
+              type="email"
+              class="form-control "
+              placeholder="Email"
+              value={email}
+              onChange={handleEmailChange}
+              aria-label="Username"
+              aria-describedby="addon-wrapping"
+            />
           </div>
-          <p className="m-0 p-0 text-end oubli">Mot de passe oublié?</p>
+        </div>
+        <div className="m-5 ">
+          <div className="input-group mb-2 flex-nowrap">
+            <span className="input-group-text" id="addon-wrapping">
+              <RiLockPasswordFill />
+            </span>
+            <input
+              type="password"
+              class="form-control "
+              placeholder="Mot de passe"
+              value={password}
+              onChange={handlePasswordChange}
+              aria-label="Username"
+              aria-describedby="addon-wrapping"
+            />
+          </div>
         </div>
         <div className="pt-1 mt-4 text-end">
           <center>
@@ -249,8 +238,14 @@ export default function FormConnect() {
             </button>
           </center>
         </div>
-      </div>
+      </form>
+      <p className="mt-3 mx-5 p-0 text-end fw-bold">
+        Mot de passe oublié ?{" "}
+        <span className="oubli" onClick={openRestaurerModal}>
+          restaurer le ici !
+        </span>
+      </p>
       <ToastContainer />
-    </form>
+    </div>
   );
 }
