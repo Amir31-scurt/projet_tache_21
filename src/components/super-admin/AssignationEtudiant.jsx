@@ -103,12 +103,31 @@ export const AssignationEtudiant = () => {
             const coachDoc = coachDocs.docs[0];
             const sousDomaineDuCoach = coachDoc.data().sousDomaines;
 
-            // Assigner chaque étudiant sélectionné au coach
-            const etudiantsSelectionnes = await Promise.all(
-              selectedStudents.map(async (selectedEtudiant) => {
-                const etudiantQuery = query(
-                  collection(db, "utilisateurs"),
-                  where("email", "==", selectedEtudiant)
+            const etudiantsSelectionnes = [];
+
+            for (const selectedEtudiant of selectedStudents) {
+              // Récupération des informations de l'étudiant sélectionné
+              const etudiantQuery = query(
+                collection(db, "utilisateurs"),
+                where("email", "==", selectedEtudiant)
+              );
+              const etudiantDocs = await getDocs(etudiantQuery);
+
+              if (etudiantDocs.size > 0) {
+                const etudiantDoc = etudiantDocs.docs[0];
+                
+
+                // Mise à jour des informations de l'étudiant
+                await updateDoc(etudiantDoc.ref, {
+                  coach: coachDoc.data().name,
+                  sousDomaines: sousDomaineDuCoach,
+                  emailCoach: coachDoc.data().email,
+                });
+
+                etudiantsSelectionnes.push(etudiantDoc.data().name);
+              } else {
+                console.warn(
+                  `Aucun document d'étudiant trouvé avec l'email spécifié: ${selectedEtudiant}`
                 );
                 const etudiantDocs = await getDocs(etudiantQuery);
 
