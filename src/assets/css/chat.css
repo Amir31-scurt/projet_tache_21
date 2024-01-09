@@ -5,6 +5,11 @@ Bleu
 Vert 
 #48a93c: foncée
 */
+ @media screen and (max-width: 440px) {
+   .chatHomeContainer {
+     width: 350px !important;
+   }
+ }
 /* ================================================== 
                     CHAT HOME
    ================================================== */
