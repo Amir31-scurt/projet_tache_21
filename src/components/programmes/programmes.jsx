@@ -88,9 +88,9 @@ const ProgramCard = ({ title, description, url, buttonText, courseId }) => {
 
 `;
   return (
-    <div className="program-card1 shadow-sm">
+    <div className="program-card1 shadow-5 rounded-5">
       <style>{cardStyles}</style>
-      <button className="start-button">
+      <button className="start-button rounded-5">
         <Link
           to={`/coach/programme/cours/${courseId}`}
           className="text-light text-decoration-none d-block w-100 h-100"
@@ -99,7 +99,7 @@ const ProgramCard = ({ title, description, url, buttonText, courseId }) => {
         </Link>
       </button>
       <div className="program-card1-content">
-        <button className="titleHolder mt-2">{title}</button>
+        <button className="titleHolder mt-2 me-1   rounded-5">{title}</button>
         <img src={url} alt={title} />
         <hr />
         <div className="py-3 px-3 bodyCoursCards">

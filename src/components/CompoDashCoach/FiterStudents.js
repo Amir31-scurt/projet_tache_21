@@ -137,7 +137,28 @@ export default function FilterStudents() {
     const {
       target: { value },
     } = event;
-    setPersonName(typeof value === "string" ? value.split(",") : value);
+    // Vérifier si la valeur sélectionnée est déjà présente dans personName
+     if (typeof value === "string") {
+    // Si la valeur sélectionnée est déjà dans personName, la désélectionner
+    if (personName.includes(value)) {
+      setPersonName([]);
+    } else {
+      // Sinon, sélectionner la nouvelle valeur
+      setPersonName([value]);
+    }
+  } else {
+    // Pour la sélection multiple, basculez la sélection de l'étudiant cliqué
+    setPersonName((prevPersonName) => {
+      const index = prevPersonName.indexOf(value);
+      if (index === -1) {
+        return [...prevPersonName, value];
+      } else {
+        const updatedPersonName = [...prevPersonName];
+        updatedPersonName.splice(index, 1);
+        return updatedPersonName;
+      }
+    })};
+    
   };
 
    const loadUsers = useCallback(() => {
@@ -171,16 +192,19 @@ console.log(studentNames.filter((user) => user.role === "Étudiant"));
         <Select
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
-          
+          multiple={false}
           value={personName}
           onChange={handleChange}
           input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
           renderValue={(selected) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} />
-              ))}
+              {selected && <Chip key={selected} label={selected} />}
             </Box>
+            // <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+            //   {selected.map((value) => (
+            //     <Chip key={value} label={value} />
+            //   ))}
+            // </Box>
           )}
           MenuProps={MenuProps}
         >
