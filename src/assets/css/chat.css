@@ -34,7 +34,7 @@ Vert
   overflow: hidden;
   background-color: #fff;
   transition: 0.2s ease-in-out;
-  border-bottom: 3px solid #0071bd;
+  border-bottom: 3px solid #48a93c;
 }
 .chatHomeDisplay {
   transition: 0.9s ease;
@@ -157,12 +157,23 @@ Vert
 }
 .userChat img {
   width: 40px;
+  height: 40px;
+  object-fit: cover;
 }
 .chats .userChat {
   cursor: pointer;
   width: 75px;
   overflow-x: hidden;
+  position: relative;
   /* flex-wrap: nowrap; */
+}
+.chats .userChat .btnArchived{
+  top: 0;
+  right: 0;
+  color: #333;
+}
+.chats .userChat .btnArchived:hover{
+  color: #f21414;
 }
 /* .chats .admin:hover{
   background-color: rgba(255, 215, 0, 0.3);
@@ -231,7 +242,7 @@ Vert
 }
 .messages .message span,
 .messages .owner span {
-  font-size: 12px;
+  font-size: 9px;
 }
 .messages .message .messageContent img,
 .messages .owner .messageContent img {
@@ -239,15 +250,24 @@ Vert
   object-fit: cover;
 }
 .messages .message .messageContent p {
+  position: relative;
   max-width: fit-content;
   border-radius: 0 10px 10px 10px;
   background-color: #3084b5 !important;
 }
+.messages .message .messageContent p span,
+.messages .owner .messageContent p span{
+  position: absolute;
+  bottom: 2px;
+  right: 10px;
+}
 .messages .owner .messageContent p {
+  position: relative;
   max-width: fit-content;
   border-radius: 10px 0 10px 10px;
   background-color: #48a93c !important;
 }
+
 /* Styles pour la barre de défilement */
 .messages::-webkit-scrollbar {
   width: 6px;
@@ -262,6 +282,14 @@ Vert
 .messages::-webkit-scrollbar-track {
   background-color: transparent;
 }
+
+/* ================================================== 
+                MESSAGE
+   ================================================== */
+/* .message .messageContent span,
+.owner .messageContent span{
+
+} */
 
 /* ================================================== 
                 CHAT-INPUT
