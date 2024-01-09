@@ -12,7 +12,8 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { db } from "../../config/firebase-config";
+import { db, storage } from "../../config/firebase-config";
+import { getDownloadURL, ref } from "firebase/storage";
 // import { Dangerous } from "@mui/icons-material";
 
 export default function Search({ openSearch }) {
@@ -20,6 +21,7 @@ export default function Search({ openSearch }) {
   const [userName, setUserName] = useState(); // L'user qu'on cherche
   const [user, setUser] = useState(null); // L'user trouvé
   const [err, setErr] = useState(false); // Gestion de des erreurs éventuelles
+  const [searchResult, setSearchResult] = useState();
   const [closeSearch, setCloseSearch] = useState(false);
   // Récupérer le contexte
   const { currentUser } = useContext(ChatAuthCtx);
@@ -37,6 +39,10 @@ export default function Search({ openSearch }) {
       querySnapchot.forEach((doc) => {
         setUser((prevUser) => ({ ...prevUser, ...doc.data() }));
       });
+      const resultat = user === null;
+      setSearchResult(resultat);
+      console.log(searchResult);
+      console.log("searchResult");
     } catch (err) {
       setErr(true);
     }
@@ -64,22 +70,47 @@ export default function Search({ openSearch }) {
         // Créer le chat dans la collection chats
         await setDoc(doc(db, "chats", combinedId), { messages: [] });
 
+        // const storageRef = ref(storage, `profile_images/${user.userId}`);
+
+        // if (storageRef.exists()) {
+        //   await getDownloadURL(storageRef).then(async (download) => {
+        //     try {
+        //       console.log(
+        //         "Je teste au niveau du getDownloadURL du composant Search la pp de Mass: ",
+        //         download
+        //       );
+        // Mise à jour d userChats (Contenant des infos élémentaires du chat d'1 user avk 1autre)
+        // await updateDoc(doc(db, "userChats", currentUser.uid), {
+        //   [combinedId + ".userInfo"]: {
+        //     uid: user.userId,
+        //     displayName: user.name,
+        //     role: user.role,
+        //     archived: false,
+        //     photoURL: download,
+        //   },
+        //   [combinedId + ".date"]: serverTimestamp(),
+        // });
+        //     } catch (error) {
+        //       console.log(error);
+        //     }
+        //   });
+        // } else {
         // Mise à jour d userChats (Contenant des infos élémentaires du chat d'1 user avk 1autre)
         await updateDoc(doc(db, "userChats", currentUser.uid), {
           [combinedId + ".userInfo"]: {
             uid: user.userId,
             displayName: user.name,
             role: user.role,
-            // photoURL: user.photoURL,
+            archived: false,
           },
           [combinedId + ".date"]: serverTimestamp(),
         });
+        // }
 
         await updateDoc(doc(db, "userChats", user.userId), {
           [combinedId + ".userInfo"]: {
             uid: currentUser.uid,
             displayName: currentUser.displayName,
-
             // photoURL: currentUser.photoURL,
           },
           [combinedId + ".date"]: serverTimestamp(),
