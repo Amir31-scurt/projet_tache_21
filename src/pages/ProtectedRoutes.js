@@ -33,6 +33,7 @@ import logo from '../assets/images/logo.png';
 import Quizz from '../components/quizzs/quizzs';
 import RenduBulletinEtudiant from '../components/RenduBulletinEtudiant';
 import BulletinEtudiant from '../components/BulletinEtudiant';
+import NotFound from './NotFound';
 
 export default function ProtectedRoutes() {
   const { email } = useContext(EmailContext);
@@ -86,6 +87,10 @@ export default function ProtectedRoutes() {
           path: '/admin/certificats',
           element: <BulletinEtudiant />,
         },
+        {
+          path: "*",
+          element: <NotFound redirect="/admin/dashboard"/>
+        }
       ]
     : [];
   const coachRoutes = isCoach
@@ -118,6 +123,10 @@ export default function ProtectedRoutes() {
           path: '/coach/assignation',
           element: <AssignationPage />,
         },
+        {
+          path: "*",
+          element: <NotFound redirect="/coach/dashboard" />
+        }
       ]
     : [];
   const studentRoutes = isStudent
@@ -150,6 +159,10 @@ export default function ProtectedRoutes() {
           path: 'etudiant/quizz',
           element: <Quizz />,
         },
+        {
+          path: "*",
+          element: <NotFound redirect="etudiant/dashboard" />
+        }
       ]
     : [];
 
@@ -176,6 +189,7 @@ export default function ProtectedRoutes() {
         ...studentRoutes,
       ],
     },
+    
   ]);
 
   return <RouterProvider router={router} />;
