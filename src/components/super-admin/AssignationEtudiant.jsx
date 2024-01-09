@@ -114,6 +114,7 @@ export const AssignationEtudiant = () => {
                 await updateDoc(etudiantDoc.ref, {
                   coach: coachDoc.data().name,
                   sousDomaines: sousDomaineDuCoach,
+                  emailCoach: coachDoc.data().email,
                 });
 
                 etudiantsSelectionnes.push(etudiantDoc.data().name);

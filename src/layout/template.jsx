@@ -14,7 +14,7 @@ export default function Template() {
   // const [currentUser, setCurrentUser] = useState(initialUser);
   const location = useLocation();
   const navigate = useNavigate();
-  const timelinePath = '/dashboard';
+  const timelinePath = '/etudiant/dashboard';
   const isDashboard = location.pathname === timelinePath;
   const [isLoading, setIsLoading] = useState(true);
 
