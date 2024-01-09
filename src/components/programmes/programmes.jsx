@@ -92,24 +92,22 @@ const ProgramCard = ({ title, description, url, buttonText, courseId }) => {
       <style>{cardStyles}</style>
       <button className="start-button">
         <Link
-          to={`/dashboard/programme/cours/${courseId}`}
+          to={`/coach/programme/cours/${courseId}`}
           className="text-light text-decoration-none d-block w-100 h-100"
         >
           {buttonText}
         </Link>
       </button>
       <div className="program-card1-content">
-        <button className="rounded rounded-pill titleHolder mt-2">
-          {title}
-        </button>
+        <button className="titleHolder mt-2">{title}</button>
         <img src={url} alt={title} />
         <hr />
         <div className="py-3 px-3 bodyCoursCards">
           {description &&
             description.map((desc, index) => (
-              <p className="pb-2 fw-bold text-light" key={index}>
+              <li className="pb-2 text-light" key={index}>
                 {desc}
-              </p>
+              </li>
             ))}
         </div>
       </div>

@@ -47,7 +47,7 @@ export default function AddUser() {
             onHide={() => setVisible(false)}
             className={dialogClass} // Utiliser la classe dynamique pour ajuster la taille du Dialog
           >
-            <Inscription />
+            <Inscription onRegisterSuccess={() => setVisible(false)} /> {/* Passer la fonction de fermeture du dialogue comme prop */}
           </Dialog>
         </div>
       </div>

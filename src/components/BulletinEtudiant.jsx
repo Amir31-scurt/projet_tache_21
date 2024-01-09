@@ -3,15 +3,10 @@ import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../config/firebase-config";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useAuth from "../utils/auth";
 
 const BulletinEtudiant = () => {
-  // Utilisation de useAuth 
-  const { user } = useAuth(); 
-
-  // States pour stocker la liste des étudiants, l'étudiant sélectionné, et les informations du bulletin
   const [students, setStudents] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState("");
+  const [selectedStudentData, setSelectedStudentData] = useState(null);
   const [bulletinInfo, setBulletinInfo] = useState({
     notes: {
       javascript: 0,
@@ -24,15 +19,17 @@ const BulletinEtudiant = () => {
     appreciation: "",
   });
 
-  // Effet pour récupérer la liste des étudiants 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
         const usersQuery = query(collection(db, "utilisateurs"), where("role", "==", "Étudiant"));
         const usersSnapshot = await getDocs(usersQuery);
         const userList = usersSnapshot.docs.map((doc) => ({
-          userId: doc.id, 
-          name: doc.data().name, // Assurez-vous d'ajuster cela en fonction de la structure de vos données
+          userId: doc.data().userId, 
+          name: doc.data().name,
+          email: doc.data().email,
+          number: doc.data().number,
+          address: doc.data().address,
         }));
         setStudents(userList);
       } catch (error) {
@@ -43,20 +40,16 @@ const BulletinEtudiant = () => {
     fetchStudents();
   }, []);
 
-
-  // fonction de changement de l'étudiant sélectionné
   const handleChangeStudent = (e) => {
     const selectedValue = e.target.value;
-    console.log("ID :", selectedValue);
-
-    // Obtenir les données de l'étudiant 
     const selectedStudentData = students.find(
       (student) => student.userId === selectedValue
     );
 
+    console.log("ID :", selectedValue);
     console.log("Nom:", selectedStudentData?.name);
 
-    setSelectedStudent(selectedValue);
+    setSelectedStudentData(selectedStudentData);
 
     setBulletinInfo({
       notes: {
@@ -68,10 +61,12 @@ const BulletinEtudiant = () => {
         devoirs: 0,
       },
       appreciation: "",
+      address: selectedStudentData?.address || "",
+      email: selectedStudentData?.email || "",
+      number: selectedStudentData?.number || "",
     });
   };
 
-  // fonction de changement pour les champs 
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (
@@ -84,7 +79,6 @@ const BulletinEtudiant = () => {
         "devoirs",
       ].includes(name)
     ) {
-      
       setBulletinInfo((prevInfo) => ({
         ...prevInfo,
         notes: {
@@ -100,57 +94,76 @@ const BulletinEtudiant = () => {
     }
   };
 
-  //Fonction pour sauvegarder le bulletin
   const handleSave = async () => {
     try {
-      // Vérifier si un utilisateur est connecté
-      if (!user) {
-        toast.warning("Veuillez vous connecter.");
-        return;
-      }
+   
+      const studentUid = selectedStudentData?.userId;
+  
+      console.log("UID de l'étudiant sélectionné :", studentUid);
 
-      const studentId = selectedStudent;
-
-      // Vérifier si un bulletin existe déjà pour cet étudiant
       const existingBulletinQuery = query(
         collection(db, 'bulletins'),
-        where('studentId', '==', studentId)
+        where('studentId', '==', studentUid)
       );
-
+  
       const existingBulletinSnapshot = await getDocs(existingBulletinQuery);
-
+  
       if (!existingBulletinSnapshot.empty) {
         toast.warning("Un bulletin existe déjà pour cet étudiant.");
         return;
       }
-
-      const selectedStudentData = students.find(
-        (student) => student.userId === studentId
-      );
+  
+      // Récupérez les informations de l'étudiant sélectionné
       const studentName = selectedStudentData?.name || "Nom inconnu";
-
+      const studentAddress = selectedStudentData?.address || "Adresse inconnue";
+      const studentEmail = selectedStudentData?.email || "Email inconnu";
+      const studentNumber = selectedStudentData?.number || "Numéro inconnu";
+  
+      console.log("Nom de l'étudiant sélectionné :", studentName);
+      console.log("Adresse de l'étudiant sélectionné :", studentAddress);
+      console.log("Email de l'étudiant sélectionné :", studentEmail);
+      console.log("Numéro de l'étudiant sélectionné :", studentNumber);
+  
+      //  les données du bulletin
       const bulletinData = {
-        studentId: studentId,
+        studentId: studentUid,
         studentName: studentName,
+        address: studentAddress,
+        email: studentEmail,
+        number: studentNumber,
         notes: bulletinInfo.notes,
         appreciation: bulletinInfo.appreciation,
       };
-
+  
       console.log("Données du bulletin à enregistrer :", bulletinData);
-
-      // Ajouter les données du bulletin à la collection "bulletins"
+  
+      // Ajoutez les données du bulletin à la collection "bulletins"
       await addDoc(collection(db, "bulletins"), bulletinData);
-
-      console.log("Bulletin enregistré avec succès!");
+  
       toast.success("Bulletin enregistré avec succès!");
+
+        // Réinitialisez les états après la soumission réussie
+    setSelectedStudentData(null);
+    setBulletinInfo({
+      notes: {
+        javascript: 0,
+        flutter: 0,
+        laravel: 0,
+        examen: 0,
+        projet: 0,
+        devoirs: 0,
+      },
+      appreciation: "",
+      address: "",
+      email: "",
+      number: "",
+    });
     } catch (error) {
       console.error("Erreur lors de l'enregistrement du bulletin :", error);
-      toast.error(
-        "Une erreur s'est produite lors de l'enregistrement du bulletin."
-      );
+      toast.error("Une erreur s'est produite lors de l'enregistrement du bulletin.");
     }
   };
-  
+
   return (
     <div className="container mt-4">
       <ToastContainer />
@@ -162,7 +175,7 @@ const BulletinEtudiant = () => {
             <select
               id="studentSelect"
               name="studentId"
-              value={selectedStudent}
+              value={selectedStudentData?.userId || ""}
               onChange={handleChangeStudent}
               className="form-control text-dark"
               style={{ color: "black", backgroundColor: "white" }}
@@ -181,104 +194,96 @@ const BulletinEtudiant = () => {
               ))}
             </select>
           </div>
-          {selectedStudent && (
+          {selectedStudentData && (
             <div>
               <h4>Notes de l'étudiant :</h4>
-              <div className="form-group">
-                <label htmlFor="javascript">JavaScript :</label>
-                <select
-                  id="javascript"
-                  name="javascript"
-                  value={bulletinInfo.notes.javascript}
-                  onChange={handleChange}
-                  className="form-control"
-                >
-                  {Array.from({ length: 21 }, (_, i) => i).map((value) => (
-                    <option key={value} value={value}>
-                      {value}
-                    </option>
+              <div className="row mb-3">
+                <div className="col-md-6">
+                  {["javascript", "flutter"].map((subject) => (
+                    <div className="form-group" key={subject}>
+                      <label htmlFor={subject}>
+                        {subject.charAt(0).toUpperCase() + subject.slice(1)} :
+                      </label>
+                      <select
+                        id={subject}
+                        name={subject}
+                        value={bulletinInfo.notes[subject]}
+                        onChange={handleChange}
+                        className="form-control"
+                      >
+                        {Array.from({ length: 21 }, (_, i) => i).map((value) => (
+                          <option key={value} value={value}>
+                            {value}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   ))}
-                </select>
+                </div>
+                <div className="col-md-6">
+                  {["laravel", "examen"].map((subject) => (
+                    <div className="form-group" key={subject}>
+                      <label htmlFor={subject}>
+                        {subject.charAt(0).toUpperCase() + subject.slice(1)} :
+                      </label>
+                      <select
+                        id={subject}
+                        name={subject}
+                        value={bulletinInfo.notes[subject]}
+                        onChange={handleChange}
+                        className="form-control"
+                      >
+                        {Array.from({ length: 21 }, (_, i) => i).map((value) => (
+                          <option key={value} value={value}>
+                            {value}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="form-group">
-                <label htmlFor="flutter">Flutter :</label>
-                <select
-                  id="flutter"
-                  name="flutter"
-                  value={bulletinInfo.notes.flutter}
-                  onChange={handleChange}
-                  className="form-control"
-                >
-                  {Array.from({ length: 21 }, (_, i) => i).map((value) => (
-                    <option key={value} value={value}>
-                      {value}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-group">
-                <label htmlFor="laravel">Laravel :</label>
-                <select
-                  id="laravel"
-                  name="laravel"
-                  value={bulletinInfo.notes.laravel}
-                  onChange={handleChange}
-                  className="form-control"
-                >
-                  {Array.from({ length: 21 }, (_, i) => i).map((value) => (
-                    <option key={value} value={value}>
-                      {value}
-                    </option> 
-                  ))}
-                </select>
-              </div>
-              <div className="form-group">
-                <label htmlFor="examen">Notes Examen :</label>
-                <select
-                  id="examen"
-                  name="examen"
-                  value={bulletinInfo.notes.examen}
-                  onChange={handleChange}
-                  className="form-control"
-                >
-                  {Array.from({ length: 21 }, (_, i) => i).map((value) => (
-                    <option key={value} value={value}>
-                      {value}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-group">
-                <label htmlFor="projet">Notes Projet :</label>
-                <select
-                  id="projet"
-                  name="projet"
-                  value={bulletinInfo.notes.projet}
-                  onChange={handleChange}
-                  className="form-control"
-                >
-                  {Array.from({ length: 21 }, (_, i) => i).map((value) => (
-                    <option key={value} value={value}>
-                      {value}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-group">
-                <label htmlFor="devoirs">Notes Devoirs :</label>
-                <select
-                  id="devoirs"
-                  name="devoirs"
-                  value={bulletinInfo.notes.devoirs}
-                  onChange={handleChange}
-                  className="form-control"
-                >
-                  {Array.from({ length: 21 }, (_, i) => i).map((value) => (
-                    <option key={value} value={value}>
-                      {value}
-                    </option>
-                  ))}
-                </select>
+              <div className="row ">
+                <div className="col-md-6">
+                  <div className="form-group" key="projet">
+                    <label htmlFor="projet">
+                      Projet :
+                    </label>
+                    <select
+                      id="projet"
+                      name="projet"
+                      value={bulletinInfo.notes.projet}
+                      onChange={handleChange}
+                      className="form-control"
+                    >
+                      {Array.from({ length: 21 }, (_, i) => i).map((value) => (
+                        <option key={value} value={value}>
+                          {value}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="form-group" key="devoirs">
+                    <label htmlFor="devoirs">
+                      Devoirs :
+                    </label>
+                    <select
+                      id="devoirs"
+                      name="devoirs"
+                      value={bulletinInfo.notes.devoirs}
+                      onChange={handleChange}
+                      className="form-control"
+                    >
+                      {Array.from({ length: 21 }, (_, i) => i).map((value) => (
+                        <option key={value} value={value}>
+                          {value}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
               </div>
               <div className="form-group">
                 <label htmlFor="appreciation">Appréciation :</label>

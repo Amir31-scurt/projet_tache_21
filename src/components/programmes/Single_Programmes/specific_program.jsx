@@ -121,22 +121,22 @@ const SpecificPro = () => {
       description: newCourseDescription,
     };
 
-    if (selectedSousDomaine !== coachSousDomaine) {
-      toast.error(
-        'Vous ne pouvez ajouter des cours que dans votre sous-domaine',
-        {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        }
-      );
-      return;
-    }
+    // if (selectedSousDomaine !== coachSousDomaine) {
+    //   toast.error(
+    //     'Vous ne pouvez ajouter des cours que dans votre sous-domaine',
+    //     {
+    //       position: 'top-right',
+    //       autoClose: 5000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: 'light',
+    //     }
+    //   );
+    //   return;
+    // }
 
     console.log(selectedSousDomaine);
     console.log(coachSousDomaine);
@@ -305,8 +305,13 @@ const SpecificPro = () => {
               return (
                 <div key={index} className="card mx-2 my-2">
                   <div className="card-body">
-                    <h5 className="card-title">{course.title}</h5>
-                    <p className="card-text">{course.description}</p>
+                    <h5>
+                      Cours {index + 1} : {course.title}
+                    </h5>
+                    <p className="card-text mb-2">
+                      <strong>Description: </strong>
+                      {course.description}
+                    </p>
                     {/* YouTube Iframe or Website Link */}
                     {isYouTubeLink ? (
                       <iframe
@@ -322,7 +327,7 @@ const SpecificPro = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        Visit Course
+                        {course.link}
                       </a>
                     )}
                   </div>

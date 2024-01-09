@@ -105,6 +105,8 @@ body {
   font-family: Montserrat;
   font-size: 16px;
   width: 65%;
+  text-align: left;
+  border-radius: 20px;
   color: #000000;
 }
 
@@ -150,7 +152,11 @@ body {
   background-color: whitesmoke !important;
 }
 .suppNotif {
-  border-radius: 0px 10px 10px 1px;
+  border-radius: 0px 10px 10px 0px;
+}
+
+.contentNotif {
+  border-radius: 10px 0px 0px 10px;
 }
 
 .transition-fade {
@@ -460,6 +466,13 @@ body {
 .tableShadow {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+.tableRowArchived {
+  opacity: 0.5;
+  /* Rendre la ligne transparente */
+  background-color: #ccc;
+  /* Rendre la ligne grisée */
+  /* ... Autres styles ... */
+}
 /* Fin Cheikh CSS */
 
 /* Mariama CSS */
@@ -509,6 +522,7 @@ body {
 }
 .oubli {
   color: #189ab4;
+  cursor: pointer;
 }
 .inputStyle {
   border: 1px solid #3084b5;
@@ -975,8 +989,8 @@ body {
   }
 }
 .program-img {
-  width: 250px;
-  height: 200px;
+  width: 100%;
+  height: 180px;
 }
 .program-img img {
   width: 100%;
@@ -1023,17 +1037,18 @@ body {
   gap: 10px;
 }
 .titleHolder {
-  background: linear-gradient(to bottom, #3084b5, #1a638e);
+  background: #3084b5;
   padding: 5px 10px;
   width: fit-content;
   text-align: end;
   color: white;
-  font-size: 10px;
+  font-size: 15px;
+  top: 7.47em;
   display: flex;
   float: right;
+  font-weight: bold;
   position: absolute;
   right: 0;
-  margin-right: 10px;
 }
 .bodyCoursCards {
   background: linear-gradient(to bottom, #3084b5, #1a638e);
