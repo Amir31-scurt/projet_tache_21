@@ -16,11 +16,8 @@ import Certificate from '../components/BulletinEtudiant';
 import ContentCardLivraison from '../components/ContentCardLivraison';
 import AssignationPage from '../components/pageAssignation/AssignationPage';
 import '../App.css';
-import Table from '../components/super-admin/Table';
 import TemplateDemo from '../components/super-admin/AssignationDomaines';
 import CreateDomaine from '../components/super-admin/CreateDomaine';
-import NewCoach from '../components/super-admin/NewCoach';
-import StudentTable from '../components/super-admin/StudentTable';
 import { EmailContext } from '../contexte/EmailContexte';
 import React, { useContext, useState, useEffect } from 'react';
 import { fetchAdminEmails } from '../utils/fetchAdminEmails';
@@ -32,7 +29,7 @@ import UserTable from '../components/super-admin/TableauUtilisateurs';
 import logo from '../assets/images/logo.png';
 import Quizz from '../components/quizzs/quizzs';
 import RenduBulletinEtudiant from '../components/RenduBulletinEtudiant';
-import BulletinEtudiant from '../components/BulletinEtudiant';
+import ReactHookFormDemo from '../components/super-admin/Certificat';
 
 export default function ProtectedRoutes() {
   const { email } = useContext(EmailContext);
@@ -84,7 +81,7 @@ export default function ProtectedRoutes() {
         },
         {
           path: '/admin/certificats',
-          element: <BulletinEtudiant />,
+          element: <ReactHookFormDemo />,
         },
       ]
     : [];
