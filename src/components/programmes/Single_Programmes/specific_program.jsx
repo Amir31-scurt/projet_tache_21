@@ -121,22 +121,22 @@ const SpecificPro = () => {
       description: newCourseDescription,
     };
 
-    if (selectedSousDomaine !== coachSousDomaine) {
-      toast.error(
-        'Vous ne pouvez ajouter des cours que dans votre sous-domaine',
-        {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        }
-      );
-      return;
-    }
+    // if (selectedSousDomaine !== coachSousDomaine) {
+    //   toast.error(
+    //     'Vous ne pouvez ajouter des cours que dans votre sous-domaine',
+    //     {
+    //       position: 'top-right',
+    //       autoClose: 5000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: 'light',
+    //     }
+    //   );
+    //   return;
+    // }
 
     console.log(selectedSousDomaine);
     console.log(coachSousDomaine);
