@@ -73,7 +73,7 @@ export default function ProtectedRoutes() {
     ? [
         {
           path: '/admin/dashboard',
-          element: <ChatHome />,
+          element: <UserTable />,
         },
         {
           path: '/admin/assignation',
