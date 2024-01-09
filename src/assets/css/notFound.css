@@ -1,0 +1,19 @@
+@media screen and (max-width: 1024px) {
+    .error404 {
+        font-size: 80px !important;
+    }
+    .sorryText{
+        font-size: 20px !important;
+    }
+}
+@media screen and (max-width: 300px) {
+    .link{
+        font-size: 12px !important;
+    }
+}
+#notFound{
+    height: 80vh;
+}
+.error404{
+    font-size: 100px;
+}

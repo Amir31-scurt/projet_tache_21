@@ -1,6 +1,9 @@
-// Importation des modules nécessaires depuis les bibliothèques
-import { MultiCascader } from "rsuite";
-import { useEffect, useState } from "react";
+// Importation des bibliothèques et composants nécessaires depuis les modules externes et les fichiers locaux
+import { useForm } from 'react-hook-form';
+import { MultiSelect } from 'primereact/multiselect';
+import { Button } from 'primereact/button';
+import { ToastContainer, toast } from 'react-toastify';
+import { useEffect, useState, useRef } from 'react';
 import {
   collection,
   getDocs,
@@ -10,215 +13,173 @@ import {
   arrayUnion,
   serverTimestamp,
   addDoc,
-} from "firebase/firestore";
-import { db } from "../../config/firebase-config";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "rsuite/dist/rsuite.css";
-import { PulseLoader } from "react-spinners";
-import React from "react";
-import SpinnerIcon from "@rsuite/icons/legacy/Spinner";
-
-// Les en-têtes pour les catégories dans le MultiCascader
-const headers = ["Coachs", "Etudiants"];
+} from 'firebase/firestore';
+import { db } from '../../config/firebase-config';
+import 'react-toastify/dist/ReactToastify.css';
+import 'rsuite/dist/rsuite.css';
+import { PulseLoader } from 'react-spinners';
+import React from 'react';
+import SpinnerIcon from '@rsuite/icons/legacy/Spinner';
 
 export const AssignationEtudiant = () => {
-  // États pour stocker les données nécessaires dans le composant
+  // Initialisation des états pour stocker les données et le statut de chargement
   const [coachs, setCoachs] = useState([]);
   const [etudiants, setEtudiants] = useState([]);
-  const [value, setValue] = useState([]);
+  const [selectedCoaches, setSelectedCoaches] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [dataLoading, setDataLoading] = useState(false);
-  const [notificationsCollection] = useState(
-    collection(db, "notifications")
-  );
-  // Fonction de tri personnalisée pour les options du MultiCascader
-  const customSortFunction = (a, b) => {
-    const windowA = a.split(".")[0];
-    const windowB = b.split(".")[0];
 
-    if (windowA < windowB) return -1;
-    if (windowA > windowB) return 1;
+  // Utilisation de useRef pour la gestion des toasts
+  const toastRef = useRef(null);
 
-    return a.localeCompare(b);
+  // Fonction pour afficher un toast de succès
+  const showSuccessToast = (detail) => {
+    toast.success(`Assignation réussie : ${detail}`);
   };
 
-  // Gestionnaire de changement pour le MultiCascader
-  const handleChange = (newValue) => {
-    const selectedCoaches = newValue.filter((val) =>
-      coachs.find((coach) => coach.email === val)
-    );
+  // Utilisation du hook useForm pour gérer le formulaire
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    getValues,
+    reset,
+  } = useForm();
 
-    if (selectedCoaches.length > 1) {
-      setErrorMessage(
-        "Vous ne pouvez sélectionner qu'un seul coach à la fois."
-      );
-      return;
-    }
+  // Fonction appelée lors de la soumission du formulaire
+  const onSubmit = (data) => {
+    handleAssign();
+  };
 
-    if (selectedCoaches.length === 0) {
-      setValue([]);
-      setSelectedStudents([]);
-      setErrorMessage(
-        "Veuillez d'abord sélectionner un Coach avant de sélectionner un Etudiant !"
-      );
-      return;
-    }
-
-    setValue(newValue);
-    setSelectedStudents(newValue.slice(selectedCoaches.length));
+  // Gestion du changement de sélection des coaches
+  const handleChangeCoaches = (e) => {
+    // Limiter la sélection à un seul coach
+    setSelectedCoaches(e.value.slice(-1));
     setErrorMessage(null);
   };
 
-  // Gestionnaire d'assignation
-  const handleAssign = async (e) => {
-    e.preventDefault();
+  // Gestion du changement de sélection des étudiants
+  const handleChangeStudents = (e) => {
+    // Vérifier si un coach est sélectionné
+    if (selectedCoaches.length === 0) {
+      setErrorMessage("Veuillez d'abord sélectionner un coach.");
+      return;
+    }
 
-    if (selectedStudents.length > 0) {
-      setLoading(true);
+    setSelectedStudents(e.value);
+    setErrorMessage(null);
+  };
 
-      try {
-        const selectedCoaches = value.filter((val) =>
-          coachs.find((coach) => coach.email === val)
-        );
+  // Fonction pour effectuer l'assignation
+  const handleAssign = async () => {
+    // Vérifier si au moins un coach et un étudiant sont sélectionnés
+    if (selectedCoaches.length === 0 || selectedStudents.length === 0) {
+      setErrorMessage(
+        'Veuillez sélectionner au moins un coach et un étudiant.'
+      );
+      return;
+    }
 
-        for (const selectedCoach of selectedCoaches) {
-          // Récupération des informations du coach sélectionné
+    // Activer l'état de chargement
+    setLoading(true);
+
+    try {
+      // Effectuer l'assignation pour chaque coach sélectionné
+      await Promise.all(
+        selectedCoaches.map(async (selectedCoachEmail) => {
+          // Requête pour obtenir le document du coach
           const coachQuery = query(
-            collection(db, "utilisateurs"),
-            where("email", "==", selectedCoach)
+            collection(db, 'utilisateurs'),
+            where('email', '==', selectedCoachEmail)
           );
           const coachDocs = await getDocs(coachQuery);
 
+          // Vérifier si le document du coach existe
           if (coachDocs.size > 0) {
             const coachDoc = coachDocs.docs[0];
             const sousDomaineDuCoach = coachDoc.data().sousDomaines;
 
-            const etudiantsSelectionnes = [];
-
-            for (const selectedEtudiant of selectedStudents) {
-              // Récupération des informations de l'étudiant sélectionné
-              const etudiantQuery = query(
-                collection(db, "utilisateurs"),
-                where("email", "==", selectedEtudiant)
-              );
-              const etudiantDocs = await getDocs(etudiantQuery);
-
-              if (etudiantDocs.size > 0) {
-                const etudiantDoc = etudiantDocs.docs[0];
-                
-
-                // Mise à jour des informations de l'étudiant
-                await updateDoc(etudiantDoc.ref, {
-                  coach: coachDoc.data().name,
-                  sousDomaines: sousDomaineDuCoach,
-                });
-
-                etudiantsSelectionnes.push(etudiantDoc.data().name);
-              } else {
-                console.warn(
-                  `Aucun document d'étudiant trouvé avec l'email spécifié: ${selectedEtudiant}`
+            // Assigner chaque étudiant sélectionné au coach
+            const etudiantsSelectionnes = await Promise.all(
+              selectedStudents.map(async (selectedEtudiant) => {
+                const etudiantQuery = query(
+                  collection(db, 'utilisateurs'),
+                  where('email', '==', selectedEtudiant)
                 );
-              }
-            }
+                const etudiantDocs = await getDocs(etudiantQuery);
 
-            // Mise à jour des informations du coach avec la liste des étudiants assignés
+                // Vérifier si le document de l'étudiant existe
+                if (etudiantDocs.size > 0) {
+                  const etudiantDoc = etudiantDocs.docs[0];
+
+                  // Mettre à jour le document de l'étudiant avec les informations du coach
+                  await updateDoc(etudiantDoc.ref, {
+                    coach: coachDoc.data().name,
+                    sousDomaines: sousDomaineDuCoach,
+                    emailCoach: coachDoc.data().email,
+                  });
+
+                  return etudiantDoc.data().name;
+                } else {
+                  console.warn(
+                    `Aucun document d'étudiant trouvé avec l'email spécifié: ${selectedEtudiant}`
+                  );
+                  return null;
+                }
+              })
+            );
+
+            // Mettre à jour le document du coach avec la liste des étudiants assignés
             await updateDoc(coachDoc.ref, {
-              etudiants: arrayUnion(...etudiantsSelectionnes),
+              etudiants: arrayUnion(...etudiantsSelectionnes.filter(Boolean)),
             });
 
-            let notificationMessage;
-
-            if(etudiantsSelectionnes.length > 1){
-              notificationMessage = `Les étudiants ${etudiantsSelectionnes} vous ont étés assignés`
-            }else{
-              notificationMessage = `L' étudiant ${etudiantsSelectionnes} vous a été assigné`
-            }
-            await addDoc(notificationsCollection, {
-              messageForAdmin: notificationMessage,
-              timestamp: serverTimestamp(),
-              newNotif: true,
-              email: selectedCoach,
-            });
-
-            setErrorMessage(null);
-            toast.success("Assignation d'etudiant(s) au coach réussie !");
+            // Afficher le toast de succès
+            showSuccessToast(`Assignation à ${coachDoc.data().name}`);
           } else {
             setErrorMessage(
               "Aucun document de coach trouvé avec l'email spécifié."
             );
           }
-        }
-      } catch (error) {
-        console.error("Erreur lors de l'assignation :", error);
-        setErrorMessage("Erreur lors de l'assignation. Veuillez réessayer.");
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      setErrorMessage(
-        "Veuillez sélectionner au moins un étudiant pour pouvoir effectuer l'assignation."
+        })
       );
+
+      // Vider les champs après l'assignation réussie
+      setSelectedCoaches([]);
+      setSelectedStudents([]);
+
+      setErrorMessage(null);
+    } catch (error) {
+      console.error("Erreur lors de l'assignation :", error);
+      setErrorMessage("Erreur lors de l'assignation. Veuillez réessayer.");
+    } finally {
+      // Désactiver l'état de chargement et réinitialiser le formulaire
+      setLoading(false);
+      reset();
     }
-
-    setValue([]);
-    setSelectedStudents([]);
   };
 
-  // Fonction pour personnaliser le rendu du menu du MultiCascader
-  const renderMenu = (children, menu, parentNode, layer) => {
-    return (
-      <div>
-        <div
-          style={{
-            background: "#3084b5",
-            padding: "4px 10px",
-            color: " #fff",
-            paddingLeft: "38px",
-            fontWeight: "bold",
-          }}
-        >
-          {headers[layer]}
-        </div>
-        {dataLoading ? (
-          <p
-            style={{
-              padding: 4,
-              color: "#3084b5",
-              textAlign: "center",
-              fontSize: "28px",
-            }}
-          >
-            <SpinnerIcon spin />
-          </p>
-        ) : (
-          menu
-        )}
-      </div>
-    );
-  };
-
-  // Effet secondaire pour charger les données nécessaires lors du montage du composant
+  // Utilisation du hook useEffect pour charger les données au rendu initial
   useEffect(() => {
     const loadData = async () => {
       try {
         setDataLoading(true);
 
-        // Récupération des coachs depuis la base de données
+        // Requête pour obtenir la liste des coachs
         const coachsQuery = query(
-          collection(db, "utilisateurs"),
-          where("role", "==", "Coach")
+          collection(db, 'utilisateurs'),
+          where('role', '==', 'Coach')
         );
         const coachsDocs = await getDocs(coachsQuery);
         const coachsData = coachsDocs.docs.map((doc) => doc.data());
         setCoachs(coachsData);
 
-        // Récupération des étudiants sans coach depuis la base de données
+        // Requête pour obtenir la liste des étudiants sans coach
         const etudiantsQuery = query(
-          collection(db, "utilisateurs"),
-          where("role", "==", "Étudiant")
+          collection(db, 'utilisateurs'),
+          where('role', '==', 'Étudiant')
         );
         const etudiantsDocs = await getDocs(etudiantsQuery);
         const etudiantsData = etudiantsDocs.docs
@@ -226,16 +187,16 @@ export const AssignationEtudiant = () => {
           .filter((etudiant) => !etudiant.coach);
         setEtudiants(etudiantsData);
       } catch (error) {
-        console.error("Erreur lors du chargement des données :", error);
+        console.error('Erreur lors du chargement des données :', error);
         setErrorMessage(
-          "Erreur lors du chargement des données. Veuillez réessayer."
+          'Erreur lors du chargement des données. Veuillez réessayer.'
         );
       } finally {
         setDataLoading(false);
       }
     };
 
-    // Vérification de l'initialisation de la base de données Firebase
+    // Charger les données seulement si la base de données est initialisée
     if (db) {
       loadData();
     } else {
@@ -248,54 +209,82 @@ export const AssignationEtudiant = () => {
     }
   }, [db]);
 
-  // Rendu du composant Assignation
+  // Rendu de la composante
   return (
     <div
-      className="p-2 d-flex justify-content-center flex-wrap"
+      className="p-3 d-flex justify-content-center flex-column"
       style={{ width: '100%' }}
     >
-      <div className="ComtaTabAss m-auto" style={{ padding: "20px" }}>
-        <div className="mt-5" style={{ marginBottom: "250px" }}>
-          {/* Composant MultiCascader pour la sélection des coachs et des étudiants */}
-          <MultiCascader
-            style={{ width: "100%" }}
-            data={coachs.map((coach) => ({
-              label: coach.name,
-              value: coach.email,
-              children: etudiants.map((etudiant) => ({
-                label: etudiant.name,
-                value: etudiant.email,
-              })),
-            }))}
-            cascade={false}
-            onChange={handleChange}
-            value={value}
-            appearance="default"
-            menuWidth={200}
-            menuHeight={"auto"}
-            placeholder="Assigner un ou des étudiant(s) à un coach"
-            size="lg"
-            open={true}
-            classPrefix="picker"
-            renderMenu={renderMenu}
-          />
+      <div className="ComtaTabAss m-auto" style={{ padding: '20px' }}>
+        <div className="mt-5" style={{ marginBottom: '220px' }}>
+          <div className="d-flex flex-column">
+            {/* Sélection du coach */}
+            <div className="mb-3">
+              <label htmlFor="coachesSelect" className="form-label">
+                Sélectionner un coach
+              </label>
+              <MultiSelect
+                style={{ width: '100%' }}
+                value={selectedCoaches}
+                options={coachs.map((coach) => ({
+                  label: coach.name,
+                  value: coach.email,
+                }))}
+                onChange={handleChangeCoaches}
+                placeholder="Sélectionner un coach"
+                className="w-full"
+                id="coachesSelect"
+              />
+            </div>
+
+            {/* Sélection des étudiants */}
+            <div>
+              <label htmlFor="studentsSelect" className="form-label">
+                Sélectionner un ou des étudiants
+              </label>
+              <MultiSelect
+                style={{ width: '100%' }}
+                value={selectedStudents}
+                options={etudiants.map((etudiant) => ({
+                  label: etudiant.name,
+                  value: etudiant.email,
+                }))}
+                onChange={handleChangeStudents}
+                placeholder="Sélectionner un ou des étudiants"
+                className="w-full"
+                scrollHeight="160px"
+                disabled={selectedCoaches.length !== 1}
+                id="studentsSelect"
+              />
+            </div>
+          </div>
+
+          {/* Affichage du message d'erreur s'il y a lieu */}
           {errorMessage && <small className="SmallMsg">{errorMessage}</small>}
         </div>
-        {/* Bouton d'assignation avec gestion de chargement */}
+
+        {/* Bouton d'assignation avec indication de chargement */}
         <div className="mt-5 d-flex align-items-center w-100">
           <button
             className="btn w-100 text-white boutonAssign rounded-5 fw-bold"
-            style={{ backgroundColor: " #3084b5" }}
+            style={{ backgroundColor: ' #3084b5' }}
             onClick={handleAssign}
-            disabled={loading}
+            disabled={
+              loading ||
+              selectedCoaches.length === 0 ||
+              selectedStudents.length === 0
+            }
           >
-            {loading ? "Assignation" : "Assigner"}
+            {loading ? 'Assignation' : 'Assigner'}
           </button>
+
+          {/* Indicateur de chargement en cours */}
           {loading && (
-            <PulseLoader className="ms-1" color={"#0057a0"} size={12} />
+            <PulseLoader className="ms-1" color={'#0057a0'} size={12} />
           )}
         </div>
-        {/* Conteneur pour les notifications Toast */}
+
+        {/* Conteneur pour les toasts de notification */}
         <ToastContainer />
       </div>
     </div>

@@ -114,9 +114,9 @@ const RenduBulletinEtudiant = () => {
             <div className='mt-3'>
             <div>
               <h5>Informations personnelles :</h5>
-              <p>Email : {studentData.email}</p>
-              <p>Numéro de téléphone : {studentData.number}</p>
-              <p>Adresse : {studentData.address}</p>
+              <p className='fs-6'>Email : {studentData.email}</p>
+              <p className='fs-6'>Numéro de téléphone : {studentData.number}</p>
+              <p className='fs-6'>Adresse : {studentData.address}</p>
             </div>
           </div>
                   
@@ -158,13 +158,15 @@ const RenduBulletinEtudiant = () => {
             </table>
           </div>
           <div className="mt-3">
-              <div>
+              <div className='d-flex justify-content-between'>
+                <div>
                 <h4>Moyenne :</h4>
-                <p>{calculateOverallGrade()}</p>
-              </div>
+                <p className='fs-5'>{calculateOverallGrade()}</p>
+                </div>             
               <div>
                 <h4>Appréciation :</h4>
-                <p>{determineAppreciation(calculateOverallGrade())}</p>
+                <p className='fs-5'>{determineAppreciation(calculateOverallGrade())}</p>
+              </div>
               </div>
             </div>
         </div>

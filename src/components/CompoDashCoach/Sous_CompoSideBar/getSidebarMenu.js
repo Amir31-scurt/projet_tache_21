@@ -54,7 +54,7 @@ export const GetSidebarMenu = () => {
       return [
         // Admin specific menu items here
         {
-          title: 'Base de données',
+          title: 'Dashboard',
           icon: <MdOutlineSpaceDashboard />,
           id: 'admin-link1',
           link: '/admin/dashboard',
@@ -98,12 +98,6 @@ export const GetSidebarMenu = () => {
           icon: <PiFilesBold />,
           id: 'link3',
           link: '/coach/livrable',
-        },
-        {
-          title: 'Assignation',
-          icon: <MdOutlineAssignment />,
-          id: 'link4',
-          link: '/coach/assignation',
         },
         {
           title: 'Bulletin',
