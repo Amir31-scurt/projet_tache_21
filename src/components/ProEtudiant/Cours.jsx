@@ -16,7 +16,99 @@ export default function Cours() {
   const [timers, setTimers] = useState({}); // Timer state as an object
   const [intervalIds, setIntervalIds] = useState({}); // To store interval IDs
 
-  // Fetching courses from Firestore
+  //
+  useEffect(() => {
+    if (!files) return;
+    let tmp = [];
+    for (let i = 0; i < files.length; i++) {
+      tmp.push(URL.createObjectURL(files[i]));
+    }
+    const objectUrls = tmp;
+    setPreviews(objectUrls);
+
+    // free memory
+    for (let i = 0; i < objectUrls.length; i++) {
+      return () => {
+        URL.revokeObjectURL(objectUrls[i]);
+      };
+    }
+  }, [files]);
+
+  const handleFileChange = (e) => {
+    const { files } = e.target;
+    if (files && files.length > 0) {
+      const newFiles = Array.from(files);
+      setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedFiles.length === 0) {
+      setPreviews([]);
+      return;
+    }
+
+    const objectUrls = selectedFiles.map((file) => URL.createObjectURL(file));
+    setPreviews(objectUrls);
+
+    // free memory
+    return () => {
+      objectUrls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [selectedFiles]);
+
+  const handleUpload = async (user) => {
+    // Loop through selected files and upload each to Firebase Storage
+    selectedFiles.forEach((file) => {
+      const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
+      uploadBytes(storageRef, file).then(() => {
+        getDownloadURL(storageRef).then((url) =>{
+          // Handle the download URL, you can use it as needed
+        });
+      });
+    });
+    // Clear selected files
+    setSelectedFiles([]);
+    // Close the modal
+    setOpen(false);
+
+    if (selectedFiles.length > 0 ) {
+      // Loop through selected files and add each to Firestore
+      selectedFiles.forEach(async (file) => {
+        const imageUrls = [];
+        const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
+        await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(storageRef);
+        imageUrls.push(url);
+        // Ajouter la publication dans Firestore avec l'URL de l'image
+        await addDoc(collection(db, 'publication'), {
+        userID: UserUid,
+        profile: user.photoURL || '', // Assurez-vous que user.photoURL est défini
+        nom: user.displayName || '', // Assurez-vous que user.displayName est défini
+        date: format(new Date(), 'dd/MM/yyyy - HH:mm:ss'),
+        publication: imageUrls   ,
+        email: UserEmail,
+        });
+      });
+
+      // Clear selected files
+      setSelectedFiles([]);
+      // Close the modal
+      setOpen(false);
+    }
+    
+  };
+
+  const getYouTubeVideoId = (url) => {
+    if (typeof url !== 'string') {
+      return null;
+    }
+    const regExp =
+      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return match && match[2].length === 11 ? match[2] : null;
+  };
+
   useEffect(() => {
     const fetchCourses = async () => {
       try {

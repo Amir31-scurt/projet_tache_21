@@ -60,9 +60,6 @@ export default function Programme() {
     }
   }, [users, email, domaines]);
 
-  if (!domaines.length) {
-    return <div>Loading...</div>;
-  }
 
   const domaineExactly = domaines.find((dom) => dom.domaine === studentDomaine);
 
