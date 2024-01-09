@@ -7,7 +7,8 @@ import { FaUserCog } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
 import ModalComponent from "./ModalComponent";
 import NavBarContext from "./context";
-import { auth } from "../../../config/firebase-config";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, storage } from "../../../config/firebase-config";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
