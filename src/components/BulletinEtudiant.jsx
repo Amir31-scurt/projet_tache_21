@@ -14,7 +14,7 @@ const BulletinEtudiant = () => {
       note_1: 0,
       note_2: 0,
       note_3: 0,
-      examen: 0,
+      note_4: 0,
       projet: 0,
       devoirs: 0,
     },
@@ -52,9 +52,14 @@ const BulletinEtudiant = () => {
         const domainsSnapshot = await getDocs(domainsQuery);
         const domainList = domainsSnapshot.docs.map((doc) => ({
           id: doc.id,
-          domaine:doc.data().domaine,
+          domaine: doc.data().domaine,
+          sousDomaines: doc.data().sousDomaines || [], 
         }));
         setDomains(domainList);
+
+        console.log("Domaines et sous-domaines :", domainList);
+
+  
       } catch (error) {
         console.error("Erreur :", error);
       }
@@ -62,7 +67,6 @@ const BulletinEtudiant = () => {
 
     fetchDomains();
   }, []);
-
   const handleChangeDomain = (e) => {
     const domain = e.target.value;
     setSelectedDomain(domain);
@@ -91,9 +95,7 @@ const BulletinEtudiant = () => {
         note_1: 0,
         note_2: 0,
         note_3: 0,
-        examen: 0,
-        projet: 0,
-        devoirs: 0,
+        note_4: 0,
       },
       appreciation: "",
       address: selectedStudentData?.address || "",
@@ -106,12 +108,10 @@ const BulletinEtudiant = () => {
     const { name, value } = e.target;
     if (
       [
-        "javascript",
-        "flutter",
-        "laravel",
-        "examen",
-        "projet",
-        "devoirs",
+        "note_1",
+        "note_2",
+        "note_3",
+        "note_4",
       ].includes(name)
     ) {
       setBulletinInfo((prevInfo) => ({
@@ -183,9 +183,7 @@ const BulletinEtudiant = () => {
           note_1: 0,
           note_2: 0,
           note_3: 0,
-          examen: 0,
-          projet: 0,
-          devoirs: 0,
+          note_4: 0,
         },
         appreciation: "",
         address: "",
@@ -280,7 +278,7 @@ const BulletinEtudiant = () => {
                   ))}
                 </div>
                 <div className="col-md-6">
-                  {["note_3", "examen"].map((subject) => (
+                  {["note_3", "note_4"].map((subject) => (
                     <div className="form-group" key={subject}>
                       <label htmlFor={subject}>
                         {subject.charAt(0).toUpperCase() + subject.slice(1)} :
@@ -302,44 +300,6 @@ const BulletinEtudiant = () => {
                       </select>
                     </div>
                   ))}
-                </div>
-              </div>
-              <div className="row ">
-                <div className="col-md-6">
-                  <div className="form-group" key="projet">
-                    <label htmlFor="projet">Projet :</label>
-                    <select
-                      id="projet"
-                      name="projet"
-                      value={bulletinInfo.notes.projet}
-                      onChange={handleChange}
-                      className="form-control"
-                    >
-                      {Array.from({ length: 21 }, (_, i) => i).map((value) => (
-                        <option key={value} value={value}>
-                          {value}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group" key="devoirs">
-                    <label htmlFor="devoirs">Devoirs :</label>
-                    <select
-                      id="devoirs"
-                      name="devoirs"
-                      value={bulletinInfo.notes.devoirs}
-                      onChange={handleChange}
-                      className="form-control"
-                    >
-                      {Array.from({ length: 21 }, (_, i) => i).map((value) => (
-                        <option key={value} value={value}>
-                          {value}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
                 </div>
               </div>
               <div className="form-group">
