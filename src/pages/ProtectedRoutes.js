@@ -83,6 +83,10 @@ export default function ProtectedRoutes() {
           path: '/admin/certificats',
           element: <ReactHookFormDemo />,
         },
+        {
+          path: "*",
+          element: <NotFound redirect="/admin/dashboard"/>
+        }
       ]
     : [];
   const coachRoutes = isCoach
@@ -115,6 +119,10 @@ export default function ProtectedRoutes() {
           path: '/coach/assignation',
           element: <AssignationPage />,
         },
+        {
+          path: "*",
+          element: <NotFound redirect="/coach/dashboard" />
+        }
       ]
     : [];
   const studentRoutes = isStudent
@@ -147,6 +155,10 @@ export default function ProtectedRoutes() {
           path: 'etudiant/quizz',
           element: <Quizz />,
         },
+        {
+          path: "*",
+          element: <NotFound redirect="etudiant/dashboard" />
+        }
       ]
     : [];
 
@@ -173,6 +185,7 @@ export default function ProtectedRoutes() {
         ...studentRoutes,
       ],
     },
+    
   ]);
 
   return <RouterProvider router={router} />;
