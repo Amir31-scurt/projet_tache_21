@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 * {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 body {
@@ -56,7 +56,7 @@ body {
   text-align: left !important;
 }
 
-.module-container input[type='radio'] {
+.module-container input[type="radio"] {
   --webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -468,10 +468,7 @@ body {
 }
 .tableRowArchived {
   opacity: 0.5;
-  /* Rendre la ligne transparente */
   background-color: #ccc;
-  /* Rendre la ligne grisée */
-  /* ... Autres styles ... */
 }
 /* Fin Cheikh CSS */
 
@@ -482,8 +479,6 @@ body {
 
 .height-img {
   height: 100vh !important;
-  /* width: 50% !important; */
-  /* padding:15px; */
   background-image: url(assets/images/renom.jpg);
   background-size: cover;
   background-repeat: no-repeat;
@@ -1094,4 +1089,42 @@ body {
     overflow: scroll;
     max-width: 90vw;
   }
+}
+
+/* CSS pour la certification */
+.certificate-display {
+  color: #333;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.card {
+  width: 100%;
+  background-color: #f8f9f9;
+  border-radius: 15px;
+}
+
+.dash {
+  border: 3px dashed #ccc;
+  border-radius: 15px;
+}
+
+.reduct {
+  width: 100px;
+}
+
+.card-subtitle {
+  color: #28a745;
+}
+
+.card-text {
+  color: #555;
+}
+
+.DG {
+  padding-top: 10px !important;
+  font-size: 1rem;
+}
+
+.ajout {
+  width: 100px;
 }
