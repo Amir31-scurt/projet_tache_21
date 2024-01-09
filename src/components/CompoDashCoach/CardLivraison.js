@@ -3,12 +3,15 @@ import Card from 'react-bootstrap/Card';
 // import image from '../../assets/images/image1.png';
 import { Button, Modal } from 'react-bootstrap';
 import { useState } from 'react';
-
 import * as Icon from "react-bootstrap-icons";
 import { Carousel } from 'rsuite';
+import { format, parseISO } from 'date-fns';
+
 //Composant de Cartes contenus dans la partie Livraison du coach
 function CardLivraison({role, title, name, date, defaultImg, images, validation}) {
   const [show, setShow] = useState(false);
+  
+
   //Fonction pour l'ouverture du modal
   const handleClose = () => setShow(false);
   //Fonction pour la fermeture du modal
@@ -29,7 +32,7 @@ function CardLivraison({role, title, name, date, defaultImg, images, validation}
             role="button"
             style={{color: "#3084b5"}}
           ></i>
-          <span className="d-flex align-items-center">{"Il y'a 1 jour"}</span>
+          <span className="d-flex align-items-center">{"Il y'a un 1 jour"}</span>
         </div>
       </Card.Body>
       <Modal
