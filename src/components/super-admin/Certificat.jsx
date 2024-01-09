@@ -1,27 +1,26 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { Button } from "primereact/button";
-import { Checkbox } from "primereact/checkbox";
-import { classNames } from "primereact/utils";
-import { Dropdown } from "primereact/dropdown";
-import { Calendar } from "primereact/calendar";
-import { Dialog } from "primereact/dialog";
-import { db } from "../firebase-config";
-import "./FormDemo.css";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import CertificateDisplay from "./CertificatDisplay";
-import html2pdf from "html2pdf.js";
+import React, { useEffect, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { Button } from 'primereact/button';
+import { Checkbox } from 'primereact/checkbox';
+import { classNames } from 'primereact/utils';
+import { Dropdown } from 'primereact/dropdown';
+import { Calendar } from 'primereact/calendar';
+import { Dialog } from 'primereact/dialog';
+import { db } from '../../config/firebase-config';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import CertificateDisplay from './CertificatDisplay';
+import html2pdf from 'html2pdf.js';
 
 const ReactHookFormDemo = () => {
   const [domain, setDomain] = useState([]);
   const [roleOptions, setRoleOptions] = useState([]);
-  const mentions = ["Excellent", "Bien", "Assez Bien"];
+  const mentions = ['Excellent', 'Bien', 'Assez Bien'];
   const [showMessage, setShowMessage] = useState(false);
   const [formData, setFormData] = useState({
-    role: "",
-    domain: "",
-    mention: "",
+    role: '',
+    domain: '',
+    mention: '',
   });
   const defaultValues = {
     accept: false,
@@ -51,11 +50,11 @@ const ReactHookFormDemo = () => {
   // Récupérer les domaines
   const fetchDomains = async () => {
     try {
-      const domainsSnapshot = await getDocs(collection(db, "domaines"));
+      const domainsSnapshot = await getDocs(collection(db, 'domaines'));
       const domainData = domainsSnapshot.docs.map((doc) => doc.data().domaine);
       setDomain(domainData);
     } catch (error) {
-      console.error("Erreur lors de la récupération des domaines:", error);
+      console.error('Erreur lors de la récupération des domaines:', error);
     }
   };
 
@@ -63,7 +62,7 @@ const ReactHookFormDemo = () => {
   const fetchStudents = async () => {
     try {
       const usersSnapshot = await getDocs(
-        query(collection(db, "utilisateurs"), where("role", "==", "Étudiant"))
+        query(collection(db, 'utilisateurs'), where('role', '==', 'Étudiant'))
       );
       const studentData = usersSnapshot.docs.map((doc) => ({
         uid: doc.id,
@@ -81,7 +80,7 @@ const ReactHookFormDemo = () => {
       }));
     } catch (error) {
       console.error(
-        "Erreur lors de la récupération des utilisateurs étudiants:",
+        'Erreur lors de la récupération des utilisateurs étudiants:',
         error
       );
     }
@@ -93,30 +92,31 @@ const ReactHookFormDemo = () => {
   }, []);
 
   const downloadCertificate = () => {
-    const certificateContainer = document.getElementById("certificate-display");
+    const certificateContainer = document.getElementById('certificate-display');
     if (certificateContainer) {
       html2pdf(certificateContainer, {
-        filename: "certificate.pdf",
-        image: { type: "jpeg", quality: 0.98 },
+        filename: 'certificate.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
-        jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
         margin: [0, 0],
-        pagebreak: { mode: "css", avoid: ".p-col, .p-row" },
+        pagebreak: { mode: 'css', avoid: '.p-col, .p-row' },
       });
     }
   };
 
   return (
-    <div className="form-demo">
+    <div className="form-demo d-flex flex-column gap-5">
       <Button
         label="Nouvelle certification"
         onClick={() => setVisible(true)}
-        style={{ backgroundColor: "#3084b5" }}
+        style={{ backgroundColor: '#3084b5' }}
+        className={'d-flex mx-auto text-white'}
       />
       <Dialog
         header="Formulaire de Certification"
         visible={visible}
-        style={{ width: "50vw" }}
+        style={{ width: '50vw' }}
         onHide={() => setVisible(false)}
       >
         <div className="flex justify-content-center">
@@ -139,26 +139,26 @@ const ReactHookFormDemo = () => {
                         }))}
                         placeholder="Choisissez l'étudiant"
                         className={classNames({
-                          "p-invalid": fieldState.invalid,
+                          'p-invalid': fieldState.invalid,
                         })}
                       />
                     )}
                   />
                   <label
                     htmlFor="role"
-                    className={classNames({ "p-error": !!errors.role })}
+                    className={classNames({ 'p-error': !!errors.role })}
                   >
                     Étudiant
                   </label>
                 </span>
-                {getFormErrorMessage("role")}
+                {getFormErrorMessage('role')}
               </div>
               <div className="field">
                 <span className="p-float-label">
                   <Controller
                     name="domain"
                     control={control}
-                    rules={{ required: "Le domaine est obligatoire." }}
+                    rules={{ required: 'Le domaine est obligatoire.' }}
                     render={({ field, fieldState }) => (
                       <Dropdown
                         id={field.domain}
@@ -166,26 +166,26 @@ const ReactHookFormDemo = () => {
                         options={domain.map((r) => ({ label: r, value: r }))}
                         placeholder="Choisissez le domaine"
                         className={classNames({
-                          "p-invalid": fieldState.invalid,
+                          'p-invalid': fieldState.invalid,
                         })}
                       />
                     )}
                   />
                   <label
                     htmlFor="role"
-                    className={classNames({ "p-error": errors.domain })}
+                    className={classNames({ 'p-error': errors.domain })}
                   >
                     Domaine
                   </label>
                 </span>
-                {getFormErrorMessage("domain")}
+                {getFormErrorMessage('domain')}
               </div>
               <div className="field">
                 <span className="p-float-label">
                   <Controller
                     name="mention"
                     control={control}
-                    rules={{ required: "La mention est obligatoire." }}
+                    rules={{ required: 'La mention est obligatoire.' }}
                     render={({ field, fieldState }) => (
                       <Dropdown
                         id={field.mention}
@@ -193,26 +193,26 @@ const ReactHookFormDemo = () => {
                         options={mentions.map((r) => ({ label: r, value: r }))}
                         placeholder="Choisissez la mention"
                         className={classNames({
-                          "p-invalid": fieldState.invalid,
+                          'p-invalid': fieldState.invalid,
                         })}
                       />
                     )}
                   />
                   <label
                     htmlFor="mention"
-                    className={classNames({ "p-error": errors.mention })}
+                    className={classNames({ 'p-error': errors.mention })}
                   >
                     Mention
                   </label>
                 </span>
-                {getFormErrorMessage("mention")}
+                {getFormErrorMessage('mention')}
               </div>
               <div className="field">
                 <span className="p-float-label">
                   <Controller
                     name="date"
                     control={control}
-                    rules={{ required: "La date est obligatoire." }}
+                    rules={{ required: 'La date est obligatoire.' }}
                     render={({ field, fieldState }) => (
                       <Calendar
                         id={field.date}
@@ -221,19 +221,19 @@ const ReactHookFormDemo = () => {
                         dateFormat="dd/mm/yy"
                         placeholder="Choisissez la date"
                         className={classNames({
-                          "p-invalid": fieldState.invalid,
+                          'p-invalid': fieldState.invalid,
                         })}
                       />
                     )}
                   />
                   <label
                     htmlFor="date"
-                    className={classNames({ "p-error": errors.date })}
+                    className={classNames({ 'p-error': errors.date })}
                   >
                     Date
                   </label>
                 </span>
-                {getFormErrorMessage("date")}
+                {getFormErrorMessage('date')}
               </div>
               <div className="field-checkbox">
                 <Controller
@@ -246,14 +246,14 @@ const ReactHookFormDemo = () => {
                       onChange={(e) => field.onChange(e.checked)}
                       checked={field.value}
                       className={classNames({
-                        "p-invalid": fieldState.invalid,
+                        'p-invalid': fieldState.invalid,
                       })}
                     />
                   )}
                 />
                 <label
                   htmlFor="accept"
-                  className={classNames({ "p-error": errors.accept })}
+                  className={classNames({ 'p-error': errors.accept })}
                 >
                   Confirmez-vous vouloir certifier cet étudiant ? Si oui, cochez
                   la cage !
@@ -263,7 +263,7 @@ const ReactHookFormDemo = () => {
                 type="submit"
                 label="Certifier"
                 className="mt-2"
-                style={{ backgroundColor: "#3084b5" }}
+                style={{ backgroundColor: '#3084b5' }}
               />
             </form>
             <Button
@@ -274,7 +274,7 @@ const ReactHookFormDemo = () => {
                 downloadCertificate();
               }}
               className="mt-2"
-              style={{ backgroundColor: "#3084b5" }}
+              style={{ backgroundColor: '#3084b5' }}
             />
           </div>
         </div>

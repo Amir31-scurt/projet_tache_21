@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Card } from 'primereact/card';
 import { Modal } from 'rsuite';
 import { useParams } from 'react-router-dom';
-import { db } from '../../config/firebase-config';
-import { getDoc, doc } from 'firebase/firestore';
+import { db, storage } from '../../config/firebase-config';
+import { getDoc, doc, collection, addDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { AuthContext } from '../../contexte/AuthContext';
+import { format } from 'date-fns';
 
 export default function Cours() {
   const { domaineId, sousDomaineName } = useParams();
@@ -15,6 +18,13 @@ export default function Cours() {
   const [previews, setPreviews] = useState();
   const [timers, setTimers] = useState({}); // Timer state as an object
   const [intervalIds, setIntervalIds] = useState({}); // To store interval IDs
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
+  const { currentUser, uid } = useContext(AuthContext);
+
+  const UserUid = uid;
+  const UserEmail = currentUser.email;
+  const UserName = currentUser.displayName;
 
   //
   useEffect(() => {
@@ -62,7 +72,7 @@ export default function Cours() {
     selectedFiles.forEach((file) => {
       const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
       uploadBytes(storageRef, file).then(() => {
-        getDownloadURL(storageRef).then((url) =>{
+        getDownloadURL(storageRef).then((url) => {
           // Handle the download URL, you can use it as needed
         });
       });
@@ -72,7 +82,7 @@ export default function Cours() {
     // Close the modal
     setOpen(false);
 
-    if (selectedFiles.length > 0 ) {
+    if (selectedFiles.length > 0) {
       // Loop through selected files and add each to Firestore
       selectedFiles.forEach(async (file) => {
         const imageUrls = [];
@@ -82,12 +92,12 @@ export default function Cours() {
         imageUrls.push(url);
         // Ajouter la publication dans Firestore avec l'URL de l'image
         await addDoc(collection(db, 'publication'), {
-        userID: UserUid,
-        profile: user.photoURL || '', // Assurez-vous que user.photoURL est défini
-        nom: user.displayName || '', // Assurez-vous que user.displayName est défini
-        date: format(new Date(), 'dd/MM/yyyy - HH:mm:ss'),
-        publication: imageUrls   ,
-        email: UserEmail,
+          userID: UserUid,
+          profile: user.photoURL || '', // Assurez-vous que user.photoURL est défini
+          nom: user.displayName || '', // Assurez-vous que user.displayName est défini
+          date: format(new Date(), 'dd/MM/yyyy - HH:mm:ss'),
+          publication: imageUrls,
+          email: UserEmail,
         });
       });
 
@@ -96,19 +106,7 @@ export default function Cours() {
       // Close the modal
       setOpen(false);
     }
-    
   };
-
-  const getYouTubeVideoId = (url) => {
-    if (typeof url !== 'string') {
-      return null;
-    }
-    const regExp =
-      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    const match = url.match(regExp);
-    return match && match[2].length === 11 ? match[2] : null;
-  };
-
   useEffect(() => {
     const fetchCourses = async () => {
       try {
