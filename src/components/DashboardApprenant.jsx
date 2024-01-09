@@ -15,9 +15,10 @@ export default function DashboardApprenant() {
   // L'stockage des utilisateurs récupérés depuis Firestore
   const [users, setUsers] = useState([]);
 
-  // Filtre des utilisateurs par rôle (Coach ou Étudiant)
+  // Filtre des utilisateurs par rôle (Coach, Etudiant et cours)
   const teachers = users.filter((user) => user.role === "Coach");
   const students = users.filter((user) => user.role === "Étudiant");
+  const cours = users.filter((user) => user.description === "Cours");
 
   // Fonction pour charger les utilisateurs depuis Firestore
   const loadUsers = useCallback(() => {
@@ -35,12 +36,12 @@ export default function DashboardApprenant() {
     return () => {
       unsubscribe();
     };
-  }, []); 
+  }, []);
 
   // Utilisation useEffect pour appeler loadUsers lors du montage du composant
   useEffect(() => {
     loadUsers();
-  }, [loadUsers]); 
+  }, [loadUsers]);
 
   // Données pour les cartes du dashboard
   const ContenuCardDsb = [
@@ -56,18 +57,18 @@ export default function DashboardApprenant() {
       ChiffreCardDsb: students.length,
       IconeCardDsb: (
         <PiUsersFourFill
-          style={{ fontSize: '68px', opacity: '1', color: '#fff' }}
+          style={{ fontSize: '68px', opacity: 1, color: '#fff' }}
         />
       ),
       TextCardDsb: 'Etudiants',
       couleurCarte: 'CouleurB',
     },
     {
-      ChiffreCardDsb: '52',
+      ChiffreCardDsb: cours.length,
       IconeCardDsb: (
         <MdTask style={{ fontSize: '68px', opacity: '1', color: '#fff' }} />
       ),
-      TextCardDsb: 'Taches',
+      TextCardDsb: 'Cours',
       couleurCarte: 'CouleurC',
     },
   ];
