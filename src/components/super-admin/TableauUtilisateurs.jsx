@@ -414,9 +414,9 @@ export default function TableauUtilisateurs() {
                 style={{ width: "100%" }}
               >
                 {/* <option value="Administrateur">{roleValue}</option> */}
-                <option value="Administrateur">Administrateurs</option>
-                <option value="Coach">Coachs</option>
-                <option value="Étudiant">Étudiants</option>
+                <option value="Administrateur">Administrateur</option>
+                <option value="Coach">Coach</option>
+                <option value="Étudiant">Étudiant</option>
               </select>
               <label htmlFor="Role"></label>
             </span>
