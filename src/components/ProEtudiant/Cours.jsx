@@ -19,6 +19,7 @@ export default function Cours() {
   const [timers, setTimers] = useState({}); // Timer state as an object
   const [intervalIds, setIntervalIds] = useState({}); // To store interval IDs
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedCourseTitle, setSelectedCourseTitle] = useState('');
 
   const { currentUser, uid } = useContext(AuthContext);
 
@@ -67,46 +68,93 @@ export default function Cours() {
     };
   }, [selectedFiles]);
 
+  // const handleUpload = async (user) => {
+
+  //   // Créez un tableau pour stocker les URLs des images
+  //   const imageUrls = [];
+
+  //   // Loop through selected files and upload each to Firebase Storage
+  //   await Promise.all(
+  //     selectedFiles.map(async (file) => {
+  //       const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
+  //       await uploadBytes(storageRef, file);
+  //       const url = await getDownloadURL(storageRef);
+  //       // Ajoutez l'URL au tableau
+  //       imageUrls.push(url);
+  //     })
+  //   );
+
+  //   // Clear selected files
+  //   setSelectedFiles([]);
+  //   // Close the modal
+  //   setOpen(false);
+
+  //   if (selectedFiles.length > 0) {
+  //     // Loop through selected files and add each to Firestore
+  //     selectedFiles.forEach(async (file) => {
+  //       const imageUrls = [];
+  //       const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
+  //       await uploadBytes(storageRef, file);
+  //       const url = await getDownloadURL(storageRef);
+  //       imageUrls.push(url);
+  //       // Ajouter la publication dans Firestore avec l'URL de l'image
+  //       // Ajoutez une seule fois le document dans Firestore avec tous les URLs d'images
+  //       await addDoc(collection(db, "publication"), {
+  //         userID: UserUid,
+  //         profile: user.photoURL || "",
+  //         nom: UserName || "",
+  //         date: format(new Date(), "dd/MM/yyyy - HH:mm:ss"),
+  //         images: imageUrls, // Utilisez le tableau des URLs ici
+  //         email: UserEmail || "",
+  //         cours: "",
+  //         finish: false,
+  //         livree: false,
+  //       });
+  //     });
+
+  //     // Clear selected files
+  //     setSelectedFiles([]);
+  //     // Close the modal
+  //     setOpen(false);
+  //   }
+  // };
+
   const handleUpload = async (user) => {
+    // Créez un tableau pour stocker les URLs des images
+    const imageUrls = [];
+
     // Loop through selected files and upload each to Firebase Storage
-    selectedFiles.forEach((file) => {
-      const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
-      uploadBytes(storageRef, file).then(() => {
-        getDownloadURL(storageRef).then((url) => {
-          // Handle the download URL, you can use it as needed
-        });
-      });
-    });
+    await Promise.all(
+      selectedFiles.map(async (file) => {
+        const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
+        await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(storageRef);
+        // Ajoutez l'URL au tableau
+        imageUrls.push(url);
+      })
+    );
+
     // Clear selected files
     setSelectedFiles([]);
     // Close the modal
     setOpen(false);
 
-    if (selectedFiles.length > 0) {
-      // Loop through selected files and add each to Firestore
-      selectedFiles.forEach(async (file) => {
-        const imageUrls = [];
-        const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
-        await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(storageRef);
-        imageUrls.push(url);
-        // Ajouter la publication dans Firestore avec l'URL de l'image
-        await addDoc(collection(db, 'publication'), {
-          userID: UserUid,
-          profile: user.photoURL || '', // Assurez-vous que user.photoURL est défini
-          nom: user.displayName || '', // Assurez-vous que user.displayName est défini
-          date: format(new Date(), 'dd/MM/yyyy - HH:mm:ss'),
-          publication: imageUrls,
-          email: UserEmail,
-        });
+    if (imageUrls.length > 0) {
+      // Ajoutez une seule fois le document dans Firestore avec tous les URLs d'images
+      await addDoc(collection(db, 'publication'), {
+        userID: UserUid,
+        profile: user.photoURL || '',
+        nom: UserName || '',
+        date: format(new Date(), 'dd/MM/yyyy - HH:mm:ss'),
+        images: imageUrls, // Utilisez le tableau des URLs ici
+        email: UserEmail || '',
+        cours: '',
+        finish: false,
+        livree: false,
       });
-
-      // Clear selected files
-      setSelectedFiles([]);
-      // Close the modal
-      setOpen(false);
     }
   };
+
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -140,6 +188,8 @@ export default function Cours() {
   const handleOpen = (courseIndex) => {
     setOpen(true);
     setSelectedCourse(courseIndex);
+    const selectedCourse = courses[courseIndex];
+    setSelectedCourseTitle(selectedCourse.title);
   };
 
   const formatTime = (seconds) => {
@@ -309,13 +359,28 @@ export default function Cours() {
               backdrop={backdrop}
               keyboard={false}
               open={open}
-              onClose={handleClose}
+              onClose={() => {
+                handleClose();
+                setSelectedCourseTitle(''); // Reset the selected course title when closing the modal
+              }}
             >
               <Modal.Header>
                 <Modal.Title>Envoyer mon travail</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <div className="mb-3">
+                  <div className="mb-3">
+                    <label htmlFor="courseTitle" className="form-label">
+                      Titre
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="courseTitle"
+                      value={selectedCourseTitle}
+                      readOnly // Makes the input read-only
+                    />
+                  </div>
                   <textarea
                     placeholder="description"
                     className="form-control"
@@ -333,17 +398,13 @@ export default function Cours() {
                   <label
                     htmlFor="formFileLg"
                     id="myfiles"
-                    className="form-label inputStyle"
+                    className="form-label inputStyle btn text-white"
                   >
                     Choisir Fichiers
                   </label>
                   <input
-                    className="form-control d-none"
-                    onChange={(e) => {
-                      if (e.target.files && e.target.files.length > 0) {
-                        setFiles(e.target.files);
-                      }
-                    }}
+                    className="form-control d-none "
+                    onChange={handleFileChange}
                     multiple
                     accept="image/*"
                     id="formFileLg"
@@ -352,7 +413,11 @@ export default function Cours() {
                 </div>
               </Modal.Body>
               <Modal.Footer>
-                <button type="submit" className="inputStyle">
+                <button
+                  type="submit"
+                  onClick={handleUpload}
+                  className="inputStyle"
+                >
                   Envoyer
                 </button>
               </Modal.Footer>

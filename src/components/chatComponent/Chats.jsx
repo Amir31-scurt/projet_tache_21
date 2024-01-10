@@ -4,11 +4,12 @@ import { ChatAuthCtx } from '../../contexte/ChatAuthCtx';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase-config';
 import { ChatContext } from '../../contexte/ChatContext';
+import { AuthContext } from '../../contexte/AuthContext';
 
 export default function Chats() {
   const [chats, setChats] = useState([]);
 
-  const { currentUser } = useContext(ChatAuthCtx);
+  const { currentUser } = useContext(AuthContext);
   const { dispatch } = useContext(ChatContext);
   // currentUser?.uid: le '?.' est appelé opérateur de navigation optionnelle"
   // Peut servir à éviter les erreurs de type "cannot read property 'uid' of null" ou "cannot read property 'uid' of undefined".
@@ -18,14 +19,26 @@ export default function Chats() {
       const unsub = onSnapshot(
         doc(db, 'userChats', currentUser?.uid),
         (doc) => {
-          setChats(doc.data());
+          const data = doc.data();
+          if (data && typeof data === 'object') {
+            setChats(data);
+          } else {
+            // Handle the case where data is not an object
+            console.error('Chats data is not an object:', data);
+          }
+        },
+        (error) => {
+          // Handle the error case
+          console.error('Error fetching chats:', error);
         }
       );
       return () => {
         unsub();
       };
     };
-    currentUser?.uid && getChats();
+    if (currentUser?.uid) {
+      getChats();
+    }
   }, [currentUser?.uid]);
 
   // const handleArchived =  (e) => {

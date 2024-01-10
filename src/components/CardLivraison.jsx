@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+
 import { useNavigate } from "react-router-dom";
 import {
   addDoc,
@@ -6,103 +6,126 @@ import {
   deleteDoc,
   getDoc,
   doc,
+  query,
+  where,
   onSnapshot,
+  getDocs,
   serverTimestamp,
 } from "firebase/firestore";
 import { db, auth } from "../config/firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
 
 import { toast } from "react-hot-toast";
-
-import userProfile from "../assets/images/user.png";
 import commenter from "../assets/images/commenter.png";
 import envoi from "../assets/images/envoi.png";
-import img1 from "../assets/images/img (1).jpg";
-import img2 from "../assets/images/img (2).jpg";
-import img3 from "../assets/images/img (3).jpg";
-import img4 from "../assets/images/img (4).jpg";
-import img5 from "../assets/images/img (5).jpg";
 
+import React, { useState, useEffect, useContext } from "react";
+import userProfile from "../assets/images/userProfile.png";
 import { Dialog } from "primereact/dialog";
+import "firebase/firestore";
+import { AuthContext } from "../contexte/AuthContext";
 import { Galleria } from "primereact/galleria";
 
 export default function CardLivraison() {
   const [currentUser, setCurrentUser] = useState(null);
   const [userRole, setUserRole] = useState("Rôle inconnu");
-  const [apprenant, setApprenat] = useState("Cheikh Ahmed Tidiane Gueye");
-  const [date, setDate] = useState("19 Dec 2023, 16:05");
 
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
 
-  // const [role, setRole] = useState("Coach");
-  const [visible, setVisible] = useState(false);
-  const [images, setImages] = useState(null);
 
   const [visibleComments, setVisibleComments] = useState([]);
   const [hiddenComments, setHiddenComments] = useState([]);
   const navigate = useNavigate();
 
-  const PhotoService = {
-    getData() {
-      return [
-        {
-          itemImageSrc: img1,
-          thumbnailImageSrc: img1,
-          alt: 'Description for Image 1',
-          title: 'Title 1',
-        },
-        {
-          itemImageSrc: img2,
-          thumbnailImageSrc: img2,
-          alt: 'Description for Image 2',
-          title: 'Title 2',
-        },
-        {
-          itemImageSrc: img3,
-          thumbnailImageSrc: img3,
-          alt: 'Description for Image 3',
-          title: 'Title 3',
-        },
-        {
-          itemImageSrc: img4,
-          thumbnailImageSrc: img4,
-          alt: 'Description for Image 4',
-          title: 'Title 4',
-        },
-        {
-          itemImageSrc: img5,
-          thumbnailImageSrc: img5,
-          alt: 'Description for Image 5',
-          title: 'Title 5',
-        },
-      ];
-    },
+  const { uid } = useContext(AuthContext);
+  const UserUid = uid;
 
-    getImages() {
-      return Promise.resolve(this.getData());
-    },
+  const [apprenant, setApprenat] = useState("");
+  const [coach, setCoach] = useState("");
+  const [date, setDate] = useState("");
+  const [days, setDays] = useState("1");
+  const [role, setRole] = useState("Coach");
+
+  const [images, setImages] = useState([]);
+  const [visible, setVisible] = useState(false);
+
+  // Fonction pour récupérer les informations de l'étudiant depuis Firestore
+  const fetchStudentInfo = async () => {
+    try {
+      const studentRef = collection(db, "publication");
+
+      // Création de la requête pour récupérer le document de l'étudiant
+      const studentQuery = query(studentRef, where("userID", "==", UserUid));
+      const studentSnapshot = await getDocs(studentQuery);
+
+      // Vérification s'il y a des documents
+      if (!studentSnapshot.empty) {
+        const studentData = studentSnapshot.docs[0].data();
+        setApprenat(studentData.nom);
+        setCoach(studentData.coach);
+        setDate(studentData.date);
+      }
+    } catch (error) {
+      console.error(
+        "Erreur lors de la récupération des informations de l'étudiant depuis Firestore",
+        error
+      );
+    }
   };
 
-  const itemTemplate = (item) => {
-    return (
-      <img
-        src={item.itemImageSrc}
-        alt={item.alt}
-        className='w-100'
-      />
-    );
+  const fetchImagesFromFirestore = async () => {
+    try {
+      const publicationRef = collection(db, "publication");
+      const q = query(publicationRef);
+      const querySnapshot = await getDocs(q);
+
+      const imagesArray = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        imagesArray.push(...data.images);
+      });
+
+      setImages(
+        imagesArray.map((url, index) => ({
+          itemImageSrc: url,
+          thumbnailImageSrc: url,
+          alt: `Image ${index + 1}`,
+          title: `Title ${index + 1}`,
+        }))
+      );
+    } catch (error) {
+      console.error(
+        "Erreur lors de la récupération des images depuis Firestore",
+        error
+      );
+    }
   };
 
-  const thumbnailTemplate = (item) => {
-    return (
-      <img src={item.thumbnailImageSrc} alt={item.alt} className="w-100" />
-    );
-  };
+  // Fonction pour définir le template d'un item dans le composant Galleria
+  const itemTemplate = (item) => (
+    <img
+      src={item.itemImageSrc}
+      alt={item.alt}
+      style={{ width: "100%", height: "100%" }}
+    />
+  );
 
+  // Fonction pour définir le template d'un thumbnail dans le composant Galleria
+  const thumbnailTemplate = (item) => (
+    <img
+      src={item.thumbnailImageSrc}
+      alt={item.alt}
+      style={{ width: "140px", height: "100px" }}
+    />
+  );
+
+  // Effet pour récupérer les informations de l'étudiant lors du montage du composant
   useEffect(() => {
-    PhotoService.getImages().then((data) => setImages(data));
+    fetchStudentInfo();
+    fetchImagesFromFirestore();
   }, []);
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -156,9 +179,6 @@ export default function CardLivraison() {
       });
   }
 
-  useEffect(() => {
-    PhotoService.getImages().then((data) => setImages(data));
-  }, []);
 
   useEffect(() => {
     // Séparer les commentaires en deux listes distinctes
@@ -270,11 +290,12 @@ export default function CardLivraison() {
             <p>Titre de la publication de l'apprenant</p>
           </div>
 
-          <div className="col-12 my-2 ">
+          {/* Galleria pour afficher les images */}
+          <div className="col-12 my-2">
             <Galleria
               value={images}
               numVisible={5}
-              style={{ maxWidth: "" }}
+              style={{ width: "52rem", margin: "auto" }}
               item={itemTemplate}
               thumbnail={thumbnailTemplate}
               className="publication rounded-2"
