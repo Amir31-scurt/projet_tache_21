@@ -138,17 +138,27 @@ export default function TableauUtilisateurs() {
 
   // Fonction pour gérer l'archivage et le désarchivage
   const handleArchiveToggle = async (utilisateurId, isArchived) => {
-    const utilisateursRef = collection(db, 'utilisateurs');
-    const utilisateurDoc = doc(utilisateursRef, utilisateurId);
-    const user = utilisateursData.find((user) => user.id === utilisateurId);
-    const coachs = utilisateursData.find((coach) => coach.name === user.coach);
-    let notificationMessage = `${user.name} a été ${
-      !isArchived ? 'archivé' : 'désarchivé'
-    } avec succes`;
     try {
+      const utilisateursRef = collection(db, "utilisateurs");
+      const utilisateurDoc = doc(utilisateursRef, utilisateurId);
+      const user = utilisateursData.find((user) => user.id === utilisateurId);
+      const coachs = utilisateursData.find(
+        (coach) => coach.name === user.coach
+      );
+      let notificationMessage = `${user.name} a été ${
+        !isArchived ? "archivé" : "désarchivé"
+      } avec succes`;
+
       await updateDoc(utilisateurDoc, {
-        archiver: !isArchived,
+        archived: !isArchived, // Modifier l'attribut pour qu'il corresponde à "archived"
       });
+      // Mettre à jour directement utilisateursData après l'archivage
+      const updatedUtilisateursData = utilisateursData.map((utilisateur) =>
+        utilisateur.id === utilisateurId
+          ? { ...utilisateur, archived: !isArchived } // Correspondance avec l'attribut 'archived'
+          : utilisateur
+      );
+      setUtilisateursData(updatedUtilisateursData);
 
       await addDoc(notificationsCollection, {
         messageForAdmin: notificationMessage,
@@ -156,22 +166,24 @@ export default function TableauUtilisateurs() {
         newNotif: true,
         email: coachs.email,
       });
+
       fetchData(); // Met à jour les données après l'archivage ou le désarchivage
-      // Mettre à jour l'étiquette du bouton en fonction du nouvel état 'archiver'
-      setArchiveLabel(isArchived ? 'Désarchiver' : 'Archiver');
+
+      setArchiveLabel(isArchived ? "Désarchiver" : "Archiver");
       toast.success(notificationMessage, {
         duration: 3000,
       });
     } catch (error) {
-      console.error('Error archiving student:', error);
+      console.error("Error archiving student:", error);
     }
   };
 
+
   const filteredData = useMemo(() => {
-    if (roleFilter === 'Tous les utilisateurs') {
+    if (roleFilter === 'des utilisateurs') {
       return utilisateursData;
     } else if (roleFilter === 'Archivés') {
-      return utilisateursData.filter((utilisateur) => utilisateur.archiver);
+      return utilisateursData.filter((utilisateur) => utilisateur.archived);
     } else {
       return utilisateursData.filter(
         (utilisateur) => utilisateur.role === roleFilter
@@ -258,7 +270,7 @@ export default function TableauUtilisateurs() {
             className="d-flex justify-content-center align-items-center btn btn-outline-primary rounded-3 me-3"
             onClick={() => showDetails(utilisateur)}
           >
-            <FaEye className="" style={{ width: "25px", height: "25px" }} />
+            <FaEye className="" style={{ width: "15px", height: "15px" }} />
           </button>
           <button
             type="button"
@@ -268,21 +280,21 @@ export default function TableauUtilisateurs() {
               setFormVisible(true);
             }}
           >
-            <FaEdit className="" style={{ width: "25px", height: "25px" }} />
+            <FaEdit className="" style={{ width: "15px", height: "15px" }} />
           </button>
           <button
             type="button"
             className={`d-flex justify-content-center align-items-center btn btn-outline-danger rounded-3 me-3`}
             onClick={() =>
-              handleArchiveToggle(utilisateur.id, utilisateur.archiver || false)
+              handleArchiveToggle(utilisateur.id, utilisateur.archived || false)
             }
           >
-            <FaArchive className="" style={{ width: "25px", height: "25px" }} />
-            {utilisateur.archiver ? "Désarchiver" : ""}
+            <FaArchive className="" style={{ width: "15px", height: "15px" }} />
+            {utilisateur.archived ? "Désarchiver" : ""}
           </button>
         </div>
       ),
-      className: utilisateur.archiver ? 'tableRowArchived bg-info' : '',
+      className: utilisateur.archived ? 'tableRowArchived bg-info' : '',
     }));
   }, [filteredData]);
 
@@ -299,11 +311,11 @@ export default function TableauUtilisateurs() {
       {/* Dialogue pour afficher les détails de l'utilisateur */}
       <Dialog
         header={`Informations sur ${
-          selectedUtilisateur ? selectedUtilisateur.name : ''
+          selectedUtilisateur ? selectedUtilisateur.name : ""
         }`}
         visible={infoVisible}
         maximizable
-        style={{ width: '50vw' }}
+        style={{ width: "50vw" }}
         onHide={() => setInfoVisible(false)}
         className="w-md-50 w-sm-100"
       >
@@ -346,7 +358,7 @@ export default function TableauUtilisateurs() {
       <Dialog
         header={`Profil`}
         visible={formVisible}
-        style={{ width: '50vw' }}
+        style={{ width: "50vw" }}
         onHide={() => setFormVisible(false)}
       >
         <form
@@ -354,13 +366,13 @@ export default function TableauUtilisateurs() {
           className="formUpdate d-flex flex-column justify-content-center align-items-center"
         >
           <h6 className="mb-5">Mise à jour du profil</h6>
-          <div className="p-float" style={{ width: '100%' }}>
+          <div className="p-float" style={{ width: "100%" }}>
             <span className="p-float-label my-5">
               <InputText
                 id="name"
                 value={nameValue}
                 onChange={(e) => setNameValue(e.target.value)}
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
               />
               <label htmlFor="name">Prénom & Nom</label>
             </span>
@@ -370,7 +382,7 @@ export default function TableauUtilisateurs() {
                 id="number"
                 value={numberValue}
                 onChange={(e) => setNumberValue(e.target.value)}
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
               />
               <label htmlFor="number">Téléphone</label>
             </span>
@@ -379,7 +391,7 @@ export default function TableauUtilisateurs() {
                 id="email"
                 value={emailValue}
                 onChange={(e) => setEmailValue(e.target.value)}
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
               />
               <label htmlFor="email">Email</label>
             </span>
@@ -388,7 +400,7 @@ export default function TableauUtilisateurs() {
                 id="address"
                 value={addressValue}
                 onChange={(e) => setAddressValue(e.target.value)}
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
               />
               <label htmlFor="address">Adresse</label>
             </span>
@@ -399,10 +411,10 @@ export default function TableauUtilisateurs() {
                 id="role"
                 value={roleValue}
                 onChange={(e) => setRoleValue(e.target.value)}
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
               >
                 {/* <option value="Administrateur">{roleValue}</option> */}
-                <option value="Administrateur">Administrateur</option>
+                <option value="Administrateur">Administrateurs</option>
                 <option value="Coach">Coachs</option>
                 <option value="Étudiant">Étudiants</option>
               </select>
@@ -438,10 +450,8 @@ export default function TableauUtilisateurs() {
               value={roleFilter}
               onChange={handleFilterChange}
             >
-              <option value="Tous les utilisateurs">
-                Tous les utilisateurs
-              </option>
-              <option value="Administrateur">Administrateur</option>
+              <option value="des utilisateurs">Tous les utilisateurs</option>
+              <option value="Administrateur">Administrateurs</option>
               <option value="Coach">Coachs</option>
               <option value="Étudiant">Étudiants</option>
               <option value="Archivés">Archivés</option>
