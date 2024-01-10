@@ -149,7 +149,7 @@ export default function ProtectedRoutes() {
           element: <ContentCardLivraison />,
         },
         {
-          path: 'etudiant/cours/:domaineId/:sousDomaineName',
+          path: 'etudiant/programme-apprenant/cours/:domaineId/:sousDomaineName',
           element: <Cours />,
         },
         {
