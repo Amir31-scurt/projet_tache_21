@@ -284,7 +284,6 @@ const AssignationDomaines = () => {
       </div>
 
       {/* Composant pour l'assignation d'étudiants */}
-      <AssignationEtudiant />
     </div>
   );
 };
