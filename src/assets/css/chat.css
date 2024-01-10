@@ -21,13 +21,15 @@ Vert
   outline: none !important;
   background-color: #0071bd;
 }
-.chatHomeDisplay{
-    transition: 0.9s ease;
-    transform: translateY(-1000%); 
+.chatHomeDisplay {
+  transition: 0.9s ease;
+  transform: translateY(-1000%);
+  display: none;
 }
-.chatHomeDisplayYes{
-    transition: 0.4s ease;
-    transform: translateY(0%); 
+.chatHomeDisplayYes {
+  transition: 0.4s ease;
+  transform: translateY(0%);
+  display: block;
 }
 .chatHome {
   /* border: 0.01rem solid #333; */
@@ -78,7 +80,7 @@ Vert
 } */
 .searchForm #navbar-input-container input {
   outline: none !important;
-  color: #333; 
+  color: #333;
   background-color: transparent;
   border-bottom: 1px solid #0071bd !important;
 }
@@ -96,7 +98,7 @@ Vert
   font-size: 12px;
   color: #333;
 }
-.search .searchForm #searchFormBtn{
+.search .searchForm #searchFormBtn {
   color: #333;
 }
 .search .searchForm #searchFormBtn,
@@ -107,9 +109,9 @@ Vert
 /* ================================================== 
                     CHATS 
    ================================================== */
-.chats{
-    overflow-x: scroll;
-}  
+.chats {
+  overflow-x: scroll;
+}
 .chatHomeContainer {
   width: 400px;
   position: absolute;
@@ -167,12 +169,12 @@ Vert
   position: relative;
   /* flex-wrap: nowrap; */
 }
-.chats .userChat .btnArchived{
+.chats .userChat .btnArchived {
   top: 0;
   right: 0;
   color: #333;
 }
-.chats .userChat .btnArchived:hover{
+.chats .userChat .btnArchived:hover {
   color: #f21414;
 }
 /* .chats .admin:hover{
@@ -206,12 +208,12 @@ Vert
   background-color: #0071bd;
   color: #333;
 }
-#crown{
-  color: #FFD700;
+#crown {
+  color: #ffd700;
   /* box-shadow: 2px 2px 24px #FFD700; */
 }
-#teacher{
-  color: #C0C0C0;
+#teacher {
+  color: #c0c0c0;
 }
 /* ================================================== 
                 MESSAGES
@@ -256,7 +258,7 @@ Vert
   background-color: #3084b5 !important;
 }
 .messages .message .messageContent p span,
-.messages .owner .messageContent p span{
+.messages .owner .messageContent p span {
   position: absolute;
   bottom: 2px;
   right: 10px;
@@ -306,13 +308,13 @@ Vert
 .chatInput input::placeholder {
   color: #333;
 }
-.chatInput .btn{
+.chatInput .btn {
   background-color: #0071bd;
 }
-.chatInput .btn:hover{
+.chatInput .btn:hover {
   background-color: #0071bd;
 }
-.chatInput .btn:disabled{
+.chatInput .btn:disabled {
   background-color: #0071bd;
   border: #3084b5 !important;
 }
