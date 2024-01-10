@@ -223,6 +223,35 @@ const SpecificPro = () => {
     return match && match[2].length === 11 ? match[2] : null;
   };
 
+  
+  const [isEditing, setIsEditing] = useState(false);
+  const [modifiedTitle, setModifiedTitle] = useState('');
+  const [modifiedDescription, setModifiedDescription] = useState('');
+  const [modifiedLink, setModifiedLink] = useState('');
+
+  // ... (le reste du code)
+
+  const handleEditClick = (index) => {
+    const selectedCourse = getCoursLinks()[index];
+    setModifiedTitle(selectedCourse.title);
+    setModifiedDescription(selectedCourse.description);
+    setModifiedLink(selectedCourse.link);
+    setIsEditing(true);
+    alert('bonjur')
+  };
+
+  const handleSaveEdit = (index) => {
+    // Code pour sauvegarder les modifications dans la base de données
+    // ...
+
+    // Réinitialiser les états après la sauvegarde
+    setIsEditing(false);
+    setModifiedTitle('');
+    setModifiedDescription('');
+    setModifiedLink('');
+  };
+
+
   return (
     <div>
       <h1 className="fst-italic text-secondary fs-3 fw-bold ps-2 pt-3">
@@ -296,32 +325,39 @@ const SpecificPro = () => {
           <h3 className="text-center">Cours Links</h3>
           <div className="d-flex justify-content-center flex-wrap">
             {getCoursLinks().map((course, index) => {
-              const videoId = getYouTubeVideoId(course.link);
-              const isYouTubeLink = videoId !== null;
-              const embedUrl = isYouTubeLink
-                ? `https://www.youtube.com/embed/${videoId}`
-                : null;
-
+              // const videoId = getYouTubeVideoId(course.link);
               return (
                 <div key={index} className="card mx-2 my-2">
-                  <div className="card-body">
-                    <h5>
-                      Cours {index + 1} : {course.title}
-                    </h5>
-                    <p className="card-text mb-2">
-                      <strong>Description: </strong>
-                      {course.description}
-                    </p>
-                    {/* YouTube Iframe or Website Link */}
-                    {isYouTubeLink ? (
-                      <iframe
-                        src={embedUrl}
-                        title={`YouTube video player for ${course.title}`}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        className="mx-auto"
-                      ></iframe>
-                    ) : (
+                <div className="card-body">
+                  <h5>
+                    Cours {index + 1} : {course.title}
+                  </h5>
+                  <p className="card-text mb-2">
+                    <strong>Description : </strong>
+                    {course.description}
+                  </p>
+                  {isEditing && (
+                    <>
+                      <input
+                        type="text"
+                        value={modifiedTitle}
+                        onChange={(e) => setModifiedTitle(e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        value={modifiedDescription}
+                        onChange={(e) => setModifiedDescription(e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        value={modifiedLink}
+                        onChange={(e) => setModifiedLink(e.target.value)}
+                      />
+                      <button onClick={() => handleSaveEdit(index)}>Sauvegarder</button>
+                    </>
+                  )}
+                  {!isEditing && (
+                    <>
                       <a
                         href={course.link}
                         target="_blank"
@@ -329,8 +365,13 @@ const SpecificPro = () => {
                       >
                         {course.link}
                       </a>
-                    )}
-                  </div>
+                      <div className='text-end mt-5 justify-between'>
+                        <button type='button' className='btn btn-primary' onClick={() => handleEditClick(index)}>Modifier</button>
+                        <button type='button' className='btn btn-danger'>Supprimer</button>
+                      </div>
+                    </>
+                  )}
+                </div>
                 </div>
               );
             })}
