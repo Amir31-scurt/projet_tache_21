@@ -30,6 +30,7 @@ import logo from '../assets/images/logo.png';
 import Quizz from '../components/quizzs/quizzs';
 import RenduBulletinEtudiant from '../components/RenduBulletinEtudiant';
 import ReactHookFormDemo from '../components/super-admin/Certificat';
+import NotFound from './NotFound';
 
 export default function ProtectedRoutes() {
   const { email } = useContext(EmailContext);
@@ -84,9 +85,9 @@ export default function ProtectedRoutes() {
           element: <ReactHookFormDemo />,
         },
         {
-          path: "*",
-          element: <NotFound redirect="/admin/dashboard"/>
-        }
+          path: '*',
+          element: <NotFound redirect="/admin/dashboard" />,
+        },
       ]
     : [];
   const coachRoutes = isCoach
@@ -120,9 +121,9 @@ export default function ProtectedRoutes() {
           element: <AssignationPage />,
         },
         {
-          path: "*",
-          element: <NotFound redirect="/coach/dashboard" />
-        }
+          path: '*',
+          element: <NotFound redirect="/coach/dashboard" />,
+        },
       ]
     : [];
   const studentRoutes = isStudent
@@ -156,9 +157,9 @@ export default function ProtectedRoutes() {
           element: <Quizz />,
         },
         {
-          path: "*",
-          element: <NotFound redirect="etudiant/dashboard" />
-        }
+          path: '*',
+          element: <NotFound redirect="etudiant/dashboard" />,
+        },
       ]
     : [];
 
@@ -185,7 +186,6 @@ export default function ProtectedRoutes() {
         ...studentRoutes,
       ],
     },
-    
   ]);
 
   return <RouterProvider router={router} />;
