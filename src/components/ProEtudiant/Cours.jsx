@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useId } from 'react';
 import { Card } from 'primereact/card';
 import { Modal } from 'rsuite';
 import { useParams } from 'react-router-dom';
 import { db, storage } from '../../config/firebase-config';
-import { getDoc, doc, collection, addDoc } from 'firebase/firestore';
+import { getDoc, doc, collection, addDoc, onSnapshot, getDocs, where } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { AuthContext } from '../../contexte/AuthContext';
 import { format } from 'date-fns';
@@ -22,10 +22,38 @@ export default function Cours() {
   const [selectedCourseTitle, setSelectedCourseTitle] = useState('');
 
   const { currentUser, uid } = useContext(AuthContext);
+  const [LeNom , setLeNom] = useState("")
 
   const UserUid = uid;
   const UserEmail = currentUser.email;
-  const UserName = currentUser.displayName;
+
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const usersCollectionRef = collection(db, "utilisateurs");
+        const query = query(usersCollectionRef, where("userId", "==", UserUid));
+        const querySnapshot = await getDocs(query);
+
+        if (!querySnapshot.empty) {
+          // Il y a au moins un document correspondant à UserUid
+          const userData = querySnapshot.docs[0].data();
+          const studentName = userData.name;
+          setLeNom(studentName);
+        } else {
+          console.log("Le user ID n'existe pas :", UserUid);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, [UserUid]);
+
+  const UserName = LeNom || currentUser.displayName; ;
+
+  console.log("le nom de l'etudiant =", UserName);
 
   //
   useEffect(() => {
@@ -68,56 +96,6 @@ export default function Cours() {
     };
   }, [selectedFiles]);
 
-  // const handleUpload = async (user) => {
-
-  //   // Créez un tableau pour stocker les URLs des images
-  //   const imageUrls = [];
-
-  //   // Loop through selected files and upload each to Firebase Storage
-  //   await Promise.all(
-  //     selectedFiles.map(async (file) => {
-  //       const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
-  //       await uploadBytes(storageRef, file);
-  //       const url = await getDownloadURL(storageRef);
-  //       // Ajoutez l'URL au tableau
-  //       imageUrls.push(url);
-  //     })
-  //   );
-
-  //   // Clear selected files
-  //   setSelectedFiles([]);
-  //   // Close the modal
-  //   setOpen(false);
-
-  //   if (selectedFiles.length > 0) {
-  //     // Loop through selected files and add each to Firestore
-  //     selectedFiles.forEach(async (file) => {
-  //       const imageUrls = [];
-  //       const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
-  //       await uploadBytes(storageRef, file);
-  //       const url = await getDownloadURL(storageRef);
-  //       imageUrls.push(url);
-  //       // Ajouter la publication dans Firestore avec l'URL de l'image
-  //       // Ajoutez une seule fois le document dans Firestore avec tous les URLs d'images
-  //       await addDoc(collection(db, "publication"), {
-  //         userID: UserUid,
-  //         profile: user.photoURL || "",
-  //         nom: UserName || "",
-  //         date: format(new Date(), "dd/MM/yyyy - HH:mm:ss"),
-  //         images: imageUrls, // Utilisez le tableau des URLs ici
-  //         email: UserEmail || "",
-  //         cours: "",
-  //         finish: false,
-  //         livree: false,
-  //       });
-  //     });
-
-  //     // Clear selected files
-  //     setSelectedFiles([]);
-  //     // Close the modal
-  //     setOpen(false);
-  //   }
-  // };
 
   const handleUpload = async (user) => {
     // Créez un tableau pour stocker les URLs des images
@@ -144,13 +122,15 @@ export default function Cours() {
       await addDoc(collection(db, 'publication'), {
         userID: UserUid,
         profile: user.photoURL || '',
-        nom: UserName || '',
+        nom: UserName,
         date: format(new Date(), 'dd/MM/yyyy - HH:mm:ss'),
         images: imageUrls, // Utilisez le tableau des URLs ici
         email: UserEmail || '',
-        cours: '',
+        cours: selectedCourseTitle,
         finish: false,
         livree: false,
+        start: false,
+        duree : "",
       });
     }
   };

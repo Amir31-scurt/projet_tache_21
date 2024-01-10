@@ -44,7 +44,7 @@ export default function CardLivraison() {
   const [apprenant, setApprenat] = useState("");
   const [coach, setCoach] = useState("");
   const [date, setDate] = useState("");
-  const [days, setDays] = useState("1");
+  const [titreCourEtudiant, settitreCourEtudiant] = useState("");
   const [role, setRole] = useState("Coach");
 
   const [images, setImages] = useState([]);
@@ -63,6 +63,7 @@ export default function CardLivraison() {
       if (!studentSnapshot.empty) {
         const studentData = studentSnapshot.docs[0].data();
         setApprenat(studentData.nom);
+        settitreCourEtudiant(studentData.cours);
         setCoach(studentData.coach);
         setDate(studentData.date);
       }
@@ -287,7 +288,7 @@ export default function CardLivraison() {
           </div>
 
           <div className="col-md-12 d-flex justify-content-center py-2">
-            <p>Titre de la publication de l'apprenant</p>
+            <p>{titreCourEtudiant}</p>
           </div>
 
           {/* Galleria pour afficher les images */}
