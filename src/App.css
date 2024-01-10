@@ -24,127 +24,7 @@ body {
   margin: 45px 0;
 }
 
-/* Quizzs CSS */
 
-.module-container {
-  display: flex;
-}
-
-.module-container .sidebar {
-  /* width: 25%;  */
-  background-color: #f0f2f5;
-  height: 100vh;
-  position: fixed;
-  overflow-y: scroll;
-}
-
-.module-container .file {
-  padding: 0px 10px;
-}
-.module-container .titre {
-  font-size: 32px;
-  font-weight: 500;
-  text-align: center;
-}
-
-.module-container .main-content {
-  width: 100%;
-  padding: 20px;
-  margin: 10px;
-  margin-left: 32%;
-  text-align: left !important;
-}
-
-.module-container input[type="radio"] {
-  --webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  /* background-color: #48a93c !important;  */
-  border: 2px solid #999;
-}
-
-.module-container input:checked {
-  border: 2px solid #007bff !important;
-  background-color: #48a93c;
-}
-
-.module-container .lesson-item {
-  background-color: white;
-  margin-bottom: 10px;
-  padding: 10px;
-  width: 100%;
-  cursor: pointer;
-  border-left: 5px solid #48a93c !important;
-  /* Blue border for active item */
-}
-
-.content-block {
-  background-color: white;
-  width: 100%;
-  margin-bottom: 10px;
-  cursor: pointer;
-  padding: 20px;
-  border-left: 5px solid #48a93c !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.introduction {
-  font-size: 18px;
-  margin-bottom: 20px;
-  text-align: left;
-  margin-left: 8%;
-}
-
-.module-container .label {
-  margin-left: 5px;
-  font-family: Montserrat;
-  font-size: 16px;
-  width: 65%;
-  text-align: left;
-  border-radius: 20px;
-  color: #000000;
-}
-
-.module-container .paragraph {
-  margin-top: 5%;
-  color: black;
-  width: 65%;
-  margin-left: 5px;
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.dig {
-  /* background-color: #3084b5;  */
-  color: black;
-  font-size: 16px;
-  width: 100%;
-  height: 10vh;
-  padding-left: 10px;
-  padding-top: 20px;
-}
-
-.sous {
-  border-radius: 20px;
-  height: 50px;
-  font-size: 22px;
-  width: 20%;
-  margin-left: 20%;
-  margin-top: 30px;
-  background-color: #48a93c;
-  border: none;
-  color: white;
-  font-weight: bold;
-}
-
-.paragraph {
-  font-size: 18px;
-  font-weight: 700;
-}
 
 /*------------Notifications-----------*/
 .notifs {
@@ -1153,7 +1033,7 @@ body {
 }
 
 .quiz{
-    background-color: #6da2f1;
+    background-color: #ffffff;
     padding: 30px;
 }
 
@@ -1163,7 +1043,7 @@ body {
 
 .heading .title{
     font-size: 30px;
-    color: #ffffff;
+    color: #000000;
     font-weight: 500;
     text-align: center;
 }
@@ -1242,7 +1122,7 @@ body {
 }
 
 .submit input {
-    background-color: #04AA6D;
+  background-color: #48A93C;
     padding: 5px 25px;
     color: #ffffff;
     font-size: 22px;
@@ -1262,6 +1142,33 @@ body {
     border: 1px solid #d3d3d3; 
     padding: 20px; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+  }
+
+
+  input[type="radio"] {
+    --webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 50%;
+    width: 15px;
+    height: 14px;
+    border: 2px solid #999;
+  }
+  
+  input:checked {
+    border: 1px solid #007bff !important;
+    background-color: #48a93c;
+  }
+
+  .btn-quiz{
+    width: 25%;
+    
+    
+  }
+
+  .btn-dash{
+    text-align: center;
+
   }
   
 

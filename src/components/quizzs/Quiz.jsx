@@ -67,7 +67,7 @@ const Quiz = ({ quizData }) => {
         <form className="quiz-form" onSubmit={handleSubmit}>
           {questions.map((q, index) => (
             <div key={index} className="question">
-              <p>{`${index + 1}. ${q.question}`}</p>
+              <p className='fw-bolder fs-5'>{`${index + 1}. ${q.question}`}</p>
               {q.options.map((option, optionIndex) => (
                 <div
                   key={optionIndex}
@@ -80,6 +80,7 @@ const Quiz = ({ quizData }) => {
                     value={option}
                     checked={userAnswers[index] === option}
                     onChange={() => handleOptionChange(index, option)}
+                    className="module"
                   /> &nbsp;
                   <label htmlFor={`q${index + 1}${optionIndex}`}>{option}</label>
                 </div>
