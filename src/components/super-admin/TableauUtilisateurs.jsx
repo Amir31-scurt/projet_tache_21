@@ -1,10 +1,10 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState } from "react";
 import {
   MaterialReactTable,
   useMaterialReactTable,
-} from 'material-react-table';
-import { Toaster, toast } from 'react-hot-toast';
-import sim from '../../assets/images/sim.jpeg';
+} from "material-react-table";
+import { Toaster, toast } from "react-hot-toast";
+import sim from "../../assets/images/sim.jpeg";
 import {
   collection,
   doc,
@@ -14,14 +14,15 @@ import {
   onSnapshot,
   updateDoc,
   serverTimestamp,
-} from 'firebase/firestore';
-import { db } from '../../config/firebase-config';
-import { FaEye, FaEdit, FaArchive } from 'react-icons/fa';
-import { Dialog } from 'primereact/dialog';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
+} from "firebase/firestore";
+import { db } from "../../config/firebase-config";
+import { FaEye, FaEdit } from "react-icons/fa";
+import { TbArchiveFilled, TbArchiveOff } from "react-icons/tb";
+import { Dialog } from "primereact/dialog";
+import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
 
-import AddUser from './AddUser';
+import AddUser from "./AddUser";
 
 export default function TableauUtilisateurs() {
   // États pour gérer les données et les interactions
@@ -33,17 +34,17 @@ export default function TableauUtilisateurs() {
     useState(null); // Stocke l'utilisateur pour la mise à jour
   const [loading, setLoading] = useState(false); // Gère l'état de chargement
   // Ajoutez un nouvel état local pour gérer l'étiquette du bouton
-  const [archiveLabel, setArchiveLabel] = useState('Archiver');
+  const [archiveLabel, setArchiveLabel] = useState("Archiver");
 
   // États pour chaque champ du formulaire de modification
-  const [nameValue, setNameValue] = useState('');
-  const [numberValue, setNumberValue] = useState('');
-  const [emailValue, setEmailValue] = useState('');
-  const [addressValue, setAddressValue] = useState('');
-  const [roleValue, setRoleValue] = useState('');
-  const [notificationsCollection] = useState(collection(db, 'notifications'));
-  const [roleFilter, setRoleFilter] = useState('Tous les utilisateurs');
-  const [tabType, setTabType] = useState('utilisateurs');
+  const [nameValue, setNameValue] = useState("");
+  const [numberValue, setNumberValue] = useState("");
+  const [emailValue, setEmailValue] = useState("");
+  const [addressValue, setAddressValue] = useState("");
+  const [roleValue, setRoleValue] = useState("");
+  const [notificationsCollection] = useState(collection(db, "notifications"));
+  const [roleFilter, setRoleFilter] = useState("Tous les utilisateurs");
+  const [tabType, setTabType] = useState("utilisateurs");
 
   // Affiche les détails de l'utilisateur sélectionné
   const showDetails = (utilisateur) => {
@@ -65,14 +66,14 @@ export default function TableauUtilisateurs() {
   // Récupère les données de l'utilisateurs depuis Firestore
   const fetchData = async () => {
     try {
-      const querySnapshot = await getDocs(collection(db, 'utilisateurs'));
+      const querySnapshot = await getDocs(collection(db, "utilisateurs"));
       const utilisateurs = [];
       querySnapshot.forEach((doc) => {
         utilisateurs.push({ id: doc.id, ...doc.data() });
       });
       setUtilisateursData(utilisateurs);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -80,7 +81,7 @@ export default function TableauUtilisateurs() {
   const handleUpdateStudent = async () => {
     if (!selectedUtilisateursForUpdate) return;
 
-    const utilisateursRef = collection(db, 'utilisateurs');
+    const utilisateursRef = collection(db, "utilisateurs");
     const utilisateurDoc = doc(
       utilisateursRef,
       selectedUtilisateursForUpdate.id
@@ -104,7 +105,7 @@ export default function TableauUtilisateurs() {
       setFormVisible(false);
       fetchData(); // Met à jour les données après la modification
     } catch (error) {
-      console.error('Error updating student:', error);
+      console.error("Error updating student:", error);
     }
   };
 
@@ -119,10 +120,10 @@ export default function TableauUtilisateurs() {
   // Effectue la souscription aux modifications des données Firestore
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      collection(db, 'utilisateurs'),
+      collection(db, "utilisateurs"),
       (snapshot) => {
         snapshot.docChanges().forEach((change) => {
-          if (change.type === 'added') {
+          if (change.type === "added") {
             fetchData(); // Mettre à jour les données lorsqu'un nouvel utilisateur est ajouté
           }
         });
@@ -152,7 +153,8 @@ export default function TableauUtilisateurs() {
       await updateDoc(utilisateurDoc, {
         archived: !isArchived, // Modifier l'attribut pour qu'il corresponde à "archived"
       });
-      // Mettre à jour directement utilisateursData après l'archivage
+
+      // Mise à jour des données seulement après la modification dans Firestore
       const updatedUtilisateursData = utilisateursData.map((utilisateur) =>
         utilisateur.id === utilisateurId
           ? { ...utilisateur, archived: !isArchived } // Correspondance avec l'attribut 'archived'
@@ -170,9 +172,10 @@ export default function TableauUtilisateurs() {
       fetchData(); // Met à jour les données après l'archivage ou le désarchivage
 
       setArchiveLabel(isArchived ? "Désarchiver" : "Archiver");
-      toast.success(notificationMessage, {
-        duration: 3000,
-      });
+      // toast.success(notificationMessage, {
+      //   duration: 3000,
+      // });
+      toast.success("Archivage reussit")
     } catch (error) {
       console.error("Error archiving student:", error);
     }
@@ -180,9 +183,9 @@ export default function TableauUtilisateurs() {
 
 
   const filteredData = useMemo(() => {
-    if (roleFilter === 'des utilisateurs') {
+    if (roleFilter === "des utilisateurs") {
       return utilisateursData;
-    } else if (roleFilter === 'Archivés') {
+    } else if (roleFilter === "Archivés") {
       return utilisateursData.filter((utilisateur) => utilisateur.archived);
     } else {
       return utilisateursData.filter(
@@ -192,7 +195,7 @@ export default function TableauUtilisateurs() {
   }, [roleFilter, utilisateursData]);
 
   // Utilisez le stockage local pour sauvegarder et récupérer le filtre sélectionné
-  const localStorageKey = 'roleFilter';
+  const localStorageKey = "roleFilter";
 
   // Au chargement du composant, vérifiez s'il y a une valeur de filtre enregistrée
   // Si oui, utilisez-la comme valeur initiale pour le filtre
@@ -210,8 +213,8 @@ export default function TableauUtilisateurs() {
     localStorage.setItem(localStorageKey, selectedValue);
 
     // Mettez à jour tabType en fonction de la valeur du filtre sélectionné
-    if (selectedValue === 'Archivés') {
-      setTabType('utilisateurs archivées');
+    if (selectedValue === "Archivés") {
+      setTabType("utilisateurs archivées");
     } else {
       setTabType(selectedValue);
     }
@@ -221,33 +224,33 @@ export default function TableauUtilisateurs() {
   const columns = useMemo(
     () => [
       {
-        accessorKey: 'name',
-        header: 'Prenom & Nom',
+        accessorKey: "name",
+        header: "Nom",
         size: 150,
       },
       {
-        accessorKey: 'number',
-        header: 'Téléphone',
+        accessorKey: "number",
+        header: "Téléphone",
         size: 200,
       },
       {
-        accessorKey: 'email',
-        header: 'Email',
+        accessorKey: "email",
+        header: "Email",
         size: 150,
       },
       {
-        accessorKey: 'addresse',
-        header: 'Adresse',
+        accessorKey: "addresse",
+        header: "Adresse",
         size: 150,
       },
       {
-        accessorKey: 'role',
-        header: 'Role (status)',
+        accessorKey: "role",
+        header: "Role (statut)",
         size: 150,
       },
       {
-        accessorKey: 'actions',
-        header: 'Actions',
+        accessorKey: "actions",
+        header: "Boutons d'actions",
         // size: 100,
       },
     ],
@@ -270,7 +273,7 @@ export default function TableauUtilisateurs() {
             className="d-flex justify-content-center align-items-center btn btn-outline-primary rounded-3 me-3"
             onClick={() => showDetails(utilisateur)}
           >
-            <FaEye className="" style={{ width: "15px", height: "15px" }} />
+            <FaEye className="" style={{ width: "18px", height: "18px" }} />
           </button>
           <button
             type="button"
@@ -280,7 +283,7 @@ export default function TableauUtilisateurs() {
               setFormVisible(true);
             }}
           >
-            <FaEdit className="" style={{ width: "15px", height: "15px" }} />
+            <FaEdit className="" style={{ width: "18px", height: "18px" }} />
           </button>
           <button
             type="button"
@@ -289,12 +292,21 @@ export default function TableauUtilisateurs() {
               handleArchiveToggle(utilisateur.id, utilisateur.archived || false)
             }
           >
-            <FaArchive className="" style={{ width: "15px", height: "15px" }} />
-            {utilisateur.archived ? "Désarchiver" : ""}
+            {utilisateur.archived ? (
+              <TbArchiveFilled
+                className=""
+                style={{ width: "18px", height: "18px" }}
+              />
+            ) : (
+              <TbArchiveOff
+                className=""
+                style={{ width: "18px", height: "18px" }}
+              />
+            )}
           </button>
         </div>
       ),
-      className: utilisateur.archived ? 'tableRowArchived bg-info' : '',
+      className: utilisateur.archived ? "tableRowArchived bg-info" : "",
     }));
   }, [filteredData]);
 
@@ -404,7 +416,7 @@ export default function TableauUtilisateurs() {
               />
               <label htmlFor="address">Adresse</label>
             </span>
-            <span className="p-float-label my-5">
+            {/* <span className="p-float-label my-5">
               <select
                 className="form-select my-3"
                 aria-label="Default select example"
@@ -413,13 +425,12 @@ export default function TableauUtilisateurs() {
                 onChange={(e) => setRoleValue(e.target.value)}
                 style={{ width: "100%" }}
               >
-                {/* <option value="Administrateur">{roleValue}</option> */}
                 <option value="Administrateur">Administrateur</option>
                 <option value="Coach">Coach</option>
                 <option value="Étudiant">Étudiant</option>
               </select>
               <label htmlFor="Role"></label>
-            </span>
+            </span> */}
           </div>
           <div className="card flex flex-wrap justify-content-center p-0">
             <Button
