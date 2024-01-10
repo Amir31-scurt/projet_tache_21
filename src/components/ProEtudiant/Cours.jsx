@@ -52,7 +52,6 @@ export default function Cours() {
       setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
     }
   };
-  
 
   useEffect(() => {
     if (selectedFiles.length === 0) {
@@ -120,43 +119,41 @@ export default function Cours() {
   //   }
   // };
 
+  const handleUpload = async (user) => {
+    // Créez un tableau pour stocker les URLs des images
+    const imageUrls = [];
 
-    const handleUpload = async (user) => {
-      // Créez un tableau pour stocker les URLs des images
-      const imageUrls = [];
+    // Loop through selected files and upload each to Firebase Storage
+    await Promise.all(
+      selectedFiles.map(async (file) => {
+        const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
+        await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(storageRef);
+        // Ajoutez l'URL au tableau
+        imageUrls.push(url);
+      })
+    );
 
-      // Loop through selected files and upload each to Firebase Storage
-      await Promise.all(
-        selectedFiles.map(async (file) => {
-          const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
-          await uploadBytes(storageRef, file);
-          const url = await getDownloadURL(storageRef);
-          // Ajoutez l'URL au tableau
-          imageUrls.push(url);
-        })
-      );
+    // Clear selected files
+    setSelectedFiles([]);
+    // Close the modal
+    setOpen(false);
 
-      // Clear selected files
-      setSelectedFiles([]);
-      // Close the modal
-      setOpen(false);
-
-
-      if (imageUrls.length > 0) {
-        // Ajoutez une seule fois le document dans Firestore avec tous les URLs d'images
-        await addDoc(collection(db, "publication"), {
-          userID: UserUid,
-          profile: user.photoURL || "",
-          nom: UserName || "",
-          date: format(new Date(), "dd/MM/yyyy - HH:mm:ss"),
-          images: imageUrls, // Utilisez le tableau des URLs ici
-          email: UserEmail || "",
-          cours: "",
-          finish: false,
-          livree: false,
-        });
-      }
-    };
+    if (imageUrls.length > 0) {
+      // Ajoutez une seule fois le document dans Firestore avec tous les URLs d'images
+      await addDoc(collection(db, 'publication'), {
+        userID: UserUid,
+        profile: user.photoURL || '',
+        nom: UserName || '',
+        date: format(new Date(), 'dd/MM/yyyy - HH:mm:ss'),
+        images: imageUrls, // Utilisez le tableau des URLs ici
+        email: UserEmail || '',
+        cours: '',
+        finish: false,
+        livree: false,
+      });
+    }
+  };
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -324,7 +321,7 @@ export default function Cours() {
 
             return (
               <div key={index} className="col-12 col-md-6 col-lg-4">
-                <Card style={{ padding: "20px" }}>
+                <Card style={{ padding: '20px' }}>
                   <h5>
                     Cours {index + 1} : {course.title}
                   </h5>
