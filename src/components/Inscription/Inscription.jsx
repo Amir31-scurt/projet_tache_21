@@ -175,7 +175,7 @@ const Inscription = ({ onRegisterSuccess }) => {
         footer={dialogFooter}
         showHeader={false}
         breakpoints={{ "960px": "80vw" }}
-        // style={{ width: "30vw" }}
+        style={{ width: "30vw" }}
       >
         <div className="flex justify-content-center flex-column pt-6 px-3">
           <i
