@@ -10,14 +10,7 @@ const BulletinEtudiant = () => {
   const [selectedDomain, setSelectedDomain] = useState(null);
   const [domains, setDomains] = useState([]);
   const [bulletinInfo, setBulletinInfo] = useState({
-    notes: {
-      note_1: 0,
-      note_2: 0,
-      note_3: 0,
-      note_4: 0,
-      projet: 0,
-      devoirs: 0,
-    },
+    sousDomaines: [],
     appreciation: "",
   });
 
@@ -53,13 +46,11 @@ const BulletinEtudiant = () => {
         const domainList = domainsSnapshot.docs.map((doc) => ({
           id: doc.id,
           domaine: doc.data().domaine,
-          sousDomaines: doc.data().sousDomaines || [], 
+          sousDomaines: doc.data().sousDomaines || [],
         }));
         setDomains(domainList);
 
         console.log("Domaines et sous-domaines :", domainList);
-
-  
       } catch (error) {
         console.error("Erreur :", error);
       }
@@ -67,17 +58,28 @@ const BulletinEtudiant = () => {
 
     fetchDomains();
   }, []);
+
+  const getSousDomaines = (domainId) => {
+    const selectedDomainObj = domains.find((domain) => domain.id === domainId);
+    return selectedDomainObj
+      ? Object.keys(selectedDomainObj.sousDomaines || {})
+      : [];
+  };
+
   const handleChangeDomain = (e) => {
-    const domain = e.target.value;
-    setSelectedDomain(domain);
+    const domainId = e.target.value;
+    setSelectedDomain(domainId);
+
+    const sousDomaines = getSousDomaines(domainId);
+
     setBulletinInfo((prevInfo) => ({
       ...prevInfo,
+      sousDomaines: sousDomaines,
       address: selectedStudentData?.address || "",
       email: selectedStudentData?.email || "",
       number: selectedStudentData?.number || "",
     }));
   };
-  
 
   const handleChangeStudent = (e) => {
     const selectedValue = e.target.value;
@@ -91,12 +93,7 @@ const BulletinEtudiant = () => {
     setSelectedStudentData(selectedStudentData);
 
     setBulletinInfo({
-      notes: {
-        note_1: 0,
-        note_2: 0,
-        note_3: 0,
-        note_4: 0,
-      },
+      sousDomaines:[],
       appreciation: "",
       address: selectedStudentData?.address || "",
       email: selectedStudentData?.email || "",
@@ -106,14 +103,12 @@ const BulletinEtudiant = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (
-      [
-        "note_1",
-        "note_2",
-        "note_3",
-        "note_4",
-      ].includes(name)
-    ) {
+    if (name === "appreciation") {
+      setBulletinInfo((prevInfo) => ({
+        ...prevInfo,
+        [name]: value,
+      }));
+    } else {
       setBulletinInfo((prevInfo) => ({
         ...prevInfo,
         notes: {
@@ -121,11 +116,7 @@ const BulletinEtudiant = () => {
           [name]: parseInt(value, 10),
         },
       }));
-    } else {
-      setBulletinInfo((prevInfo) => ({
-        ...prevInfo,
-        [name]: value,
-      }));
+      
     }
   };
 
@@ -158,16 +149,22 @@ const BulletinEtudiant = () => {
       console.log("Email de l'étudiant sélectionné :", studentEmail);
       console.log("Numéro de l'étudiant sélectionné :", studentNumber);
 
-      //  les données du bulletin
+      const notes = {};
+      bulletinInfo.sousDomaines.forEach((subject) => {
+        notes[subject] = bulletinInfo.notes[subject] || 0;
+      });
+  
+   
       const bulletinData = {
         studentId: studentUid,
         studentName: studentName,
         address: studentAddress,
         email: studentEmail,
         number: studentNumber,
-        notes: bulletinInfo.notes,
+        notes: notes, 
         appreciation: bulletinInfo.appreciation,
       };
+      
 
       console.log("Données du bulletin à enregistrer :", bulletinData);
 
@@ -179,12 +176,7 @@ const BulletinEtudiant = () => {
       // Réinitialisez les états après la soumission réussie
       setSelectedStudentData(null);
       setBulletinInfo({
-        notes: {
-          note_1: 0,
-          note_2: 0,
-          note_3: 0,
-          note_4: 0,
-        },
+       sousDomaines:[],
         appreciation: "",
         address: "",
         email: "",
@@ -242,65 +234,44 @@ const BulletinEtudiant = () => {
                 Sélectionner un domaine
               </option>
               {domains.map((domain) => (
-                <option key={domain.id}   className="text-dark" value={domain.id}>
+                <option key={domain.id} className="text-dark" value={domain.id}>
                   {domain.domaine}
                 </option>
               ))}
             </select>
           </div>
-
           {selectedStudentData && (
             <div>
               <h4>Notes de l'étudiant :</h4>
               <div className="row mb-3">
-                <div className="col-md-6">
-                  {["note_1", "note_2"].map((subject) => (
-                    <div className="form-group" key={subject}>
-                      <label htmlFor={subject}>
-                        {subject.charAt(0).toUpperCase() + subject.slice(1)} :
-                      </label>
-                      <select
-                        id={subject}
-                        name={subject}
-                        value={bulletinInfo.notes[subject]}
-                        onChange={handleChange}
-                        className="form-control"
-                      >
-                        {Array.from({ length: 21 }, (_, i) => i).map(
-                          (value) => (
-                            <option key={value} value={value}>
-                              {value}
-                            </option>
-                          )
-                        )}
-                      </select>
+                {bulletinInfo.sousDomaines &&
+                  bulletinInfo.sousDomaines.length > 0 && (
+                    <div className="col-md-6">
+                      {bulletinInfo.sousDomaines.map((subject) => (
+                        <div className="form-group" key={subject}>
+                          <label htmlFor={subject}>
+                            {subject.charAt(0).toUpperCase() + subject.slice(1)}{" "}
+                            :
+                          </label>
+                          <select
+                            id={subject}
+                            name={subject}
+                            value={bulletinInfo.sousDomaines[subject]}
+                            onChange={handleChange}
+                            className="form-control"
+                          >
+                            {Array.from({ length: 21 }, (_, i) => i).map(
+                              (value) => (
+                                <option key={value} value={value}>
+                                  {value}
+                                </option>
+                              )
+                            )}
+                          </select>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-                <div className="col-md-6">
-                  {["note_3", "note_4"].map((subject) => (
-                    <div className="form-group" key={subject}>
-                      <label htmlFor={subject}>
-                        {subject.charAt(0).toUpperCase() + subject.slice(1)} :
-                      </label>
-                      <select
-                        id={subject}
-                        name={subject}
-                        value={bulletinInfo.notes[subject]}
-                        onChange={handleChange}
-                        className="form-control"
-                      >
-                        {Array.from({ length: 21 }, (_, i) => i).map(
-                          (value) => (
-                            <option key={value} value={value}>
-                              {value}
-                            </option>
-                          )
-                        )}
-                      </select>
-                    </div>
-                  ))}
-                </div>
+                  )}
               </div>
               <div className="form-group">
                 <label htmlFor="appreciation">Appréciation :</label>
@@ -327,5 +298,4 @@ const BulletinEtudiant = () => {
     </div>
   );
 };
-
 export default BulletinEtudiant;
