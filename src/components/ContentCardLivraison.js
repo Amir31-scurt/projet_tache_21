@@ -4,6 +4,11 @@ import FilterStudents from "./CompoDashCoach/FiterStudents";
 import { EmailContext } from "../contexte/EmailContexte";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../config/firebase-config";
+import {
+  differenceInDays,
+  differenceInHours,
+  differenceInMinutes,
+} from "date-fns";
 
 function ContentCardLivraison() {
   const [users, setUsers] = useState([]);
@@ -36,46 +41,117 @@ function ContentCardLivraison() {
       usersStudentsUnsub();
       publications();
     };
-  }, []); 
+  }, []);
 
   const roleUser = users.find((user) => user.email === email);
   return (
     <div>
       {roleUser && roleUser.role === "Coach" ? <FilterStudents /> : ""}
       <div className="d-flex justify-content-center flex-wrap">
-        {roleUser && roleUser.role === "Coach" ? (
-          publication.map((pub) => (
-            <CardLivraison
-              role={roleUser}
-              name={pub.nom}
-              title={pub.cours}
-              defaultImg={pub.images[0]}
-              images={pub.images}
-              validation={pub.finish}
-              date={pub.date}
-            />
-          ))
-        ) : (
-          roleUser && roleUser.role === "Étudiant" && (
-            publication.filter((pubs) => pubs.email === roleUser.email).length > 0 ? (
+        {roleUser && roleUser.role === "Coach"
+          ? publication.map((pub) => {
+              const dateToCompare =
+                pub.date && pub.date.toDate && pub.date.toDate() instanceof Date
+                  ? pub.date.toDate()
+                  : null;
+              const daysDifference = dateToCompare
+                ? differenceInDays(new Date(), dateToCompare)
+                : null;
+
+              let displayDifference;
+
+              if (daysDifference > 0) {
+                displayDifference = `${daysDifference} jour${
+                  daysDifference !== 1 ? "s" : ""
+                }`;
+              } else {
+                const hoursDifference = Math.abs(
+                  differenceInHours(new Date(), dateToCompare)
+                );
+                const minutesDifference = Math.abs(
+                  differenceInMinutes(new Date(), dateToCompare)
+                );
+
+                if (hoursDifference > 0) {
+                  displayDifference = `${hoursDifference} heure${
+                    hoursDifference !== 1 ? "s" : ""
+                  }`;
+                } else {
+                  displayDifference = `${minutesDifference} minute${
+                    minutesDifference !== 1 ? "s" : ""
+                  }`;
+                }
+              }
+
+              return (
+                <CardLivraison
+                  role={roleUser}
+                  name={pub.nom}
+                  title={pub.cours}
+                  defaultImg={pub.images[0]}
+                  images={pub.images}
+                  validation={pub.finish}
+                  date={displayDifference}
+                />
+              );
+            })
+          : roleUser &&
+            roleUser.role === "Étudiant" &&
+            (publication.filter((pubs) => pubs.email === roleUser.email)
+              .length > 0 ? (
               publication
                 .filter((pubs) => pubs.email === roleUser.email)
-                .map((pub) => (
-                  <CardLivraison
-                    role={roleUser}
-                    name={pub.nom}
-                    title={pub.cours}
-                    defaultImg={pub.images[0]}
-                    images={pub.images}
-                    validation={pub.finish}
-                    date={pub.date}
-                  />
-                ))
+                .map((pub) => {
+                  const dateToCompare =
+                    pub.date &&
+                    pub.date.toDate &&
+                    pub.date.toDate() instanceof Date
+                      ? pub.date.toDate()
+                      : null;
+                  const daysDifference = dateToCompare
+                    ? differenceInDays(new Date(), dateToCompare)
+                    : null;
+
+                  let displayDifference;
+
+                  if (daysDifference > 0) {
+                    displayDifference = `${daysDifference} jour${
+                      daysDifference !== 1 ? "s" : ""
+                    }`;
+                  } else {
+                    const hoursDifference = Math.abs(
+                      differenceInHours(new Date(), dateToCompare)
+                    );
+                    const minutesDifference = Math.abs(
+                      differenceInMinutes(new Date(), dateToCompare)
+                    );
+
+                    if (hoursDifference > 0) {
+                      displayDifference = `${hoursDifference} heure${
+                        hoursDifference !== 1 ? "s" : ""
+                      }`;
+                    } else {
+                      displayDifference = `${minutesDifference} minute${
+                        minutesDifference !== 1 ? "s" : ""
+                      }`;
+                    }
+                  }
+
+                  return (
+                    <CardLivraison
+                      role={roleUser}
+                      name={pub.nom}
+                      title={pub.cours}
+                      defaultImg={pub.images[0]}
+                      images={pub.images}
+                      validation={pub.finish}
+                      date={displayDifference}
+                    />
+                  );
+                })
             ) : (
               <h2>Aucune livraison enregistrée</h2>
-            )
-          )
-        )}
+            ))}
       </div>
     </div>
   );
