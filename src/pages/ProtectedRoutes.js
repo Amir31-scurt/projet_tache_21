@@ -27,10 +27,10 @@ import StudentProgram from '../components/ProEtudiant/Programme';
 import Cours from '../components/ProEtudiant/Cours';
 import UserTable from '../components/super-admin/TableauUtilisateurs';
 import logo from '../assets/images/logo.png';
-import Quizz from '../components/quizzs/quizzs';
 import RenduBulletinEtudiant from '../components/RenduBulletinEtudiant';
 import ReactHookFormDemo from '../components/super-admin/Certificat';
 import NotFound from './NotFound';
+import QuizGstEnt from '../components/quizzs/QuizGstEnt'
 
 export default function ProtectedRoutes() {
   const { email } = useContext(EmailContext);
@@ -154,7 +154,7 @@ export default function ProtectedRoutes() {
         },
         {
           path: 'etudiant/quizz',
-          element: <Quizz />,
+          element: <QuizGstEnt />,
         },
         {
           path: '*',
