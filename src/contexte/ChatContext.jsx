@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useReducer } from 'react';
 import { ChatAuthCtx } from './ChatAuthCtx';
+import { AuthContext } from './AuthContext';
 
 export const ChatContext = createContext();
 
 export const ChatContextProvider = ({ children }) => {
-  const { currentUser } = useContext(ChatAuthCtx);
+  const { currentUser } = useContext(AuthContext);
   console.log('Le currentUser du chatContext', currentUser);
 
   const INITIAL_STATE = {
