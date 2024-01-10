@@ -19,6 +19,7 @@ export default function Cours() {
   const [timers, setTimers] = useState({}); // Timer state as an object
   const [intervalIds, setIntervalIds] = useState({}); // To store interval IDs
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedCourseTitle, setSelectedCourseTitle] = useState('');
 
   const { currentUser, uid } = useContext(AuthContext);
 
@@ -193,6 +194,8 @@ export default function Cours() {
   const handleOpen = (courseIndex) => {
     setOpen(true);
     setSelectedCourse(courseIndex);
+    const selectedCourse = courses[courseIndex];
+    setSelectedCourseTitle(selectedCourse.title);
   };
 
   const formatTime = (seconds) => {
@@ -362,13 +365,28 @@ export default function Cours() {
               backdrop={backdrop}
               keyboard={false}
               open={open}
-              onClose={handleClose}
+              onClose={() => {
+                handleClose();
+                setSelectedCourseTitle(''); // Reset the selected course title when closing the modal
+              }}
             >
               <Modal.Header>
                 <Modal.Title>Envoyer mon travail</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <div className="mb-3">
+                  <div className="mb-3">
+                    <label htmlFor="courseTitle" className="form-label">
+                      Titre
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="courseTitle"
+                      value={selectedCourseTitle}
+                      readOnly // Makes the input read-only
+                    />
+                  </div>
                   <textarea
                     placeholder="description"
                     className="form-control"
@@ -386,7 +404,7 @@ export default function Cours() {
                   <label
                     htmlFor="formFileLg"
                     id="myfiles"
-                    className="form-label inputStyle"
+                    className="form-label inputStyle btn text-white"
                   >
                     Choisir Fichiers
                   </label>
