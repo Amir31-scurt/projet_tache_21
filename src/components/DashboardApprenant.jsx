@@ -1,17 +1,46 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import CardLivraison from './CardLivraison';
 import DashboardCompo from './programmes/Single_Programmes/DashboardCompo';
 import { Users } from './CompoDashCoach/Sous_CompoSideBar/Utils';
 import { MdTask } from 'react-icons/md';
 import { FaUsers } from 'react-icons/fa';
 import { PiUsersFourFill } from 'react-icons/pi';
-import {
-  collection,
-  onSnapshot,
-} from 'firebase/firestore';
-import { db } from '../config/firebase-config';
+import { collection, onSnapshot, getDocs, updateDoc } from "firebase/firestore";
+import CardLivraison from "../components/CardLivraison";
+import { db } from "../config/firebase-config";
 
 export default function DashboardApprenant() {
+
+  const [livraisons, setLivraisons] = useState([]);
+
+  useEffect(() => {
+    const fetchLivraisons = async () => {
+      try {
+        const publicationRef = collection(db, "publication");
+        const querySnapshot = await getDocs(publicationRef);
+
+        const nouvellesLivraisons = [];
+        querySnapshot.forEach(async (doc) => {
+          const data = doc.data();
+          nouvellesLivraisons.push(
+            <CardLivraison key={doc.id} images={data.images} />
+          );
+
+          await updateDoc(doc.ref, { livree: true });
+        });
+
+        setLivraisons(nouvellesLivraisons);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des livraisons", error);
+      }
+    };
+
+    fetchLivraisons();
+  }, []);
+
+
+
+
+
   // L'stockage des utilisateurs récupérés depuis Firestore
   const [users, setUsers] = useState([]);
 
@@ -83,12 +112,9 @@ export default function DashboardApprenant() {
           <DashboardCompo {...elem} key={index} />
         ))}
       </div>
-      <CardLivraison />
-      <CardLivraison />
-      <CardLivraison />
-      <CardLivraison />
-      <CardLivraison />
-      <CardLivraison />
+      <div className="d-flex flex-column ms-3 justify-content-center">
+        {livraisons}
+      </div>
     </div>
   );
 }

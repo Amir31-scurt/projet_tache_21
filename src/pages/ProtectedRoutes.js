@@ -16,11 +16,8 @@ import Certificate from '../components/BulletinEtudiant';
 import ContentCardLivraison from '../components/ContentCardLivraison';
 import AssignationPage from '../components/pageAssignation/AssignationPage';
 import '../App.css';
-import Table from '../components/super-admin/Table';
 import TemplateDemo from '../components/super-admin/AssignationDomaines';
 import CreateDomaine from '../components/super-admin/CreateDomaine';
-import NewCoach from '../components/super-admin/NewCoach';
-import StudentTable from '../components/super-admin/StudentTable';
 import { EmailContext } from '../contexte/EmailContexte';
 import React, { useContext, useState, useEffect } from 'react';
 import { fetchAdminEmails } from '../utils/fetchAdminEmails';
@@ -32,7 +29,7 @@ import UserTable from '../components/super-admin/TableauUtilisateurs';
 import logo from '../assets/images/logo.png';
 import Quizz from '../components/quizzs/quizzs';
 import RenduBulletinEtudiant from '../components/RenduBulletinEtudiant';
-import BulletinEtudiant from '../components/BulletinEtudiant';
+import ReactHookFormDemo from '../components/super-admin/Certificat';
 import NotFound from './NotFound';
 
 export default function ProtectedRoutes() {
@@ -85,12 +82,12 @@ export default function ProtectedRoutes() {
         },
         {
           path: '/admin/certificats',
-          element: <BulletinEtudiant />,
+          element: <ReactHookFormDemo />,
         },
         {
-          path: "*",
-          element: <NotFound redirect="/admin/dashboard"/>
-        }
+          path: '*',
+          element: <NotFound redirect="/admin/dashboard" />,
+        },
       ]
     : [];
   const coachRoutes = isCoach
@@ -124,9 +121,9 @@ export default function ProtectedRoutes() {
           element: <AssignationPage />,
         },
         {
-          path: "*",
-          element: <NotFound redirect="/coach/dashboard" />
-        }
+          path: '*',
+          element: <NotFound redirect="/coach/dashboard" />,
+        },
       ]
     : [];
   const studentRoutes = isStudent
@@ -160,9 +157,9 @@ export default function ProtectedRoutes() {
           element: <Quizz />,
         },
         {
-          path: "*",
-          element: <NotFound redirect="etudiant/dashboard" />
-        }
+          path: '*',
+          element: <NotFound redirect="etudiant/dashboard" />,
+        },
       ]
     : [];
 
@@ -189,7 +186,6 @@ export default function ProtectedRoutes() {
         ...studentRoutes,
       ],
     },
-    
   ]);
 
   return <RouterProvider router={router} />;

@@ -1,10 +1,9 @@
-
 // Importation des bibliothèques et composants nécessaires depuis les modules externes et les fichiers locaux
-import { useForm } from "react-hook-form";
-import { MultiSelect } from "primereact/multiselect";
-import { Button } from "primereact/button";
-import { ToastContainer, toast } from "react-toastify";
-import { useEffect, useState, useRef } from "react";
+import { useForm } from 'react-hook-form';
+import { MultiSelect } from 'primereact/multiselect';
+import { Button } from 'primereact/button';
+import { ToastContainer, toast } from 'react-toastify';
+import { useEffect, useState, useRef } from 'react';
 import {
   collection,
   getDocs,
@@ -14,14 +13,13 @@ import {
   arrayUnion,
   serverTimestamp,
   addDoc,
-} from "firebase/firestore";
-import { db } from "../../config/firebase-config";
-import "react-toastify/dist/ReactToastify.css";
-import "rsuite/dist/rsuite.css";
-import { PulseLoader } from "react-spinners";
-import React from "react";
-import SpinnerIcon from "@rsuite/icons/legacy/Spinner";
-
+} from 'firebase/firestore';
+import { db } from '../../config/firebase-config';
+import 'react-toastify/dist/ReactToastify.css';
+import 'rsuite/dist/rsuite.css';
+import { PulseLoader } from 'react-spinners';
+import React from 'react';
+import SpinnerIcon from '@rsuite/icons/legacy/Spinner';
 
 export const AssignationEtudiant = () => {
   // Initialisation des états pour stocker les données et le statut de chargement
@@ -79,7 +77,7 @@ export const AssignationEtudiant = () => {
     // Vérifier si au moins un coach et un étudiant sont sélectionnés
     if (selectedCoaches.length === 0 || selectedStudents.length === 0) {
       setErrorMessage(
-        "Veuillez sélectionner au moins un coach et un étudiant."
+        'Veuillez sélectionner au moins un coach et un étudiant.'
       );
       return;
     }
@@ -93,8 +91,8 @@ export const AssignationEtudiant = () => {
         selectedCoaches.map(async (selectedCoachEmail) => {
           // Requête pour obtenir le document du coach
           const coachQuery = query(
-            collection(db, "utilisateurs"),
-            where("email", "==", selectedCoachEmail)
+            collection(db, 'utilisateurs'),
+            where('email', '==', selectedCoachEmail)
           );
           const coachDocs = await getDocs(coachQuery);
 
@@ -103,31 +101,12 @@ export const AssignationEtudiant = () => {
             const coachDoc = coachDocs.docs[0];
             const sousDomaineDuCoach = coachDoc.data().sousDomaines;
 
-            const etudiantsSelectionnes = [];
-
-            for (const selectedEtudiant of selectedStudents) {
-              // Récupération des informations de l'étudiant sélectionné
-              const etudiantQuery = query(
-                collection(db, "utilisateurs"),
-                where("email", "==", selectedEtudiant)
-              );
-              const etudiantDocs = await getDocs(etudiantQuery);
-
-              if (etudiantDocs.size > 0) {
-                const etudiantDoc = etudiantDocs.docs[0];
-                
-
-                // Mise à jour des informations de l'étudiant
-                await updateDoc(etudiantDoc.ref, {
-                  coach: coachDoc.data().name,
-                  sousDomaines: sousDomaineDuCoach,
-                  emailCoach: coachDoc.data().email,
-                });
-
-                etudiantsSelectionnes.push(etudiantDoc.data().name);
-              } else {
-                console.warn(
-                  `Aucun document d'étudiant trouvé avec l'email spécifié: ${selectedEtudiant}`
+            // Assigner chaque étudiant sélectionné au coach
+            const etudiantsSelectionnes = await Promise.all(
+              selectedStudents.map(async (selectedEtudiant) => {
+                const etudiantQuery = query(
+                  collection(db, 'utilisateurs'),
+                  where('email', '==', selectedEtudiant)
                 );
                 const etudiantDocs = await getDocs(etudiantQuery);
 
@@ -190,8 +169,8 @@ export const AssignationEtudiant = () => {
 
         // Requête pour obtenir la liste des coachs
         const coachsQuery = query(
-          collection(db, "utilisateurs"),
-          where("role", "==", "Coach")
+          collection(db, 'utilisateurs'),
+          where('role', '==', 'Coach')
         );
         const coachsDocs = await getDocs(coachsQuery);
         const coachsData = coachsDocs.docs.map((doc) => doc.data());
@@ -199,8 +178,8 @@ export const AssignationEtudiant = () => {
 
         // Requête pour obtenir la liste des étudiants sans coach
         const etudiantsQuery = query(
-          collection(db, "utilisateurs"),
-          where("role", "==", "Étudiant")
+          collection(db, 'utilisateurs'),
+          where('role', '==', 'Étudiant')
         );
         const etudiantsDocs = await getDocs(etudiantsQuery);
         const etudiantsData = etudiantsDocs.docs
@@ -208,9 +187,9 @@ export const AssignationEtudiant = () => {
           .filter((etudiant) => !etudiant.coach);
         setEtudiants(etudiantsData);
       } catch (error) {
-        console.error("Erreur lors du chargement des données :", error);
+        console.error('Erreur lors du chargement des données :', error);
         setErrorMessage(
-          "Erreur lors du chargement des données. Veuillez réessayer."
+          'Erreur lors du chargement des données. Veuillez réessayer.'
         );
       } finally {
         setDataLoading(false);
@@ -234,10 +213,10 @@ export const AssignationEtudiant = () => {
   return (
     <div
       className="p-3 d-flex justify-content-center flex-column"
-      style={{ width: "100%" }}
+      style={{ width: '100%' }}
     >
-      <div className="ComtaTabAss m-auto" style={{ padding: "20px" }}>
-        <div className="mt-5" style={{ marginBottom: "220px" }}>
+      <div className="ComtaTabAss m-auto" style={{ padding: '20px' }}>
+        <div className="mt-5" style={{ marginBottom: '220px' }}>
           <div className="d-flex flex-column">
             {/* Sélection du coach */}
             <div className="mb-3">
@@ -245,7 +224,7 @@ export const AssignationEtudiant = () => {
                 Sélectionner un coach
               </label>
               <MultiSelect
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 value={selectedCoaches}
                 options={coachs.map((coach) => ({
                   label: coach.name,
@@ -264,7 +243,7 @@ export const AssignationEtudiant = () => {
                 Sélectionner un ou des étudiants
               </label>
               <MultiSelect
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 value={selectedStudents}
                 options={etudiants.map((etudiant) => ({
                   label: etudiant.name,
@@ -279,7 +258,7 @@ export const AssignationEtudiant = () => {
               />
             </div>
           </div>
-          
+
           {/* Affichage du message d'erreur s'il y a lieu */}
           {errorMessage && <small className="SmallMsg">{errorMessage}</small>}
         </div>
@@ -288,7 +267,7 @@ export const AssignationEtudiant = () => {
         <div className="mt-5 d-flex align-items-center w-100">
           <button
             className="btn w-100 text-white boutonAssign rounded-5 fw-bold"
-            style={{ backgroundColor: " #3084b5" }}
+            style={{ backgroundColor: ' #3084b5' }}
             onClick={handleAssign}
             disabled={
               loading ||
@@ -296,12 +275,12 @@ export const AssignationEtudiant = () => {
               selectedStudents.length === 0
             }
           >
-            {loading ? "Assignation" : "Assigner"}
+            {loading ? 'Assignation' : 'Assigner'}
           </button>
 
           {/* Indicateur de chargement en cours */}
           {loading && (
-            <PulseLoader className="ms-1" color={"#0057a0"} size={12} />
+            <PulseLoader className="ms-1" color={'#0057a0'} size={12} />
           )}
         </div>
 
@@ -311,6 +290,3 @@ export const AssignationEtudiant = () => {
     </div>
   );
 };
-
-
-

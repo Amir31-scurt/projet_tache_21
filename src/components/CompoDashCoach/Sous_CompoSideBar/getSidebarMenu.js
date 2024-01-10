@@ -100,12 +100,6 @@ export const GetSidebarMenu = () => {
           link: '/coach/livrable',
         },
         {
-          title: 'Assignation',
-          icon: <MdOutlineAssignment />,
-          id: 'link4',
-          link: '/coach/assignation',
-        },
-        {
           title: 'Bulletin',
           icon: <TbCertificate />,
           id: 'link6',
