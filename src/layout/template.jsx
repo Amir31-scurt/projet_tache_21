@@ -50,7 +50,7 @@ export default function Template() {
         <div className="bodyContent col d-flex">
           <div className="col">
             <Outlet />
-            <ChatHome />
+            {/* <ChatHome /> */}
             {/* Outlet Position */}
           </div>
           {isDashboard && (
