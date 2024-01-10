@@ -14,6 +14,7 @@ import {
 } from "firebase/firestore";
 import { db, auth } from "../config/firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
+import { format } from 'date-fns';
 
 import { toast } from "react-hot-toast";
 import commenter from "../assets/images/commenter.png";
@@ -65,7 +66,7 @@ export default function CardLivraison() {
         setApprenat(studentData.nom);
         settitreCourEtudiant(studentData.cours);
         setCoach(studentData.coach);
-        setDate(studentData.date);
+        setDate(format(studentData.date.toDate(), 'dd/MM/yyyy - HH:mm:ss'));
       }
     } catch (error) {
       console.error(

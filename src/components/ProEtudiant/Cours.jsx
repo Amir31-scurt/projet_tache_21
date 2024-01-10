@@ -3,7 +3,7 @@ import { Card } from 'primereact/card';
 import { Modal } from 'rsuite';
 import { useParams } from 'react-router-dom';
 import { db, storage } from '../../config/firebase-config';
-import { getDoc, doc, collection, addDoc, onSnapshot, getDocs, where } from 'firebase/firestore';
+import { getDoc, doc, collection, addDoc, serverTimestamp,onSnapshot, getDocs, where } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { AuthContext } from '../../contexte/AuthContext';
 import { format } from 'date-fns';
