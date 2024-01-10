@@ -1,3 +1,4 @@
+
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
@@ -44,6 +45,7 @@ const Inscription = ({ onRegisterSuccess }) => {
     role: "",
     archived: false,
     active: true,
+    photoURL: "",
   });
 
   const defaultValues = {
@@ -55,6 +57,7 @@ const Inscription = ({ onRegisterSuccess }) => {
     role: "",
     archived: false,
     active: true,
+    photoURL: "",
   };
 
   // Générer un nouveau mot de passe lors du montage du composant
@@ -99,6 +102,7 @@ const Inscription = ({ onRegisterSuccess }) => {
         archived: data.archived,
         active: data.active,
         password: formData.password,
+        photoURL: data.photoURL,
       });
 
       await setDoc(doc(db, "userChats", userCredential.user.uid), {});

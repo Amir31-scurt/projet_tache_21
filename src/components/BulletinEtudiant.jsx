@@ -3,73 +3,117 @@ import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../config/firebase-config";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useAuth from "../utils/auth";
 
 const BulletinEtudiant = () => {
-  const { user } = useAuth();
-
   const [students, setStudents] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState("");
-  const [selectedDomain, setSelectedDomain] = useState("");
+  const [selectedStudentData, setSelectedStudentData] = useState(null);
+  const [selectedDomain, setSelectedDomain] = useState(null);
+  const [domains, setDomains] = useState([]);
   const [bulletinInfo, setBulletinInfo] = useState({
     notes: {
-      javascript: 0,
-      flutter: 0,
-      laravel: 0,
+      note_1: 0,
+      note_2: 0,
+      note_3: 0,
+      note_4: 0,
+      projet: 0,
+      devoirs: 0,
     },
     appreciation: "",
   });
 
-   const subjectsByDomain = {
-    programming: ["JavaScript", "Flutter", "Laravel"],
-    design: ["Web Design", "Graphic Design", "UX/UI Design"],
-    digitalMarketing: ["Social Media Marketing", "SEO", "Content Marketing"],
-  };
-
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const usersQuery = query(collection(db, "utilisateurs"), where("role", "==", "Étudiant"));
+        const usersQuery = query(
+          collection(db, "utilisateurs"),
+          where("role", "==", "Étudiant")
+        );
         const usersSnapshot = await getDocs(usersQuery);
         const userList = usersSnapshot.docs.map((doc) => ({
-          userId: doc.id,
+          userId: doc.data().userId,
           name: doc.data().name,
+          email: doc.data().email,
+          number: doc.data().number,
+          address: doc.data().address,
         }));
         setStudents(userList);
       } catch (error) {
-        console.error("Erreur lors de la récupération des étudiants :", error);
+        console.error("Erreur :", error);
       }
     };
 
     fetchStudents();
   }, []);
 
+  useEffect(() => {
+    const fetchDomains = async () => {
+      try {
+        const domainsQuery = query(collection(db, "domaines"));
+        const domainsSnapshot = await getDocs(domainsQuery);
+        const domainList = domainsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          domaine: doc.data().domaine,
+          sousDomaines: doc.data().sousDomaines || [], 
+        }));
+        setDomains(domainList);
+
+        console.log("Domaines et sous-domaines :", domainList);
+
+  
+      } catch (error) {
+        console.error("Erreur :", error);
+      }
+    };
+
+    fetchDomains();
+  }, []);
+  const handleChangeDomain = (e) => {
+    const domain = e.target.value;
+    setSelectedDomain(domain);
+    setBulletinInfo((prevInfo) => ({
+      ...prevInfo,
+      address: selectedStudentData?.address || "",
+      email: selectedStudentData?.email || "",
+      number: selectedStudentData?.number || "",
+    }));
+  };
+  
+
   const handleChangeStudent = (e) => {
     const selectedValue = e.target.value;
     const selectedStudentData = students.find(
       (student) => student.userId === selectedValue
     );
-  
+
+    console.log("ID :", selectedValue);
     console.log("Nom:", selectedStudentData?.name);
-  
-    setSelectedStudent(selectedValue);
-  
+
+    setSelectedStudentData(selectedStudentData);
+
     setBulletinInfo({
       notes: {
-        javascript: 0,
-        flutter: 0,
-        laravel: 0,
+        note_1: 0,
+        note_2: 0,
+        note_3: 0,
+        note_4: 0,
       },
       appreciation: "",
+      address: selectedStudentData?.address || "",
+      email: selectedStudentData?.email || "",
+      number: selectedStudentData?.number || "",
     });
-  
-    setSelectedDomain("");
   };
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (["javascript", "flutter", "laravel"].includes(name)) {
+    if (
+      [
+        "note_1",
+        "note_2",
+        "note_3",
+        "note_4",
+      ].includes(name)
+    ) {
       setBulletinInfo((prevInfo) => ({
         ...prevInfo,
         notes: {
@@ -85,23 +129,15 @@ const BulletinEtudiant = () => {
     }
   };
 
-  const handleDomainChange = (e) => {
-    const selectedDomainValue = e.target.value;
-    setSelectedDomain(selectedDomainValue);
-  };
-
   const handleSave = async () => {
     try {
-      if (!user) {
-        toast.warning("Veuillez vous connecter.");
-        return;
-      }
+      const studentUid = selectedStudentData?.userId;
 
-      const studentId = selectedStudent;
+      console.log("UID de l'étudiant sélectionné :", studentUid);
 
       const existingBulletinQuery = query(
-        collection(db, 'bulletins'),
-        where('studentId', '==', studentId)
+        collection(db, "bulletins"),
+        where("studentId", "==", studentUid)
       );
 
       const existingBulletinSnapshot = await getDocs(existingBulletinQuery);
@@ -111,25 +147,54 @@ const BulletinEtudiant = () => {
         return;
       }
 
-      const selectedStudentData = students.find(
-        (student) => student.userId === studentId
-      );
+      // Récupérez les informations de l'étudiant sélectionné
       const studentName = selectedStudentData?.name || "Nom inconnu";
+      const studentAddress = selectedStudentData?.address || "Adresse inconnue";
+      const studentEmail = selectedStudentData?.email || "Email inconnu";
+      const studentNumber = selectedStudentData?.number || "Numéro inconnu";
 
+      console.log("Nom de l'étudiant sélectionné :", studentName);
+      console.log("Adresse de l'étudiant sélectionné :", studentAddress);
+      console.log("Email de l'étudiant sélectionné :", studentEmail);
+      console.log("Numéro de l'étudiant sélectionné :", studentNumber);
+
+      //  les données du bulletin
       const bulletinData = {
-        studentId: studentId,
+        studentId: studentUid,
         studentName: studentName,
-        domain: selectedDomain,
+        address: studentAddress,
+        email: studentEmail,
+        number: studentNumber,
         notes: bulletinInfo.notes,
         appreciation: bulletinInfo.appreciation,
       };
 
+      console.log("Données du bulletin à enregistrer :", bulletinData);
+
+      // Ajoutez les données du bulletin à la collection "bulletins"
       await addDoc(collection(db, "bulletins"), bulletinData);
 
       toast.success("Bulletin enregistré avec succès!");
+
+      // Réinitialisez les états après la soumission réussie
+      setSelectedStudentData(null);
+      setBulletinInfo({
+        notes: {
+          note_1: 0,
+          note_2: 0,
+          note_3: 0,
+          note_4: 0,
+        },
+        appreciation: "",
+        address: "",
+        email: "",
+        number: "",
+      });
     } catch (error) {
       console.error("Erreur lors de l'enregistrement du bulletin :", error);
-      toast.error("Une erreur s'est produite lors de l'enregistrement du bulletin.");
+      toast.error(
+        "Une erreur s'est produite lors de l'enregistrement du bulletin."
+      );
     }
   };
 
@@ -144,7 +209,7 @@ const BulletinEtudiant = () => {
             <select
               id="studentSelect"
               name="studentId"
-              value={selectedStudent}
+              value={selectedStudentData?.userId || ""}
               onChange={handleChangeStudent}
               className="form-control text-dark"
               style={{ color: "black", backgroundColor: "white" }}
@@ -163,67 +228,98 @@ const BulletinEtudiant = () => {
               ))}
             </select>
           </div>
-          {selectedStudent && (
+          <div className="form-group">
+            <label htmlFor="domainSelect">Choisir un domaine :</label>
+            <select
+              id="domainSelect"
+              name="domain"
+              value={selectedDomain}
+              onChange={handleChangeDomain}
+              className="form-control text-dark"
+              style={{ color: "dark", backgroundColor: "white" }}
+            >
+              <option value="" disabled>
+                Sélectionner un domaine
+              </option>
+              {domains.map((domain) => (
+                <option key={domain.id}   className="text-dark" value={domain.id}>
+                  {domain.domaine}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {selectedStudentData && (
             <div>
-              <h4>Choisir un domaine :</h4>
-              <div className="form-group">
-                <select
-                  id="domainSelect"
-                  name="domain"
-                  value={selectedDomain}
-                  onChange={handleDomainChange}
-                  className="form-control text-dark"
-                  style={{ color: "black", backgroundColor: "white" }}
-                >
-                  <option value="" disabled>
-                    Sélectionner un domaine
-                  </option>
-                  <option value="programming">Programmation</option>
-                  <option value="design">Design</option>
-                  <option value="digitalMarketing">Marketing Digital</option>
-                </select>
-              </div>
-              {selectedDomain && (
-                <div>
-                  <h4>Notes de l'étudiant :</h4>
-                  {subjectsByDomain[selectedDomain].map((subject) => (
+              <h4>Notes de l'étudiant :</h4>
+              <div className="row mb-3">
+                <div className="col-md-6">
+                  {["note_1", "note_2"].map((subject) => (
                     <div className="form-group" key={subject}>
-                      <label htmlFor={subject}>{subject} :</label>
+                      <label htmlFor={subject}>
+                        {subject.charAt(0).toUpperCase() + subject.slice(1)} :
+                      </label>
                       <select
                         id={subject}
-                        name={subject.toLowerCase()} 
-                        value={bulletinInfo.notes[subject.toLowerCase()]}
+                        name={subject}
+                        value={bulletinInfo.notes[subject]}
                         onChange={handleChange}
                         className="form-control"
                       >
-                        {Array.from({ length: 21 }, (_, i) => i).map((value) => (
-                          <option key={value} value={value}>
-                            {value}
-                          </option>
-                        ))}
+                        {Array.from({ length: 21 }, (_, i) => i).map(
+                          (value) => (
+                            <option key={value} value={value}>
+                              {value}
+                            </option>
+                          )
+                        )}
                       </select>
                     </div>
                   ))}
-                  <div className="form-group">
-                    <label htmlFor="appreciation">Appréciation :</label>
-                    <input
-                      type="text"
-                      id="appreciation"
-                      name="appreciation"
-                      value={bulletinInfo.appreciation}
-                      onChange={handleChange}
-                      className="form-control"
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleSave}
-                    className="btn btn-primary mt-2"
-                  >
-                    Enregistrer le bulletin
-                  </button>
                 </div>
-              )}
+                <div className="col-md-6">
+                  {["note_3", "note_4"].map((subject) => (
+                    <div className="form-group" key={subject}>
+                      <label htmlFor={subject}>
+                        {subject.charAt(0).toUpperCase() + subject.slice(1)} :
+                      </label>
+                      <select
+                        id={subject}
+                        name={subject}
+                        value={bulletinInfo.notes[subject]}
+                        onChange={handleChange}
+                        className="form-control"
+                      >
+                        {Array.from({ length: 21 }, (_, i) => i).map(
+                          (value) => (
+                            <option key={value} value={value}>
+                              {value}
+                            </option>
+                          )
+                        )}
+                      </select>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="form-group">
+                <label htmlFor="appreciation">Appréciation :</label>
+                <input
+                  type="text"
+                  id="appreciation"
+                  name="appreciation"
+                  value={bulletinInfo.appreciation}
+                  onChange={handleChange}
+                  className="form-control"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={handleSave}
+                className="btn btn-primary mt-2"
+              >
+                Enregistrer le bulletin
+              </button>
             </div>
           )}
         </form>
@@ -233,5 +329,3 @@ const BulletinEtudiant = () => {
 };
 
 export default BulletinEtudiant;
-
-

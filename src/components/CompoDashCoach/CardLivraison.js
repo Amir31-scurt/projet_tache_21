@@ -7,6 +7,8 @@ import * as Icon from "react-bootstrap-icons";
 //Composant de Cartes contenus dans la partie Livraison du coach
 function CardLivraison({role}) {
   const [show, setShow] = useState(false);
+  
+
   //Fonction pour l'ouverture du modal
   const handleClose = () => setShow(false);
   //Fonction pour la fermeture du modal

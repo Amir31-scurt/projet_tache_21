@@ -52,6 +52,7 @@ function ContentCardLivraison() {
               defaultImg={pub.images[0]}
               images={pub.images}
               validation={pub.finish}
+              date={pub.date}
             />
           ))
         ) : (
@@ -67,6 +68,7 @@ function ContentCardLivraison() {
                     defaultImg={pub.images[0]}
                     images={pub.images}
                     validation={pub.finish}
+                    date={pub.date}
                   />
                 ))
             ) : (
