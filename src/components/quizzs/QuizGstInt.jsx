@@ -17,20 +17,6 @@ const QuizGstInt = () => {
               options: ["Une stratégie visant à élargir la gamme de produits à l'échelle mondiale", "Une méthode pour recruter des employés de différentes nationalités", "La promotion de la diversité culturelle au sein de l'entreprise", "La gestion des problèmes de diversité"],
             },
             {
-              question: "Quel est le rôle de la gestion des risques dans le contexte international?",
-              options: ["Éviter complètement les risques", "Minimiser les risques potentiels liés aux opérations internationales", "Ignorer les risques car ils sont inévitables", "Transférer tous les risques aux partenaires internationaux"],
-            },
-            // Ajout de quatre nouvelles questions
-            {
-              question: "Qu'est-ce que le commerce international?",
-              options: [
-                "La vente de produits sur le marché national",
-                "L'échange de biens et services entre pays",
-                "La promotion des produits sur les réseaux sociaux",
-                "La gestion des ressources humaines dans une entreprise internationale",
-              ],
-            },
-            {
               question: "Quels sont les avantages de la mondialisation?",
               options: [
                 "Réduction de la concurrence sur le marché mondial",

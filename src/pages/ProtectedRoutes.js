@@ -31,6 +31,9 @@ import RenduBulletinEtudiant from '../components/RenduBulletinEtudiant';
 import ReactHookFormDemo from '../components/super-admin/Certificat';
 import NotFound from './NotFound';
 import QuizGstEnt from '../components/quizzs/QuizGstEnt'
+import QuizGstInt from '../components/quizzs/QuizGstInt';
+import QuizMarketing from '../components/quizzs/QuizMarketing';
+import QuizFinance from '../components/quizzs/QuizFinance';
 
 export default function ProtectedRoutes() {
   const { email } = useContext(EmailContext);
@@ -153,8 +156,20 @@ export default function ProtectedRoutes() {
           element: <Cours />,
         },
         {
-          path: 'etudiant/quizz',
+          path: 'etudiant/programme-apprenant/quizgstint',
+          element: <QuizGstInt />,
+        },
+        {
+          path: 'etudiant/programme-apprenant/quizgstent',
           element: <QuizGstEnt />,
+        },
+        {
+          path: 'etudiant/programme-apprenant/quizmarketing',
+          element: <QuizMarketing/>,
+        },
+        {
+          path: 'etudiant/programme-apprenant/quizfinance',
+          element: <QuizFinance />,
         },
         {
           path: '*',

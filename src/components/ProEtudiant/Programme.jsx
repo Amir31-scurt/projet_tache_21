@@ -3,6 +3,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../config/firebase-config';
 import CompoHtml from './compoHtml';
 import { EmailContext } from '../../contexte/EmailContexte';
+import { Link } from 'react-router-dom';
 
 export default function Programme() {
   const [domaines, setDomaines] = useState([]);
@@ -78,11 +79,17 @@ export default function Programme() {
                     domaineId={domaineExactly.id}
                     sousDomaineName={nomSousDomaine}
                   />
+                 
                 </div>
               )
             )}
         </div>
       </div>
+      <Link to="quizmarketing">
+      <div className="btn-dash mt-5 pt-5">
+      <button type="button" className=" btn btn-info btn-quiz">Demarrer Quiz</button>
+      </div>
+      </Link>
     </div>
   );
 }
