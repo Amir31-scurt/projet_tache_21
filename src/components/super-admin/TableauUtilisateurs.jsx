@@ -33,7 +33,7 @@ export default function TableauUtilisateurs() {
     useState(null); // Stocke l'utilisateur pour la mise à jour
   const [loading, setLoading] = useState(false); // Gère l'état de chargement
   // Ajoutez un nouvel état local pour gérer l'étiquette du bouton
-  const [archiveLabel, setArchiveLabel] = useState("Archiver");
+  const [archivedLabel, setArchivedLabel] = useState("Archived");
 
   // États pour chaque champ du formulaire de modification
   const [nameValue, setNameValue] = useState("");
@@ -142,10 +142,10 @@ export default function TableauUtilisateurs() {
     const utilisateurDoc = doc(utilisateursRef, utilisateurId);
     const user = utilisateursData.find((user) => user.id === utilisateurId);
     const coachs = utilisateursData.find((coach) => coach.name === user.coach)
-    let notificationMessage = `${user.name} a été ${!isArchived ? 'archivé': 'désarchivé'} avec succes`
+    let notificationMessage = `${user.name} a été ${!isArchived ? 'archiver': 'désarchiver'} avec succes`
     try {
       await updateDoc(utilisateurDoc, {
-        archiver: !isArchived,
+        archived: !isArchived,
       });
 
       await addDoc(notificationsCollection, {
@@ -169,7 +169,7 @@ export default function TableauUtilisateurs() {
     if (roleFilter === "Tous les utilisateurs") {
       return utilisateursData;
     } else if (roleFilter === "Archivés") {
-      return utilisateursData.filter((utilisateur) => utilisateur.archiver);
+      return utilisateursData.filter((utilisateur) => utilisateur.archived);
     } else {
       return utilisateursData.filter(
         (utilisateur) => utilisateur.role === roleFilter
@@ -272,15 +272,15 @@ export default function TableauUtilisateurs() {
             type="button"
             className={`d-flex justify-content-center align-items-center btn btn-outline-danger rounded-3 me-3`}
             onClick={() =>
-              handleArchiveToggle(utilisateur.id, utilisateur.archiver || false)
+              handleArchiveToggle(utilisateur.id, utilisateur.archived || false)
             }
           >
             <FaArchive className="" style={{ width: "30px", height: "30px" }} />
-            {utilisateur.archiver ? "Désarchiver" : ""}
+            {utilisateur.archived ? "Désarchiver" : ""}
           </button>
         </div>
       ),
-      className: utilisateur.archiver ? "tableRowArchived bg-info" : "",
+      className: utilisateur.archived ? "tableRowArchived bg-info" : "",
     }));
   }, [filteredData]);
 
