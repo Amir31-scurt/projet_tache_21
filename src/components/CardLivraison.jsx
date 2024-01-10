@@ -170,7 +170,7 @@ export default function CardLivraison() {
 
     deleteDoc(commentRef)
       .then(() => {
-        toast.success("Comment deleted successfully");
+        toast.success("Commentaire supprimer");
         fetchComments(); // Mise à jour de l'affichage après la suppression du commentaire
       })
       .catch((error) => {

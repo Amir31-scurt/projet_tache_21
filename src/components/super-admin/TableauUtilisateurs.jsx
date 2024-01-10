@@ -256,7 +256,7 @@ export default function TableauUtilisateurs() {
             className="d-flex justify-content-center align-items-center btn btn-outline-primary rounded-3 me-3"
             onClick={() => showDetails(utilisateur)}
           >
-            <FaEye className="" style={{ width: "30px", height: "30px" }} />
+            <FaEye className="" style={{ width: "25px", height: "25px" }} />
           </button>
           <button
             type="button"
@@ -266,7 +266,7 @@ export default function TableauUtilisateurs() {
               setFormVisible(true);
             }}
           >
-            <FaEdit className="" style={{ width: "30px", height: "30px" }} />
+            <FaEdit className="" style={{ width: "25px", height: "25px" }} />
           </button>
           <button
             type="button"
@@ -275,7 +275,7 @@ export default function TableauUtilisateurs() {
               handleArchiveToggle(utilisateur.id, utilisateur.archiver || false)
             }
           >
-            <FaArchive className="" style={{ width: "30px", height: "30px" }} />
+            <FaArchive className="" style={{ width: "25px", height: "25px" }} />
             {utilisateur.archiver ? "Désarchiver" : ""}
           </button>
         </div>
