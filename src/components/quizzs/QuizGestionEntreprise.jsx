@@ -1,7 +1,7 @@
 import React from "react";
-import Quiz from "../quizzs/Quiz";
+import Quiz from "./Quiz";
 
-const QuizGstEnt = () => {
+const QuizGestionEntreprise = () => {
   const gestionQuizData = {
     questions: [
       {
@@ -13,7 +13,6 @@ const QuizGstEnt = () => {
           "Un modèle de gestion du temps",
         ],
       },
-      // Ajout de quatre nouvelles questions
       {
         question: "Qu'est-ce que le marché cible?",
         options: [
@@ -51,6 +50,15 @@ const QuizGstEnt = () => {
           "Un plan de marketing",
         ],
       },
+      {
+        question: "Qu'est-ce qu'un plan d'affaires?",
+        options: [
+          "Un plan détaillé pour la création et la gestion d'une entreprise",
+          "Gérer les finances et la comptabilité",
+          "Un style de leadership qui vise à inspirer et motiver les membres de l'équipe",
+          "Une stratégie de développement durable",
+        ],
+      },
     ],
     correctAnswers: [
       "Une méthode d'analyse des forces, faiblesses, opportunités et menaces",
@@ -58,6 +66,7 @@ const QuizGstEnt = () => {
       "Une combinaison de facteurs contrôlables influençant la décision d'achat d'un client",
       "Assurer la disponibilité constante des produits",
       "L'obligation des entreprises de contribuer au bien-être de la société",
+      "Un plan détaillé pour la création et la gestion d'une entreprise",
     ],
   };
 
@@ -69,4 +78,4 @@ const QuizGstEnt = () => {
   );
 };
 
-export default QuizGstEnt;
+export default QuizGestionEntreprise;

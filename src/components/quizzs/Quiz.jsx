@@ -6,6 +6,8 @@ const Quiz = ({ quizData }) => {
   const [userAnswers, setUserAnswers] = useState(Array(correctAnswers.length).fill(''));
   const [score, setScore] = useState(null);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [quizSubmitted, setQuizSubmitted] = useState(false);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,6 +18,8 @@ const Quiz = ({ quizData }) => {
       }
     });
     setScore(newScore);
+
+    setQuizSubmitted(true);
 
     const questionElements = document.querySelectorAll('.question');
     questionElements.forEach((questionElement, index) => {
@@ -30,12 +34,14 @@ const Quiz = ({ quizData }) => {
   };
 
   const handleOptionChange = (indexQuestion, value) => {
-    const newAnswers = [...userAnswers];
-    newAnswers[indexQuestion] = value;
-    setUserAnswers(newAnswers);
-
-    const isValid = newAnswers.every(answer => answer !== '');
-    setIsFormValid(isValid);
+    if (!quizSubmitted) {
+      const newAnswers = [...userAnswers];
+      newAnswers[indexQuestion] = value;
+      setUserAnswers(newAnswers);
+  
+      const isValid = newAnswers.every((answer) => answer !== '');
+      setIsFormValid(isValid);
+    }
   };
 
   const handleRetry = () => {

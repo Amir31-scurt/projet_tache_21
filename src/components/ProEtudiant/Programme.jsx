@@ -62,10 +62,28 @@ export default function Programme() {
   }, [users, email, domaines]);
 
 
+
   const domaineExactly = domaines.find((dom) => dom.domaine === studentDomaine);
 
+  console.log(studentDomaine);
+
+
+  const isMarketing =  studentDomaine === 'Marketing';
+  const isFinance =  studentDomaine === 'Finance';
+  const isGestionEntreprise = studentDomaine === `Gestion d'entreprise` 
+  const isGestionInternationale = studentDomaine === 'Gestion Internationale';
+
+  const validLinks = isMarketing ?  'quizmarketing' :
+  isFinance ? 'quizfinance' :
+  isGestionEntreprise ? 'quizgestionentreprise' :
+  isGestionInternationale ? 'quizgestioninternationale':
+  '';
+
+console.log(validLinks);
+ 
+
   return (
-    <div className="bg-cours">
+    <div className="bg-cours">*
       <div className="container ">
         <h2 className="text-start pb-4">Mon Programme - {studentDomaine}</h2>
         <div className="row d-flex m-0">
@@ -85,7 +103,7 @@ export default function Programme() {
             )}
         </div>
       </div>
-      <Link to="quizmarketing">
+      <Link to={validLinks}>
       <div className="btn-dash mt-5 pt-5">
       <button type="button" className="btn-quiz">Demarrer Quiz</button>
       </div>
