@@ -2,13 +2,16 @@ import React, { useState, useEffect, useContext } from "react";
 import CardLivraison from "./CompoDashCoach/CardLivraison";
 import FilterStudents from "./CompoDashCoach/FiterStudents";
 import { EmailContext } from "../contexte/EmailContexte";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../config/firebase-config";
+import { queries } from "@testing-library/react";
 
 function ContentCardLivraison() {
   const [users, setUsers] = useState([]);
   const { email } = useContext(EmailContext);
   const [publication, setPublication] = useState([]);
+  const [userFiltrer, setUserFiltrer] = useState()
+  const [filtreActive, setFiltreActive ] = useState(false)
 
   useEffect(() => {
     const usersStudentsUnsub = onSnapshot(
@@ -38,13 +41,39 @@ function ContentCardLivraison() {
     };
   }, []); 
 
+  const handleDisplay = (valeur) => {
+    if(valeur){
+    const q = query(collection(db, "publication"), where("nom", "==", valeur));
+    console.log("Essaie d'affichage de la valeur: ", valeur)
+    try{
+      onSnapshot(q, (snapshot) => {
+        const queries = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setUserFiltrer(queries);
+      setFiltreActive(true);
+      })
+    } catch{
+        setFiltreActive(false)
+      }
+    }else{
+      console.log("La valeur est indéfinie")
+      setFiltreActive(false)
+    }
+    console.log(userFiltrer)
+  }
+
   const roleUser = users.find((user) => user.email === email);
-  return (
+  return ( 
     <div>
-      {roleUser && roleUser.role === "Coach" ? <FilterStudents /> : ""}
+      {roleUser && roleUser.role === "Coach" ? <FilterStudents handleDisplay={handleDisplay} /> : ""}
+     { console.log("Queries Dans le composant ContentCardLivraison",queries) }
+     { console.log("UserFiltrer Dans le composant ContentCardLivraison",userFiltrer) }
       <div className="d-flex justify-content-center flex-wrap">
         {roleUser && roleUser.role === "Coach" ? (
-          publication.map((pub) => (
+          !filtreActive ? 
+          (publication.map((pub) => (
             <CardLivraison
               role={roleUser}
               name={pub.nom}
@@ -54,7 +83,18 @@ function ContentCardLivraison() {
               validation={pub.finish}
               date={pub.date}
             />
-          ))
+          ))) : 
+          (userFiltrer?.map((qr) => (
+            <CardLivraison
+              role={roleUser}
+              name={qr.nom}
+              title={qr.cours}
+              defaultImg={qr.images[0]}
+              images={qr.images}
+              validation={qr.finish}
+              date={qr.date}
+            />
+          )))
         ) : (
           roleUser && roleUser.role === "Étudiant" && (
             publication.filter((pubs) => pubs.email === roleUser.email).length > 0 ? (
