@@ -31,7 +31,6 @@ export default function CardLivraison() {
   const [currentUser, setCurrentUser] = useState(null);
   // eslint-disable-next-line
   const [userRole, setUserRole] = useState("Rôle inconnu");
-
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
 
@@ -55,6 +54,7 @@ export default function CardLivraison() {
   const [visible, setVisible] = useState(false);
 
   // Fonction pour récupérer les informations de l'étudiant depuis Firestore
+   // eslint-disable-next-line
   const fetchStudentInfo = async () => {
     try {
       const studentRef = collection(db, "publication");

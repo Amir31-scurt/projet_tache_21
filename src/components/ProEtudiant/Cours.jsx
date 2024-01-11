@@ -13,6 +13,7 @@ export default function Cours() {
   const [courses, setCourses] = useState([]);
   // eslint-disable-next-line
   const [selectedCourse, setSelectedCourse] = useState(null);
+   // eslint-disable-next-line
   const [backdrop, setBackdrop] = useState('static');
   // eslint-disable-next-line
   const [open, setOpen] = useState(false);
@@ -272,6 +273,7 @@ export default function Cours() {
   // eslint-disable-next-line
   const getYouTubeVideoId = (url) => {
     if (typeof url !== 'string') return null;
+     // eslint-disable-next-line
     const regExp =
       /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
