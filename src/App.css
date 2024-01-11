@@ -1131,3 +1131,12 @@ body {
 .ajout {
   width: 100px;
 }
+/* CSS EtudiantAssgnTable */
+.tete{
+  background:  #3084b5 !important;
+}
+.petit{
+  display: flex !important;
+  align-items: center !important;
+  width: 110px;
+}

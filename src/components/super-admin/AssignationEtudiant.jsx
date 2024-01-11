@@ -19,7 +19,8 @@ import 'rsuite/dist/rsuite.css';
 import { PulseLoader } from 'react-spinners';
 import React from 'react';
 import SpinnerIcon from '@rsuite/icons/legacy/Spinner';
-import EtudiantsTable from './EtudiantsTable';
+import FirebaseTable from './EtudiantsAssignTable';
+import EtudiantsAssignTable from './EtudiantsAssignTable';
 
 export const AssignationEtudiant = () => {
   // Initialisation des états pour stocker les données et le statut de chargement
@@ -287,7 +288,7 @@ export const AssignationEtudiant = () => {
         {/* Conteneur pour les toasts de notification */}
         <ToastContainer />
       </div>
-      <EtudiantsTable />
+      <EtudiantsAssignTable />
     </div>
   );
 };
