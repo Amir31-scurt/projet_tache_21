@@ -1161,13 +1161,26 @@ body {
   }
 
   .btn-quiz{
-    width: 25%;
-    
-    
+    width: 20%;
+    height: 8vh;
+    border-radius: 5px;
+    background-color: #48a93c;
+    color: white;
+    font-size: 22px;
+  }
+
+  .btn-quizz{
+    width: 18%;
+    height: 8vh;
+    border-radius: 5px;
+    background-color: #48a93c;
+    color: white;
+    font-size: 22px;
   }
 
   .btn-dash{
     text-align: center;
+   
 
   }
   

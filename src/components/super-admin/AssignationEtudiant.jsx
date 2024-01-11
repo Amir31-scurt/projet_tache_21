@@ -1,7 +1,6 @@
 // Importation des bibliothèques et composants nécessaires depuis les modules externes et les fichiers locaux
 import { useForm } from 'react-hook-form';
 import { MultiSelect } from 'primereact/multiselect';
-import { Button } from 'primereact/button';
 import { ToastContainer, toast } from 'react-toastify';
 import { useEffect, useState, useRef } from 'react';
 import {
@@ -11,15 +10,12 @@ import {
   where,
   query,
   arrayUnion,
-  serverTimestamp,
-  addDoc,
 } from 'firebase/firestore';
 import { db } from '../../config/firebase-config';
 import 'react-toastify/dist/ReactToastify.css';
 import 'rsuite/dist/rsuite.css';
 import { PulseLoader } from 'react-spinners';
 import React from 'react';
-import SpinnerIcon from '@rsuite/icons/legacy/Spinner';
 
 export const AssignationEtudiant = () => {
   // Initialisation des états pour stocker les données et le statut de chargement

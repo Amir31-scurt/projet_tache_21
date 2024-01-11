@@ -1,5 +1,5 @@
 import { collection, onSnapshot } from 'firebase/firestore';
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { db } from '../config/firebase-config';
 import { EmailContext } from '../contexte/EmailContexte';
 

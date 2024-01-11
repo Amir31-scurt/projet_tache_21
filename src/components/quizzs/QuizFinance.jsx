@@ -6,11 +6,16 @@ const QuizFinance = () => {
         questions: [
             {
               question: "Qu'est-ce que le marché boursier?",
-              options: ["Un marché où l'on échange des biens de consommation", "Un marché où l'on échange des devises étrangères", "Un marché où l'on échange des actions et des titres financiers", "Un marché où l'on échange des biens immobiliers"],
+              options: ["Un marché où l'on échange des biens de consommation",
+               "Un marché où l'on échange des devises étrangères",
+               "Un marché où l'on échange des actions et des titres financiers", 
+               "Un marché où l'on échange des biens immobiliers"],
             },
             {
               question: "Qu'est-ce qu'une devise?",
-              options: ["Une unité monétaire émise par une banque centrale", "Un produit échangé sur le marché boursier", "Un impôt sur le revenu", "Un bien immobilier à l'étranger"],
+              options: ["Une unité monétaire émise par une banque centrale",
+               "Un produit échangé sur le marché boursier", 
+               "Un impôt sur le revenu", "Un bien immobilier à l'étranger"],
             },
             // Ajout de nouvelles questions
             {
@@ -50,12 +55,16 @@ const QuizFinance = () => {
               ],
             },
           ],
-          correctAnswers: ["Un marché où l'on échange des actions et des titres financiers", "Le total des biens et services produits dans un pays sur une période donnée", "Une action ou un titre négociable", "Une unité monétaire émise par une banque centrale"],
+          correctAnswers: [
+            "Un marché où l'on échange des actions et des titres financiers",
+           "Le total des biens et services produits dans un pays sur une période donnée",
+            "Une action ou un titre négociable",
+             "Une unité monétaire émise par une banque centrale"],
         };
     
   return (
     <>
-      <h1>Finance</h1>
+      <h1 className="text-center">Finance</h1>
     <Quiz quizData={financeQuizData} />
     </>
   );

@@ -6,11 +6,16 @@ const QuizMarketing = () => {
     questions: [
       {
         question: "Qu'est-ce que le positionnement marketing?",
-        options: ["Le lieu où se trouve le bureau marketing", "Comment une marque est perçue dans l'esprit des consommateurs", "La manière dont les produits sont disposés sur une étagère", "La géolocalisation des publicités"],
+        options: ["Le lieu où se trouve le bureau marketing",
+         "Comment une marque est perçue dans l'esprit des consommateurs", 
+         "La manière dont les produits sont disposés sur une étagère", 
+         "La géolocalisation des publicités"],
       },
       {
         question: "Quel est l'objectif principal d'une campagne publicitaire?",
-        options: ["Augmenter la notoriété de la marque", "Baisser les prix des produits", "Recruter de nouveaux employés", "Vendre des actions de l'entreprise"],
+        options: ["Augmenter la notoriété de la marque",
+         "Baisser les prix des produits",
+          "Recruter de nouveaux employés", "Vendre des actions de l'entreprise"],
       },
       // Ajout de quatre nouvelles questions
       {
@@ -40,31 +45,20 @@ const QuizMarketing = () => {
           "Un rapport financier annuel d'une entreprise",
         ],
       },
-      {
-        question: "Quel est le rôle d'un directeur marketing?",
-        options: [
-          "Gérer les ressources humaines",
-          "Superviser la production",
-          "Concevoir des produits",
-          "Développer et mettre en œuvre des stratégies marketing",
-        ],
-      },
+     
     ],
     correctAnswers: [
       "Comment une marque est perçue dans l'esprit des consommateurs",
-      "Un ensemble de quatre P: produit, prix, place, promotion",
-      "Le groupe démographique spécifique auquel une entreprise s'adresse",
       "Augmenter la notoriété de la marque",
       "La division d'un marché en groupes homogènes de consommateurs",
       "La publicité vise à informer, tandis que la promotion vise à inciter à l'achat",
       "Une évaluation de la demande pour un produit ou service sur le marché",
-      "Développer et mettre en œuvre des stratégies marketing",
     ],
   };
 
   return (
     <>
-      <h1>Marketing</h1>
+      <h1 className="text-center">Marketing</h1>
       <Quiz quizData={marketingQuizData} />
     </>
   );

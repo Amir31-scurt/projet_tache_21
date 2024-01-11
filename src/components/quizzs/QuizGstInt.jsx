@@ -6,7 +6,10 @@ const QuizGstInt = () => {
         questions: [
             {
               question: "Qu'est-ce que la gestion internationale?",
-              options: ["La gestion des ressources humaines dans une entreprise", "La gestion des affaires à l'échelle mondiale", "La gestion des conflits internes", "La gestion des relations publiques à l'international"],
+              options: ["La gestion des ressources humaines dans une entreprise",
+               "La gestion des affaires à l'échelle mondiale",
+                "La gestion des conflits internes", 
+                "La gestion des relations publiques à l'international"],
             },
             {
               question: "Quel est l'objectif principal de la gestion internationale?",
@@ -44,12 +47,15 @@ const QuizGstInt = () => {
               ],
             },
           ],
-          correctAnswers: ["La gestion des affaires à l'échelle mondiale", "Étendre la présence de l'entreprise sur les marchés internationaux", "Une stratégie visant à élargir la gamme de produits à l'échelle mondiale", "Minimiser les risques potentiels liés aux opérations internationales"],
+          correctAnswers: ["La gestion des affaires à l'échelle mondiale",
+           "Étendre la présence de l'entreprise sur les marchés internationaux",
+            "Une stratégie visant à élargir la gamme de produits à l'échelle mondiale",
+             "Minimiser les risques potentiels liés aux opérations internationales"],
         };
   
   return (
     <>
-    <h1>Gestion Internationale</h1>
+    <h1 className="text-center">Gestion Internationale</h1>
     <Quiz quizData={gestionIntQuizData} />
     </>
   )

@@ -4,16 +4,19 @@ import { Modal } from 'rsuite';
 import { useParams } from 'react-router-dom';
 import { db, storage } from '../../config/firebase-config';
 import { getDoc, doc, collection, addDoc } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { AuthContext } from '../../contexte/AuthContext';
 import { format } from 'date-fns';
 
 export default function Cours() {
   const { domaineId, sousDomaineName } = useParams();
   const [courses, setCourses] = useState([]);
+  // eslint-disable-next-line
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [backdrop, setBackdrop] = useState('static');
+  // eslint-disable-next-line
   const [open, setOpen] = useState(false);
+  // eslint-disable-next-line
   const [files, setFiles] = useState();
   const [previews, setPreviews] = useState();
   const [timers, setTimers] = useState({}); // Timer state as an object
@@ -266,6 +269,7 @@ export default function Cours() {
   }, [files]);
 
   // Function to get YouTube video ID
+  // eslint-disable-next-line
   const getYouTubeVideoId = (url) => {
     if (typeof url !== 'string') return null;
     const regExp =

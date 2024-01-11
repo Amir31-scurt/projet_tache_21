@@ -132,7 +132,6 @@ const ProgramList = () => {
               url: data.url,
               description: formatDescription(data.sousDomaines),
               buttonText: data.buttonText || 'Les cours',
-              url: data.url,
               id: doc.id,
             };
           });

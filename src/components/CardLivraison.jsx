@@ -27,7 +27,9 @@ import { AuthContext } from "../contexte/AuthContext";
 import { Galleria } from "primereact/galleria";
 
 export default function CardLivraison() {
+  // eslint-disable-next-line
   const [currentUser, setCurrentUser] = useState(null);
+  // eslint-disable-next-line
   const [userRole, setUserRole] = useState("Rôle inconnu");
 
   const [comments, setComments] = useState([]);
@@ -40,12 +42,14 @@ export default function CardLivraison() {
 
   const { uid } = useContext(AuthContext);
   const UserUid = uid;
-
-  const [apprenant, setApprenat] = useState("");
+// eslint-disable-next-line
   const [coach, setCoach] = useState("");
-  const [date, setDate] = useState("");
+  // eslint-disable-next-line
   const [days, setDays] = useState("1");
+  // eslint-disable-next-line
   const [role, setRole] = useState("Coach");
+  const [date, setDate] = useState("");
+  const [apprenant, setApprenat] = useState("");
 
   const [images, setImages] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -121,12 +125,12 @@ export default function CardLivraison() {
   );
 
   // Effet pour récupérer les informations de l'étudiant lors du montage du composant
+   // eslint-disable-next-line
   useEffect(() => {
     fetchStudentInfo();
     fetchImagesFromFirestore();
   }, []);
-
-
+   // eslint-disable-next-line
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {

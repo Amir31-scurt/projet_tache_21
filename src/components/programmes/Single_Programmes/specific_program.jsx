@@ -21,7 +21,7 @@ const SpecificPro = () => {
   const [newCourseTitle, setNewCourseTitle] = useState('');
   const [newCourseDescription, setNewCourseDescription] = useState('');
   const [selectedSousDomaine, setSelectedSousDomaine] = useState();
-  const coachEmail = localStorage.getItem('userEmail');
+  // const coachEmail = localStorage.getItem('userEmail');
 
   const [coachSousDomaine, setCoachSousDomaine] = useState('');
 

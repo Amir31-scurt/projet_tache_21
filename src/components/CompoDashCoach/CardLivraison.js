@@ -5,7 +5,6 @@ import { Button, Modal } from 'react-bootstrap';
 import { useState } from 'react';
 import * as Icon from "react-bootstrap-icons";
 import { Carousel } from 'rsuite';
-import { format, parseISO } from 'date-fns';
 
 //Composant de Cartes contenus dans la partie Livraison du coach
 function CardLivraison({role, title, name, date, defaultImg, images, validation}) {

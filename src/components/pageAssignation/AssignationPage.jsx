@@ -31,6 +31,7 @@ const headers = ["Coachs", "Etudiants"];
   const [dataLoading, setDataLoading] = useState(false);
 
   // Fonction de tri personnalisée pour les options du MultiCascader
+  // eslint-disable-next-line
   const customSortFunction = (a, b) => {
     const windowA = a.split(".")[0];
     const windowB = b.split(".")[0];

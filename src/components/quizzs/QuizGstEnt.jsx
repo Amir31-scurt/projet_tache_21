@@ -54,9 +54,6 @@ const QuizGstEnt = () => {
     ],
     correctAnswers: [
       "Une méthode d'analyse des forces, faiblesses, opportunités et menaces",
-      "Un plan détaillé pour la création et la gestion d'une entreprise",
-      "Gérer les finances et la comptabilité",
-      "Un style de leadership qui vise à inspirer et motiver les membres de l'équipe",
       "Le groupe démographique spécifique auquel un produit est destiné",
       "Une combinaison de facteurs contrôlables influençant la décision d'achat d'un client",
       "Assurer la disponibilité constante des produits",
