@@ -12,7 +12,6 @@ const QuizMarketing = () => {
         question: "Quel est l'objectif principal d'une campagne publicitaire?",
         options: ["Augmenter la notoriété de la marque", "Baisser les prix des produits", "Recruter de nouveaux employés", "Vendre des actions de l'entreprise"],
       },
-      // Ajout de quatre nouvelles questions
       {
         question: "Qu'est-ce que la segmentation du marché?",
         options: [
@@ -52,8 +51,6 @@ const QuizMarketing = () => {
     ],
     correctAnswers: [
       "Comment une marque est perçue dans l'esprit des consommateurs",
-      "Un ensemble de quatre P: produit, prix, place, promotion",
-      "Le groupe démographique spécifique auquel une entreprise s'adresse",
       "Augmenter la notoriété de la marque",
       "La division d'un marché en groupes homogènes de consommateurs",
       "La publicité vise à informer, tandis que la promotion vise à inciter à l'achat",
