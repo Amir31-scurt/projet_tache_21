@@ -8,15 +8,28 @@ import { Dropdown } from "primereact/dropdown";
 import { Calendar } from "primereact/calendar";
 import { Dialog } from "primereact/dialog";
 import { db } from "../../config/firebase-config";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import CertificateDisplay from "./CertificatDisplay";
 import html2pdf from "html2pdf.js";
+import Table from "./Table";
+import { format } from "date-fns";
 
+// Méthode principale
 const ReactHookFormDemo = () => {
   const [domain, setDomain] = useState([]);
   const [roleOptions, setRoleOptions] = useState([]);
   const mentions = ["Excellent", "Bien", "Assez Bien"];
   const [showMessage, setShowMessage] = useState(false);
+  const [certificationsData, setCertificationsData] = useState([]);
+  const [isCertificateDownloaded, setIsCertificateDownloaded] = useState(false);
+
   const [formData, setFormData] = useState({
     role: "",
     domain: "",
@@ -35,6 +48,35 @@ const ReactHookFormDemo = () => {
     reset,
   } = useForm({ defaultValues });
 
+  // Chargement des étudiants certifiés au montage
+  useEffect(() => {
+    const fetchCertifications = async () => {
+      try {
+        const certificationsRef = collection(db, "certifications");
+
+        // Utilisation de onSnapshot pour obtenir des mises à jour en temps réel
+        const unsubscribe = onSnapshot(certificationsRef, (snapshot) => {
+          const certificationsData = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setCertificationsData(certificationsData);
+        });
+
+        return () => {
+          unsubscribe();
+        };
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des certifications:",
+          error
+        );
+      }
+    };
+
+    fetchCertifications();
+  }, []);
+  // Création de la collection "certifications" pour stocker les données de la certification
   const createCertification = async (certificationData) => {
     try {
       const certificationsRef = collection(db, "certifications");
@@ -45,22 +87,24 @@ const ReactHookFormDemo = () => {
     }
   };
 
+  // Soumission des champs
   const onSubmit = (data) => {
     setFormData(data);
     setShowMessage(true);
 
-    // Créer la certification dans Firestore
+    // Création de la certification dans Firestore
     const certificationData = {
       role: data.role,
       domain: data.domain,
       mention: data.mention,
-      date: data.date,
+      date: format(data.date, "dd/MM/yyyy"),
       accepted: data.accept,
     };
 
     createCertification(certificationData);
 
     reset();
+    setVisible(false);
   };
 
   const getFormErrorMessage = (name) => {
@@ -108,11 +152,13 @@ const ReactHookFormDemo = () => {
     }
   };
 
+  // CHargement au montage des domaines et de la liste des étudiants
   useEffect(() => {
     fetchDomains();
     fetchStudents();
   }, []);
 
+  // Téléchargement du pdf
   const downloadCertificate = () => {
     const certificateContainer = document.getElementById("certificate-display");
     if (certificateContainer) {
@@ -125,8 +171,11 @@ const ReactHookFormDemo = () => {
         pagebreak: { mode: "css", avoid: ".p-col, .p-row" },
       });
     }
+
+    setIsCertificateDownloaded(true);
   };
 
+  // Méthode principale
   return (
     <div className="form-demo d-flex flex-column gap-5">
       <Button
@@ -285,23 +334,30 @@ const ReactHookFormDemo = () => {
                 type="submit"
                 label="Certifier"
                 className="mt-2"
-                style={{ backgroundColor: "#3084b5" }}
+                style={{ backgroundColor: "#3084b5", color: "#fff" }}
               />
             </form>
-            <Button
-              type="button"
-              label="Télécharger"
-              onClick={() => {
-                setVisible(false);
-                downloadCertificate();
-              }}
-              className="mt-2"
-              style={{ backgroundColor: "#3084b5" }}
-            />
           </div>
         </div>
       </Dialog>
-      {showMessage && <CertificateDisplay formData={formData} />}
+      <div>
+        <div>
+          {showMessage && !isCertificateDownloaded && (
+            <CertificateDisplay formData={formData} />
+          )}
+        </div>
+        <Button
+          type="button"
+          label="Télécharger"
+          onClick={() => {
+            setVisible(false);
+            downloadCertificate();
+          }}
+          className="mt-2"
+          style={{ backgroundColor: "#3084b5", color: "#fff" }}
+        />
+        <Table certificationsData={certificationsData} />
+      </div>
     </div>
   );
 };
