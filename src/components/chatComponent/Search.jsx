@@ -158,9 +158,11 @@ export default function Search({ openSearch }) {
           </div>
         </div>
       ) : (
-        <span className="text-danger ms-2 fs-6 pb-2">
-          Pas de résultat(s) ...
-        </span>
+        userName && (
+          <span className="text-danger ms-2 fs-6 pb-2">
+            Pas de résultat(s) ...
+          </span>
+        )
       )}
     </div>
   );
