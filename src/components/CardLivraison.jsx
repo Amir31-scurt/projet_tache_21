@@ -27,13 +27,12 @@ import "firebase/firestore";
 import { AuthContext } from "../contexte/AuthContext";
 import { Galleria } from "primereact/galleria";
 
-export default function CardLivraison() {
+export default function CardLivraison({ date, apprenant, titreCourEtudiant, }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [userRole, setUserRole] = useState("Rôle inconnu");
 
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
-
 
   const [visibleComments, setVisibleComments] = useState([]);
   const [hiddenComments, setHiddenComments] = useState([]);
@@ -42,42 +41,15 @@ export default function CardLivraison() {
   const { uid } = useContext(AuthContext);
   const UserUid = uid;
 
-  const [apprenant, setApprenat] = useState("");
   const [coach, setCoach] = useState("");
-  const [date, setDate] = useState("");
-  const [days, setDays] = useState("1");
   const [role, setRole] = useState("Coach");
 
   const [images, setImages] = useState([]);
   const [visible, setVisible] = useState(false);
 
-  // Fonction pour récupérer les informations de l'étudiant depuis Firestore
-  const fetchStudentInfo = async () => {
-    try {
-      const studentRef = collection(db, "publication");
-
-      // Création de la requête pour récupérer le document de l'étudiant
-      const studentQuery = query(studentRef, where("userID", "==", UserUid));
-      const studentSnapshot = await getDocs(studentQuery);
-
-      // Vérification s'il y a des documents
-      if (!studentSnapshot.empty) {
-        const studentData = studentSnapshot.docs[0].data();
-        setApprenat(studentData.nom);
-        setCoach(studentData.coach);
-        setDate(format(studentData.date.toDate(), 'dd/MM/yyyy - HH:mm:ss'));
-      }
-    } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des informations de l'étudiant depuis Firestore",
-        error
-      );
-    }
-  };
-
   const fetchImagesFromFirestore = async () => {
     try {
-      const publicationRef = collection(db, "publication");
+      const publicationRef = collection(db, "publish");
       const q = query(publicationRef);
       const querySnapshot = await getDocs(q);
 
@@ -103,7 +75,62 @@ export default function CardLivraison() {
     }
   };
 
-  // Fonction pour définir le template d'un item dans le composant Galleria
+  //Fonction pour définir le template d'un item dans le composant Galleria
+  
+  
+  // const fetchImagesFromFirestore = async () => {
+  //   try {
+  //     // Récupérer le document de l'utilisateur
+  //     const userDocumentRef = doc(db, "utilisateurs", UserUid);
+  //     const userDocumentSnap = await getDoc(userDocumentRef);
+  //     const userDocumentData = userDocumentSnap.data();
+
+  //     if (userDocumentData) {
+  //       // Récupérer la valeur du champ "cours" du document de l'utilisateur
+  //       const selectedCourse = userDocumentData.cours;
+
+  //       // Si une valeur de cours est présente, continuer
+  //       if (selectedCourse) {
+  //         // Référence à la collection "publication" avec un filtre sur le cours
+  //         const publicationRef = collection(db, "publication");
+  //         const q = query(publicationRef, where("cours", "==", selectedCourse));
+  //         const querySnapshot = await getDocs(q);
+
+  //         // Initialiser un tableau pour stocker les images du cours sélectionné
+  //         const imagesArray = [];
+
+  //         // Récupération des images du document correspondant au cours sélectionné
+  //         querySnapshot.forEach((doc) => {
+  //           const data = doc.data();
+  //           imagesArray.push(...data.images);
+  //         });
+
+  //         // Transformation des images en un format adapté pour le composant Galleria
+  //         setImages(
+  //           imagesArray.map((url, index) => ({
+  //             itemImageSrc: url,
+  //             thumbnailImageSrc: url,
+  //             alt: `Image ${index + 1}`,
+  //             title: `Title ${index + 1}`,
+  //           }))
+  //         );
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error(
+  //       "Erreur lors de la récupération des images depuis Firestore",
+  //       error
+  //     );
+  //   }
+  // };
+
+
+
+
+
+  
+  
+  
   const itemTemplate = (item) => (
     <img
       src={item.itemImageSrc}
@@ -123,10 +150,9 @@ export default function CardLivraison() {
 
   // Effet pour récupérer les informations de l'étudiant lors du montage du composant
   useEffect(() => {
-    fetchStudentInfo();
+    // fetchStudentInfo();
     fetchImagesFromFirestore();
   }, []);
-
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -179,7 +205,6 @@ export default function CardLivraison() {
         toast.error("Erreur lors de la suppression du commentaire");
       });
   }
-
 
   useEffect(() => {
     // Séparer les commentaires en deux listes distinctes
@@ -288,7 +313,7 @@ export default function CardLivraison() {
           </div>
 
           <div className="col-md-12 d-flex justify-content-center py-2">
-            <p>Titre de la publication de l'apprenant</p>
+            <p>{titreCourEtudiant}</p>
           </div>
 
           {/* Galleria pour afficher les images */}

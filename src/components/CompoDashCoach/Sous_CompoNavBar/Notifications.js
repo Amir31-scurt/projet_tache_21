@@ -104,7 +104,9 @@ function Notifications() {
 
   useEffect(() => {
     loadNotifications();
+    console.log(notifs);
   }, [loadNotifications]);
+  
 
   useEffect(() => {
     // Récupérer les notifications lues depuis le stockage local
@@ -150,7 +152,7 @@ function Notifications() {
         <h6 className="text-center fw-bold">Notifications</h6>
         <hr style={{backgroundColor: "#000 !important" , border: "1px solid #000"}}/>
         <div className="menuItem">
-          {notifs.map((notif, index) => (
+          {notifs.length > 0 ? (notifs.map((notif, index) => (
             <MenuItem
               key={notif.id}
               onClick={() => {
@@ -190,7 +192,7 @@ function Notifications() {
                 </p>
               )}
             </MenuItem>
-          ))}
+          ))): <MenuItem>Aucune notification</MenuItem>}
         </div>
       </div>
     </Menu>

@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useId } from 'react';
 import { Card } from 'primereact/card';
 import { Modal } from 'rsuite';
 import { useParams } from 'react-router-dom';
 import { db, storage } from '../../config/firebase-config';
-import { getDoc, doc, collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { getDoc, doc, collection, addDoc, serverTimestamp,onSnapshot, getDocs, where, updateDoc, query } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { AuthContext } from '../../contexte/AuthContext';
 import { format } from 'date-fns';
@@ -20,12 +20,41 @@ export default function Cours() {
   const [intervalIds, setIntervalIds] = useState({}); // To store interval IDs
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedCourseTitle, setSelectedCourseTitle] = useState('');
-
+  const [currentDocRef, setCurrentDocRef] = useState(null);
   const { currentUser, uid } = useContext(AuthContext);
+  const [LeNom, setLeNom] = useState('')
+  const [docPubRef, setDocPubRef] = useState("");;
 
   const UserUid = uid;
   const UserEmail = currentUser.email;
-  const UserName = currentUser.displayName;
+
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const usersCollectionRef = collection(db, 'utilisateurs');
+        const q = query(usersCollectionRef, where("email", "==", UserEmail));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          // Il y a au moins un document correspondant à UserUid
+          const userData = querySnapshot.docs[0].data();
+          const studentName = userData.name;
+          setLeNom(studentName);
+        } else {
+          console.log("Le user ID n'existe pas :", UserUid);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, [UserUid]);
+
+  const UserName = LeNom || currentUser.displayName; ;
+
+  console.log("le nom de l'etudiant =", UserName);
 
   //
   useEffect(() => {
@@ -68,92 +97,61 @@ export default function Cours() {
     };
   }, [selectedFiles]);
 
-  // const handleUpload = async (user) => {
 
-  //   // Créez un tableau pour stocker les URLs des images
-  //   const imageUrls = [];
 
-  //   // Loop through selected files and upload each to Firebase Storage
-  //   await Promise.all(
-  //     selectedFiles.map(async (file) => {
-  //       const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
-  //       await uploadBytes(storageRef, file);
-  //       const url = await getDownloadURL(storageRef);
-  //       // Ajoutez l'URL au tableau
-  //       imageUrls.push(url);
-  //     })
-  //   );
+  const imageUrls = [];
+  const handleUpload = async () => {
+    try {
 
-  //   // Clear selected files
-  //   setSelectedFiles([]);
-  //   // Close the modal
-  //   setOpen(false);
+      // Boucler à travers les fichiers sélectionnés et les télécharger sur Firebase Storage
+      await Promise.all(
+        selectedFiles.map(async (file) => {
+          const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
+          await uploadBytes(storageRef, file);
+          const url = await getDownloadURL(storageRef);
+          // Ajouter l'URL au tableau
+          imageUrls.push(url);
+        })
+      );
 
-  //   if (selectedFiles.length > 0) {
-  //     // Loop through selected files and add each to Firestore
-  //     selectedFiles.forEach(async (file) => {
-  //       const imageUrls = [];
-  //       const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
-  //       await uploadBytes(storageRef, file);
-  //       const url = await getDownloadURL(storageRef);
-  //       imageUrls.push(url);
-  //       // Ajouter la publication dans Firestore avec l'URL de l'image
-  //       // Ajoutez une seule fois le document dans Firestore avec tous les URLs d'images
-  //       await addDoc(collection(db, "publication"), {
-  //         userID: UserUid,
-  //         profile: user.photoURL || "",
-  //         nom: UserName || "",
-  //         date: format(new Date(), "dd/MM/yyyy - HH:mm:ss"),
-  //         images: imageUrls, // Utilisez le tableau des URLs ici
-  //         email: UserEmail || "",
-  //         cours: "",
-  //         finish: false,
-  //         livree: false,
-  //       });
-  //     });
+      // Effacer les fichiers sélectionnés
+      setSelectedFiles([]);
+      // Fermer la fenêtre modale
+      setOpen(false);
 
-  //     // Clear selected files
-  //     setSelectedFiles([]);
-  //     // Close the modal
-  //     setOpen(false);
-  //   }
-  // };
+      // Vérifier s'il existe un document existant avec le même cours et le même utilisateur
+      const publicationCollectionRef = collection(db, "publish");
+      const publicationQuery = query(
+        publicationCollectionRef,
+        where("userID", "==", UserUid),
+        where("cours", "==", selectedCourseTitle)
+      );
+      const publicationQuerySnapshot = await getDocs(publicationQuery);
 
-  const handleUpload = async (user) => {
-    // Créez un tableau pour stocker les URLs des images
-    const imageUrls = [];
+      if (!publicationQuerySnapshot.empty) {
+        // Mettre à jour le document existant avec les nouvelles et anciennes images
+        const existingDocRef = publicationQuerySnapshot.docs[0].ref;
 
-    // Loop through selected files and upload each to Firebase Storage
-    await Promise.all(
-      selectedFiles.map(async (file) => {
-        const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
-        await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(storageRef);
-        // Ajoutez l'URL au tableau
-        imageUrls.push(url);
-      })
-    );
+        // Récupérer les images actuelles du document existant
+        const existingImages =
+          publicationQuerySnapshot.docs[0].data().images || [];
 
-    // Clear selected files
-    setSelectedFiles([]);
-    // Close the modal
-    setOpen(false);
+        // Concaténer les anciennes images avec les nouvelles
+        const imagesMisesAJour = [...imageUrls, ...existingImages];
 
-    if (imageUrls.length > 0) {
-      // Ajoutez une seule fois le document dans Firestore avec tous les URLs d'images
-      await addDoc(collection(db, 'publication'), {
-        userID: UserUid,
-        profile: user.photoURL || '',
-        nom: UserName || '',
-        date: format(new Date(), 'dd/MM/yyyy - HH:mm:ss'),
-        images: imageUrls, // Utilisez le tableau des URLs ici
-        email: UserEmail || '',
-        cours: selectedCourseTitle,
-        finish: false,
-        livree: false,
-      });
+        await updateDoc(existingDocRef, {
+          date: serverTimestamp(),
+          images: imagesMisesAJour,
+        });
+      }
+    } catch (error) {
+      console.error("Erreur lors du traitement du téléchargement :", error);
     }
   };
+
+
+
+
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -209,7 +207,48 @@ export default function Cours() {
     }
   };
 
-  const handleDisplay = (courseIndex) => {
+  const handleDisplay = async (courseIndex) => {
+    const course = courses[courseIndex];
+
+    // const docRef = await addDoc(collection(db, "publication"), {
+    //   userID: UserUid,
+    //   cours: course.title,
+    //   nom: UserName,
+    //   profile: "",
+    //   date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+    //   images: imageUrls,
+    //   email: UserEmail || "",
+    //   start: true,
+    //   finish: false,
+    //   livree: false,
+    //   duree: 0,
+    // });
+
+    // Vérifier s'il existe déjà un document avec le même utilisateur et cours
+    const publicationCollectionRef = collection(db, "publication");
+    const publicationQuery = query(
+      publicationCollectionRef,
+      where("userID", "==", UserUid),
+      where("cours", "==", course.title)
+    );
+    const publicationQuerySnapshot = await getDocs(publicationQuery);
+
+    if (publicationQuerySnapshot.empty) {
+      // Créer un nouveau document s'il n'y a pas de document existant
+      setDocPubRef( await addDoc(collection(db, "publish"), {
+        userID: UserUid,
+        cours: course.title,
+        nom: UserName,
+        profile: "",
+        date: serverTimestamp(),
+        email: UserEmail || "",
+        start: true,
+        finish: false,
+        livree: false,
+        duree: 0,
+      }));
+    }
+
     setCourses((courses) =>
       courses.map((course, index) => {
         if (index === courseIndex) {
@@ -234,6 +273,8 @@ export default function Cours() {
       ...prevIds,
       [courseIndex]: timerInterval,
     }));
+
+    setCurrentDocRef(docPubRef);
   };
 
   const handleChangement = (courseIndex) => {

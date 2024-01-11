@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where, serverTimestamp } from "firebase/firestore";
 import { db } from "../config/firebase-config";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,6 +13,9 @@ const BulletinEtudiant = () => {
     sousDomaines: [],
     appreciation: "",
   });
+  const [notificationsCollection] = useState(
+    collection(db, "notifications")
+  );
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -170,6 +173,14 @@ const BulletinEtudiant = () => {
 
       // Ajoutez les données du bulletin à la collection "bulletins"
       await addDoc(collection(db, "bulletins"), bulletinData);
+
+      let notificationMessage= `Votre bulletin de notes est disponible`
+      await addDoc(notificationsCollection, {
+        messageForAdmin: notificationMessage,
+        timestamp: serverTimestamp(),
+        newNotif: true,
+        email: studentEmail,
+      });
 
       toast.success("Bulletin enregistré avec succès!");
 
