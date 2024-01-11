@@ -44,7 +44,7 @@ export default function TableauUtilisateurs() {
   const [roleValue, setRoleValue] = useState("");
   const [notificationsCollection] = useState(collection(db, "notifications"));
   const [roleFilter, setRoleFilter] = useState("Tous les utilisateurs");
-  const [tabType, setTabType] = useState("utilisateurs");
+  const [tabType, setTabType] = useState("de bord");
 
   // Affiche les détails de l'utilisateur sélectionné
   const showDetails = (utilisateur) => {
@@ -172,10 +172,9 @@ export default function TableauUtilisateurs() {
       fetchData(); // Met à jour les données après l'archivage ou le désarchivage
 
       setArchiveLabel(isArchived ? "Désarchiver" : "Archiver");
-      // toast.success(notificationMessage, {
-      //   duration: 3000,
-      // });
-      toast.success("Archivage reussit")
+      toast.success(notificationMessage, {
+        duration: 3000,
+      });
     } catch (error) {
       console.error("Error archiving student:", error);
     }
@@ -183,7 +182,7 @@ export default function TableauUtilisateurs() {
 
 
   const filteredData = useMemo(() => {
-    if (roleFilter === "des utilisateurs") {
+    if (roleFilter === "de bord") {
       return utilisateursData;
     } else if (roleFilter === "Archivés") {
       return utilisateursData.filter((utilisateur) => utilisateur.archived);
@@ -193,6 +192,7 @@ export default function TableauUtilisateurs() {
       );
     }
   }, [roleFilter, utilisateursData]);
+
 
   // Utilisez le stockage local pour sauvegarder et récupérer le filtre sélectionné
   const localStorageKey = "roleFilter";
@@ -213,11 +213,16 @@ export default function TableauUtilisateurs() {
     localStorage.setItem(localStorageKey, selectedValue);
 
     // Mettez à jour tabType en fonction de la valeur du filtre sélectionné
-    if (selectedValue === "Archivés") {
-      setTabType("utilisateurs archivées");
+    if (selectedValue === "de bord") {
+      setTabType("de bord");
+    } else if (selectedValue === "Archivés") {
+      setTabType("des utilisateurs archivées");
     } else {
       setTabType(selectedValue);
     }
+
+    setRoleFilter(selectedValue);
+    localStorage.setItem(localStorageKey, selectedValue);
   };
 
   // Définition des colonnes pour le tableau
@@ -287,7 +292,7 @@ export default function TableauUtilisateurs() {
           </button>
           <button
             type="button"
-            className={`d-flex justify-content-center align-items-center btn btn-outline-danger rounded-3 me-3`}
+            className={`d-flex justify-content-center align-items-center btn btn-outline-warning rounded-3 me-3`}
             onClick={() =>
               handleArchiveToggle(utilisateur.id, utilisateur.archived || false)
             }
@@ -461,7 +466,7 @@ export default function TableauUtilisateurs() {
               value={roleFilter}
               onChange={handleFilterChange}
             >
-              <option value="des utilisateurs">Tous les utilisateurs</option>
+              <option value="de bord">Tous les utilisateurs</option>
               <option value="Administrateur">Administrateurs</option>
               <option value="Coach">Coachs</option>
               <option value="Étudiant">Étudiants</option>

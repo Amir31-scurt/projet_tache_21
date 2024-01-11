@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import {
   addDoc,
@@ -14,7 +13,7 @@ import {
 } from "firebase/firestore";
 import { db, auth } from "../config/firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 import { toast } from "react-hot-toast";
 import commenter from "../assets/images/commenter.png";
@@ -33,7 +32,6 @@ export default function CardLivraison() {
 
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
-
 
   const [visibleComments, setVisibleComments] = useState([]);
   const [hiddenComments, setHiddenComments] = useState([]);
@@ -65,7 +63,7 @@ export default function CardLivraison() {
         const studentData = studentSnapshot.docs[0].data();
         setApprenat(studentData.nom);
         setCoach(studentData.coach);
-        setDate(format(studentData.date.toDate(), 'dd/MM/yyyy - HH:mm:ss'));
+        setDate(format(studentData.date.toDate(), "dd/MM/yyyy - HH:mm:ss"));
       }
     } catch (error) {
       console.error(
@@ -125,20 +123,19 @@ export default function CardLivraison() {
   useEffect(() => {
     fetchStudentInfo();
     fetchImagesFromFirestore();
+    fetchComments();
   }, []);
 
-
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    const unsubscribeUser = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        setCurrentUser(user);
         const docRef = doc(db, "utilisateurs", user.uid);
         try {
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             const userData = docSnap.data();
-            const role = userData.role;
-            setUserRole(role);
-            console.log(role);
+            console.log("userData:", userData);
           } else {
             console.log(
               "Aucune donnée utilisateur trouvée pour cet utilisateur"
@@ -150,19 +147,73 @@ export default function CardLivraison() {
       }
     });
 
-    return () => unsubscribe();
+    const unsubscribeComments = onSnapshot(
+      collection(db, "commentaires"),
+      (snapshot) => {
+        const commentsData = [];
+        snapshot.forEach((doc) => {
+          const { userName, userID } = doc.data();
+          // Ajoutez ici la logique pour filtrer les commentaires par utilisateur si nécessaire
+          // par exemple, vous pourriez vérifier si userID correspond à l'utilisateur actuel
+          commentsData.push({
+            id: doc.id,
+            userName,
+            userID,
+            ...doc.data(),
+          });
+        });
+
+        commentsData.sort((a, b) => b.timestamp - a.timestamp);
+
+        setComments(commentsData);
+
+        const visible = commentsData.slice(0, 3);
+        const hidden = commentsData.slice(3);
+
+        setVisibleComments(visible);
+        setHiddenComments(hidden);
+      }
+    );
+
+    return () => {
+      unsubscribeUser();
+      unsubscribeComments();
+    };
   }, []);
 
-  // * FONCTIONNALITER POUR LES COMMENTAIRES * //
-  // Utilisez useEffect pour charger les commentaires dès le chargement du composant
-  useEffect(() => {
-    fetchComments();
-  }, []);
+  // Ajout de la fonction fetchComments
+  function fetchComments() {
+    const commentsRef = collection(db, "commentaires");
+
+    onSnapshot(commentsRef, (snapshot) => {
+      const commentsData = [];
+      snapshot.forEach((doc) => {
+        const { userName, userID } = doc.data();
+        commentsData.push({
+          id: doc.id,
+          userName,
+          userID,
+          ...doc.data(),
+        });
+      });
+
+      commentsData.sort((a, b) => b.timestamp - a.timestamp);
+
+      setComments(commentsData);
+
+      const visible = commentsData.slice(0, 3);
+      const hidden = commentsData.slice(3);
+
+      setVisibleComments(visible);
+      setHiddenComments(hidden);
+    });
+  }
 
   function handleSend() {
     addComment(); // Appel de la fonction addComment sans publicationId
     toast.success("Commentaire envoyé");
     setComment(""); // Réinitialisation du champ de commentaire après l'envoi
+    fetchComments(); // Ajoutez cet appel pour mettre à jour les commentaires après l'ajout
   }
 
   // Fonction pour supprimer un commentaire
@@ -180,7 +231,6 @@ export default function CardLivraison() {
       });
   }
 
-
   useEffect(() => {
     // Séparer les commentaires en deux listes distinctes
     const visible = comments.slice(0, 3); // Les 3 premiers commentaires
@@ -195,8 +245,8 @@ export default function CardLivraison() {
     const commentsRef = collection(db, "commentaires");
 
     addDoc(commentsRef, {
-      userName: currentUser ? currentUser.displayName : "Utilisateur inconnu",
-      userRole: currentUser ? currentUser.role : "Rôle inconnu",
+      userID: currentUser.uid,
+      userName: currentUser.displayName || "Utilisateur inconnu",
       commentContent: comment,
       timestamp: serverTimestamp(),
     })
@@ -209,31 +259,6 @@ export default function CardLivraison() {
         console.error("Error adding document: ", error);
         toast.error("Erreur lors de la création du document");
       });
-  }
-
-  // Fonction pour récupérer et afficher les commentaires depuis Firebase
-  function fetchComments() {
-    const commentsRef = collection(db, "commentaires");
-
-    onSnapshot(commentsRef, (snapshot) => {
-      const commentsData = [];
-      snapshot.forEach((doc) => {
-        const { userName, userRole } = doc.data();
-        commentsData.push({ id: doc.id, userName, userRole, ...doc.data() });
-      });
-
-      commentsData.sort((a, b) => {
-        return b.timestamp - a.timestamp;
-      });
-
-      setComments(commentsData);
-
-      const visible = commentsData.slice(0, 3);
-      const hidden = commentsData.slice(3);
-
-      setVisibleComments(visible);
-      setHiddenComments(hidden);
-    });
   }
 
   function getTimeDifference(timestamp) {
@@ -252,28 +277,15 @@ export default function CardLivraison() {
     const days = Math.floor(hours / 24);
 
     if (days > 0) {
-      return `${days} jour${days > 1 ? "s" : ""} ago`;
+      return `il y a ${days} jour${days > 1 ? "s" : ""}`;
     } else if (hours > 0) {
-      return `${hours} heure${hours > 1 ? "s" : ""} ago`;
+      return `il y a ${hours} heure${hours > 1 ? "s" : ""}`;
     } else if (minutes > 0) {
-      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+      return `il y a ${minutes} minute${minutes > 1 ? "s" : ""}`;
     } else {
-      return `${seconds} seconde${seconds !== 1 ? "s" : ""} ago`;
+      return `il y a ${seconds} seconde${seconds !== 1 ? "s" : ""}`;
     }
   }
-
-  const handleLogout = () => {
-    auth
-      .signOut()
-      .then(() => {
-        toast.success("Utilisateur déconnecté avec succès.");
-        // Ici tu peux ajouter d'autres actions après la déconnexion si nécessaire
-        navigate("/connexion");
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la déconnexion :", error);
-      });
-  };
 
   return (
     <div className="">
@@ -322,7 +334,7 @@ export default function CardLivraison() {
                       <span className="">
                         <span className="fw-bolder">{comment.userName}</span>
                         <span className="text-light bg-info rounded-pill px-2 mx-3 pb-0 mainBackgrounColor">
-                          {comment.userRole}
+                          role
                         </span>
                         <span>
                           <span>{getTimeDifference(comment.timestamp)}</span>
@@ -356,7 +368,7 @@ export default function CardLivraison() {
                     <span className="">
                       <span className="fw-bolder">{comment.userName}</span>
                       <span className="text-light bg-info rounded-pill px-2 mx-3 pb-0 mainBackgrounColor">
-                        {comment.userRole}
+                        {/* {comment.userRole} */}
                       </span>
                       <span>
                         <span>{getTimeDifference(comment.timestamp)}</span>
