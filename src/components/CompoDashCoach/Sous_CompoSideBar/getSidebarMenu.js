@@ -72,7 +72,7 @@ export const GetSidebarMenu = () => {
           link: '/admin/assignation',
         },
         {
-          title: 'Certificats',
+          title: 'Certificat',
           id: 'admin-link6',
           icon: <PiCertificateDuotone />,
           link: '/admin/certificats',
@@ -128,7 +128,7 @@ export const GetSidebarMenu = () => {
           link: 'etudiant/livrable',
         },
         {
-          title: 'Certificats',
+          title: 'Bulletin',
           icon: <TbCertificate />,
           id: 'link5',
           link: 'etudiant/certificat',
