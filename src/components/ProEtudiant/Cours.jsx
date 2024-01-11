@@ -186,25 +186,6 @@ export default function Cours() {
               isCompleted: course.finish,
             }));
             setCourses(formattedCourses);
-
-            // Fetch timer values for each course
-            const timerPromises = formattedCourses.map(async (course) => {
-              const courseRef = doc(db, 'publications', course.id);
-              const courseSnap = await getDoc(courseRef);
-              const timerValue = courseSnap.exists
-                ? courseSnap.data().duree || 0
-                : 0;
-              console.log(`Timer for course ${course.id}: ${timerValue}`);
-              return timerValue;
-            });
-
-            const timerValues = await Promise.all(timerPromises);
-            const newTimers = formattedCourses.reduce((acc, course, index) => {
-              acc[course.id] = timerValues[index];
-              return acc;
-            }, {});
-
-            setTimers(newTimers);
           }
         } else {
           console.log('No such document!');
@@ -294,7 +275,6 @@ export default function Cours() {
 
   const handleChangement = async (courseIndex) => {
     const course = courses[courseIndex];
-    const timerValue = timers[courseIndex]; // Get the timer value for this course
 
     setIsButtonsDisabled(true);
 
