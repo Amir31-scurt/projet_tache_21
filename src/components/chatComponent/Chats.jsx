@@ -18,14 +18,26 @@ export default function Chats() {
       const unsub = onSnapshot(
         doc(db, "userChats", currentUser?.uid),
         (doc) => {
-          setChats(doc.data());
+          const data = doc.data();
+          if (data && typeof data === "object") {
+            setChats(data);
+          } else {
+            // Handle the case where data is not an object
+            console.error("Chats data is not an object:", data);
+          }
+        },
+        (error) => {
+          // Handle the error case
+          console.error("Error fetching chats:", error);
         }
       );
       return () => {
         unsub();
       };
     };
-    currentUser?.uid && getChats();
+    if (currentUser?.uid) {
+      getChats();
+    }
   }, [currentUser?.uid]);
 
   // const handleArchived =  (e) => {
