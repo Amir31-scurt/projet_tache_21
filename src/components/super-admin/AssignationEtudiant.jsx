@@ -1,7 +1,6 @@
 // Importation des bibliothèques et composants nécessaires depuis les modules externes et les fichiers locaux
 import { useForm } from 'react-hook-form';
 import { MultiSelect } from 'primereact/multiselect';
-import { Button } from 'primereact/button';
 import { ToastContainer, toast } from 'react-toastify';
 import { useEffect, useState, useRef } from 'react';
 import {
@@ -20,6 +19,7 @@ import 'rsuite/dist/rsuite.css';
 import { PulseLoader } from 'react-spinners';
 import React from 'react';
 import SpinnerIcon from '@rsuite/icons/legacy/Spinner';
+import EtudiantsTable from './EtudiantsTable';
 
 export const AssignationEtudiant = () => {
   // Initialisation des états pour stocker les données et le statut de chargement
@@ -287,6 +287,7 @@ export const AssignationEtudiant = () => {
         {/* Conteneur pour les toasts de notification */}
         <ToastContainer />
       </div>
+      <EtudiantsTable />
     </div>
   );
 };
