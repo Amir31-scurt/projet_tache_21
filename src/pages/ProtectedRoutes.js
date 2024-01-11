@@ -27,10 +27,13 @@ import StudentProgram from '../components/ProEtudiant/Programme';
 import Cours from '../components/ProEtudiant/Cours';
 import UserTable from '../components/super-admin/TableauUtilisateurs';
 import logo from '../assets/images/logo.png';
-import Quizz from '../components/quizzs/quizzs';
 import RenduBulletinEtudiant from '../components/RenduBulletinEtudiant';
 import ReactHookFormDemo from '../components/super-admin/Certificat';
 import NotFound from './NotFound';
+import QuizMarketing from '../components/quizzs/QuizMarketing';
+import QuizFinance from '../components/quizzs/QuizFinance';
+import QuizGestionInternationale from '../components/quizzs/QuizGestionInternationale';
+import QuizGestionEntreprise from '../components/quizzs/QuizGestionEntreprise';
 
 export default function ProtectedRoutes() {
   const { email } = useContext(EmailContext);
@@ -153,8 +156,20 @@ export default function ProtectedRoutes() {
           element: <Cours />,
         },
         {
-          path: 'etudiant/quizz',
-          element: <Quizz />,
+          path: 'etudiant/programme-apprenant/quizgestioninternationale',
+          element: <QuizGestionInternationale />,
+        },
+        {
+          path: 'etudiant/programme-apprenant/quizgestionentreprise',
+          element: <QuizGestionEntreprise />,
+        },
+        {
+          path: 'etudiant/programme-apprenant/quizmarketing',
+          element: <QuizMarketing/>,
+        },
+        {
+          path: 'etudiant/programme-apprenant/quizfinance',
+          element: <QuizFinance />,
         },
         {
           path: '*',

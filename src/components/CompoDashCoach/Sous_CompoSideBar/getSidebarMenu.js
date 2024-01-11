@@ -133,12 +133,7 @@ export const GetSidebarMenu = () => {
           id: 'link5',
           link: 'etudiant/certificat',
         },
-        {
-          title: 'Quizz',
-          icon: <TbCertificate />,
-          id: 'link6',
-          link: 'etudiant/quizz',
-        },
+       
         // ... other items for regular users
       ];
     }
