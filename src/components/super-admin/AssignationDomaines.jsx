@@ -203,7 +203,7 @@ const AssignationDomaines = () => {
           <MultiCascader
             style={{ width: "100%" }}
             data={options}
-            cascade={true}
+            cascade={false}
             onChange={setValue}
             value={value}
             appearance="default"
