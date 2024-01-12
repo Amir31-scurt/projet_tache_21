@@ -14,7 +14,7 @@ export default function ChatHome() {
   return (
     <ChatAuthCtxProvider>
       <ChatContextProvider>
-        <div className="chatHomeContainer text-white">
+        <div className="chatHomeContainer text-white d-none">
           <div
             className={`chatHome shadow-lg rounded ${
               openChat ? "chatHomeDisplayYes" : "chatHomeDisplay"
