@@ -7,7 +7,9 @@ const Quiz = ({ quizData }) => {
   const { questions, correctAnswers } = quizData;
   const authContext = useContext(AuthContext);
 
-  const [userAnswers, setUserAnswers] = useState(Array(correctAnswers.length).fill(''));
+  const [userAnswers, setUserAnswers] = useState(
+    Array(correctAnswers.length).fill('')
+  );
   const [score, setScore] = useState(null);
   const [isFormValid, setIsFormValid] = useState(false);
   const [quizSubmitted, setQuizSubmitted] = useState(false);

@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 * {
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 body {
@@ -24,7 +24,125 @@ body {
   margin: 45px 0;
 }
 
+.module-container {
+  display: flex;
+}
 
+.module-container .sidebar {
+  /* width: 25%;  */
+  background-color: #f0f2f5;
+  height: 100vh;
+  position: fixed;
+  overflow-y: scroll;
+}
+
+.module-container .file {
+  padding: 0px 10px;
+}
+.module-container .titre {
+  font-size: 32px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.module-container .main-content {
+  width: 100%;
+  padding: 20px;
+  margin: 10px;
+  margin-left: 32%;
+  text-align: left !important;
+}
+
+.module-container input[type='radio'] {
+  --webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  /* background-color: #48a93c !important;  */
+  border: 2px solid #999;
+}
+
+.module-container input:checked {
+  border: 2px solid #007bff !important;
+  background-color: #48a93c;
+}
+
+.module-container .lesson-item {
+  background-color: white;
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+  border-left: 5px solid #48a93c !important;
+  /* Blue border for active item */
+}
+
+.content-block {
+  background-color: white;
+  width: 100%;
+  margin-bottom: 10px;
+  cursor: pointer;
+  padding: 20px;
+  border-left: 5px solid #48a93c !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.introduction {
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: left;
+  margin-left: 8%;
+}
+
+.module-container .label {
+  margin-left: 5px;
+  font-family: Montserrat;
+  font-size: 16px;
+  width: 65%;
+  text-align: left;
+  border-radius: 20px;
+  color: #000000;
+}
+
+.module-container .paragraph {
+  margin-top: 5%;
+  color: black;
+  width: 65%;
+  margin-left: 5px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.dig {
+  /* background-color: #3084b5;  */
+  color: black;
+  font-size: 16px;
+  width: 100%;
+  height: 10vh;
+  padding-left: 10px;
+  padding-top: 20px;
+}
+
+.sous {
+  border-radius: 20px;
+  height: 50px;
+  font-size: 22px;
+  width: 20%;
+  margin-left: 20%;
+  margin-top: 30px;
+  background-color: #48a93c;
+  border: none;
+  color: white;
+  font-weight: bold;
+}
+
+.paragraph {
+  font-size: 18px;
+  font-weight: 700;
+}
 
 /*------------Notifications-----------*/
 .notifs {
@@ -141,6 +259,7 @@ body {
   padding: 16px;
   border-radius: 8px;
   margin-top: 20px; /* or any desired width */
+  width: max-content;
 }
 .program-card img {
   width: 100%;
@@ -879,7 +998,8 @@ body {
 .divard {
   display: flex !important;
 }
-.nicePic,.nicePic img{
+.nicePic,
+.nicePic img {
   width: 60px;
   height: 60px;
   border-radius: 100%;
@@ -977,7 +1097,7 @@ body {
 /* CSS pour la certification */
 .certificate-display {
   color: #333;
-  font-family: Georgia, "Times New Roman", Times, serif;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .card {
@@ -1011,165 +1131,12 @@ body {
 .ajout {
   width: 100px;
 }
-
-
-/* Quiz */
-
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto&display=swap');
-@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css");
-
-:root{
-    --box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+/* CSS EtudiantAssgnTable */
+.tete{
+  background:  #3084b5 !important;
 }
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-size: 16px;
-    font-family: 'Poppins', sans-serif;
-    text-decoration: none;
-    list-style: none;
+.petit{
+  display: flex !important;
+  align-items: center !important;
+  width: 110px;
 }
-
-.quiz{
-    background-color: #ffffff;
-    padding: 30px;
-}
-
-.heading{
-    margin: 10px auto 40px auto;
-}
-
-.heading .title{
-    font-size: 30px;
-    color: #000000;
-    font-weight: 500;
-    text-align: center;
-}
-
-.heading .subtitle{
-    font-size: 20px;
-    color: #ffffff;
-    font-weight: 300;
-    text-align: center;
-}
-
-.result{
-    text-align: center;
-    min-width: 350px;
-    max-width: 400px;
-    margin: 20px auto;
-    border-radius: 5px;
-    background-color: #ffffff;
-    box-shadow: var(--box-shadow);
-}
-
-.result p:first-child{
-    padding: 10px 20px;
-}
-
-.hide{
-    display: none;
-}
-
-.reload button{
-    background-color: #04AA6D;
-    color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 0px 0px 5px 5px;
-    width: 100%;
-    border: 0px;
-}
-
-.reload button:hover{
-    background-color: #03a369;
-    cursor: pointer;
-}
-
-.quiz-form{
-    max-width: 1000px;
-    margin: auto;
-}
-
-.question{
-    background-color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    margin: 20px 0px;
-    box-shadow: var(--box-shadow);
-}
-
-.question > * {
-    font-size: 18px;
-}
-
-.option {
-    margin-left: 10px;
-}
-
-.correct{
-    background-color: #c8ffdf;
-}
-
-.wrong{
-    background-color: #ffd1d1;
-}
-
-.submit{
-    text-align: center;
-    margin: 30px 0px;
-}
-
-.submit input {
-  background-color: #48A93C;
-    padding: 5px 25px;
-    color: #ffffff;
-    font-size: 22px;
-    border-radius: 5px;
-    box-shadow: var(--box-shadow);
-    border: 0px;
-}
-
-.submit input:hover{
-    background-color: #03a369;
-    cursor: pointer;
-}
-
-.letter-format {
-    max-width: 800px;
-    margin: 0 auto; 
-    border: 1px solid #d3d3d3; 
-    padding: 20px; 
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-  }
-
-
-  input[type="radio"] {
-    --webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border-radius: 50%;
-    width: 15px;
-    height: 14px;
-    border: 2px solid #999;
-  }
-  
-  input:checked {
-    border: 1px solid #007bff !important;
-    background-color: #48a93c;
-  }
-
-  .btn-quiz{
-    width: 25%;
-    
-    
-  }
-
-  .btn-dash{
-    text-align: center;
-
-  }
-  
-
-/* Fin Quiz */

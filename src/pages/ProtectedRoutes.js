@@ -6,7 +6,6 @@ import {
 import Connexion from './Connected/Connexion';
 import DashboardApprenant from '../components/DashboardApprenant';
 import ChatHome from '../components/chatComponent/ChatHome';
-import Inscription from '../components/Inscription/Inscription';
 import Template from '../layout/template';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'rsuite/dist/rsuite.min.css';
@@ -152,7 +151,7 @@ export default function ProtectedRoutes() {
           element: <ContentCardLivraison />,
         },
         {
-          path: 'etudiant/cours/:domaineId/:sousDomaineName',
+          path: 'etudiant/programme-apprenant/cours/:domaineId/:sousDomaineName',
           element: <Cours />,
         },
         {

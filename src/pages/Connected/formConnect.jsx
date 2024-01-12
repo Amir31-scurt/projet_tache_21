@@ -15,8 +15,6 @@ import {
   query,
   where,
   getDocs,
-  doc,
-  getDoc,
 } from 'firebase/firestore';
 import 'react-toastify/dist/ReactToastify.css';
 import Restaurer from './Restaurer';
