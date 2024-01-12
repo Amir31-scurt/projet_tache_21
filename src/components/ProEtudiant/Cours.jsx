@@ -3,7 +3,7 @@ import { Card } from 'primereact/card';
 import { Modal } from 'rsuite';
 import { useParams } from 'react-router-dom';
 import { db, storage } from '../../config/firebase-config';
-import { getDoc, doc, collection, addDoc, serverTimestamp,onSnapshot, getDocs, where } from 'firebase/firestore';
+import { getDoc, doc, collection, addDoc, serverTimestamp,onSnapshot, getDocs, where, updateDoc, query } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { AuthContext } from '../../contexte/AuthContext';
 import { format } from 'date-fns';
@@ -20,9 +20,10 @@ export default function Cours() {
   const [intervalIds, setIntervalIds] = useState({}); // To store interval IDs
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedCourseTitle, setSelectedCourseTitle] = useState('');
-
+  const [currentDocRef, setCurrentDocRef] = useState(null);
   const { currentUser, uid } = useContext(AuthContext);
-  const [LeNom , setLeNom] = useState("")
+  const [LeNom, setLeNom] = useState('')
+  const [docPubRef, setDocPubRef] = useState("");;
 
   const UserUid = uid;
   const UserEmail = currentUser.email;
@@ -31,9 +32,9 @@ export default function Cours() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const usersCollectionRef = collection(db, "utilisateurs");
-        const query = query(usersCollectionRef, where("userId", "==", UserUid));
-        const querySnapshot = await getDocs(query);
+        const usersCollectionRef = collection(db, 'utilisateurs');
+        const q = query(usersCollectionRef, where("email", "==", UserEmail));
+        const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
           // Il y a au moins un document correspondant à UserUid
@@ -96,42 +97,53 @@ export default function Cours() {
     };
   }, [selectedFiles]);
 
+  const imageUrls = [];
+  const handleUpload = async () => {
+    try {
 
-  const handleUpload = async (user) => {
-    // Créez un tableau pour stocker les URLs des images
-    const imageUrls = [];
+      // Boucler à travers les fichiers sélectionnés et les télécharger sur Firebase Storage
+      await Promise.all(
+        selectedFiles.map(async (file) => {
+          const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
+          await uploadBytes(storageRef, file);
+          const url = await getDownloadURL(storageRef);
+          // Ajouter l'URL au tableau
+          imageUrls.push(url);
+        })
+      );
 
-    // Loop through selected files and upload each to Firebase Storage
-    await Promise.all(
-      selectedFiles.map(async (file) => {
-        const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
-        await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(storageRef);
-        // Ajoutez l'URL au tableau
-        imageUrls.push(url);
-      })
-    );
+      // Effacer les fichiers sélectionnés
+      setSelectedFiles([]);
+      // Fermer la fenêtre modale
+      setOpen(false);
 
-    // Clear selected files
-    setSelectedFiles([]);
-    // Close the modal
-    setOpen(false);
+      // Vérifier s'il existe un document existant avec le même cours et le même utilisateur
+      const publicationCollectionRef = collection(db, "publication");
+      const publicationQuery = query(
+        publicationCollectionRef,
+        where("userID", "==", UserUid),
+        where("cours", "==", selectedCourseTitle)
+      );
+      const publicationQuerySnapshot = await getDocs(publicationQuery);
 
-    if (imageUrls.length > 0) {
-      // Ajoutez une seule fois le document dans Firestore avec tous les URLs d'images
-      await addDoc(collection(db, 'publication'), {
-        userID: UserUid,
-        profile: user.photoURL || '',
-        nom: UserName,
-        date: format(new Date(), 'dd/MM/yyyy - HH:mm:ss'),
-        images: imageUrls, // Utilisez le tableau des URLs ici
-        email: UserEmail || '',
-        cours: selectedCourseTitle,
-        finish: false,
-        livree: false,
-        start: false,
-        duree : "",
-      });
+      if (!publicationQuerySnapshot.empty) {
+        // Mettre à jour le document existant avec les nouvelles et anciennes images
+        const existingDocRef = publicationQuerySnapshot.docs[0].ref;
+
+        // Récupérer les images actuelles du document existant
+        const existingImages =
+          publicationQuerySnapshot.docs[0].data().images || [];
+
+        // Concaténer les anciennes images avec les nouvelles
+        const imagesMisesAJour = [...imageUrls, ...existingImages];
+
+        await updateDoc(existingDocRef, {
+          date: serverTimestamp(),
+          images: imagesMisesAJour,
+        });
+      }
+    } catch (error) {
+      console.error("Erreur lors du traitement du téléchargement :", error);
     }
   };
 
@@ -172,24 +184,36 @@ export default function Cours() {
     setSelectedCourseTitle(selectedCourse.title);
   };
 
-  const formatTime = (seconds) => {
-    const days = Math.floor(seconds / (3600 * 24));
-    const hours = Math.floor((seconds % (3600 * 24)) / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
 
-    if (days > 0) {
-      return `${days} jour${days > 1 ? 's' : ''}`;
-    } else if (hours > 0) {
-      return `${hours} heure${hours > 1 ? 's' : ''}`;
-    } else {
-      return `${minutes} minute${
-        minutes > 1 ? 's' : ''
-      } ${remainingSeconds} seconde${remainingSeconds > 1 ? 's' : ''}`;
+
+  const handleDisplay = async (courseIndex) => {
+    const course = courses[courseIndex];
+
+    const publicationCollectionRef = collection(db, "publication");
+    const publicationQuery = query(
+      publicationCollectionRef,
+      where("userID", "==", UserUid),
+      where("cours", "==", course.title)
+    );
+    const publicationQuerySnapshot = await getDocs(publicationQuery);
+
+    if (publicationQuerySnapshot.empty) {
+      // Créer un nouveau document s'il n'y a pas de document existant
+      setDocPubRef( await addDoc(collection(db, "publication"), {
+        userID: UserUid,
+        cours: course.title,
+        nom: UserName,
+        profile: "",
+        images: imageUrls,
+        date: serverTimestamp(),
+        email: UserEmail || "",
+        start: true,
+        finish: false,
+        livree: false,
+        duree: 0,
+      }));
     }
-  };
 
-  const handleDisplay = (courseIndex) => {
     setCourses((courses) =>
       courses.map((course, index) => {
         if (index === courseIndex) {
@@ -203,17 +227,8 @@ export default function Cours() {
         return course;
       })
     );
-    const timerInterval = setInterval(() => {
-      setTimers((prevTimers) => ({
-        ...prevTimers,
-        [courseIndex]: (prevTimers[courseIndex] || 0) + 1,
-      }));
-    }, 1000);
 
-    setIntervalIds((prevIds) => ({
-      ...prevIds,
-      [courseIndex]: timerInterval,
-    }));
+    setCurrentDocRef(docPubRef);
   };
 
   const handleChangement = (courseIndex) => {
@@ -225,11 +240,6 @@ export default function Cours() {
         return course;
       })
     );
-    clearInterval(intervalIds[courseIndex]);
-    setIntervalIds((prevIds) => ({
-      ...prevIds,
-      [courseIndex]: null,
-    }));
   };
 
   const handleClose = () => setOpen(false);
@@ -327,9 +337,6 @@ export default function Cours() {
                     </a>
                   )}
                   {renderCourseButtons(course, index)}
-                  <p key={index}>{`Durée: ${formatTime(
-                    timers[index] || 0
-                  )}`}</p>
                 </Card>
               </div>
             );

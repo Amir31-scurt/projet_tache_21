@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import {
   addDoc,
@@ -14,97 +13,60 @@ import {
 } from "firebase/firestore";
 import { db, auth } from "../config/firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 import { toast } from "react-hot-toast";
 import commenter from "../assets/images/commenter.png";
 import envoi from "../assets/images/envoi.png";
 
 import React, { useState, useEffect, useContext } from "react";
-import userProfile from "../assets/images/userProfile.png";
 import { Dialog } from "primereact/dialog";
 import "firebase/firestore";
 import { AuthContext } from "../contexte/AuthContext";
 import { Galleria } from "primereact/galleria";
 
-export default function CardLivraison() {
+export default function CardLivraison({
+  date,
+  apprenant,
+  titreCourEtudiant,
+  images,
+  userProfile,
+}) {
   const [currentUser, setCurrentUser] = useState(null);
   const [userRole, setUserRole] = useState("Rôle inconnu");
-
+  const [imagesData, setImages] = useState([]);
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
-
-
   const [visibleComments, setVisibleComments] = useState([]);
   const [hiddenComments, setHiddenComments] = useState([]);
-  const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
 
   const { uid } = useContext(AuthContext);
   const UserUid = uid;
 
-  const [apprenant, setApprenat] = useState("");
-  const [coach, setCoach] = useState("");
-  const [date, setDate] = useState("");
-  const [titreCourEtudiant, settitreCourEtudiant] = useState("");
-  const [role, setRole] = useState("Coach");
+  const navigate = useNavigate();
 
-  const [images, setImages] = useState([]);
-  const [visible, setVisible] = useState(false);
+  // Fonction pour extraire les données d'images à partir des URLs 
+  const fetchImagesFromProps = (images) => {
+    // Mapper sur les URLs des images pour créer un tableau d'objets 
+    const imagesData = images.map((url, index) => ({
+      itemImageSrc: url,
+      thumbnailImageSrc: url,
+      alt: `Image ${index + 1}`,
+      title: `Titre ${index + 1}`,
+    }));
 
-  // Fonction pour récupérer les informations de l'étudiant depuis Firestore
-  const fetchStudentInfo = async () => {
-    try {
-      const studentRef = collection(db, "publication");
-
-      // Création de la requête pour récupérer le document de l'étudiant
-      const studentQuery = query(studentRef, where("userID", "==", UserUid));
-      const studentSnapshot = await getDocs(studentQuery);
-
-      // Vérification s'il y a des documents
-      if (!studentSnapshot.empty) {
-        const studentData = studentSnapshot.docs[0].data();
-        setApprenat(studentData.nom);
-        settitreCourEtudiant(studentData.cours);
-        setCoach(studentData.coach);
-        setDate(format(studentData.date.toDate(), 'dd/MM/yyyy - HH:mm:ss'));
-      }
-    } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des informations de l'étudiant depuis Firestore",
-        error
-      );
-    }
+    // Mettre à jour l'état local avec les données d'images
+    setImages(imagesData);
   };
 
-  const fetchImagesFromFirestore = async () => {
-    try {
-      const publicationRef = collection(db, "publication");
-      const q = query(publicationRef);
-      const querySnapshot = await getDocs(q);
+  // Effet de chargement initial et chaque fois que les images changent
+  useEffect(() => {
+  //extraire les données d'images à partir des images actuelles
+    fetchImagesFromProps(images);
+  }, [images]);
 
-      const imagesArray = [];
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        imagesArray.push(...data.images);
-      });
-
-      setImages(
-        imagesArray.map((url, index) => ({
-          itemImageSrc: url,
-          thumbnailImageSrc: url,
-          alt: `Image ${index + 1}`,
-          title: `Title ${index + 1}`,
-        }))
-      );
-    } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des images depuis Firestore",
-        error
-      );
-    }
-  };
-
-  // Fonction pour définir le template d'un item dans le composant Galleria
+  // Fonction de rendu pour un élément individuel dans la galerie d'images
   const itemTemplate = (item) => (
     <img
       src={item.itemImageSrc}
@@ -113,7 +75,7 @@ export default function CardLivraison() {
     />
   );
 
-  // Fonction pour définir le template d'un thumbnail dans le composant Galleria
+  // Fonction de rendu pour une miniature dans la galerie d'images
   const thumbnailTemplate = (item) => (
     <img
       src={item.thumbnailImageSrc}
@@ -121,13 +83,6 @@ export default function CardLivraison() {
       style={{ width: "140px", height: "100px" }}
     />
   );
-
-  // Effet pour récupérer les informations de l'étudiant lors du montage du composant
-  useEffect(() => {
-    fetchStudentInfo();
-    fetchImagesFromFirestore();
-  }, []);
-
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -180,7 +135,6 @@ export default function CardLivraison() {
         toast.error("Erreur lors de la suppression du commentaire");
       });
   }
-
 
   useEffect(() => {
     // Séparer les commentaires en deux listes distinctes
@@ -283,19 +237,19 @@ export default function CardLivraison() {
           <div className="col-md-12 d-flex colApprenant my-3">
             <img src={userProfile} alt="" className="icon" />
             <div className="mySpan">
-              <h6 className=" px-3 pt-2 dark">{apprenant}</h6>
-              <p className="m-0 px-3 pt-2 dark">{date}</p>
+              <h6 className=" px-3 pt-1 fs-5 fst-italic dark">{apprenant}</h6>
+              <p className="m-0 fst-italic px-3 pt-1 dark">{date}</p>
             </div>
           </div>
 
-          <div className="col-md-12 d-flex justify-content-center py-2">
+          <div className="col-md-12 d-flex justify-content-center  fst-italic fw-bold fs-6 py-2">
             <p>{titreCourEtudiant}</p>
           </div>
 
           {/* Galleria pour afficher les images */}
-          <div className="col-12 my-2">
+          <div className="col-12 my-1">
             <Galleria
-              value={images}
+              value={imagesData}
               numVisible={5}
               style={{ width: "52rem", margin: "auto" }}
               item={itemTemplate}
