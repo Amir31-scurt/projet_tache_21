@@ -16,10 +16,10 @@ const Quiz = ({ quizData }) => {
 
 
   useEffect(() => {
-    // Obtenez le nom de l'étudiant à partir du contexte d'authentification
+    // Obtenez le nom de l'étudiant 
     const studentName = authContext.currentUser.displayName;
 
-    // Vérifiez le nombre de tentatives restantes pour ce quiz
+    // Vérifiez le nombre de tentatives restantes 
     const checkRemainingAttempts = async () => {
       try {
         const resultsQuery = query(collection(db, 'scorequizz'), where('studentName', '==', studentName));
@@ -52,13 +52,13 @@ const Quiz = ({ quizData }) => {
     });
     setScore(newScore);
   
-    // Obtenez le nom de l'étudiant à partir du contexte d'authentification
+    // Obtenez le nom de l'étudiant
     const studentName = authContext.currentUser.displayName;
   
     try {
       // Mise à jour du nombre de tentatives
       await addDoc(collection(db, 'scorequizz'), {
-        studentName: studentName,
+        NomEtudiant: studentName,
         scoreMessage: `Vous avez obtenu ${newScore}/${questions.length} sur ce quiz.`,
         tentativesRestantes: remainingAttempts - 1,
       });
@@ -82,7 +82,6 @@ const Quiz = ({ quizData }) => {
       }
     });
   
-    // Faites défiler jusqu'au haut de la page
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   
@@ -102,6 +101,8 @@ const Quiz = ({ quizData }) => {
     setUserAnswers(Array(correctAnswers.length).fill(''));
     setScore(null);
     setIsFormValid(false); 
+    setQuizSubmitted(false);
+    setShowSubmitButton(true);
   
     const questionElements = document.querySelectorAll('.question');
     questionElements.forEach((questionElement) => {
