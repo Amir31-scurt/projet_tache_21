@@ -33,8 +33,6 @@ export default function CompoHtml({ title, url, sousDomaineName, domaineId }) {
           </div>
         </div>
       </div>
-
-     
     </Link>
   );
 }
