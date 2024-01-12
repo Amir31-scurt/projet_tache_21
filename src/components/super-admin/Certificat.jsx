@@ -20,6 +20,8 @@ import CertificateDisplay from "./CertificatDisplay";
 import html2pdf from "html2pdf.js";
 import Table from "./Table";
 import { format } from "date-fns";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import AddIcon from "@mui/icons-material/Add";
 
 // Méthode principale
 const ReactHookFormDemo = () => {
@@ -89,6 +91,19 @@ const ReactHookFormDemo = () => {
 
   // Soumission des champs
   const onSubmit = (data) => {
+    // Vérification si l'étudiant est déjà certifié
+    const isStudentCertified = certificationsData.some(
+      (certification) =>
+        certification.role === data.role &&
+        certification.domain === data.domain &&
+        certification.mention === data.mention
+    );
+
+    if (isStudentCertified) {
+      alert("L'étudiant est déjà certifié.");
+      return;
+    }
+
     setFormData(data);
     setShowMessage(true);
 
@@ -179,11 +194,12 @@ const ReactHookFormDemo = () => {
   return (
     <div className="form-demo d-flex flex-column gap-5">
       <Button
-        label="Nouvelle certification"
         onClick={() => setVisible(true)}
         style={{ backgroundColor: "#3084b5" }}
         className={"d-flex mx-auto text-white"}
-      />
+      >
+        <AddIcon />
+      </Button>
       <Dialog
         header="Formulaire de Certification"
         visible={visible}
@@ -335,6 +351,7 @@ const ReactHookFormDemo = () => {
                 label="Certifier"
                 className="mt-2"
                 style={{ backgroundColor: "#3084b5", color: "#fff" }}
+                icon="pi pi-check"
               />
             </form>
           </div>
@@ -348,14 +365,15 @@ const ReactHookFormDemo = () => {
         </div>
         <Button
           type="button"
-          label="Télécharger"
           onClick={() => {
             setVisible(false);
             downloadCertificate();
           }}
-          className="mt-2"
-          style={{ backgroundColor: "#3084b5", color: "#fff" }}
-        />
+          className="mx-3"
+          style={{ backgroundColor: "#48a93c", color: "#fff" }}
+        >
+          <FileDownloadIcon />
+        </Button>
         <Table certificationsData={certificationsData} />
       </div>
     </div>

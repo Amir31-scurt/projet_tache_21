@@ -7,6 +7,7 @@ import { Box, InputAdornment, TextField } from "@mui/material";
 // Configuration du tableau
 const CustomDataTable = ({ data }) => {
   const [selectedRows, setSelectedRows] = useState([]);
+  const [searchText, setSearchText] = useState("");
   const columns = [
     {
       name: "Nom",
@@ -41,6 +42,10 @@ const CustomDataTable = ({ data }) => {
     },
   };
 
+  const dataToDisplay = data.filter((item) =>
+    item.role.toLowerCase().includes(searchText.trim().toLowerCase())
+  );
+
   return (
     <div>
       <Box
@@ -53,6 +58,8 @@ const CustomDataTable = ({ data }) => {
         <TextField
           id="input-with-icon-textfield"
           label="Rechercher"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -66,7 +73,7 @@ const CustomDataTable = ({ data }) => {
       <DataTable
         title="Liste des utilisateurs"
         columns={columns}
-        data={data}
+        data={dataToDisplay}
         customStyles={customStyles}
         pagination
         selectableRowsHighlight
