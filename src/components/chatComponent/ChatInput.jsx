@@ -60,6 +60,7 @@ export default function ChatInput({ activeBtn }) {
         className="form-control rounded-pill me-1"
         placeholder="Envoyer.."
         onKeyDown={handleKeyEnter}
+        readOnly={activeBtn}
       />
       {/* <div className="send bg-danger"> */}
       <button

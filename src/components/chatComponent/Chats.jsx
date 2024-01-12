@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
-import pp from '../../assets/images/user.png';
-import { ChatAuthCtx } from '../../contexte/ChatAuthCtx';
-import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
-import { db } from '../../config/firebase-config';
-import { ChatContext } from '../../contexte/ChatContext';
-import { AuthContext } from '../../contexte/AuthContext';
+import React, { useContext, useEffect, useState } from "react";
+import pp from "../../assets/images/user.png";
+import { ChatAuthCtx } from "../../contexte/ChatAuthCtx";
+import { doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { db } from "../../config/firebase-config";
+import { ChatContext } from "../../contexte/ChatContext";
+import { AuthContext } from "../../contexte/AuthContext";
 
 export default function Chats() {
   const [chats, setChats] = useState([]);
@@ -17,19 +17,19 @@ export default function Chats() {
   useEffect(() => {
     const getChats = () => {
       const unsub = onSnapshot(
-        doc(db, 'userChats', currentUser?.uid),
+        doc(db, "userChats", currentUser?.uid),
         (doc) => {
           const data = doc.data();
-          if (data && typeof data === 'object') {
+          if (data && typeof data === "object") {
             setChats(data);
           } else {
             // Handle the case where data is not an object
-            console.error('Chats data is not an object:', data);
+            console.error("Chats data is not an object:", data);
           }
         },
         (error) => {
           // Handle the error case
-          console.error('Error fetching chats:', error);
+          console.error("Error fetching chats:", error);
         }
       );
       return () => {
@@ -47,7 +47,7 @@ export default function Chats() {
   // }
 
   const handleSelect = (u) => {
-    dispatch({ type: 'CHANGE_USER', payload: u });
+    dispatch({ type: "CHANGE_USER", payload: u });
   };
   console.log(Object.entries(chats)[1]);
   return (
@@ -63,28 +63,21 @@ export default function Chats() {
                     className={`
                       userChat text-center me-2 py-1
                       ${
-                        chat[1]?.userInfo?.role === 'Coach'
-                          ? 'coach'
-                          : chat[1]?.userInfo?.role === 'Administrateutr'
-                          ? 'admin'
-                          : chat[1]?.userInfo?.role === 'Étudiant'
-                          ? 'etudiant'
-                          : ''
+                        chat[1]?.userInfo?.role === "Coach"
+                          ? "coach"
+                          : chat[1]?.userInfo?.role === "Administrateutr"
+                          ? "admin"
+                          : chat[1]?.userInfo?.role === "Étudiant"
+                          ? "etudiant"
+                          : ""
                       }`}
                     key={chat[0]}
                     onClick={() => handleSelect(chat[1]?.userInfo)}
                   >
-                    {/* <i
-                      className="bi bi-x-lg position-absolute btnArchived"
-                      // onClick={handleArchived}
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      data-bs-title="Archiver"
-                    ></i> */}
                     <img
                       src={
                         chat[1]?.userInfo?.photoURL
-                          ? 'https://firebasestorage.googleapis.com/v0/b/tache21-c134b.appspot.com/o/profile_images%2F4FEGNUHDZOYnv4WvJvyr2TxLha82?alt=media&token=588074b8-639a-42de-bd4b-0199e30150d6'
+                          ? "https://firebasestorage.googleapis.com/v0/b/tache21-c134b.appspot.com/o/profile_images%2F4FEGNUHDZOYnv4WvJvyr2TxLha82?alt=media&token=588074b8-639a-42de-bd4b-0199e30150d6"
                           : pp
                       }
                       alt=""
@@ -92,11 +85,11 @@ export default function Chats() {
                     />
 
                     <div className="userChatInfo">
-                      <span className="text-center text-nowrap">
-                        {chat[1]?.userInfo.displayName}{' '}
+                      <span className="text-center fw-bold text-nowrap">
+                        {chat[1]?.userInfo.displayName}{" "}
                       </span>
                       <p className="userChatInfolastMessage text-nowrap">
-                        {chat[1].lastMessage?.text}{' '}
+                        {chat[1].lastMessage?.text}{" "}
                       </p>
                     </div>
                   </div>
