@@ -6,6 +6,7 @@ import { Box, InputAdornment, TextField } from "@mui/material";
 
 // Configuration du tableau
 const CustomDataTable = ({ data }) => {
+   // eslint-disable-next-line
   const [selectedRows, setSelectedRows] = useState([]);
   const [searchText, setSearchText] = useState("");
   const columns = [

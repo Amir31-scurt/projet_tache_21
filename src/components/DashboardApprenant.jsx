@@ -1,8 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import DashboardCompo from './programmes/Single_Programmes/DashboardCompo';
-import { Users } from './CompoDashCoach/Sous_CompoSideBar/Utils';
 import { MdTask } from 'react-icons/md';
-import { FaUsers } from 'react-icons/fa';
 import { PiUsersFourFill } from 'react-icons/pi';
 import { collection, onSnapshot, getDocs, updateDoc } from 'firebase/firestore';
 import CardLivraison from '../components/CardLivraison';
@@ -40,7 +38,7 @@ export default function DashboardApprenant() {
   const [users, setUsers] = useState([]);
 
   // Filtre des utilisateurs par rôle (Coach ou Étudiant)
-  const teachers = users.filter((user) => user.role === 'Coach');
+  // const teachers = users.filter((user) => user.role === 'Coach');
   const students = users.filter((user) => user.role === 'Étudiant');
 
   // Fonction pour charger les utilisateurs depuis Firestore

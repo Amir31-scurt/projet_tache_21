@@ -20,6 +20,7 @@ import {
 } from "firebase/storage";
 
 export const NavBarCompo = () => {
+  // eslint-disable-next-line
   const { email, setEmail } = useContext(EmailContext);
   const [open, setOpen] = useState(false);
   const [profileImage, setProfileImage] = useState(UserProfil);
