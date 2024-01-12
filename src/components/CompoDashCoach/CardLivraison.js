@@ -5,7 +5,6 @@ import { Button, Modal } from 'react-bootstrap';
 import { useState } from 'react';
 import * as Icon from "react-bootstrap-icons";
 import { Carousel } from 'rsuite';
-import { format, parseISO } from 'date-fns';
 
 //Composant de Cartes contenus dans la partie Livraison du coach
 function CardLivraison({role, title, name, date, defaultImg, images, validation}) {
@@ -32,7 +31,7 @@ function CardLivraison({role, title, name, date, defaultImg, images, validation}
             role="button"
             style={{color: "#3084b5"}}
           ></i>
-          <span className="d-flex align-items-center">{"Il y'a un 1 jour"}</span>
+          <span className="d-flex align-items-center">Il y'a {date}</span>
         </div>
       </Card.Body>
       <Modal

@@ -228,6 +228,7 @@ const SpecificPro = () => {
   const [modifiedTitle, setModifiedTitle] = useState('');
   const [modifiedDescription, setModifiedDescription] = useState('');
   const [modifiedLink, setModifiedLink] = useState('');
+  const [editedIndex, setEditedIndex] = useState(null);
 
   // ... (le reste du code)
 
@@ -237,19 +238,177 @@ const SpecificPro = () => {
     setModifiedDescription(selectedCourse.description);
     setModifiedLink(selectedCourse.link);
     setIsEditing(true);
-    alert('bonjur')
+    setEditedIndex(index);
   };
 
-  const handleSaveEdit = (index) => {
-    // Code pour sauvegarder les modifications dans la base de données
-    // ...
-
-    // Réinitialiser les états après la sauvegarde
-    setIsEditing(false);
-    setModifiedTitle('');
-    setModifiedDescription('');
-    setModifiedLink('');
+  const handleSaveEdit = async (index) => {
+    const selectedCourse = getCoursLinks()[index];
+  
+    // Assurez-vous d'obtenir la référence correcte du document à mettre à jour
+    const docRef = doc(db, 'domaines', courseId);
+  
+    // Obtenez le snapshot actuel du document
+    const docSnapshot = await getDoc(docRef);
+  
+    if (docSnapshot.exists()) {
+      // Obtenez les données actuelles
+      const currentData = docSnapshot.data();
+  
+      // Assurez-vous que vous avez les références correctes dans votre structure de données
+      const currentSousDomaines = currentData.sousDomaines || {};
+      const currentCours = currentSousDomaines[selectedSousDomaine]?.cours || [];
+  
+      // Mettez à jour le cours sélectionné
+      currentCours[index] = {
+        link: modifiedLink,
+        title: modifiedTitle,
+        description: modifiedDescription,
+      };
+  
+      // Mettez à jour les données sousDomaines avec le cours modifié
+      const updatedSousDomaines = {
+        ...currentSousDomaines,
+        [selectedSousDomaine]: {
+          ...currentSousDomaines[selectedSousDomaine],
+          cours: currentCours,
+        },
+      };
+  
+      try {
+        // Mettez à jour le document dans Firestore
+        await updateDoc(docRef, {
+          sousDomaines: updatedSousDomaines,
+        });
+  
+        // Mettez à jour l'état local si nécessaire
+        setCourseData({ ...currentData, sousDomaines: updatedSousDomaines });
+  
+        // Réinitialisez les états après la sauvegarde
+        setIsEditing(false);
+        setModifiedTitle('');
+        setModifiedDescription('');
+        setModifiedLink('');
+      } catch (error) {
+        console.error('Erreur lors de la mise à jour du document :', error);
+      }
+    } else {
+      console.log('Aucun document trouvé avec l\'ID du domaine fourni');
+    }
   };
+
+
+
+  const handleArchive = async (index) => {
+    const selectedCourse = getCoursLinks()[index];
+
+    // Assurez-vous d'obtenir la référence correcte du document à mettre à jour
+    const docRef = doc(db, 'domaines', courseId);
+
+    // Obtenez le snapshot actuel du document
+    const docSnapshot = await getDoc(docRef);
+
+    if (docSnapshot.exists()) {
+      // Obtenez les données actuelles
+      const currentData = docSnapshot.data();
+
+      // Assurez-vous que vous avez les références correctes dans votre structure de données
+      const currentSousDomaines = currentData.sousDomaines || {};
+      const currentCours = currentSousDomaines[selectedSousDomaine]?.cours || [];
+
+      // Marquer le cours comme archivé
+      currentCours[index].archived = true;
+
+      // Mettez à jour les données sousDomaines avec le cours archivé
+      const updatedSousDomaines = {
+        ...currentSousDomaines,
+        [selectedSousDomaine]: {
+          ...currentSousDomaines[selectedSousDomaine],
+          cours: currentCours,
+        },
+      };
+
+      try {
+        // Mettez à jour le document dans Firestore
+        await updateDoc(docRef, {
+          sousDomaines: updatedSousDomaines,
+        });
+
+        // Mettez à jour l'état local si nécessaire
+        setCourseData({ ...currentData, sousDomaines: updatedSousDomaines });
+
+        toast.success('Cours archivé avec succès', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+      } catch (error) {
+        console.error('Erreur lors de l\'archivage du cours :', error);
+      }
+    } else {
+      console.log('Aucun document trouvé avec l\'ID du domaine fourni');
+    }
+  };
+  const handleUnarchive = async (index) => {
+    const selectedCourse = getCoursLinks()[index];
+
+    // Assurez-vous d'obtenir la référence correcte du document à mettre à jour
+    const docRef = doc(db, 'domaines', courseId);
+
+    // Obtenez le snapshot actuel du document
+    const docSnapshot = await getDoc(docRef);
+
+    if (docSnapshot.exists()) {
+      // Obtenez les données actuelles
+      const currentData = docSnapshot.data();
+
+      // Assurez-vous que vous avez les références correctes dans votre structure de données
+      const currentSousDomaines = currentData.sousDomaines || {};
+      const currentCours = currentSousDomaines[selectedSousDomaine]?.cours || [];
+
+      // Marquer le cours comme non archivé
+      currentCours[index].archived = false;
+
+      // Mettez à jour les données sousDomaines avec le cours désarchivé
+      const updatedSousDomaines = {
+        ...currentSousDomaines,
+        [selectedSousDomaine]: {
+          ...currentSousDomaines[selectedSousDomaine],
+          cours: currentCours,
+        },
+      };
+
+      try {
+        // Mettez à jour le document dans Firestore
+        await updateDoc(docRef, {
+          sousDomaines: updatedSousDomaines,
+        });
+
+        // Mettez à jour l'état local si nécessaire
+        setCourseData({ ...currentData, sousDomaines: updatedSousDomaines });
+
+        toast.success('Cours désarchivé avec succès', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+      } catch (error) {
+        console.error('Erreur lors du désarchivage du cours :', error);
+      }
+    } else {
+      console.log('Aucun document trouvé avec l\'ID du domaine fourni');
+    }
+  };
+  
 
 
   return (
@@ -328,50 +487,94 @@ const SpecificPro = () => {
               // const videoId = getYouTubeVideoId(course.link);
               return (
                 <div key={index} className="card mx-2 my-2">
-                <div className="card-body">
-                  <h5>
-                    Cours {index + 1} : {course.title}
-                  </h5>
-                  <p className="card-text mb-2">
-                    <strong>Description : </strong>
-                    {course.description}
-                  </p>
-                  {isEditing && (
-                    <>
-                      <input
-                        type="text"
-                        value={modifiedTitle}
-                        onChange={(e) => setModifiedTitle(e.target.value)}
-                      />
-                      <input
-                        type="text"
-                        value={modifiedDescription}
-                        onChange={(e) => setModifiedDescription(e.target.value)}
-                      />
-                      <input
-                        type="text"
-                        value={modifiedLink}
-                        onChange={(e) => setModifiedLink(e.target.value)}
-                      />
-                      <button onClick={() => handleSaveEdit(index)}>Sauvegarder</button>
-                    </>
-                  )}
-                  {!isEditing && (
-                    <>
-                      <a
-                        href={course.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                 <div className="card-body">
+                  
+            {isEditing && index === editedIndex ? (
+              <>
+              <div className='d-flex flex-column mes-input'>
+                  <h5 className='d-flex'>Cours{index + 1}:<input
+                className='border-none w-100 '
+                  type="text"
+                  value={modifiedTitle}
+                  onChange={(e) => setModifiedTitle(e.target.value)}
+                /> 
+                </h5>
+                <p className="card-text  d-flex ">
+                 <strong className=''>Description:</strong><textarea
+                 className='text-wrap border-none w-100 mb-2 '
+                  type="text"
+                  value={modifiedDescription}
+                  onChange={(e) => setModifiedDescription(e.target.value)}
+                /> 
+               
+                </p>
+                <a href="">
+                <input
+                 className=' border-none w-100'
+                  type="text"
+                  value={modifiedLink}
+                  onChange={(e) => setModifiedLink(e.target.value)}
+                />
+                </a>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => handleSaveEdit(index)}
+                >
+                  Sauvegarder
+                </button>
+               </div>
+              </>
+            ) : (
+              <>
+                <h5>
+                  Cours {index + 1} : {course.title}
+                </h5>
+                <p className="card-text mb-2">
+                  <strong>Description : </strong>
+                  {course.description}
+                </p>
+                {course.archived ? (
+                  <div>
+                  <p className="text-danger">Archivé</p>
+                  <button
+                            type="button"
+                            className="btn btn-success"
+                            onClick={() => handleUnarchive(index)}
+                          >
+                            Désarchiver
+                          </button>
+                  </div>
+                ) : (
+                  <>
+                    <a
+                      href={course.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {course.link}
+                    </a>
+                    <div className="mt-5 text-end">
+                      <button
+                        type="button"
+                        className="btn btn-primary mx-2"
+                        onClick={() => handleEditClick(index)}
                       >
-                        {course.link}
-                      </a>
-                      <div className='text-end mt-5 justify-between'>
-                        <button type='button' className='btn btn-primary' onClick={() => handleEditClick(index)}>Modifier</button>
-                        <button type='button' className='btn btn-danger'>Supprimer</button>
-                      </div>
-                    </>
-                  )}
-                </div>
+                        Modifier
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-warning mx-2"
+                        onClick={() => handleArchive(index)}
+                      >
+                        Archiver
+                      </button>
+
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+          </div>
                 </div>
               );
             })}
