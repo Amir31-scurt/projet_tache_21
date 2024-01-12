@@ -1,26 +1,20 @@
-import React, { useEffect, useCallback, useState, useContext } from "react";
-import DashboardCompo from "./programmes/Single_Programmes/DashboardCompo";
-import CardLivraison from "../components/CardLivraison";
+import React, { useEffect, useCallback, useState, useContext } from 'react';
+import DashboardCompo from './programmes/Single_Programmes/DashboardCompo';
+import CardLivraison from '../components/CardLivraison';
 import {
   collection,
   onSnapshot,
   getDocs,
   query,
   where,
-  updateDoc,
-} from "firebase/firestore";
-import { db } from "../config/firebase-config";
-import { AuthContext } from "../contexte/AuthContext";
-import format from "date-fns/format";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, storage } from "../../src/config/firebase-config";
-import { getDownloadURL, ref } from "firebase/storage";
-import UserProfil from "../assets/images/user.png";
-
-
-import { MdTask } from 'react-icons/md';
-import { PiUsersFourFill } from 'react-icons/pi';
-
+} from 'firebase/firestore';
+import { db } from '../config/firebase-config';
+import { AuthContext } from '../contexte/AuthContext';
+import format from 'date-fns/format';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth, storage } from '../../src/config/firebase-config';
+import { getDownloadURL, ref } from 'firebase/storage';
+import UserProfil from '../assets/images/user.png';
 
 export default function DashboardApprenant() {
   // État local pour stocker les livraisons et les utilisateurs
@@ -40,10 +34,10 @@ export default function DashboardApprenant() {
         getDownloadURL(storageRef)
           .then((url) => {
             setProfileImage(url);
-            localStorage.setItem("profileImage", url);
+            localStorage.setItem('profileImage', url);
           })
           .catch((error) => {
-            console.error("Error loading profile image:", error.message);
+            console.error('Error loading profile image:', error.message);
           });
       }
     });
@@ -55,7 +49,7 @@ export default function DashboardApprenant() {
   useEffect(() => {
     const fetchLivraisons = async () => {
       try {
-        const publicationCollectionRef = collection(db, "publication");
+        const publicationCollectionRef = collection(db, 'publication');
 
         // Requête pour récupérer tous les documents de la collection "publication"
         const publicationQuery = query(publicationCollectionRef);
@@ -67,16 +61,16 @@ export default function DashboardApprenant() {
         // Vérifier si des documents ont été trouvés dans la collection "publication"
         if (!querySnapshot.empty) {
           for (const doc of querySnapshot.docs) {
-            // Extraire le cours de l'utilisateur actuel 
+            // Extraire le cours de l'utilisateur actuel
             const userCours = doc.data().cours;
 
             // Référence à la collection "publication" pour les livraisons
-            const livraisonCollectionRef = collection(db, "publication");
+            const livraisonCollectionRef = collection(db, 'publication');
 
             // Requête pour récupérer les livraisons liées au cours de l'utilisateur actuel
             const livraisonQuery = query(
               livraisonCollectionRef,
-              where("cours", "==", userCours)
+              where('cours', '==', userCours)
             );
 
             // Obtenir le snapshot des résultats de la requête
@@ -89,12 +83,12 @@ export default function DashboardApprenant() {
                 key: livraisonDoc.id,
                 date: format(
                   new Date(data.date.seconds * 1000),
-                  "dd/MM/yyyy - HH:mm:ss"
+                  'dd/MM/yyyy - HH:mm:ss'
                 ),
                 apprenant: data.nom,
                 titreCourEtudiant: data.cours,
                 images: data.images || [],
-                userProfile: profileImage ,
+                userProfile: profileImage,
               });
             });
           }
@@ -107,10 +101,10 @@ export default function DashboardApprenant() {
           // Mettre à jour l'état local avec les nouvelles livraisons
           setLivraisons(nouvellesLivraisons);
         } else {
-          console.log("Aucun document publication trouvé.");
+          console.log('Aucun document publication trouvé.');
         }
       } catch (error) {
-        console.error("Erreur lors de la récupération des livraisons", error);
+        console.error('Erreur lors de la récupération des livraisons', error);
       }
     };
 
@@ -118,18 +112,11 @@ export default function DashboardApprenant() {
     fetchLivraisons();
   }, []);
 
-  // L'stockage des utilisateurs récupérés depuis Firestore
-  const [users, setUsers] = useState([]);
-
-  // Filtre des utilisateurs par rôle (Coach ou Étudiant)
-  // const teachers = users.filter((user) => user.role === 'Coach');
-  const students = users.filter((user) => user.role === 'Étudiant');
-
-  // Fonction pour charger les utilisateurs depuis Firestore
+  // Fonction de chargement des utilisateurs à partir de la collection "utilisateurs"
   const loadUsers = useCallback(() => {
     // Souscrire aux changements dans la collection "utilisateurs"
     const unsubscribe = onSnapshot(
-      collection(db, "utilisateurs"),
+      collection(db, 'utilisateurs'),
       (snapshot) => {
         // Mettre à jour l'état local des utilisateurs avec les données du snapshot
         const updatedUsers = snapshot.docs.map((doc) => ({
@@ -152,14 +139,14 @@ export default function DashboardApprenant() {
   // Contenu des cartes du tableau de bord
   const ContenuCardDsb = [
     {
-      ChiffreCardDsb: users.filter((user) => user.role === "Étudiant").length,
-      TextCardDsb: "Etudiants",
-      couleurCarte: "CouleurB",
+      ChiffreCardDsb: users.filter((user) => user.role === 'Étudiant').length,
+      TextCardDsb: 'Etudiants',
+      couleurCarte: 'CouleurB',
     },
     {
-      ChiffreCardDsb: "52",
-      TextCardDsb: "Taches",
-      couleurCarte: "CouleurC",
+      ChiffreCardDsb: '52',
+      TextCardDsb: 'Taches',
+      couleurCarte: 'CouleurC',
     },
   ];
 
@@ -184,7 +171,3 @@ export default function DashboardApprenant() {
     </div>
   );
 }
-
-
-
-

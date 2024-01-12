@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import {
   addDoc,
   collection,
@@ -10,21 +10,20 @@ import {
   onSnapshot,
   getDocs,
   serverTimestamp,
-} from "firebase/firestore";
-import { db, auth } from "../config/firebase-config";
-import { onAuthStateChanged } from "firebase/auth";
-import { format } from "date-fns";
+} from 'firebase/firestore';
+import { db, auth } from '../config/firebase-config';
+import { onAuthStateChanged } from 'firebase/auth';
+import { format } from 'date-fns';
 
-import { toast } from "react-hot-toast";
-import commenter from "../assets/images/commenter.png";
-import envoi from "../assets/images/envoi.png";
+import { toast } from 'react-hot-toast';
+import commenter from '../assets/images/commenter.png';
+import envoi from '../assets/images/envoi.png';
 
-import React, { useState, useEffect, useContext } from "react";
-import { Dialog } from "primereact/dialog";
-import "firebase/firestore";
-import { AuthContext } from "../contexte/AuthContext";
-import { Galleria } from "primereact/galleria";
-
+import React, { useState, useEffect, useContext } from 'react';
+import { Dialog } from 'primereact/dialog';
+import 'firebase/firestore';
+import { AuthContext } from '../contexte/AuthContext';
+import { Galleria } from 'primereact/galleria';
 
 export default function CardLivraison({
   date,
@@ -34,33 +33,22 @@ export default function CardLivraison({
   userProfile,
 }) {
   const [currentUser, setCurrentUser] = useState(null);
-  // eslint-disable-next-line
-  const [userRole, setUserRole] = useState("Rôle inconnu");
+  const [userRole, setUserRole] = useState('Rôle inconnu');
   const [imagesData, setImages] = useState([]);
   const [comments, setComments] = useState([]);
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState('');
   const [visibleComments, setVisibleComments] = useState([]);
   const [hiddenComments, setHiddenComments] = useState([]);
   const [visible, setVisible] = useState(false);
 
   const { uid } = useContext(AuthContext);
   const UserUid = uid;
+
   const navigate = useNavigate();
-  // eslint-disable-next-line
-  const [coach, setCoach] = useState("");
-  // eslint-disable-next-line
-  const [days, setDays] = useState("1");
-  // eslint-disable-next-line
-  const [role, setRole] = useState("Coach");
-  const [date, setDate] = useState("");
-  const [apprenant, setApprenat] = useState("");
 
-  const [images, setImages] = useState([]);
-  const [visible, setVisible] = useState(false);
-
-  // Fonction pour extraire les données d'images à partir des URLs 
+  // Fonction pour extraire les données d'images à partir des URLs
   const fetchImagesFromProps = (images) => {
-    // Mapper sur les URLs des images pour créer un tableau d'objets 
+    // Mapper sur les URLs des images pour créer un tableau d'objets
     const imagesData = images.map((url, index) => ({
       itemImageSrc: url,
       thumbnailImageSrc: url,
@@ -70,35 +58,11 @@ export default function CardLivraison({
 
     // Mettre à jour l'état local avec les données d'images
     setImages(imagesData);
-
-  // Fonction pour récupérer les informations de l'étudiant depuis Firestore
-   // eslint-disable-next-line
-  const fetchStudentInfo = async () => {
-    try {
-      const studentRef = collection(db, "publication");
-
-      // Création de la requête pour récupérer le document de l'étudiant
-      const studentQuery = query(studentRef, where("userID", "==", UserUid));
-      const studentSnapshot = await getDocs(studentQuery);
-
-      // Vérification s'il y a des documents
-      if (!studentSnapshot.empty) {
-        const studentData = studentSnapshot.docs[0].data();
-        setApprenat(studentData.nom);
-        setCoach(studentData.coach);
-        setDate(format(studentData.date.toDate(), 'dd/MM/yyyy - HH:mm:ss'));
-      }
-    } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des informations de l'étudiant depuis Firestore",
-        error
-      );
-    }
   };
 
   // Effet de chargement initial et chaque fois que les images changent
   useEffect(() => {
-  //extraire les données d'images à partir des images actuelles
+    //extraire les données d'images à partir des images actuelles
     fetchImagesFromProps(images);
   }, [images]);
 
@@ -107,7 +71,7 @@ export default function CardLivraison({
     <img
       src={item.itemImageSrc}
       alt={item.alt}
-      style={{ width: "100%", height: "100%" }}
+      style={{ width: '100%', height: '100%' }}
     />
   );
 
@@ -116,22 +80,14 @@ export default function CardLivraison({
     <img
       src={item.thumbnailImageSrc}
       alt={item.alt}
-      style={{ width: "140px", height: "100px" }}
+      style={{ width: '140px', height: '100px' }}
     />
   );
 
-  // Effet pour récupérer les informations de l'étudiant lors du montage du composant
-   // eslint-disable-next-line
-  useEffect(() => {
-    fetchStudentInfo();
-    fetchImagesFromFirestore();
-     // eslint-disable-next-line
-  }, []);
-   // eslint-disable-next-line
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const docRef = doc(db, "utilisateurs", user.uid);
+        const docRef = doc(db, 'utilisateurs', user.uid);
         try {
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
@@ -141,11 +97,11 @@ export default function CardLivraison({
             console.log(role);
           } else {
             console.log(
-              "Aucune donnée utilisateur trouvée pour cet utilisateur"
+              'Aucune donnée utilisateur trouvée pour cet utilisateur'
             );
           }
         } catch (error) {
-          console.error("Erreur lors de la récupération du rôle :", error);
+          console.error('Erreur lors de la récupération du rôle :', error);
         }
       }
     });
@@ -161,22 +117,22 @@ export default function CardLivraison({
 
   function handleSend() {
     addComment(); // Appel de la fonction addComment sans publicationId
-    toast.success("Commentaire envoyé");
-    setComment(""); // Réinitialisation du champ de commentaire après l'envoi
+    toast.success('Commentaire envoyé');
+    setComment(''); // Réinitialisation du champ de commentaire après l'envoi
   }
 
   // Fonction pour supprimer un commentaire
   function deleteComment(commentId) {
-    const commentRef = doc(db, "commentaires", commentId);
+    const commentRef = doc(db, 'commentaires', commentId);
 
     deleteDoc(commentRef)
       .then(() => {
-        toast.success("Comment deleted successfully");
+        toast.success('Comment deleted successfully');
         fetchComments(); // Mise à jour de l'affichage après la suppression du commentaire
       })
       .catch((error) => {
-        console.error("Error deleting comment: ", error);
-        toast.error("Erreur lors de la suppression du commentaire");
+        console.error('Error deleting comment: ', error);
+        toast.error('Erreur lors de la suppression du commentaire');
       });
   }
 
@@ -191,28 +147,28 @@ export default function CardLivraison({
 
   // Ajout d'un commentaire à la base de données
   function addComment() {
-    const commentsRef = collection(db, "commentaires");
+    const commentsRef = collection(db, 'commentaires');
 
     addDoc(commentsRef, {
-      userName: currentUser ? currentUser.displayName : "Utilisateur inconnu",
-      userRole: currentUser ? currentUser.role : "Rôle inconnu",
+      userName: currentUser ? currentUser.displayName : 'Utilisateur inconnu',
+      userRole: currentUser ? currentUser.role : 'Rôle inconnu',
       commentContent: comment,
       timestamp: serverTimestamp(),
     })
       .then(() => {
-        console.log("New document created with comment");
-        setComment("");
+        console.log('New document created with comment');
+        setComment('');
         fetchComments(); // Mise à jour de l'affichage après l'ajout du commentaire
       })
       .catch((error) => {
-        console.error("Error adding document: ", error);
-        toast.error("Erreur lors de la création du document");
+        console.error('Error adding document: ', error);
+        toast.error('Erreur lors de la création du document');
       });
   }
 
   // Fonction pour récupérer et afficher les commentaires depuis Firebase
   function fetchComments() {
-    const commentsRef = collection(db, "commentaires");
+    const commentsRef = collection(db, 'commentaires');
 
     onSnapshot(commentsRef, (snapshot) => {
       const commentsData = [];
@@ -237,7 +193,7 @@ export default function CardLivraison({
 
   function getTimeDifference(timestamp) {
     if (!timestamp) {
-      return ""; // Ou tout autre traitement que vous souhaitez appliquer pour les commentaires sans timestamp
+      return ''; // Ou tout autre traitement que vous souhaitez appliquer pour les commentaires sans timestamp
     }
 
     const currentTime = new Date();
@@ -251,26 +207,26 @@ export default function CardLivraison({
     const days = Math.floor(hours / 24);
 
     if (days > 0) {
-      return `${days} jour${days > 1 ? "s" : ""} ago`;
+      return `${days} jour${days > 1 ? 's' : ''} ago`;
     } else if (hours > 0) {
-      return `${hours} heure${hours > 1 ? "s" : ""} ago`;
+      return `${hours} heure${hours > 1 ? 's' : ''} ago`;
     } else if (minutes > 0) {
-      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
     } else {
-      return `${seconds} seconde${seconds !== 1 ? "s" : ""} ago`;
+      return `${seconds} seconde${seconds !== 1 ? 's' : ''} ago`;
     }
   }
-   // eslint-disable-next-line
+
   const handleLogout = () => {
     auth
       .signOut()
       .then(() => {
-        toast.success("Utilisateur déconnecté avec succès.");
+        toast.success('Utilisateur déconnecté avec succès.');
         // Ici tu peux ajouter d'autres actions après la déconnexion si nécessaire
-        navigate("/connexion");
+        navigate('/connexion');
       })
       .catch((error) => {
-        console.error("Erreur lors de la déconnexion :", error);
+        console.error('Erreur lors de la déconnexion :', error);
       });
   };
 
@@ -295,7 +251,7 @@ export default function CardLivraison({
             <Galleria
               value={imagesData}
               numVisible={5}
-              style={{ width: "52rem", margin: "auto" }}
+              style={{ width: '52rem', margin: 'auto' }}
               item={itemTemplate}
               thumbnail={thumbnailTemplate}
               className="publication rounded-2"
@@ -308,7 +264,7 @@ export default function CardLivraison({
               header="Commentaires"
               visible={visible}
               maximizable
-              style={{ width: "50vw" }}
+              style={{ width: '50vw' }}
               onHide={() => setVisible(false)}
             >
               {hiddenComments.map((comment) => (
@@ -329,7 +285,7 @@ export default function CardLivraison({
                       </span>
                       <span
                         className="supCom"
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: 'pointer' }}
                         onClick={() => deleteComment(comment.id)}
                       >
                         X
@@ -363,7 +319,7 @@ export default function CardLivraison({
                     </span>
                     <span
                       className="supCom"
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: 'pointer' }}
                       onClick={() => deleteComment(comment.id)}
                     >
                       X
@@ -383,9 +339,9 @@ export default function CardLivraison({
                 src={commenter}
                 alt=""
                 className=""
-                style={{ width: "30px", height: "30px" }}
+                style={{ width: '30px', height: '30px' }}
               />
-              <p className="px-2 m-0 sizeHover" style={{ fontSize: "12px" }}>
+              <p className="px-2 m-0 sizeHover" style={{ fontSize: '12px' }}>
                 Plus de commentaires
               </p>
             </div>
@@ -398,7 +354,7 @@ export default function CardLivraison({
                 value={comment} // Liaison de la valeur du champ de commentaire
                 onChange={(e) => setComment(e.target.value)} // Gestion des modifications du champ de commentaire
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") {
+                  if (e.key === 'Enter') {
                     handleSend(); // Appel à la fonction handleSend lorsque la touche "Entrée" est pressée
                   }
                 }}
@@ -408,7 +364,7 @@ export default function CardLivraison({
                 <img
                   src={envoi}
                   alt="send"
-                  style={{ width: "30px", height: "30px" }}
+                  style={{ width: '30px', height: '30px' }}
                 />
               </span>
             </div>
