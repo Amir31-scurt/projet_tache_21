@@ -28,7 +28,7 @@ import { Galleria } from "primereact/galleria";
 
 export default function CardLivraison() {
   const [currentUser, setCurrentUser] = useState(null);
-  const [userRole, setUserRole] = useState("Rôle inconnu");
+  // const [userRole, setUserRole] = useState("Rôle inconnu");
 
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
@@ -334,7 +334,6 @@ export default function CardLivraison() {
                       <span className="">
                         <span className="fw-bolder">{comment.userName}</span>
                         <span className="text-light bg-info rounded-pill px-2 mx-3 pb-0 mainBackgrounColor">
-                          role
                         </span>
                         <span>
                           <span>{getTimeDifference(comment.timestamp)}</span>
@@ -368,7 +367,6 @@ export default function CardLivraison() {
                     <span className="">
                       <span className="fw-bolder">{comment.userName}</span>
                       <span className="text-light bg-info rounded-pill px-2 mx-3 pb-0 mainBackgrounColor">
-                        {/* {comment.userRole} */}
                       </span>
                       <span>
                         <span>{getTimeDifference(comment.timestamp)}</span>
