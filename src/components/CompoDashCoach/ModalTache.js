@@ -4,6 +4,7 @@ import { Button, Modal } from "react-bootstrap";
 function ModalTache() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
+   // eslint-disable-next-line
   const handleShow = () => setShow(true);
   return (
     <Modal show={show} onHide={handleClose} keyboard={false}>

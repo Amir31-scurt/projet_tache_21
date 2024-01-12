@@ -104,7 +104,7 @@ console.log(validLinks);
       </div>
       <Link to={validLinks}>
       <div className="btn-dash mt-5 pt-5">
-      <button type="button" className=" btn btn-info btn-quiz">Demarrer Quiz</button>
+      <button type="button" className="btn-quiz">Demarrer Quiz</button>
       </div>
       </Link>
     </div>
