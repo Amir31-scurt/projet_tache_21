@@ -228,6 +228,7 @@ const headers = ["Coachs", "Etudiants"];
         "Erreur: La base de données Firebase n'est pas initialisée."
       );
     }
+     // eslint-disable-next-line
   }, [db]);
 
   // Rendu du composant Assignation

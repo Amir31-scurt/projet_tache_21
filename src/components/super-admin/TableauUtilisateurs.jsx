@@ -284,6 +284,7 @@ export default function TableauUtilisateurs() {
       ),
       className: utilisateur.archiver ? 'tableRowArchived bg-info' : '',
     }));
+     // eslint-disable-next-line
   }, [filteredData]);
 
   // Utilisation du hook pour la gestion du tableau

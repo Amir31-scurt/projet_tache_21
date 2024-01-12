@@ -129,6 +129,7 @@ export default function CardLivraison() {
   useEffect(() => {
     fetchStudentInfo();
     fetchImagesFromFirestore();
+     // eslint-disable-next-line
   }, []);
    // eslint-disable-next-line
   useEffect(() => {
@@ -264,7 +265,7 @@ export default function CardLivraison() {
       return `${seconds} seconde${seconds !== 1 ? "s" : ""} ago`;
     }
   }
-
+   // eslint-disable-next-line
   const handleLogout = () => {
     auth
       .signOut()
