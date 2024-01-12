@@ -162,7 +162,7 @@ function EtudiantsAssignTable() {
                     className="btn btn-danger"
                     onClick={() => handleDeleteClick(coach)}
                   >
-                    <MdDeleteOutline />
+                    <MdDeleteOutline className="fs-3"/>
                   </button>
                 </td>
               </tr>
