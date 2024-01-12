@@ -1,4 +1,3 @@
-
 import React, { useEffect, useCallback, useState, useContext } from "react";
 import DashboardCompo from "./programmes/Single_Programmes/DashboardCompo";
 import CardLivraison from "../components/CardLivraison";
@@ -8,6 +7,7 @@ import {
   getDocs,
   query,
   where,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../config/firebase-config";
 import { AuthContext } from "../contexte/AuthContext";
@@ -16,6 +16,11 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, storage } from "../../src/config/firebase-config";
 import { getDownloadURL, ref } from "firebase/storage";
 import UserProfil from "../assets/images/user.png";
+
+
+import { MdTask } from 'react-icons/md';
+import { PiUsersFourFill } from 'react-icons/pi';
+
 
 export default function DashboardApprenant() {
   // État local pour stocker les livraisons et les utilisateurs
@@ -113,7 +118,14 @@ export default function DashboardApprenant() {
     fetchLivraisons();
   }, []);
 
-  // Fonction de chargement des utilisateurs à partir de la collection "utilisateurs"
+  // L'stockage des utilisateurs récupérés depuis Firestore
+  const [users, setUsers] = useState([]);
+
+  // Filtre des utilisateurs par rôle (Coach ou Étudiant)
+  // const teachers = users.filter((user) => user.role === 'Coach');
+  const students = users.filter((user) => user.role === 'Étudiant');
+
+  // Fonction pour charger les utilisateurs depuis Firestore
   const loadUsers = useCallback(() => {
     // Souscrire aux changements dans la collection "utilisateurs"
     const unsubscribe = onSnapshot(

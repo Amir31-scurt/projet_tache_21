@@ -21,6 +21,7 @@ import { EmailContext } from "../../../contexte/EmailContexte";
 function Notifications() {
   const [notifs, setNotifs] = useState([]);
   const [newNotificationsCount, setNewNotificationsCount] = useState(0);
+  // eslint-disable-next-line
   const { email, setEmail } = useContext(EmailContext);
   const [anchorElNotif, setAnchorElNotif] = React.useState(null);
   const isMenuOpenNotif = Boolean(anchorElNotif);

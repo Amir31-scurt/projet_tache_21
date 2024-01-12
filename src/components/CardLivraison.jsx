@@ -25,6 +25,7 @@ import "firebase/firestore";
 import { AuthContext } from "../contexte/AuthContext";
 import { Galleria } from "primereact/galleria";
 
+
 export default function CardLivraison({
   date,
   apprenant,
@@ -33,6 +34,7 @@ export default function CardLivraison({
   userProfile,
 }) {
   const [currentUser, setCurrentUser] = useState(null);
+  // eslint-disable-next-line
   const [userRole, setUserRole] = useState("Rôle inconnu");
   const [imagesData, setImages] = useState([]);
   const [comments, setComments] = useState([]);
@@ -43,8 +45,18 @@ export default function CardLivraison({
 
   const { uid } = useContext(AuthContext);
   const UserUid = uid;
-
   const navigate = useNavigate();
+  // eslint-disable-next-line
+  const [coach, setCoach] = useState("");
+  // eslint-disable-next-line
+  const [days, setDays] = useState("1");
+  // eslint-disable-next-line
+  const [role, setRole] = useState("Coach");
+  const [date, setDate] = useState("");
+  const [apprenant, setApprenat] = useState("");
+
+  const [images, setImages] = useState([]);
+  const [visible, setVisible] = useState(false);
 
   // Fonction pour extraire les données d'images à partir des URLs 
   const fetchImagesFromProps = (images) => {
@@ -58,6 +70,30 @@ export default function CardLivraison({
 
     // Mettre à jour l'état local avec les données d'images
     setImages(imagesData);
+
+  // Fonction pour récupérer les informations de l'étudiant depuis Firestore
+   // eslint-disable-next-line
+  const fetchStudentInfo = async () => {
+    try {
+      const studentRef = collection(db, "publication");
+
+      // Création de la requête pour récupérer le document de l'étudiant
+      const studentQuery = query(studentRef, where("userID", "==", UserUid));
+      const studentSnapshot = await getDocs(studentQuery);
+
+      // Vérification s'il y a des documents
+      if (!studentSnapshot.empty) {
+        const studentData = studentSnapshot.docs[0].data();
+        setApprenat(studentData.nom);
+        setCoach(studentData.coach);
+        setDate(format(studentData.date.toDate(), 'dd/MM/yyyy - HH:mm:ss'));
+      }
+    } catch (error) {
+      console.error(
+        "Erreur lors de la récupération des informations de l'étudiant depuis Firestore",
+        error
+      );
+    }
   };
 
   // Effet de chargement initial et chaque fois que les images changent
@@ -84,6 +120,14 @@ export default function CardLivraison({
     />
   );
 
+  // Effet pour récupérer les informations de l'étudiant lors du montage du composant
+   // eslint-disable-next-line
+  useEffect(() => {
+    fetchStudentInfo();
+    fetchImagesFromFirestore();
+     // eslint-disable-next-line
+  }, []);
+   // eslint-disable-next-line
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -216,7 +260,7 @@ export default function CardLivraison({
       return `${seconds} seconde${seconds !== 1 ? "s" : ""} ago`;
     }
   }
-
+   // eslint-disable-next-line
   const handleLogout = () => {
     auth
       .signOut()
