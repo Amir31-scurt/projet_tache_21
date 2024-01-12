@@ -64,15 +64,21 @@ const RenduBulletinEtudiant = () => {
   }, [user]);
 
   const calculateOverallGrade = () => {
-    if (!studentData || !studentData.notes || Object.keys(studentData.notes).length === 0)
+    if (
+      !studentData ||
+      !studentData.notes ||
+      Object.keys(studentData.notes).length === 0
+    )
       return 0;
-  
+
     const { notes } = studentData;
-    const totalNotes = Object.values(notes).reduce((sum, note) => sum + parseInt(note, 10), 0);
+    const totalNotes = Object.values(notes).reduce(
+      (sum, note) => sum + parseInt(note, 10),
+      0
+    );
     const average = totalNotes / Object.keys(notes).length;
     return parseFloat(average.toFixed(2));
   };
-  
 
   const determineAppreciation = (average) => {
     if (average >= 16) {
@@ -88,61 +94,56 @@ const RenduBulletinEtudiant = () => {
 
   const downloadPdf = () => {
     if (!studentData) return;
-  
+
     const { studentName, number, email, address, notes } = studentData;
     const average = calculateOverallGrade();
     const appreciation = determineAppreciation(average);
-  
+
     const doc = new jsPDF({
       orientation: "portrait",
       unit: "mm",
       format: "a4",
     });
-  
+
     doc.setFontSize(18);
     doc.text(`Bulletin de ${studentName}`, 20, 15);
-  
+
     doc.setLineWidth(0.5);
     doc.line(20, 20, 190, 20);
-  
+
     doc.setFontSize(12);
     doc.text(`Numéro de téléphone : ${number}`, 20, 30);
     doc.text(`Email : ${email}`, 20, 35);
     doc.text(`Adresse : ${address}`, 20, 40);
-  
+
     doc.setLineWidth(0.5);
     doc.line(20, 45, 190, 45);
-  
+
     doc.setFontSize(14);
     doc.text("Notes :", 20, 55);
     let yPosition = 60;
-  
+
     Object.entries(notes).forEach(([subject, note]) => {
       doc.text(`${subject}: ${note}`, 30, yPosition);
       yPosition += 8;
     });
- 
+
     doc.setLineWidth(0.5);
     doc.line(20, yPosition, 190, yPosition);
-  
+
     yPosition += 10;
     doc.text("Moyenne :", 20, yPosition);
     doc.text(`${average}`, 30, yPosition + 5);
-  
+
     doc.text("Appréciation :", 20, yPosition + 15);
     doc.text(`${appreciation}`, 30, yPosition + 20);
-  
+
     doc.save("bulletin.pdf");
   };
-  
-  
 
   return (
     <div className="container mt-4">
-      <div
-        className="card p-4"
-        style={{ maxWidth: "600px", margin: "0 auto" }}
-      >
+      <div className="card p-4" style={{ maxWidth: "600px", margin: "0 auto" }}>
         {studentData ? (
           <div>
             <div
@@ -158,7 +159,7 @@ const RenduBulletinEtudiant = () => {
               </button>
             </div>
 
-            <div className="mt-3">
+            <div className="mt-4">
               <div>
                 <h5>Informations personnelles :</h5>
                 <p className="fs-6">Email : {studentData.email}</p>
@@ -170,30 +171,30 @@ const RenduBulletinEtudiant = () => {
             </div>
 
             {studentData.notes && Object.keys(studentData.notes).length > 0 ? (
-  <div className='mt-3'>
-    <h4>Notes :</h4>
-    <table className="table">
-      <thead>
-        <tr>
-          <th>Matière</th>
-          <th>Note</th>
-        </tr>
-      </thead>
-      <tbody>
-        {Object.entries(studentData.notes).map(([subject, note], index) => (
-          <tr key={index}>
-            <td>{subject || 'N/A'}</td>
-            <td>{note || 'N/A'}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-) : null}
+              <div className="mt-5">
+                <h4>Notes :</h4>
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Matière</th>
+                      <th>Note</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(studentData.notes).map(
+                      ([subject, note], index) => (
+                        <tr key={index}>
+                          <td>{subject || "N/A"}</td>
+                          <td>{note || "N/A"}</td>
+                        </tr>
+                      )
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            ) : null}
 
-
-
-            <div className="mt-3">
+            <div className="mt-5">
               <div className="d-flex justify-content-between">
                 <div>
                   <h4>Moyenne :</h4>

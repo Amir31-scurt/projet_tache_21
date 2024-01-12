@@ -1,6 +1,7 @@
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
 
+ // eslint-disable-next-line
 export const fetchAdminEmails = async () => {
   const usersRef = collection(db, 'utilisateurs');
   const adminQuery = query(usersRef, where('role', '==', 'Administrateur'));

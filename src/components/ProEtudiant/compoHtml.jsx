@@ -2,7 +2,8 @@ import React from 'react';
 // import html from '../assets/images/htmlcss.jpg'
 import { Link } from 'react-router-dom';
 export default function CompoHtml({ title, url, sousDomaineName, domaineId }) {
-  const link = `/etudiant/cours/${domaineId}/${sousDomaineName}`;
+  const link = `/etudiant/programme-apprenant/cours/${domaineId}/${sousDomaineName}`;
+
   return (
     <Link to={link} className="text-decoration-none">
       <div className="">

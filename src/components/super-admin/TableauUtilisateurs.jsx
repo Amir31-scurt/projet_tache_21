@@ -9,14 +9,14 @@ import {
   collection,
   doc,
   getDocs,
-  getDoc,
   addDoc,
   onSnapshot,
   updateDoc,
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../config/firebase-config";
-import { FaEye, FaEdit, FaArchive } from "react-icons/fa";
+import { FaEye, FaEdit } from "react-icons/fa";
+import { TbArchiveFilled, TbArchiveOff } from "react-icons/tb";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
@@ -43,7 +43,7 @@ export default function TableauUtilisateurs() {
   const [roleValue, setRoleValue] = useState("");
   const [notificationsCollection] = useState(collection(db, "notifications"));
   const [roleFilter, setRoleFilter] = useState("Tous les utilisateurs");
-  const [tabType, setTabType] = useState("utilisateurs");
+  const [tabType, setTabType] = useState("de bord");
 
   // Affiche les détails de l'utilisateur sélectionné
   const showDetails = (utilisateur) => {
@@ -130,7 +130,7 @@ export default function TableauUtilisateurs() {
     );
 
     fetchData(); // Récupération initiale des données
-    
+
     return () => {
       unsubscribe();
     };
@@ -138,15 +138,28 @@ export default function TableauUtilisateurs() {
 
   // Fonction pour gérer l'archivage et le désarchivage
   const handleArchiveToggle = async (utilisateurId, isArchived) => {
-    const utilisateursRef = collection(db, "utilisateurs");
-    const utilisateurDoc = doc(utilisateursRef, utilisateurId);
-    const user = utilisateursData.find((user) => user.id === utilisateurId);
-    const coachs = utilisateursData.find((coach) => coach.name === user.coach)
-    let notificationMessage = `${user.name} a été ${!isArchived ? 'archivé': 'désarchivé'} avec succes`
     try {
+      const utilisateursRef = collection(db, "utilisateurs");
+      const utilisateurDoc = doc(utilisateursRef, utilisateurId);
+      const user = utilisateursData.find((user) => user.id === utilisateurId);
+      const coachs = utilisateursData.find(
+        (coach) => coach.name === user.coach
+      );
+      let notificationMessage = `${user.name} a été ${
+        !isArchived ? "archivé" : "désarchivé"
+      } avec succes`;
+
       await updateDoc(utilisateurDoc, {
-        archiver: !isArchived,
+        archived: !isArchived, // Modifier l'attribut pour qu'il corresponde à "archived"
       });
+
+      // Mise à jour des données seulement après la modification dans Firestore
+      const updatedUtilisateursData = utilisateursData.map((utilisateur) =>
+        utilisateur.id === utilisateurId
+          ? { ...utilisateur, archived: !isArchived } // Correspondance avec l'attribut 'archived'
+          : utilisateur
+      );
+      setUtilisateursData(updatedUtilisateursData);
 
       await addDoc(notificationsCollection, {
         messageForAdmin: notificationMessage,
@@ -154,8 +167,9 @@ export default function TableauUtilisateurs() {
         newNotif: true,
         email: coachs.email,
       });
+
       fetchData(); // Met à jour les données après l'archivage ou le désarchivage
-      // Mettre à jour l'étiquette du bouton en fonction du nouvel état 'archiver'
+
       setArchiveLabel(isArchived ? "Désarchiver" : "Archiver");
       toast.success(notificationMessage, {
         duration: 3000,
@@ -165,17 +179,19 @@ export default function TableauUtilisateurs() {
     }
   };
 
+
   const filteredData = useMemo(() => {
-    if (roleFilter === "Tous les utilisateurs") {
+    if (roleFilter === "de bord") {
       return utilisateursData;
     } else if (roleFilter === "Archivés") {
-      return utilisateursData.filter((utilisateur) => utilisateur.archiver);
+      return utilisateursData.filter((utilisateur) => utilisateur.archived);
     } else {
       return utilisateursData.filter(
         (utilisateur) => utilisateur.role === roleFilter
       );
     }
   }, [roleFilter, utilisateursData]);
+
 
   // Utilisez le stockage local pour sauvegarder et récupérer le filtre sélectionné
   const localStorageKey = "roleFilter";
@@ -196,11 +212,16 @@ export default function TableauUtilisateurs() {
     localStorage.setItem(localStorageKey, selectedValue);
 
     // Mettez à jour tabType en fonction de la valeur du filtre sélectionné
-    if (selectedValue === "Archivés") {
-      setTabType("utilisateurs archivées");
+    if (selectedValue === "de bord") {
+      setTabType("de bord");
+    } else if (selectedValue === "Archivés") {
+      setTabType("des utilisateurs archivées");
     } else {
       setTabType(selectedValue);
     }
+
+    setRoleFilter(selectedValue);
+    localStorage.setItem(localStorageKey, selectedValue);
   };
 
   // Définition des colonnes pour le tableau
@@ -208,7 +229,7 @@ export default function TableauUtilisateurs() {
     () => [
       {
         accessorKey: "name",
-        header: "Prenom & Nom",
+        header: "Nom",
         size: 150,
       },
       {
@@ -228,12 +249,12 @@ export default function TableauUtilisateurs() {
       },
       {
         accessorKey: "role",
-        header: "Role (status)",
+        header: "Role (statut)",
         size: 150,
       },
       {
         accessorKey: "actions",
-        header: "Actions",
+        header: "Boutons d'actions",
         // size: 100,
       },
     ],
@@ -256,7 +277,7 @@ export default function TableauUtilisateurs() {
             className="d-flex justify-content-center align-items-center btn btn-outline-primary rounded-3 me-3"
             onClick={() => showDetails(utilisateur)}
           >
-            <FaEye className="" style={{ width: "30px", height: "30px" }} />
+            <FaEye className="" style={{ width: "18px", height: "18px" }} />
           </button>
           <button
             type="button"
@@ -266,22 +287,32 @@ export default function TableauUtilisateurs() {
               setFormVisible(true);
             }}
           >
-            <FaEdit className="" style={{ width: "30px", height: "30px" }} />
+            <FaEdit className="" style={{ width: "18px", height: "18px" }} />
           </button>
           <button
             type="button"
-            className={`d-flex justify-content-center align-items-center btn btn-outline-danger rounded-3 me-3`}
+            className={`d-flex justify-content-center align-items-center btn btn-outline-warning rounded-3 me-3`}
             onClick={() =>
-              handleArchiveToggle(utilisateur.id, utilisateur.archiver || false)
+              handleArchiveToggle(utilisateur.id, utilisateur.archived || false)
             }
           >
-            <FaArchive className="" style={{ width: "30px", height: "30px" }} />
-            {utilisateur.archiver ? "Désarchiver" : ""}
+            {utilisateur.archived ? (
+              <TbArchiveFilled
+                className=""
+                style={{ width: "18px", height: "18px" }}
+              />
+            ) : (
+              <TbArchiveOff
+                className=""
+                style={{ width: "18px", height: "18px" }}
+              />
+            )}
           </button>
         </div>
       ),
-      className: utilisateur.archiver ? "tableRowArchived bg-info" : "",
+      className: utilisateur.archived ? "tableRowArchived bg-info" : "",
     }));
+     // eslint-disable-next-line
   }, [filteredData]);
 
   // Utilisation du hook pour la gestion du tableau
@@ -390,7 +421,7 @@ export default function TableauUtilisateurs() {
               />
               <label htmlFor="address">Adresse</label>
             </span>
-            <span className="p-float-label my-5">
+            {/* <span className="p-float-label my-5">
               <select
                 className="form-select my-3"
                 aria-label="Default select example"
@@ -399,13 +430,12 @@ export default function TableauUtilisateurs() {
                 onChange={(e) => setRoleValue(e.target.value)}
                 style={{ width: "100%" }}
               >
-                {/* <option value="Administrateur">{roleValue}</option> */}
                 <option value="Administrateur">Administrateur</option>
-                <option value="Coach">Coachs</option>
-                <option value="Étudiant">Étudiants</option>
+                <option value="Coach">Coach</option>
+                <option value="Étudiant">Étudiant</option>
               </select>
               <label htmlFor="Role"></label>
-            </span>
+            </span> */}
           </div>
           <div className="card flex flex-wrap justify-content-center p-0">
             <Button
@@ -436,10 +466,8 @@ export default function TableauUtilisateurs() {
               value={roleFilter}
               onChange={handleFilterChange}
             >
-              <option value="Tous les utilisateurs">
-                Tous les utilisateurs
-              </option>
-              <option value="Administrateur">Administrateur</option>
+              <option value="de bord">Tous les utilisateurs</option>
+              <option value="Administrateur">Administrateurs</option>
               <option value="Coach">Coachs</option>
               <option value="Étudiant">Étudiants</option>
               <option value="Archivés">Archivés</option>

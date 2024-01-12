@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 * {
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 body {
@@ -23,8 +23,6 @@ body {
   border-radius: 20px;
   margin: 45px 0;
 }
-
-/* Quizzs CSS */
 
 .module-container {
   display: flex;
@@ -55,7 +53,7 @@ body {
   text-align: left !important;
 }
 
-.module-container input[type="radio"] {
+.module-container input[type='radio'] {
   --webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -261,6 +259,7 @@ body {
   padding: 16px;
   border-radius: 8px;
   margin-top: 20px; /* or any desired width */
+  width: max-content;
 }
 .program-card img {
   width: 100%;
@@ -999,7 +998,8 @@ body {
 .divard {
   display: flex !important;
 }
-.nicePic,.nicePic img{
+.nicePic,
+.nicePic img {
   width: 60px;
   height: 60px;
   border-radius: 100%;
@@ -1097,7 +1097,7 @@ body {
 /* CSS pour la certification */
 .certificate-display {
   color: #333;
-  font-family: Georgia, "Times New Roman", Times, serif;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .card {
