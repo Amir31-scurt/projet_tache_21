@@ -6,7 +6,6 @@ import {
 import Connexion from './Connected/Connexion';
 import DashboardApprenant from '../components/DashboardApprenant';
 import ChatHome from '../components/chatComponent/ChatHome';
-import Inscription from '../components/Inscription/Inscription';
 import Template from '../layout/template';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'rsuite/dist/rsuite.min.css';

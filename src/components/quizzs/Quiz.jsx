@@ -107,12 +107,8 @@ const Quiz = ({ quizData }) => {
             </div>
           ))}
           <div className="submit">
-            <button
-              className="btn btn-success"
-              type="submit"
-              disabled={!isFormValid}
-            >
-              Soumettre
+            <button className="btn-quizz" type="submit" disabled={!isFormValid}>
+              Terminer
             </button>
           </div>
         </form>

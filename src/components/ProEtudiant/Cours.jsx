@@ -19,9 +19,13 @@ import { format } from 'date-fns';
 export default function Cours() {
   const { domaineId, sousDomaineName } = useParams();
   const [courses, setCourses] = useState([]);
+  // eslint-disable-next-line
   const [selectedCourse, setSelectedCourse] = useState(null);
+   // eslint-disable-next-line
   const [backdrop, setBackdrop] = useState('static');
+  // eslint-disable-next-line
   const [open, setOpen] = useState(false);
+  // eslint-disable-next-line
   const [files, setFiles] = useState();
   const [previews, setPreviews] = useState();
   const [timers, setTimers] = useState({}); // Timer state as an object
@@ -372,8 +376,10 @@ export default function Cours() {
   }, [files]);
 
   // Function to get YouTube video ID
+  // eslint-disable-next-line
   const getYouTubeVideoId = (url) => {
     if (typeof url !== 'string') return null;
+     // eslint-disable-next-line
     const regExp =
       /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);

@@ -15,6 +15,7 @@ export default function Message({ message }) {
   const [minutes, setMinutes] = useState("");
 
   useEffect(() => {
+     // eslint-disable-next-line
     const myDate = new Date();
     const moisAnnee = [
       "Jan",
