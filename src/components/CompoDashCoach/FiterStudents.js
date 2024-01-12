@@ -27,7 +27,7 @@ const MenuProps = {
   },
 };
 
-export default function FilterStudents() {
+export default function FilterStudents({handleDisplay}) {
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
   const [studentNames, setStudentNames] = React.useState([]);
@@ -57,8 +57,15 @@ export default function FilterStudents() {
         return updatedPersonName;
       }
     })};
+
+    handleDisplay(value)
     
   };
+
+  // const handleInputChange = (event) => {
+  //   handleChange(event);
+  //   handleDisplay(personName);
+  // }
 
    const loadUsers = useCallback(() => {
      const unsubscribe = onSnapshot(collection(db, "utilisateurs"), (snapshot) => {
