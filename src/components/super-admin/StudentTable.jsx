@@ -113,7 +113,7 @@ const StudentTable = () => {
   } else if (checkedKeys.length > 0 && checkedKeys.length < data.length) {
     indeterminate = true;
   }
-
+   // eslint-disable-next-line
   const handleCheckAll = (value, checked) => {
     const keys = checked ? data.map((item) => item.id) : [];
     setCheckedKeys(keys);

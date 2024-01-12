@@ -9,7 +9,6 @@ import {
   collection,
   doc,
   getDocs,
-  getDoc,
   addDoc,
   onSnapshot,
   updateDoc,
@@ -33,6 +32,7 @@ export default function TableauUtilisateurs() {
     useState(null); // Stocke l'utilisateur pour la mise à jour
   const [loading, setLoading] = useState(false); // Gère l'état de chargement
   // Ajoutez un nouvel état local pour gérer l'étiquette du bouton
+  // eslint-disable-next-line
   const [archiveLabel, setArchiveLabel] = useState('Archiver');
 
   // États pour chaque champ du formulaire de modification
@@ -284,6 +284,7 @@ export default function TableauUtilisateurs() {
       ),
       className: utilisateur.archiver ? 'tableRowArchived bg-info' : '',
     }));
+     // eslint-disable-next-line
   }, [filteredData]);
 
   // Utilisation du hook pour la gestion du tableau
