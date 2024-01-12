@@ -29,7 +29,7 @@ import { Galleria } from "primereact/galleria";
 export default function CardLivraison() {
   // eslint-disable-next-line
   const [currentUser, setCurrentUser] = useState(null);
-  // const [userRole, setUserRole] = useState("Rôle inconnu");
+  const [userRole, setUserRole] = useState("");
 
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
@@ -125,22 +125,28 @@ export default function CardLivraison() {
 
   // Effet pour récupérer les informations de l'étudiant lors du montage du composant
    // eslint-disable-next-line
-  useEffect(() => {
-    fetchStudentInfo();
-    fetchImagesFromFirestore();
-    fetchComments();
-  }, []);
+  
 
   useEffect(() => {
-    const unsubscribeUser = onAuthStateChanged(auth, async (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setCurrentUser(user);
+        setCurrentUser(user); // Mettre à jour l'état currentUser avec l'utilisateur actuel
         const docRef = doc(db, "utilisateurs", user.uid);
         try {
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             const userData = docSnap.data();
-            console.log("userData:", userData);
+            console.log("userData:", userData); // Vérifier les données récupérées de Firestore
+            const role =
+              userData && userData.role ? userData.role : "Role par défaut";
+            setUserRole(role);
+            console.log("Le rôle de l'utilisateur est :" + role);
+
+            // Mettre à jour le currentUser avec le rôle récupéré
+            setCurrentUser((prevUser) => ({
+              ...prevUser,
+              role: role,
+            }));
           } else {
             console.log(
               "Aucune donnée utilisateur trouvée pour cet utilisateur"
@@ -152,57 +158,34 @@ export default function CardLivraison() {
       }
     });
 
-    const unsubscribeComments = onSnapshot(
-      collection(db, "commentaires"),
-      (snapshot) => {
-        const commentsData = [];
-        snapshot.forEach((doc) => {
-          const { userName, userID } = doc.data();
-          // Ajoutez ici la logique pour filtrer les commentaires par utilisateur si nécessaire
-          // par exemple, vous pourriez vérifier si userID correspond à l'utilisateur actuel
-          commentsData.push({
-            id: doc.id,
-            userName,
-            userID,
-            ...doc.data(),
-          });
-        });
-
-        commentsData.sort((a, b) => b.timestamp - a.timestamp);
-
-        setComments(commentsData);
-
-        const visible = commentsData.slice(0, 3);
-        const hidden = commentsData.slice(3);
-
-        setVisibleComments(visible);
-        setHiddenComments(hidden);
-      }
-    );
-
-    return () => {
-      unsubscribeUser();
-      unsubscribeComments();
-    };
+    return () => unsubscribe();
   }, []);
 
-  // Ajout de la fonction fetchComments
+  useEffect(() => {
+    fetchStudentInfo();
+    fetchImagesFromFirestore();
+    fetchComments();
+  }, []);
+
   function fetchComments() {
     const commentsRef = collection(db, "commentaires");
 
     onSnapshot(commentsRef, (snapshot) => {
       const commentsData = [];
       snapshot.forEach((doc) => {
-        const { userName, userID } = doc.data();
+        const { userName, userRole, commentContent } = doc.data();
         commentsData.push({
           id: doc.id,
           userName,
-          userID,
+          userRole,
+          commentContent,
           ...doc.data(),
         });
       });
 
-      commentsData.sort((a, b) => b.timestamp - a.timestamp);
+      commentsData.sort((a, b) => {
+        return b.timestamp - a.timestamp;
+      });
 
       setComments(commentsData);
 
@@ -250,8 +233,8 @@ export default function CardLivraison() {
     const commentsRef = collection(db, "commentaires");
 
     addDoc(commentsRef, {
-      userID: currentUser.uid,
-      userName: currentUser.displayName || "Utilisateur inconnu",
+      userName: currentUser ? currentUser.displayName : "Utilisateur inconnu",
+      userRole: userRole,
       commentContent: comment,
       timestamp: serverTimestamp(),
     })
