@@ -1,33 +1,109 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback, useState, useContext } from 'react';
 import DashboardCompo from './programmes/Single_Programmes/DashboardCompo';
-import { Users } from './CompoDashCoach/Sous_CompoSideBar/Utils';
-import { MdTask } from 'react-icons/md';
-import { FaUsers } from 'react-icons/fa';
-import { PiUsersFourFill } from 'react-icons/pi';
-import { collection, onSnapshot, getDocs, updateDoc } from 'firebase/firestore';
 import CardLivraison from '../components/CardLivraison';
+import {
+  collection,
+  onSnapshot,
+  getDocs,
+  query,
+  where,
+  serverTimestamp,
+} from 'firebase/firestore';
 import { db } from '../config/firebase-config';
+import { AuthContext } from '../contexte/AuthContext';
+import format from 'date-fns/format';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth, storage } from '../../src/config/firebase-config';
+import { getDownloadURL, ref } from 'firebase/storage';
+import UserProfil from '../assets/images/user.png';
+import { MdTask } from 'react-icons/md';
+import { PiUsersFourFill } from 'react-icons/pi';
 
 export default function DashboardApprenant() {
   const [livraisons, setLivraisons] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  // Extraction des informations actuelles de l'utilisateur
+  const { currentUser, uid } = useContext(AuthContext);
+  const UserUid = uid;
+  const [profileImage, setProfileImage] = useState(UserProfil);
+  // Utilisez useEffect pour mettre à jour l'image de profil après la reconnexion
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Mettez à jour l'image de profil après la reconnexion
+        const storageRef = ref(storage, `profile_images/${user.uid}`);
+        getDownloadURL(storageRef)
+          .then((url) => {
+            setProfileImage(url);
+            localStorage.setItem('profileImage', url);
+          })
+          .catch((error) => {
+            console.error('Error loading profile image:', error.message);
+          });
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     const fetchLivraisons = async () => {
       try {
-        const publicationRef = collection(db, 'publication');
-        const querySnapshot = await getDocs(publicationRef);
+        const publicationCollectionRef = collection(db, 'publication');
+
+        // Requête pour récupérer tous les documents de la collection "publication"
+        const publicationQuery = query(publicationCollectionRef);
+        console.log(publicationQuery);
+        const querySnapshot = await getDocs(publicationQuery);
 
         const nouvellesLivraisons = [];
-        querySnapshot.forEach(async (doc) => {
-          const data = doc.data();
-          nouvellesLivraisons.push(
-            <CardLivraison key={doc.id} images={data.images} />
+
+        if (!querySnapshot.empty) {
+          for (const doc of querySnapshot.docs) {
+            // Extraire le cours de l'utilisateur actuel
+            const userCours = doc.data().cours;
+
+            // Référence à la collection "publication" pour les livraisons
+            const livraisonCollectionRef = collection(db, 'publication');
+
+            // Requête pour récupérer les livraisons liées au cours de l'utilisateur actuel
+            const livraisonQuery = query(
+              livraisonCollectionRef,
+              where('cours', '==', userCours)
+            );
+            console.log(livraisonQuery);
+
+            // Obtenir le snapshot des résultats de la requête
+            const livraisonQuerySnapshot = await getDocs(livraisonQuery);
+            console.log(livraisonQuerySnapshot);
+
+            // Parcourir les livraisons récupérées et les ajouter au tableau nouvellesLivraisons
+            livraisonQuerySnapshot.forEach((livraisonDoc) => {
+              const data = livraisonDoc.data();
+              nouvellesLivraisons.push({
+                key: livraisonDoc.id,
+                date: serverTimestamp(data.date),
+                apprenant: data.nom,
+                titreCourEtudiant: data.cours,
+                images: data.images || [],
+                userProfile: profileImage,
+              });
+              console.log(data);
+            });
+          }
+
+          // Trier les nouvelles livraisons par date décroissante
+          nouvellesLivraisons.sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
           );
 
-          await updateDoc(doc.ref, { livree: true });
-        });
-
-        setLivraisons(nouvellesLivraisons);
+          // Mettre à jour l'état local avec les nouvelles livraisons
+          setLivraisons(nouvellesLivraisons);
+          console.log(livraisons);
+        } else {
+          console.log('Aucun document publication trouvé.');
+        }
       } catch (error) {
         console.error('Erreur lors de la récupération des livraisons', error);
       }
@@ -35,9 +111,6 @@ export default function DashboardApprenant() {
 
     fetchLivraisons();
   }, []);
-
-  // L'stockage des utilisateurs récupérés depuis Firestore
-  const [users, setUsers] = useState([]);
 
   // Filtre des utilisateurs par rôle (Coach ou Étudiant)
   const teachers = users.filter((user) => user.role === 'Coach');
@@ -103,7 +176,9 @@ export default function DashboardApprenant() {
         ))}
       </div>
       <div className="d-flex flex-column ms-3 justify-content-center">
-        {livraisons}
+        {livraisons.map((livraison) => (
+          <CardLivraison key={livraison.key} {...livraison} />
+        ))}
       </div>
     </div>
   );

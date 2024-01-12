@@ -21,7 +21,7 @@ const SpecificPro = () => {
   const [newCourseTitle, setNewCourseTitle] = useState('');
   const [newCourseDescription, setNewCourseDescription] = useState('');
   const [selectedSousDomaine, setSelectedSousDomaine] = useState();
-  const coachEmail = localStorage.getItem('userEmail');
+  // const coachEmail = localStorage.getItem('userEmail');
 
   const [coachSousDomaine, setCoachSousDomaine] = useState('');
 
@@ -215,7 +215,7 @@ const SpecificPro = () => {
     if (typeof url !== 'string') {
       return null;
     }
-
+     // eslint-disable-next-line
     const regExp =
       /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);

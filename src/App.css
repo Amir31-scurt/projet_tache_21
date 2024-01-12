@@ -24,8 +24,6 @@ body {
   margin: 45px 0;
 }
 
-/* Quizzs CSS */
-
 .module-container {
   display: flex;
 }
@@ -1135,4 +1133,13 @@ body {
 
 .ajout {
   width: 100px;
+}
+/* CSS EtudiantAssgnTable */
+.tete{
+  background:  #3084b5 !important;
+}
+.petit{
+  display: flex !important;
+  align-items: center !important;
+  width: 110px;
 }
