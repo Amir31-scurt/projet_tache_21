@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import '../../assets/css/quizz.css';
 
 const Quiz = ({ quizData }) => {
   const { questions, correctAnswers } = quizData;
 
-  const [userAnswers, setUserAnswers] = useState(Array(correctAnswers.length).fill(''));
+  const [userAnswers, setUserAnswers] = useState(
+    Array(correctAnswers.length).fill('')
+  );
   const [score, setScore] = useState(null);
   const [isFormValid, setIsFormValid] = useState(false);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,7 +40,7 @@ const Quiz = ({ quizData }) => {
       const newAnswers = [...userAnswers];
       newAnswers[indexQuestion] = value;
       setUserAnswers(newAnswers);
-  
+
       const isValid = newAnswers.every((answer) => answer !== '');
       setIsFormValid(isValid);
     }
@@ -73,11 +75,19 @@ const Quiz = ({ quizData }) => {
         <form className="quiz-form" onSubmit={handleSubmit}>
           {questions.map((q, index) => (
             <div key={index} className="question">
-              <p className='fw-bolder fs-5'>{`${index + 1}. ${q.question}`}</p>
+              <p className="fw-bolder fs-5">{`${index + 1}. ${q.question}`}</p>
               {q.options.map((option, optionIndex) => (
                 <div
                   key={optionIndex}
-                  className={`option ${score !== null ? (userAnswers[index] === option ? (userAnswers[index] === correctAnswers[index] ? 'correct' : 'wrong') : '') : ''}`}
+                  className={`option ${
+                    score !== null
+                      ? userAnswers[index] === option
+                        ? userAnswers[index] === correctAnswers[index]
+                          ? 'correct'
+                          : 'wrong'
+                        : ''
+                      : ''
+                  }`}
                 >
                   <input
                     type="radio"
@@ -87,8 +97,11 @@ const Quiz = ({ quizData }) => {
                     checked={userAnswers[index] === option}
                     onChange={() => handleOptionChange(index, option)}
                     className="module"
-                  /> &nbsp;
-                  <label htmlFor={`q${index + 1}${optionIndex}`}>{option}</label>
+                  />{' '}
+                  &nbsp;
+                  <label htmlFor={`q${index + 1}${optionIndex}`}>
+                    {option}
+                  </label>
                 </div>
               ))}
             </div>

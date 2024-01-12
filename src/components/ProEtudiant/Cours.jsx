@@ -3,8 +3,16 @@ import { Card } from 'primereact/card';
 import { Modal } from 'rsuite';
 import { useParams } from 'react-router-dom';
 import { db, storage } from '../../config/firebase-config';
-import { getDoc, doc, collection, addDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import {
+  getDoc,
+  doc,
+  collection,
+  addDoc,
+  updateDoc,
+  getDocs,
+  onSnapshot,
+} from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { AuthContext } from '../../contexte/AuthContext';
 import { format } from 'date-fns';
 
@@ -24,6 +32,11 @@ export default function Cours() {
   const [intervalIds, setIntervalIds] = useState({}); // To store interval IDs
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedCourseTitle, setSelectedCourseTitle] = useState('');
+  const [docRefs, setDocRefs] = useState({});
+  const [timeoutIds, setTimeoutIds] = useState({});
+  const [loadingStates, setLoadingStates] = useState({});
+
+  const [isButtonsDisabled, setIsButtonsDisabled] = useState(false);
 
   const { currentUser, uid } = useContext(AuthContext);
 
@@ -174,6 +187,7 @@ export default function Cours() {
               display: false,
               changement: false,
               livraison: true,
+              isCompleted: course.finish,
             }));
             setCourses(formattedCourses);
           }
@@ -213,50 +227,142 @@ export default function Cours() {
     }
   };
 
-  const handleDisplay = (courseIndex) => {
-    setCourses((courses) =>
+  const handleDisplay = async (courseIndex) => {
+    const course = courses[courseIndex];
+
+    setLoadingStates((prev) => ({ ...prev, [course.id]: true }));
+
+    const newDoc = await addDoc(collection(db, 'publications'), {
+      userID: UserUid,
+      profile: '',
+      nom: UserName || '',
+      date: format(new Date(), 'dd/MM/yyyy - HH:mm:ss'),
+      images: [], // Utilisez le tableau des URLs ici
+      email: UserEmail || '',
+      cours: course.title, // Assumption: Using course title to identify the course
+      finish: false,
+      livree: false,
+      start: true,
+      duree: '',
+    });
+
+    setDocRefs((prevRefs) => ({
+      ...prevRefs,
+      [course.title]: newDoc, // Store the document reference against the course title
+    }));
+    setCourses(
       courses.map((course, index) => {
         if (index === courseIndex) {
           return {
             ...course,
-            display: true,
-            changement: true,
-            livraison: false,
+            display: true, // Assuming 'display' controls whether the course is in progress
+            changement: true, // Any other state changes specific to this course
+            livraison: false, // Example of toggling other states
           };
         }
-        return course;
+        return course; // Other courses remain unchanged
       })
     );
-    const timerInterval = setInterval(() => {
-      setTimers((prevTimers) => ({
-        ...prevTimers,
-        [courseIndex]: (prevTimers[courseIndex] || 0) + 1,
-      }));
-    }, 1000);
 
-    setIntervalIds((prevIds) => ({
+    const completionTimer = setTimeout(() => {
+      handleChangement(courseIndex);
+    }, 5000);
+
+    setLoadingStates((prev) => ({ ...prev, [course.id]: false }));
+
+    // Corrected way to update setTimeoutIds using functional update
+    setTimeoutIds((prevIds) => ({
       ...prevIds,
-      [courseIndex]: timerInterval,
+      [courseIndex]: completionTimer,
     }));
   };
 
-  const handleChangement = (courseIndex) => {
-    setCourses((courses) =>
-      courses.map((course, index) => {
+  const handleChangement = async (courseIndex) => {
+    const course = courses[courseIndex];
+
+    setIsButtonsDisabled(true);
+
+    if (docRefs[course.title]) {
+      const courseDocRef = docRefs[course.title];
+
+      try {
+        await updateDoc(courseDocRef, {
+          start: false,
+          finish: true,
+        });
+      } catch (error) {
+        console.error('Error updating document in Firestore:', error);
+      }
+    }
+
+    setCourses(
+      courses.map((c, index) => {
         if (index === courseIndex) {
-          return { ...course, changement: true };
+          return { ...c, isCompleted: true }; // Update local state
         }
-        return course;
+        return c;
       })
     );
-    clearInterval(intervalIds[courseIndex]);
-    setIntervalIds((prevIds) => ({
-      ...prevIds,
-      [courseIndex]: null,
-    }));
   };
+
+  useEffect(() => {
+    // Create an array to store Firestore update operations
+    const updateOperations = [];
+
+    // Iterate through the courses to check for isCompleted changes
+    courses.forEach((course, index) => {
+      if (course.isCompleted) {
+        // If the course is marked as completed, update Firestore
+        const courseDocRef = docRefs[course.title];
+        if (courseDocRef) {
+          // Push an update operation to the array
+          updateOperations.push(
+            updateDoc(courseDocRef, {
+              start: false,
+              finish: true,
+            })
+          );
+        }
+      }
+    });
+
+    // Perform all update operations in parallel
+    Promise.all(updateOperations)
+      .then(() => {
+        // Handle success if needed
+        console.log('Firestore updates completed successfully');
+      })
+      .catch((error) => {
+        // Handle errors if needed
+        console.error('Error updating Firestore documents:', error);
+      });
+  }, [courses, docRefs]);
 
   const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    const fetchCourseStates = async () => {
+      const querySnapshot = await getDocs(collection(db, 'publications'));
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        setCourses((prevCourses) =>
+          prevCourses.map((course) => {
+            if (course.title === data.cours) {
+              return {
+                ...course,
+                display: data.start,
+                isCompleted: data.finish, // Reflect finish status from Firestore
+                livraison: !data.livree,
+              };
+            }
+            return course;
+          })
+        );
+      });
+    };
+
+    fetchCourseStates();
+  }, []);
 
   // File preview logic
   useEffect(() => {
@@ -280,35 +386,63 @@ export default function Cours() {
     return match && match[2].length === 11 ? match[2] : null;
   };
 
+  const activeCourses = courses.filter((course) => !course.archived);
+
   // Function to render buttons for each course
   const renderCourseButtons = (course, index) => {
+    const isAnyPrecedingCourseIncomplete = courses.some(
+      (c, i) => i < index && !c.isCompleted
+    );
+    const shouldRenderTerminer = course.display && !course.isCompleted;
+    const isLoading = loadingStates[course.id]; // Check if the current course is loading
+
     return (
       <div className="d-flex gap-2 justify-content-end">
-        <button
-          onClick={() => handleOpen(index)}
-          className={`btn text-white ${
-            course.livraison ? 'd-none' : 'd-block'
-          }`}
-          style={{ backgroundColor: '#48a93c' }}
-        >
-          Livrer
-        </button>
-        <button
-          onClick={() => handleDisplay(index)}
-          className={`btn text-white ${
-            course.changement ? 'd-none' : 'd-block'
-          }`}
-          style={{ backgroundColor: '#48a93c' }}
-        >
-          Démarrer
-        </button>
-        <button
-          onClick={() => handleChangement(index)}
-          className={`btn text-white ${course.display ? 'd-block' : 'd-none'}`}
-          style={{ backgroundColor: '#3084b5' }}
-        >
-          Terminer
-        </button>
+        {isLoading ? (
+          <button className="btn btn-success" disabled>
+            <span
+              className="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            &nbsp; &nbsp; Chargement...
+          </button>
+        ) : course.isCompleted || course.archived ? (
+          <span className="btn text-muted">Terminée</span>
+        ) : (
+          <>
+            {course.display && (
+              <button
+                onClick={() => handleOpen(index)}
+                className="btn text-white"
+                style={{ backgroundColor: '#48a93c' }}
+                disabled={isAnyPrecedingCourseIncomplete || isLoading}
+              >
+                Livrer
+              </button>
+            )}
+            {!course.display && !isAnyPrecedingCourseIncomplete && (
+              <button
+                onClick={() => handleDisplay(index)}
+                className="btn text-white"
+                style={{ backgroundColor: '#48a93c' }}
+                disabled={isAnyPrecedingCourseIncomplete || isLoading}
+              >
+                Démarrer
+              </button>
+            )}
+            {shouldRenderTerminer && (
+              <button
+                onClick={() => handleChangement(index)}
+                className="btn text-white"
+                style={{ backgroundColor: '#3084b5' }}
+                disabled={isLoading}
+              >
+                Terminer
+              </button>
+            )}
+          </>
+        )}
       </div>
     );
   };
@@ -318,7 +452,10 @@ export default function Cours() {
       <h2>Course List</h2>
       <div className="container">
         <div className="row">
-          {courses.map((course, index) => {
+          {activeCourses.map((course, index) => {
+            if (course.archived) {
+              return null;
+            }
             const videoId = getYouTubeVideoId(course.link);
             const isYouTubeLink = videoId !== null;
             const embedUrl = isYouTubeLink
@@ -352,10 +489,12 @@ export default function Cours() {
                       {course.link}
                     </a>
                   )}
-                  {renderCourseButtons(course, index)}
-                  <p key={index}>{`Durée: ${formatTime(
-                    timers[index] || 0
-                  )}`}</p>
+                  <div className="d-flex align-items-center justify-content-between mt-5">
+                    {/* <p className="p-0 m-0" key={index}>{`Durée: ${formatTime(
+                      timers[course.id] || 0
+                    )}`}</p> */}
+                    {renderCourseButtons(course, index)}
+                  </div>
                 </Card>
               </div>
             );
