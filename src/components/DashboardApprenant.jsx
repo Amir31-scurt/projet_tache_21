@@ -7,6 +7,7 @@ import {
   getDocs,
   query,
   where,
+  serverTimestamp,
 } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
 import { AuthContext } from '../contexte/AuthContext';
@@ -15,9 +16,10 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth, storage } from '../../src/config/firebase-config';
 import { getDownloadURL, ref } from 'firebase/storage';
 import UserProfil from '../assets/images/user.png';
+import { MdTask } from 'react-icons/md';
+import { PiUsersFourFill } from 'react-icons/pi';
 
 export default function DashboardApprenant() {
-  // État local pour stocker les livraisons et les utilisateurs
   const [livraisons, setLivraisons] = useState([]);
   const [users, setUsers] = useState([]);
 
@@ -45,7 +47,6 @@ export default function DashboardApprenant() {
     return () => unsubscribe();
   }, []);
 
-  // Effet de chargement initial pour récupérer les livraisons
   useEffect(() => {
     const fetchLivraisons = async () => {
       try {
@@ -53,12 +54,11 @@ export default function DashboardApprenant() {
 
         // Requête pour récupérer tous les documents de la collection "publication"
         const publicationQuery = query(publicationCollectionRef);
+        console.log(publicationQuery);
         const querySnapshot = await getDocs(publicationQuery);
 
-        // Tableau pour stocker les nouvelles livraisons
         const nouvellesLivraisons = [];
 
-        // Vérifier si des documents ont été trouvés dans la collection "publication"
         if (!querySnapshot.empty) {
           for (const doc of querySnapshot.docs) {
             // Extraire le cours de l'utilisateur actuel
@@ -72,24 +72,24 @@ export default function DashboardApprenant() {
               livraisonCollectionRef,
               where('cours', '==', userCours)
             );
+            console.log(livraisonQuery);
 
             // Obtenir le snapshot des résultats de la requête
             const livraisonQuerySnapshot = await getDocs(livraisonQuery);
+            console.log(livraisonQuerySnapshot);
 
             // Parcourir les livraisons récupérées et les ajouter au tableau nouvellesLivraisons
             livraisonQuerySnapshot.forEach((livraisonDoc) => {
               const data = livraisonDoc.data();
               nouvellesLivraisons.push({
                 key: livraisonDoc.id,
-                date: format(
-                  new Date(data.date.seconds * 1000),
-                  'dd/MM/yyyy - HH:mm:ss'
-                ),
+                date: serverTimestamp(data.date),
                 apprenant: data.nom,
                 titreCourEtudiant: data.cours,
                 images: data.images || [],
                 userProfile: profileImage,
               });
+              console.log(data);
             });
           }
 
@@ -100,6 +100,7 @@ export default function DashboardApprenant() {
 
           // Mettre à jour l'état local avec les nouvelles livraisons
           setLivraisons(nouvellesLivraisons);
+          console.log(livraisons);
         } else {
           console.log('Aucun document publication trouvé.');
         }
@@ -108,17 +109,20 @@ export default function DashboardApprenant() {
       }
     };
 
-    // Appeler la fonction pour récupérer les livraisons lors du montage initial
     fetchLivraisons();
   }, []);
 
-  // Fonction de chargement des utilisateurs à partir de la collection "utilisateurs"
+  // Filtre des utilisateurs par rôle (Coach ou Étudiant)
+  const teachers = users.filter((user) => user.role === 'Coach');
+  const students = users.filter((user) => user.role === 'Étudiant');
+
+  // Fonction pour charger les utilisateurs depuis Firestore
   const loadUsers = useCallback(() => {
-    // Souscrire aux changements dans la collection "utilisateurs"
+    // Initialisation du listener de snapshot pour la collection 'utilisateurs'
     const unsubscribe = onSnapshot(
       collection(db, 'utilisateurs'),
       (snapshot) => {
-        // Mettre à jour l'état local des utilisateurs avec les données du snapshot
+        // Mettre à jour le state avec les données utilisateur actualisées
         const updatedUsers = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -127,43 +131,51 @@ export default function DashboardApprenant() {
       }
     );
 
+    // Nettoyage de listener lors du démontage du composant
     return () => {
       unsubscribe();
     };
   }, []);
 
+  // Utilisation useEffect pour appeler loadUsers lors du montage du composant
   useEffect(() => {
     loadUsers();
   }, [loadUsers]);
 
-  // Contenu des cartes du tableau de bord
+  // Données pour les cartes du dashboard
   const ContenuCardDsb = [
     {
-      ChiffreCardDsb: users.filter((user) => user.role === 'Étudiant').length,
+      ChiffreCardDsb: students.length,
+      IconeCardDsb: (
+        <PiUsersFourFill
+          style={{ fontSize: '68px', opacity: '1', color: '#fff' }}
+        />
+      ),
       TextCardDsb: 'Etudiants',
       couleurCarte: 'CouleurB',
     },
     {
       ChiffreCardDsb: '52',
+      IconeCardDsb: (
+        <MdTask style={{ fontSize: '68px', opacity: '1', color: '#fff' }} />
+      ),
       TextCardDsb: 'Taches',
       couleurCarte: 'CouleurC',
     },
   ];
 
-  // Rendu du composant
   return (
     <div className="d-flex flex-column flex-wrap ms-3 justify-content-center">
       <h1 className="fst-italic text-secondary fs-3 fw-bold ps-2 pt-3">
         Dashboard
       </h1>
+      {/* Cartes du dashboard */}
       <div className="d-flex ContaCardDsb justify-content-start">
-        {/* Mapping sur le contenu des cartes du tableau de bord */}
         {ContenuCardDsb.map((elem, index) => (
           <DashboardCompo {...elem} key={index} />
         ))}
       </div>
       <div className="d-flex flex-column ms-3 justify-content-center">
-        {/* Mapping sur les livraisons pour afficher les cartes de livraison */}
         {livraisons.map((livraison) => (
           <CardLivraison key={livraison.key} {...livraison} />
         ))}
