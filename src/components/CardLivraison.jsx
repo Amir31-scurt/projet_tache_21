@@ -155,7 +155,7 @@ export default function CardLivraison({
 
   useEffect(() => {
     fetchStudentInfo();
-    fetchImagesFromFirestore();
+    // fetchImagesFromFirestore();
     fetchComments();
   }, []);
 
