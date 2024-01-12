@@ -34,11 +34,12 @@ export default function CardLivraison({
   userProfile,
 }) {
   const [currentUser, setCurrentUser] = useState(null);
-  // eslint-disable-next-line
-  const [userRole, setUserRole] = useState("Rôle inconnu");
-  const [imagesData, setImages] = useState([]);
+  const [userRole, setUserRole] = useState("");
+
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
+  // eslint-disable-next-line
+  const [imagesData, setImages] = useState([]);
   const [visibleComments, setVisibleComments] = useState([]);
   const [hiddenComments, setHiddenComments] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -86,7 +87,7 @@ export default function CardLivraison({
         const studentData = studentSnapshot.docs[0].data();
         setApprenat(studentData.nom);
         setCoach(studentData.coach);
-        setDate(format(studentData.date.toDate(), 'dd/MM/yyyy - HH:mm:ss'));
+        setDate(format(studentData.date.toDate(), "dd/MM/yyyy - HH:mm:ss"));
       }
     } catch (error) {
       console.error(
@@ -122,23 +123,28 @@ export default function CardLivraison({
 
   // Effet pour récupérer les informations de l'étudiant lors du montage du composant
    // eslint-disable-next-line
-  useEffect(() => {
-    fetchStudentInfo();
-    fetchImagesFromFirestore();
-     // eslint-disable-next-line
-  }, []);
-   // eslint-disable-next-line
+  
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        setCurrentUser(user); // Mettre à jour l'état currentUser avec l'utilisateur actuel
         const docRef = doc(db, "utilisateurs", user.uid);
         try {
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             const userData = docSnap.data();
-            const role = userData.role;
+            console.log("userData:", userData); // Vérifier les données récupérées de Firestore
+            const role =
+              userData && userData.role ? userData.role : "Role par défaut";
             setUserRole(role);
-            console.log(role);
+            console.log("Le rôle de l'utilisateur est :" + role);
+
+            // Mettre à jour le currentUser avec le rôle récupéré
+            setCurrentUser((prevUser) => ({
+              ...prevUser,
+              role: role,
+            }));
           } else {
             console.log(
               "Aucune donnée utilisateur trouvée pour cet utilisateur"
@@ -153,16 +159,47 @@ export default function CardLivraison({
     return () => unsubscribe();
   }, []);
 
-  // * FONCTIONNALITER POUR LES COMMENTAIRES * //
-  // Utilisez useEffect pour charger les commentaires dès le chargement du composant
   useEffect(() => {
+    fetchStudentInfo();
+    fetchImagesFromFirestore();
     fetchComments();
   }, []);
+
+  function fetchComments() {
+    const commentsRef = collection(db, "commentaires");
+
+    onSnapshot(commentsRef, (snapshot) => {
+      const commentsData = [];
+      snapshot.forEach((doc) => {
+        const { userName, userRole, commentContent } = doc.data();
+        commentsData.push({
+          id: doc.id,
+          userName,
+          userRole,
+          commentContent,
+          ...doc.data(),
+        });
+      });
+
+      commentsData.sort((a, b) => {
+        return b.timestamp - a.timestamp;
+      });
+
+      setComments(commentsData);
+
+      const visible = commentsData.slice(0, 3);
+      const hidden = commentsData.slice(3);
+
+      setVisibleComments(visible);
+      setHiddenComments(hidden);
+    });
+  }
 
   function handleSend() {
     addComment(); // Appel de la fonction addComment sans publicationId
     toast.success("Commentaire envoyé");
     setComment(""); // Réinitialisation du champ de commentaire après l'envoi
+    fetchComments(); // Ajoutez cet appel pour mettre à jour les commentaires après l'ajout
   }
 
   // Fonction pour supprimer un commentaire
@@ -171,7 +208,7 @@ export default function CardLivraison({
 
     deleteDoc(commentRef)
       .then(() => {
-        toast.success("Comment deleted successfully");
+        toast.success("Commentaire supprimer");
         fetchComments(); // Mise à jour de l'affichage après la suppression du commentaire
       })
       .catch((error) => {
@@ -195,7 +232,7 @@ export default function CardLivraison({
 
     addDoc(commentsRef, {
       userName: currentUser ? currentUser.displayName : "Utilisateur inconnu",
-      userRole: currentUser ? currentUser.role : "Rôle inconnu",
+      userRole: userRole,
       commentContent: comment,
       timestamp: serverTimestamp(),
     })
@@ -208,31 +245,6 @@ export default function CardLivraison({
         console.error("Error adding document: ", error);
         toast.error("Erreur lors de la création du document");
       });
-  }
-
-  // Fonction pour récupérer et afficher les commentaires depuis Firebase
-  function fetchComments() {
-    const commentsRef = collection(db, "commentaires");
-
-    onSnapshot(commentsRef, (snapshot) => {
-      const commentsData = [];
-      snapshot.forEach((doc) => {
-        const { userName, userRole } = doc.data();
-        commentsData.push({ id: doc.id, userName, userRole, ...doc.data() });
-      });
-
-      commentsData.sort((a, b) => {
-        return b.timestamp - a.timestamp;
-      });
-
-      setComments(commentsData);
-
-      const visible = commentsData.slice(0, 3);
-      const hidden = commentsData.slice(3);
-
-      setVisibleComments(visible);
-      setHiddenComments(hidden);
-    });
   }
 
   function getTimeDifference(timestamp) {
@@ -251,28 +263,15 @@ export default function CardLivraison({
     const days = Math.floor(hours / 24);
 
     if (days > 0) {
-      return `${days} jour${days > 1 ? "s" : ""} ago`;
+      return `il y a ${days} jour${days > 1 ? "s" : ""}`;
     } else if (hours > 0) {
-      return `${hours} heure${hours > 1 ? "s" : ""} ago`;
+      return `il y a ${hours} heure${hours > 1 ? "s" : ""}`;
     } else if (minutes > 0) {
-      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+      return `il y a ${minutes} minute${minutes > 1 ? "s" : ""}`;
     } else {
-      return `${seconds} seconde${seconds !== 1 ? "s" : ""} ago`;
+      return `il y a ${seconds} seconde${seconds !== 1 ? "s" : ""}`;
     }
   }
-   // eslint-disable-next-line
-  const handleLogout = () => {
-    auth
-      .signOut()
-      .then(() => {
-        toast.success("Utilisateur déconnecté avec succès.");
-        // Ici tu peux ajouter d'autres actions après la déconnexion si nécessaire
-        navigate("/connexion");
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la déconnexion :", error);
-      });
-  };
 
   return (
     <div className="">
@@ -321,7 +320,6 @@ export default function CardLivraison({
                       <span className="">
                         <span className="fw-bolder">{comment.userName}</span>
                         <span className="text-light bg-info rounded-pill px-2 mx-3 pb-0 mainBackgrounColor">
-                          {comment.userRole}
                         </span>
                         <span>
                           <span>{getTimeDifference(comment.timestamp)}</span>
@@ -355,7 +353,6 @@ export default function CardLivraison({
                     <span className="">
                       <span className="fw-bolder">{comment.userName}</span>
                       <span className="text-light bg-info rounded-pill px-2 mx-3 pb-0 mainBackgrounColor">
-                        {comment.userRole}
                       </span>
                       <span>
                         <span>{getTimeDifference(comment.timestamp)}</span>
