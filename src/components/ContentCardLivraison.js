@@ -45,6 +45,7 @@ function ContentCardLivraison() {
     if(valeur){
     const q = query(collection(db, "publication"), where("nom", "==", valeur));
     console.log("Essaie d'affichage de la valeur: ", valeur)
+    console.log("Essaie d'affichage du type de la valeur: ", typeof valeur)
     try{
       onSnapshot(q, (snapshot) => {
         const queries = snapshot.docs.map((doc) => ({
@@ -57,7 +58,9 @@ function ContentCardLivraison() {
     } catch{
         setFiltreActive(false)
       }
-    }else{
+    } 
+    // else if(valeur === null)
+    else{
       console.log("La valeur est indéfinie")
       setFiltreActive(false)
     }
