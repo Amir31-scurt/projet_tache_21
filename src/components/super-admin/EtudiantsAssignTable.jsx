@@ -157,12 +157,12 @@ function EtudiantsAssignTable() {
               <tr key={index}>
                 <td className="border">{coach.name}</td>
                 <td className="border w-50">{coach.etudiants.join(" , ")}</td>
-                <td className="border">
+                <td className="border d-flex justify-content-center">
                   <button
                     className="btn btn-danger"
                     onClick={() => handleDeleteClick(coach)}
                   >
-                    <MdDeleteOutline />
+                    <MdDeleteOutline className="fs-3"/>
                   </button>
                 </td>
               </tr>
