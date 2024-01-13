@@ -29,7 +29,8 @@ export default function Card() {
   console.log(roleUser, userCoach)
 
   return (
-    <div className="program-card2 card bg-light justify-content-center">
+    <div className="">
+      <div className="program-card2 card bg-light justify-content-center">
       <div className='d-flex justify-content-between '>
      <div className='nicePic'>
      <img src={ userCoach? userCoach.photoURL:'' } alt='photoURL Coach'/>
@@ -39,6 +40,7 @@ export default function Card() {
       <h6>{userCoach ? userCoach.email :''}</h6>
       </div>
       </div>
+    </div>
     </div>
   );
 }

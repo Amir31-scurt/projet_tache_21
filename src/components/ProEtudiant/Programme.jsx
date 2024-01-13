@@ -61,25 +61,26 @@ export default function Programme() {
     }
   }, [users, email, domaines]);
 
-
   const domaineExactly = domaines.find((dom) => dom.domaine === studentDomaine);
 
   console.log(studentDomaine);
 
-
-  const isMarketing =  studentDomaine === 'Marketing';
-  const isFinance =  studentDomaine === 'Finance';
-  const isGestionEntreprise = studentDomaine === `Gestion d'entreprise` 
+  const isMarketing = studentDomaine === 'Marketing';
+  const isFinance = studentDomaine === 'Finance';
+  const isGestionEntreprise = studentDomaine === `Gestion d'entreprise`;
   const isGestionInternationale = studentDomaine === 'Gestion Internationale';
 
-  const validLinks = isMarketing ?  'quizmarketing' :
-  isFinance ? 'quizfinance' :
-  isGestionEntreprise ? 'quizgestionentreprise' :
-  isGestionInternationale ? 'quizgestioninternationale':
-  '';
+  const validLinks = isMarketing
+    ? 'quizmarketing'
+    : isFinance
+    ? 'quizfinance'
+    : isGestionEntreprise
+    ? 'quizgestionentreprise'
+    : isGestionInternationale
+    ? 'quizgestioninternationale'
+    : '';
 
-console.log(validLinks);
- 
+  console.log(validLinks);
 
   return (
     <div className="bg-cours">
