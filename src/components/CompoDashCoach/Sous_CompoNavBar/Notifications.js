@@ -21,7 +21,6 @@ import { EmailContext } from "../../../contexte/EmailContexte";
 function Notifications() {
   const [notifs, setNotifs] = useState([]);
   const [newNotificationsCount, setNewNotificationsCount] = useState(0);
-  // eslint-disable-next-line
   const { email, setEmail } = useContext(EmailContext);
   const [anchorElNotif, setAnchorElNotif] = React.useState(null);
   const isMenuOpenNotif = Boolean(anchorElNotif);
@@ -65,8 +64,8 @@ function Notifications() {
           setNotifs((prevNotifs) =>
             prevNotifs.filter((notif) => notif.id !== selectedNotification.id)
           );
-          setSelectedNotification(null); // Clear the selected notification after deletion
-          setShowDeleteButton(false); // Hide the delete button after deletion
+          setSelectedNotification(null);
+          setShowDeleteButton(false); 
           console.log(`Notification "${title}" supprimée avec succès!`);
         } else {
           console.log(`Document not found with ID: ${selectedNotification.id}`);
@@ -105,7 +104,6 @@ function Notifications() {
 
   useEffect(() => {
     loadNotifications();
-    console.log(notifs);
   }, [loadNotifications]);
   
 

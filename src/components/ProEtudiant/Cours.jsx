@@ -1,10 +1,19 @@
-import React, { useState, useEffect, useContext, useId } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Card } from 'primereact/card';
 import { Modal } from 'rsuite';
 import { useParams } from 'react-router-dom';
 import { db, storage } from '../../config/firebase-config';
-import { getDoc, doc, collection, addDoc, serverTimestamp, onSnapshot, getDocs, where, updateDoc, query } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import {
+  getDoc,
+  doc,
+  collection,
+  addDoc,
+  updateDoc,
+  getDocs,
+  serverTimestamp,
+  where,
+  query,
+} from 'firebase/firestore';
 import { AuthContext } from '../../contexte/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -12,55 +21,25 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 export default function Cours() {
   const { domaineId, sousDomaineName } = useParams();
   const [courses, setCourses] = useState([]);
-  // eslint-disable-next-line
   const [selectedCourse, setSelectedCourse] = useState(null);
-   // eslint-disable-next-line
   const [backdrop, setBackdrop] = useState('static');
-  // eslint-disable-next-line
   const [open, setOpen] = useState(false);
-  // eslint-disable-next-line
   const [files, setFiles] = useState();
   const [previews, setPreviews] = useState();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedCourseTitle, setSelectedCourseTitle] = useState('');
-  const [currentDocRef, setCurrentDocRef] = useState(null);
   const [docRefs, setDocRefs] = useState({});
   const [timeoutIds, setTimeoutIds] = useState({});
   const [loadingStates, setLoadingStates] = useState({});
+
   const [isButtonsDisabled, setIsButtonsDisabled] = useState(false);
+
   const { currentUser, uid } = useContext(AuthContext);
-  const [LeNom, setLeNom] = useState('')
-  const [docPubRef, setDocPubRef] = useState("");;
+  const [imageUrls, setImageUrls] = useState([]);
+
   const UserUid = uid;
   const UserEmail = currentUser.email;
-
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const usersCollectionRef = collection(db, 'utilisateurs');
-        const q = query(usersCollectionRef, where("email", "==", UserEmail));
-        const querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-          // Il y a au moins un document correspondant à UserUid
-          const userData = querySnapshot.docs[0].data();
-          const studentName = userData.name;
-          setLeNom(studentName);
-        } else {
-          console.log("Le user ID n'existe pas :", UserUid);
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchUserData();
-  }, [UserUid]);
-
-  const UserName = LeNom || currentUser.displayName; ;
-
-  console.log("le nom de l'etudiant =", UserName);
+  const UserName = currentUser.displayName;
 
   //
   useEffect(() => {
@@ -103,10 +82,8 @@ export default function Cours() {
     };
   }, [selectedFiles]);
 
-  const imageUrls = [];
   const handleUpload = async () => {
     try {
-
       // Boucler à travers les fichiers sélectionnés et les télécharger sur Firebase Storage
       await Promise.all(
         selectedFiles.map(async (file) => {
@@ -124,11 +101,11 @@ export default function Cours() {
       setOpen(false);
 
       // Vérifier s'il existe un document existant avec le même cours et le même utilisateur
-      const publicationCollectionRef = collection(db, "publication");
+      const publicationCollectionRef = collection(db, 'publication');
       const publicationQuery = query(
         publicationCollectionRef,
-        where("userID", "==", UserUid),
-        where("cours", "==", selectedCourseTitle)
+        where('userID', '==', UserUid),
+        where('cours', '==', selectedCourseTitle)
       );
       const publicationQuerySnapshot = await getDocs(publicationQuery);
 
@@ -149,7 +126,7 @@ export default function Cours() {
         });
       }
     } catch (error) {
-      console.error("Erreur lors du traitement du téléchargement :", error);
+      console.error('Erreur lors du traitement du téléchargement :', error);
     }
   };
 
@@ -163,14 +140,35 @@ export default function Cours() {
           const domaineData = docSnap.data();
           const sousDomaine = domaineData.sousDomaines[sousDomaineName];
           if (sousDomaine && sousDomaine.cours) {
-            const formattedCourses = sousDomaine.cours.map((course) => ({
-              ...course,
-              display: false,
-              changement: false,
-              livraison: true,
-              isCompleted: course.finish,
-            }));
-            setCourses(formattedCourses);
+            const formattedCourses = sousDomaine.cours.map(async (course) => {
+              // Fetch course data from 'publication' collection
+              const publicationCollectionRef = collection(db, 'publication');
+              const publicationQuery = query(
+                publicationCollectionRef,
+                where('cours', '==', course.title)
+              );
+              const publicationQuerySnapshot = await getDocs(publicationQuery);
+
+              let isCourseCompleted = false;
+              if (!publicationQuerySnapshot.empty) {
+                const courseData = publicationQuerySnapshot.docs[0].data();
+                // Check if course is completed based on 'start' and 'finish' flags
+                isCourseCompleted =
+                  courseData.finish === true && courseData.start === false;
+              }
+
+              return {
+                ...course,
+                display: false,
+                changement: false,
+                livraison: true,
+                isCompleted: isCourseCompleted,
+              };
+            });
+
+            // Use Promise.all to wait for all async operations to complete
+            const resolvedCourses = await Promise.all(formattedCourses);
+            setCourses(resolvedCourses);
           }
         } else {
           console.log('No such document!');
@@ -191,42 +189,40 @@ export default function Cours() {
     setSelectedCourseTitle(selectedCourse.title);
   };
 
-
-
   const handleDisplay = async (courseIndex) => {
     const course = courses[courseIndex];
-    
+
     setLoadingStates((prev) => ({ ...prev, [course.id]: true }));
 
-    const publicationCollectionRef = collection(db, "publication");
-    const publicationQuery = query(
-      publicationCollectionRef,
-      where("userID", "==", UserUid),
-      where("cours", "==", course.title)
-    );
-    const publicationQuerySnapshot = await getDocs(publicationQuery);
+    const newDoc = await addDoc(collection(db, 'publication'), {
+      UserUid,
+      cours: course.title,
+      nom: UserName,
+      profile: '',
+      images: imageUrls,
+      date: serverTimestamp(),
+      email: UserEmail || '',
+      start: true,
+      finish: false,
+      livree: false,
+      duree: 0,
+    });
 
-    if (publicationQuerySnapshot.empty) {
-      // Créer un nouveau document s'il n'y a pas de document existant
-      setDocPubRef( await addDoc(collection(db, "publication"), {
-        userID: UserUid,
-        cours: course.title,
-        nom: UserName,
-        profile: "",
-        images: imageUrls,
-        date: serverTimestamp(),
-        email: UserEmail || "",
-        start: true,
-        finish: false,
-        livree: false,
-        duree: 0,
-      }));
-      
-      setDocRefs((prevRefs) => ({
+    setDocRefs((prevRefs) => ({
       ...prevRefs,
       [course.title]: newDoc, // Store the document reference against the course title
     }));
-       setCourses(
+    toast.success('Cours debuté', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
+    setCourses(
       courses.map((course, index) => {
         if (index === courseIndex) {
           return {
@@ -239,14 +235,10 @@ export default function Cours() {
         return course; // Other courses remain unchanged
       })
     );
-    }
-   
 
-
-    setCurrentDocRef(docPubRef);
     const completionTimer = setTimeout(() => {
       handleChangement(courseIndex);
-    }, 5000);
+    }, 30000);
 
     setLoadingStates((prev) => ({ ...prev, [course.id]: false }));
 
@@ -269,6 +261,16 @@ export default function Cours() {
         await updateDoc(courseDocRef, {
           start: false,
           finish: true,
+        });
+        toast.success('Cours Terminé', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
         });
       } catch (error) {
         console.error('Error updating document in Firestore:', error);
@@ -310,11 +312,20 @@ export default function Cours() {
     Promise.all(updateOperations)
       .then(() => {
         // Handle success if needed
-        console.log('Firestore updates completed successfully');
+        console.log('Cours terminated successfully');
       })
       .catch((error) => {
         // Handle errors if needed
-        console.error('Error updating Firestore documents:', error);
+        toast.error('Error updating Firestore documents:', error, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
       });
   }, [courses, docRefs]);
 
@@ -322,7 +333,7 @@ export default function Cours() {
 
   useEffect(() => {
     const fetchCourseStates = async () => {
-      const querySnapshot = await getDocs(collection(db, 'publications'));
+      const querySnapshot = await getDocs(collection(db, 'publication'));
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         setCourses((prevCourses) =>
@@ -332,7 +343,6 @@ export default function Cours() {
                 ...course,
                 display: data.start,
                 isCompleted: data.finish, // Reflect finish status from Firestore
-                livraison: !data.livree,
               };
             }
             return course;
@@ -343,6 +353,37 @@ export default function Cours() {
 
     fetchCourseStates();
   }, []);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const docRef = doc(db, 'domaines', domaineId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const domaineData = docSnap.data();
+          const sousDomaine = domaineData.sousDomaines[sousDomaineName];
+          if (sousDomaine && sousDomaine.cours) {
+            const formattedCourses = sousDomaine.cours.map((course) => ({
+              ...course,
+              display: false, // Set initial display state
+              isCompleted: course.finish, // Set completion status
+              // Include any other initial states or transformations needed
+            }));
+            setCourses(formattedCourses);
+          } else {
+            console.log('No such sous-domaine!');
+          }
+        } else {
+          console.log('No such domaine!');
+        }
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      }
+    };
+
+    fetchCourses();
+  }, [domaineId, sousDomaineName]);
 
   // File preview logic
   useEffect(() => {
@@ -356,10 +397,8 @@ export default function Cours() {
   }, [files]);
 
   // Function to get YouTube video ID
-  // eslint-disable-next-line
   const getYouTubeVideoId = (url) => {
     if (typeof url !== 'string') return null;
-     // eslint-disable-next-line
     const regExp =
       /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
@@ -379,7 +418,11 @@ export default function Cours() {
     return (
       <div className="d-flex gap-2 justify-content-end">
         {isLoading ? (
-          <button className="btn btn-success" disabled>
+          <button
+            className="btn text-white"
+            style={{ backgroundColor: '#48a93c' }}
+            disabled
+          >
             <span
               className="spinner-border spinner-border-sm"
               role="status"
@@ -469,7 +512,12 @@ export default function Cours() {
                       {course.link}
                     </a>
                   )}
-                  {renderCourseButtons(course, index)}
+                  <div className="d-flex align-items-center justify-content-between mt-5">
+                    {/* <p className="p-0 m-0" key={index}>{`Durée: ${formatTime(
+                      timers[course.id] || 0
+                    )}`}</p> */}
+                    {renderCourseButtons(course, index)}
+                  </div>
                 </Card>
               </div>
             );

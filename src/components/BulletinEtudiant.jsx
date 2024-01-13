@@ -174,7 +174,7 @@ const BulletinEtudiant = () => {
       // Ajoutez les données du bulletin à la collection "bulletins"
       await addDoc(collection(db, "bulletins"), bulletinData);
 
-      let notificationMessage= `Votre bulletin de notes est disponible`
+      let notificationMessage= `Votre bulletin de notes est disponible vous pouvez le vérifier dans vos bulletins`
       await addDoc(notificationsCollection, {
         messageForAdmin: notificationMessage,
         timestamp: serverTimestamp(),

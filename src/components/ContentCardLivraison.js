@@ -28,7 +28,7 @@ function ContentCardLivraison() {
       }
     );
     const publications = onSnapshot(
-      collection(db, "publish"),
+      collection(db, "publication"),
       (snapshot) => {
         const updatedPublication = snapshot.docs.map((doc) => ({
           id: doc.id,
