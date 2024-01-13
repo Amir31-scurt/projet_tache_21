@@ -235,7 +235,16 @@ export default function CardLivraison({
       <div className="container d-flex justify-content-center flex-wrap containerApprenant my-5">
         <div className="row rowAppenant align-items-center">
           <div className="col-md-12 d-flex colApprenant my-3">
-            <img src={userProfile} alt="" className="icon" />
+            <img
+              src={userProfile}
+              alt="user-Profile"
+              style={{
+                width: '58px',
+                height: '60px',
+                borderRadius: '50%',
+                objectFit: 'cover',
+              }}
+            />
             <div className="mySpan">
               <h6 className=" px-3 pt-1 fs-5 fst-italic dark">{apprenant}</h6>
               <p className="m-0 fst-italic px-3 pt-1 dark">{date}</p>

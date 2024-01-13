@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState, useContext } from 'react';
-import DashboardCompo from './programmes/Single_Programmes/DashboardCompo';
+import DashboardCompo from '../components/programmes/Single_Programmes/DashboardCompo';
 import CardLivraison from '../components/CardLivraison';
 import {
   collection,
@@ -7,46 +7,24 @@ import {
   getDocs,
   query,
   where,
-  serverTimestamp,
 } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
 import { AuthContext } from '../contexte/AuthContext';
 import format from 'date-fns/format';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth, storage } from '../../src/config/firebase-config';
-import { getDownloadURL, ref } from 'firebase/storage';
-import UserProfil from '../assets/images/user.png';
 import { MdTask } from 'react-icons/md';
 import { PiUsersFourFill } from 'react-icons/pi';
 
 export default function DashboardApprenant() {
+  // État local pour stocker les livraisons et les utilisateurs
   const [livraisons, setLivraisons] = useState([]);
   const [users, setUsers] = useState([]);
 
   // Extraction des informations actuelles de l'utilisateur
   const { currentUser, uid } = useContext(AuthContext);
   const UserUid = uid;
-  const [profileImage, setProfileImage] = useState(UserProfil);
-  // Utilisez useEffect pour mettre à jour l'image de profil après la reconnexion
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // Mettez à jour l'image de profil après la reconnexion
-        const storageRef = ref(storage, `profile_images/${user.uid}`);
-        getDownloadURL(storageRef)
-          .then((url) => {
-            setProfileImage(url);
-            localStorage.setItem('profileImage', url);
-          })
-          .catch((error) => {
-            console.error('Error loading profile image:', error.message);
-          });
-      }
-    });
+  const students = users.filter((user) => user.role === 'Étudiant');
 
-    return () => unsubscribe();
-  }, []);
-
+  // Effet de chargement initial pour récupérer les livraisons
   useEffect(() => {
     const fetchLivraisons = async () => {
       try {
@@ -54,11 +32,12 @@ export default function DashboardApprenant() {
 
         // Requête pour récupérer tous les documents de la collection "publication"
         const publicationQuery = query(publicationCollectionRef);
-        console.log(publicationQuery);
         const querySnapshot = await getDocs(publicationQuery);
 
+        // Tableau pour stocker les nouvelles livraisons
         const nouvellesLivraisons = [];
 
+        // Vérifier si des documents ont été trouvés dans la collection "publication"
         if (!querySnapshot.empty) {
           for (const doc of querySnapshot.docs) {
             // Extraire le cours de l'utilisateur actuel
@@ -72,11 +51,9 @@ export default function DashboardApprenant() {
               livraisonCollectionRef,
               where('cours', '==', userCours)
             );
-            console.log(livraisonQuery);
 
             // Obtenir le snapshot des résultats de la requête
             const livraisonQuerySnapshot = await getDocs(livraisonQuery);
-            console.log(livraisonQuerySnapshot);
 
             // Parcourir les livraisons récupérées et les ajouter au tableau nouvellesLivraisons
             livraisonQuerySnapshot.forEach((livraisonDoc) => {
@@ -90,9 +67,8 @@ export default function DashboardApprenant() {
                 apprenant: data.nom,
                 titreCourEtudiant: data.cours,
                 images: data.images || [],
-                userProfile: profileImage,
+                userProfile: data.profile,
               });
-              console.log(data);
             });
           }
 
@@ -103,7 +79,6 @@ export default function DashboardApprenant() {
 
           // Mettre à jour l'état local avec les nouvelles livraisons
           setLivraisons(nouvellesLivraisons);
-          console.log(livraisons);
         } else {
           console.log('Aucun document publication trouvé.');
         }
@@ -112,20 +87,17 @@ export default function DashboardApprenant() {
       }
     };
 
+    // Appeler la fonction pour récupérer les livraisons lors du montage initial
     fetchLivraisons();
   }, []);
 
-  // Filtre des utilisateurs par rôle (Coach ou Étudiant)
-  const teachers = users.filter((user) => user.role === 'Coach');
-  const students = users.filter((user) => user.role === 'Étudiant');
-
-  // Fonction pour charger les utilisateurs depuis Firestore
+  // Fonction de chargement des utilisateurs à partir de la collection "utilisateurs"
   const loadUsers = useCallback(() => {
-    // Initialisation du listener de snapshot pour la collection 'utilisateurs'
+    // Souscrire aux changements dans la collection "utilisateurs"
     const unsubscribe = onSnapshot(
       collection(db, 'utilisateurs'),
       (snapshot) => {
-        // Mettre à jour le state avec les données utilisateur actualisées
+        // Mettre à jour l'état local des utilisateurs avec les données du snapshot
         const updatedUsers = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -134,18 +106,16 @@ export default function DashboardApprenant() {
       }
     );
 
-    // Nettoyage de listener lors du démontage du composant
     return () => {
       unsubscribe();
     };
   }, []);
 
-  // Utilisation useEffect pour appeler loadUsers lors du montage du composant
   useEffect(() => {
     loadUsers();
   }, [loadUsers]);
 
-  // Données pour les cartes du dashboard
+  // Contenu des cartes du tableau de bord
   const ContenuCardDsb = [
     {
       ChiffreCardDsb: students.length,
@@ -167,18 +137,20 @@ export default function DashboardApprenant() {
     },
   ];
 
+  // Rendu du composant
   return (
     <div className="d-flex flex-column flex-wrap ms-3 justify-content-center">
       <h1 className="fst-italic text-secondary fs-3 fw-bold ps-2 pt-3">
         Dashboard
       </h1>
-      {/* Cartes du dashboard */}
       <div className="d-flex ContaCardDsb justify-content-start">
+        {/* Mapping sur le contenu des cartes du tableau de bord */}
         {ContenuCardDsb.map((elem, index) => (
           <DashboardCompo {...elem} key={index} />
         ))}
       </div>
       <div className="d-flex flex-column ms-3 justify-content-center">
+        {/* Mapping sur les livraisons pour afficher les cartes de livraison */}
         {livraisons.map((livraison) => (
           <CardLivraison key={livraison.key} {...livraison} />
         ))}

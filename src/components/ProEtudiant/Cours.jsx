@@ -1,22 +1,26 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useId } from 'react';
 import { Card } from 'primereact/card';
 import { Modal } from 'rsuite';
 import { useParams } from 'react-router-dom';
-import { db, storage } from '../../config/firebase-config';
+import { db, auth, storage } from '../../config/firebase-config';
 import {
   getDoc,
   doc,
   collection,
   addDoc,
-  updateDoc,
-  getDocs,
   serverTimestamp,
+  onSnapshot,
+  getDocs,
   where,
+  updateDoc,
   query,
 } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { AuthContext } from '../../contexte/AuthContext';
+import { format } from 'date-fns';
+import { onAuthStateChanged } from 'firebase/auth';
+import UserProfil from '../../assets/images/user.png';
 import { ToastContainer, toast } from 'react-toastify';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export default function Cours() {
   const { domaineId, sousDomaineName } = useParams();
@@ -26,20 +30,68 @@ export default function Cours() {
   const [open, setOpen] = useState(false);
   const [files, setFiles] = useState();
   const [previews, setPreviews] = useState();
+  const [timers, setTimers] = useState({}); // Timer state as an object
+  const [intervalIds, setIntervalIds] = useState({}); // To store interval IDs
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedCourseTitle, setSelectedCourseTitle] = useState('');
-  const [docRefs, setDocRefs] = useState({});
-  const [timeoutIds, setTimeoutIds] = useState({});
-  const [loadingStates, setLoadingStates] = useState({});
-
-  const [isButtonsDisabled, setIsButtonsDisabled] = useState(false);
-
+  const [currentDocRef, setCurrentDocRef] = useState(null);
   const { currentUser, uid } = useContext(AuthContext);
-  const [imageUrls, setImageUrls] = useState([]);
+  const [LeNom, setLeNom] = useState('');
+  const [docPubRef, setDocPubRef] = useState([]);
+  const [loadingStates, setLoadingStates] = useState({});
+  const [timeoutIds, setTimeoutIds] = useState({});
+  const [isButtonsDisabled, setIsButtonsDisabled] = useState(false);
 
   const UserUid = uid;
   const UserEmail = currentUser.email;
-  const UserName = currentUser.displayName;
+  const [profileImage, setProfileImage] = useState(UserProfil);
+
+  // Utilisez useEffect pour mettre à jour l'image de profil après la reconnexion
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Mettez à jour l'image de profil après la reconnexion
+        const storageRef = ref(storage, `profile_images/${user.uid}`);
+        getDownloadURL(storageRef)
+          .then((url) => {
+            setProfileImage(url);
+            localStorage.setItem('profileImage', url);
+          })
+          .catch((error) => {
+            console.error('Error loading profile image:', error.message);
+          });
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const usersCollectionRef = collection(db, 'utilisateurs');
+        const q = query(usersCollectionRef, where('email', '==', UserEmail));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          // Il y a au moins un document correspondant à UserUid
+          const userData = querySnapshot.docs[0].data();
+          const studentName = userData.name;
+          setLeNom(studentName);
+        } else {
+          console.log("Le user ID n'existe pas :", UserUid);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, [UserUid]);
+
+  const UserName = LeNom || currentUser.displayName;
+
+  console.log("le nom de l'etudiant =", UserName);
 
   //
   useEffect(() => {
@@ -82,6 +134,7 @@ export default function Cours() {
     };
   }, [selectedFiles]);
 
+  const imageUrls = [];
   const handleUpload = async () => {
     try {
       // Boucler à travers les fichiers sélectionnés et les télécharger sur Firebase Storage
@@ -194,48 +247,56 @@ export default function Cours() {
 
     setLoadingStates((prev) => ({ ...prev, [course.id]: true }));
 
-    const newDoc = await addDoc(collection(db, 'publication'), {
-      UserUid,
-      cours: course.title,
-      nom: UserName,
-      profile: '',
-      images: imageUrls,
-      date: serverTimestamp(),
-      email: UserEmail || '',
-      start: true,
-      finish: false,
-      livree: false,
-      duree: 0,
-    });
+    const publicationCollectionRef = collection(db, 'publication');
+    const publicationQuery = query(
+      publicationCollectionRef,
+      where('userID', '==', UserUid),
+      where('cours', '==', course.title)
+    );
+    const publicationQuerySnapshot = await getDocs(publicationQuery);
 
-    setDocRefs((prevRefs) => ({
-      ...prevRefs,
-      [course.title]: newDoc, // Store the document reference against the course title
-    }));
-    toast.success('Cours debuté', {
-      position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    });
-    setCourses(
+    if (publicationQuerySnapshot.empty) {
+      // Créer un nouveau document s'il n'y a pas de document existant
+      setDocPubRef(
+        await addDoc(collection(db, 'publication'), {
+          userID: UserUid,
+          cours: course.title,
+          nom: UserName,
+          profile: profileImage,
+          images: imageUrls,
+          date: serverTimestamp(),
+          email: UserEmail || '',
+          start: true,
+          finish: false,
+          livree: false,
+          duree: 0,
+        })
+      );
+      toast.success('Cours debuté', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    }
+
+    setCourses((courses) =>
       courses.map((course, index) => {
         if (index === courseIndex) {
           return {
             ...course,
-            display: true, // Assuming 'display' controls whether the course is in progress
-            changement: true, // Any other state changes specific to this course
-            livraison: false, // Example of toggling other states
+            display: true,
+            changement: true,
+            livraison: false,
           };
         }
-        return course; // Other courses remain unchanged
+        return course;
       })
     );
-
     const completionTimer = setTimeout(() => {
       handleChangement(courseIndex);
     }, 30000);
@@ -247,6 +308,8 @@ export default function Cours() {
       ...prevIds,
       [courseIndex]: completionTimer,
     }));
+
+    setCurrentDocRef(docPubRef);
   };
 
   const handleChangement = async (courseIndex) => {
@@ -254,8 +317,8 @@ export default function Cours() {
 
     setIsButtonsDisabled(true);
 
-    if (docRefs[course.title]) {
-      const courseDocRef = docRefs[course.title];
+    if (docPubRef[course.title]) {
+      const courseDocRef = docPubRef[course.title];
 
       try {
         await updateDoc(courseDocRef, {
@@ -295,7 +358,7 @@ export default function Cours() {
     courses.forEach((course, index) => {
       if (course.isCompleted) {
         // If the course is marked as completed, update Firestore
-        const courseDocRef = docRefs[course.title];
+        const courseDocRef = docPubRef[course.title];
         if (courseDocRef) {
           // Push an update operation to the array
           updateOperations.push(
@@ -327,9 +390,7 @@ export default function Cours() {
           theme: 'light',
         });
       });
-  }, [courses, docRefs]);
-
-  const handleClose = () => setOpen(false);
+  }, [courses, docPubRef]);
 
   useEffect(() => {
     const fetchCourseStates = async () => {
@@ -385,6 +446,8 @@ export default function Cours() {
     fetchCourses();
   }, [domaineId, sousDomaineName]);
 
+  const handleClose = () => setOpen(false);
+
   // File preview logic
   useEffect(() => {
     if (!files) return;
@@ -406,7 +469,6 @@ export default function Cours() {
   };
 
   const activeCourses = courses.filter((course) => !course.archived);
-
   // Function to render buttons for each course
   const renderCourseButtons = (course, index) => {
     const isAnyPrecedingCourseIncomplete = courses.some(
@@ -475,10 +537,7 @@ export default function Cours() {
       <h2>Course List</h2>
       <div className="container">
         <div className="row">
-          {activeCourses.map((course, index) => {
-            if (course.archived) {
-              return null;
-            }
+          {courses.map((course, index) => {
             const videoId = getYouTubeVideoId(course.link);
             const isYouTubeLink = videoId !== null;
             const embedUrl = isYouTubeLink
@@ -512,12 +571,7 @@ export default function Cours() {
                       {course.link}
                     </a>
                   )}
-                  <div className="d-flex align-items-center justify-content-between mt-5">
-                    {/* <p className="p-0 m-0" key={index}>{`Durée: ${formatTime(
-                      timers[course.id] || 0
-                    )}`}</p> */}
-                    {renderCourseButtons(course, index)}
-                  </div>
+                  {renderCourseButtons(course, index)}
                 </Card>
               </div>
             );
@@ -584,7 +638,7 @@ export default function Cours() {
                 <button
                   type="submit"
                   onClick={handleUpload}
-                  className="inputStyle btn"
+                  className="inputStyle"
                 >
                   Envoyer
                 </button>
@@ -593,7 +647,6 @@ export default function Cours() {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 }
