@@ -14,12 +14,47 @@ import { v4 as uuidv4 } from "uuid";
 export default function ChatInput({ activeBtn }) {
   console.log(activeBtn);
   const [text, setText] = useState();
+  const [jourSemaine, setJourSemaine] = useState("");
+  const [date, setDate] = useState("");
+  const [mois, setMois] = useState("");
+  const [heures, setHeures] = useState("");
+  const [minutes, setMinutes] = useState("");
 
   const { currentUser } = useContext(ChatAuthCtx);
   const { data } = useContext(ChatContext);
 
   const handleSend = async () => {
     if (text !== "") {
+      const myDate = new Date();
+      const moisAnnee = [
+        "Jan",
+        "Fev",
+        "Mar",
+        "Avr",
+        "Mai",
+        "Juin",
+        "Juil",
+        "Aout",
+        "Sept",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      const joursSemaine = [
+        "Dimanche",
+        "Lundi",
+        "Mardi",
+        "Mercredi",
+        "Jeudi",
+        "Vendredi",
+        "Samedi",
+      ];
+      setJourSemaine(joursSemaine[myDate.getDay()]);
+      setDate(myDate.getDate());
+      setMois(moisAnnee[myDate.getMonth()]);
+      setHeures(myDate.getHours());
+      setMinutes(myDate.getMinutes());
+
       await updateDoc(doc(db, "chats", data.chatId), {
         messages: arrayUnion({
           id: uuidv4(),

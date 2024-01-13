@@ -61,7 +61,7 @@ export default function Chats() {
                 chat[1]?.userInfo.uid !== currentUser?.uid && (
                   <div
                     className={`
-                      userChat text-center me-2 py-1
+                      userChat text-center me-2 py-1 bg-white
                       ${
                         chat[1]?.userInfo?.role === "Coach"
                           ? "coach"
@@ -81,16 +81,16 @@ export default function Chats() {
                       data-bs-placement="top"
                       data-bs-title="Archiver"
                     ></i> */}
+                    {console.log(chat[1]?.userInfo?.photoURL)}
                     <img
                       src={
                         chat[1]?.userInfo?.photoURL
-                          ? "https://firebasestorage.googleapis.com/v0/b/tache21-c134b.appspot.com/o/profile_images%2F4FEGNUHDZOYnv4WvJvyr2TxLha82?alt=media&token=588074b8-639a-42de-bd4b-0199e30150d6"
+                          ? chat[1]?.userInfo.photoURL
                           : pp
                       }
                       alt=""
                       className="rounded-circle img-fluid"
                     />
-
                     <div className="userChatInfo">
                       <span className="text-center fw-bold text-nowrap">
                         {chat[1]?.userInfo.displayName}{" "}
