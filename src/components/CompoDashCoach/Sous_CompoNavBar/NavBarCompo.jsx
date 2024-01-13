@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import LogoTech from "../../../assets/images/logo.png";
 import UserProfil from "../../../assets/images/user.png";
@@ -11,21 +11,17 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, storage } from "../../../config/firebase-config";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-
 import { EmailContext } from "../../../contexte/EmailContexte";
 import Notifications from "./Notifications";
-import {
-  getDownloadURL,
-  ref
-} from "firebase/storage";
+import { getDownloadURL, ref } from "firebase/storage";
+import { Avatar } from "rsuite";
 
 export const NavBarCompo = () => {
+  // eslint-disable-next-line
   const { email, setEmail } = useContext(EmailContext);
   const [open, setOpen] = useState(false);
   const [profileImage, setProfileImage] = useState(UserProfil);
   const navigate = useNavigate();
-
- 
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -61,7 +57,6 @@ export const NavBarCompo = () => {
     }
   };
 
-
   // Fin Deconnexion
 
   return (
@@ -72,7 +67,7 @@ export const NavBarCompo = () => {
           <div className="LogoConta d-flex align-items-center justify-content-center">
             <div className="LogoConta2 ">
               <div className="img-logo d-flex align-items-center justify-content-center">
-                  <img src={LogoTech} className="img-fluid " alt="" />
+                <img src={LogoTech} className="img-fluid " alt="" />
                 <h3 className="GandalTitle" style={{ color: "#3084b5" }}>
                   Gaandal
                 </h3>
@@ -87,9 +82,11 @@ export const NavBarCompo = () => {
             {/*================Icone du DropDown========= */}
             <Dropdown
               title={
-                <img
+                <Avatar
+                  size="md"
+                  circle
                   src={profileImage}
-                  className="img-fluid ProfilSpace"
+                  className="ProfilSpace"
                   alt=""
                 />
               }

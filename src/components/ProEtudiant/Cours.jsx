@@ -1,12 +1,26 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useId } from 'react';
 import { Card } from 'primereact/card';
 import { Modal } from 'rsuite';
 import { useParams } from 'react-router-dom';
-import { db, storage } from '../../config/firebase-config';
-import { getDoc, doc, collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db, auth, storage } from '../../config/firebase-config';
+import {
+  getDoc,
+  doc,
+  collection,
+  addDoc,
+  serverTimestamp,
+  onSnapshot,
+  getDocs,
+  where,
+  updateDoc,
+  query,
+} from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { AuthContext } from '../../contexte/AuthContext';
 import { format } from 'date-fns';
+import { onAuthStateChanged } from 'firebase/auth';
+import UserProfil from '../../assets/images/user.png';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Cours() {
   const { domaineId, sousDomaineName } = useParams();
@@ -20,12 +34,64 @@ export default function Cours() {
   const [intervalIds, setIntervalIds] = useState({}); // To store interval IDs
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedCourseTitle, setSelectedCourseTitle] = useState('');
-
+  const [currentDocRef, setCurrentDocRef] = useState(null);
   const { currentUser, uid } = useContext(AuthContext);
+  const [LeNom, setLeNom] = useState('');
+  const [docPubRef, setDocPubRef] = useState({});
+  const [loadingStates, setLoadingStates] = useState({});
+  const [timeoutIds, setTimeoutIds] = useState({});
+  const [isButtonsDisabled, setIsButtonsDisabled] = useState(false);
 
   const UserUid = uid;
   const UserEmail = currentUser.email;
-  const UserName = currentUser.displayName;
+  const [profileImage, setProfileImage] = useState(UserProfil);
+
+  // Utilisez useEffect pour mettre à jour l'image de profil après la reconnexion
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Mettez à jour l'image de profil après la reconnexion
+        const storageRef = ref(storage, `profile_images/${user.uid}`);
+        getDownloadURL(storageRef)
+          .then((url) => {
+            setProfileImage(url);
+            localStorage.setItem('profileImage', url);
+          })
+          .catch((error) => {
+            console.error('Error loading profile image:', error.message);
+          });
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const usersCollectionRef = collection(db, 'utilisateurs');
+        const q = query(usersCollectionRef, where('email', '==', UserEmail));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          // Il y a au moins un document correspondant à UserUid
+          const userData = querySnapshot.docs[0].data();
+          const studentName = userData.name;
+          setLeNom(studentName);
+        } else {
+          console.log("Le user ID n'existe pas :", UserUid);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, [UserUid]);
+
+  const UserName = LeNom || currentUser.displayName;
+
+  console.log("le nom de l'etudiant =", UserName);
 
   //
   useEffect(() => {
@@ -68,90 +134,52 @@ export default function Cours() {
     };
   }, [selectedFiles]);
 
-  // const handleUpload = async (user) => {
+  const imageUrls = [];
+  const handleUpload = async () => {
+    try {
+      // Boucler à travers les fichiers sélectionnés et les télécharger sur Firebase Storage
+      await Promise.all(
+        selectedFiles.map(async (file) => {
+          const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
+          await uploadBytes(storageRef, file);
+          const url = await getDownloadURL(storageRef);
+          // Ajouter l'URL au tableau
+          imageUrls.push(url);
+        })
+      );
 
-  //   // Créez un tableau pour stocker les URLs des images
-  //   const imageUrls = [];
+      // Effacer les fichiers sélectionnés
+      setSelectedFiles([]);
+      // Fermer la fenêtre modale
+      setOpen(false);
 
-  //   // Loop through selected files and upload each to Firebase Storage
-  //   await Promise.all(
-  //     selectedFiles.map(async (file) => {
-  //       const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
-  //       await uploadBytes(storageRef, file);
-  //       const url = await getDownloadURL(storageRef);
-  //       // Ajoutez l'URL au tableau
-  //       imageUrls.push(url);
-  //     })
-  //   );
+      // Vérifier s'il existe un document existant avec le même cours et le même utilisateur
+      const publicationCollectionRef = collection(db, 'publication');
+      const publicationQuery = query(
+        publicationCollectionRef,
+        where('userID', '==', UserUid),
+        where('cours', '==', selectedCourseTitle)
+      );
+      const publicationQuerySnapshot = await getDocs(publicationQuery);
 
-  //   // Clear selected files
-  //   setSelectedFiles([]);
-  //   // Close the modal
-  //   setOpen(false);
+      if (!publicationQuerySnapshot.empty) {
+        // Mettre à jour le document existant avec les nouvelles et anciennes images
+        const existingDocRef = publicationQuerySnapshot.docs[0].ref;
 
-  //   if (selectedFiles.length > 0) {
-  //     // Loop through selected files and add each to Firestore
-  //     selectedFiles.forEach(async (file) => {
-  //       const imageUrls = [];
-  //       const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
-  //       await uploadBytes(storageRef, file);
-  //       const url = await getDownloadURL(storageRef);
-  //       imageUrls.push(url);
-  //       // Ajouter la publication dans Firestore avec l'URL de l'image
-  //       // Ajoutez une seule fois le document dans Firestore avec tous les URLs d'images
-  //       await addDoc(collection(db, "publication"), {
-  //         userID: UserUid,
-  //         profile: user.photoURL || "",
-  //         nom: UserName || "",
-  //         date: format(new Date(), "dd/MM/yyyy - HH:mm:ss"),
-  //         images: imageUrls, // Utilisez le tableau des URLs ici
-  //         email: UserEmail || "",
-  //         cours: "",
-  //         finish: false,
-  //         livree: false,
-  //       });
-  //     });
+        // Récupérer les images actuelles du document existant
+        const existingImages =
+          publicationQuerySnapshot.docs[0].data().images || [];
 
-  //     // Clear selected files
-  //     setSelectedFiles([]);
-  //     // Close the modal
-  //     setOpen(false);
-  //   }
-  // };
+        // Concaténer les anciennes images avec les nouvelles
+        const imagesMisesAJour = [...imageUrls, ...existingImages];
 
-  const handleUpload = async (user) => {
-    // Créez un tableau pour stocker les URLs des images
-    const imageUrls = [];
-
-    // Loop through selected files and upload each to Firebase Storage
-    await Promise.all(
-      selectedFiles.map(async (file) => {
-        const storageRef = ref(storage, `Images/${UserUid}/${file.name}`);
-        await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(storageRef);
-        // Ajoutez l'URL au tableau
-        imageUrls.push(url);
-      })
-    );
-
-    // Clear selected files
-    setSelectedFiles([]);
-    // Close the modal
-    setOpen(false);
-
-    if (imageUrls.length > 0) {
-      // Ajoutez une seule fois le document dans Firestore avec tous les URLs d'images
-      await addDoc(collection(db, 'publication'), {
-        userID: UserUid,
-        profile: user.photoURL || '',
-        nom: UserName || '',
-        date: format(new Date(), 'dd/MM/yyyy - HH:mm:ss'),
-        images: imageUrls, // Utilisez le tableau des URLs ici
-        email: UserEmail || '',
-        cours: selectedCourseTitle,
-        finish: false,
-        livree: false,
-      });
+        await updateDoc(existingDocRef, {
+          date: serverTimestamp(),
+          images: imagesMisesAJour,
+        });
+      }
+    } catch (error) {
+      console.error('Erreur lors du traitement du téléchargement :', error);
     }
   };
 
@@ -165,13 +193,35 @@ export default function Cours() {
           const domaineData = docSnap.data();
           const sousDomaine = domaineData.sousDomaines[sousDomaineName];
           if (sousDomaine && sousDomaine.cours) {
-            const formattedCourses = sousDomaine.cours.map((course) => ({
-              ...course,
-              display: false,
-              changement: false,
-              livraison: true,
-            }));
-            setCourses(formattedCourses);
+            const formattedCourses = sousDomaine.cours.map(async (course) => {
+              // Fetch course data from 'publication' collection
+              const publicationCollectionRef = collection(db, 'publication');
+              const publicationQuery = query(
+                publicationCollectionRef,
+                where('cours', '==', course.title)
+              );
+              const publicationQuerySnapshot = await getDocs(publicationQuery);
+
+              let isCourseCompleted = false;
+              if (!publicationQuerySnapshot.empty) {
+                const courseData = publicationQuerySnapshot.docs[0].data();
+                // Check if course is completed based on 'start' and 'finish' flags
+                isCourseCompleted =
+                  courseData.finish === true && courseData.start === false;
+              }
+
+              return {
+                ...course,
+                display: false,
+                changement: false,
+                livraison: true,
+                isCompleted: isCourseCompleted,
+              };
+            });
+
+            // Use Promise.all to wait for all async operations to complete
+            const resolvedCourses = await Promise.all(formattedCourses);
+            setCourses(resolvedCourses);
           }
         } else {
           console.log('No such document!');
@@ -192,65 +242,238 @@ export default function Cours() {
     setSelectedCourseTitle(selectedCourse.title);
   };
 
-  const formatTime = (seconds) => {
-    const days = Math.floor(seconds / (3600 * 24));
-    const hours = Math.floor((seconds % (3600 * 24)) / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
+  const handleDisplay = async (courseIndex) => {
+    const course = courses[courseIndex];
 
-    if (days > 0) {
-      return `${days} jour${days > 1 ? 's' : ''}`;
-    } else if (hours > 0) {
-      return `${hours} heure${hours > 1 ? 's' : ''}`;
+    // Set the loading state for this specific course to true
+    setLoadingStates((prev) => ({ ...prev, [course.id]: true }));
+
+    const publicationCollectionRef = collection(db, 'publication');
+    const publicationQuery = query(
+      publicationCollectionRef,
+      where('userID', '==', UserUid),
+      where('cours', '==', course.title)
+    );
+    const publicationQuerySnapshot = await getDocs(publicationQuery);
+
+    if (publicationQuerySnapshot.empty) {
+      // If there's no existing document, create a new one
+      const newDocRef = await addDoc(collection(db, 'publication'), {
+        userID: UserUid,
+        cours: course.title,
+        nom: UserName,
+        profile: profileImage,
+        images: imageUrls, // Make sure this is the array of image URLs
+        date: serverTimestamp(),
+        email: UserEmail || '',
+        start: true,
+        finish: false,
+        livree: false,
+        duree: 0,
+      });
+
+      toast.success(
+        'Vous avez démarré le cours, compte à rebours de 2 minutes',
+        {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        }
+      );
+
+      // Store the new document reference in docPubRef
+      setDocPubRef((prevRefs) => ({
+        ...prevRefs,
+        [course.title]: newDocRef,
+      }));
     } else {
-      return `${minutes} minute${
-        minutes > 1 ? 's' : ''
-      } ${remainingSeconds} seconde${remainingSeconds > 1 ? 's' : ''}`;
+      // If a document exists, store its reference
+      const existingDocRef = publicationQuerySnapshot.docs[0].ref;
+      setDocPubRef((prevRefs) => ({
+        ...prevRefs,
+        [course.title]: existingDocRef,
+      }));
     }
-  };
 
-  const handleDisplay = (courseIndex) => {
+    const completionTimer = setTimeout(() => {
+      handleChangement(courseIndex);
+      toast.warning('Durée de cours épuisé', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    }, 120000);
+
+    setLoadingStates((prev) => ({ ...prev, [course.id]: false }));
+
+    // Corrected way to update setTimeoutIds using functional update
+    setTimeoutIds((prevIds) => ({
+      ...prevIds,
+      [courseIndex]: completionTimer,
+    }));
+
+    // Update the courses state
     setCourses((courses) =>
-      courses.map((course, index) => {
+      courses.map((c, index) => {
         if (index === courseIndex) {
           return {
-            ...course,
+            ...c,
             display: true,
             changement: true,
             livraison: false,
           };
         }
-        return course;
+        return c;
       })
     );
-    const timerInterval = setInterval(() => {
-      setTimers((prevTimers) => ({
-        ...prevTimers,
-        [courseIndex]: (prevTimers[courseIndex] || 0) + 1,
-      }));
-    }, 1000);
 
-    setIntervalIds((prevIds) => ({
-      ...prevIds,
-      [courseIndex]: timerInterval,
-    }));
+    // Reset the loading state for this course
+    setLoadingStates((prev) => ({ ...prev, [course.id]: false }));
   };
 
-  const handleChangement = (courseIndex) => {
-    setCourses((courses) =>
-      courses.map((course, index) => {
+  const handleChangement = async (courseIndex) => {
+    const course = courses[courseIndex];
+
+    setIsButtonsDisabled(true);
+
+    if (docPubRef[course.title]) {
+      const courseDocRef = docPubRef[course.title];
+
+      try {
+        await updateDoc(courseDocRef, {
+          start: false,
+          finish: true,
+        });
+        toast.success('Cours Terminé', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+      } catch (error) {
+        console.error('Error updating document in Firestore:', error);
+      }
+    }
+
+    setCourses(
+      courses.map((c, index) => {
         if (index === courseIndex) {
-          return { ...course, changement: true };
+          return { ...c, isCompleted: true }; // Update local state
         }
-        return course;
+        return c;
       })
     );
-    clearInterval(intervalIds[courseIndex]);
-    setIntervalIds((prevIds) => ({
-      ...prevIds,
-      [courseIndex]: null,
-    }));
   };
+
+  useEffect(() => {
+    // Create an array to store Firestore update operations
+    const updateOperations = [];
+
+    // Iterate through the courses to check for isCompleted changes
+    courses.forEach((course, index) => {
+      if (course.isCompleted) {
+        // If the course is marked as completed, update Firestore
+        const courseDocRef = docPubRef[course.title];
+        if (courseDocRef) {
+          // Push an update operation to the array
+          updateOperations.push(
+            updateDoc(courseDocRef, {
+              start: false,
+              finish: true,
+            })
+          );
+        }
+      }
+    });
+
+    // Perform all update operations in parallel
+    Promise.all(updateOperations)
+      .then(() => {
+        // Handle success if needed
+        console.log('Cours terminated successfully');
+      })
+      .catch((error) => {
+        // Handle errors if needed
+        toast.error('Error updating Firestore documents:', error, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+      });
+  }, [courses, docPubRef]);
+
+  useEffect(() => {
+    const fetchCourseStates = async () => {
+      const querySnapshot = await getDocs(collection(db, 'publication'));
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        setCourses((prevCourses) =>
+          prevCourses.map((course) => {
+            if (course.title === data.cours) {
+              return {
+                ...course,
+                display: data.start,
+                isCompleted: data.finish, // Reflect finish status from Firestore
+              };
+            }
+            return course;
+          })
+        );
+      });
+    };
+
+    fetchCourseStates();
+  }, []);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const docRef = doc(db, 'domaines', domaineId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const domaineData = docSnap.data();
+          const sousDomaine = domaineData.sousDomaines[sousDomaineName];
+          if (sousDomaine && sousDomaine.cours) {
+            const formattedCourses = sousDomaine.cours.map((course) => ({
+              ...course,
+              display: false, // Set initial display state
+              isCompleted: course.finish, // Set completion status
+              // Include any other initial states or transformations needed
+            }));
+            setCourses(formattedCourses);
+          } else {
+            console.log('No such sous-domaine!');
+          }
+        } else {
+          console.log('No such domaine!');
+        }
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      }
+    };
+
+    fetchCourses();
+  }, [domaineId, sousDomaineName]);
 
   const handleClose = () => setOpen(false);
 
@@ -274,35 +497,66 @@ export default function Cours() {
     return match && match[2].length === 11 ? match[2] : null;
   };
 
+  const activeCourses = courses.filter((course) => !course.archived);
   // Function to render buttons for each course
   const renderCourseButtons = (course, index) => {
+    const isAnyPrecedingCourseIncomplete = courses.some(
+      (c, i) => i < index && !c.isCompleted
+    );
+    const shouldRenderTerminer = course.display && !course.isCompleted;
+    const isLoading = loadingStates[course.id]; // Check if the current course is loading
+
     return (
       <div className="d-flex gap-2 justify-content-end">
-        <button
-          onClick={() => handleOpen(index)}
-          className={`btn text-white ${
-            course.livraison ? 'd-none' : 'd-block'
-          }`}
-          style={{ backgroundColor: '#48a93c' }}
-        >
-          Livrer
-        </button>
-        <button
-          onClick={() => handleDisplay(index)}
-          className={`btn text-white ${
-            course.changement ? 'd-none' : 'd-block'
-          }`}
-          style={{ backgroundColor: '#48a93c' }}
-        >
-          Démarrer
-        </button>
-        <button
-          onClick={() => handleChangement(index)}
-          className={`btn text-white ${course.display ? 'd-block' : 'd-none'}`}
-          style={{ backgroundColor: '#3084b5' }}
-        >
-          Terminer
-        </button>
+        {isLoading ? (
+          <button
+            className="btn text-white"
+            style={{ backgroundColor: '#48a93c' }}
+            disabled
+          >
+            <span
+              className="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            &nbsp; &nbsp; Chargement...
+          </button>
+        ) : course.isCompleted || course.archived ? (
+          <span className="btn text-muted">Terminée</span>
+        ) : (
+          <>
+            {course.display && (
+              <button
+                onClick={() => handleOpen(index)}
+                className="btn text-white"
+                style={{ backgroundColor: '#48a93c' }}
+                disabled={isAnyPrecedingCourseIncomplete || isLoading}
+              >
+                Livrer
+              </button>
+            )}
+            {!course.display && !isAnyPrecedingCourseIncomplete && (
+              <button
+                onClick={() => handleDisplay(index)}
+                className="btn text-white"
+                style={{ backgroundColor: '#48a93c' }}
+                disabled={isAnyPrecedingCourseIncomplete || isLoading}
+              >
+                Démarrer
+              </button>
+            )}
+            {shouldRenderTerminer && (
+              <button
+                onClick={() => handleChangement(index)}
+                className="btn text-white"
+                style={{ backgroundColor: '#3084b5' }}
+                disabled={isLoading}
+              >
+                Terminer
+              </button>
+            )}
+          </>
+        )}
       </div>
     );
   };
@@ -347,9 +601,6 @@ export default function Cours() {
                     </a>
                   )}
                   {renderCourseButtons(course, index)}
-                  <p key={index}>{`Durée: ${formatTime(
-                    timers[index] || 0
-                  )}`}</p>
                 </Card>
               </div>
             );
