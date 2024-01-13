@@ -411,7 +411,7 @@ export default function CardLivraison() {
               </div>
             ))}
             <div
-              className="comment d-flex align-items-center"
+              className="comment d-flex align-items-center w-5"
               onClick={() => setVisible(true)}
             >
               <img
