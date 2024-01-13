@@ -1,4 +1,3 @@
-
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
@@ -145,8 +144,8 @@ const Inscription = ({ onRegisterSuccess }) => {
         className="p-button-text"
         autoFocus
         onClick={() => {
-          setShowMessage(false); // Cacher le dialogue
-          onRegisterSuccess(); // Appeler onRegisterSuccess() ici
+          setShowMessage(false);
+          onRegisterSuccess();
         }}
       />
     </div>
