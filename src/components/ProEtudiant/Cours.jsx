@@ -302,6 +302,16 @@ export default function Cours() {
 
     const completionTimer = setTimeout(() => {
       handleChangement(courseIndex);
+      toast.warning('Durée de cours épuisé', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
     }, 120000);
 
     setLoadingStates((prev) => ({ ...prev, [course.id]: false }));
