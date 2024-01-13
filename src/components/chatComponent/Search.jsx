@@ -14,12 +14,14 @@ import {
 } from "firebase/firestore";
 import { db, storage } from "../../config/firebase-config";
 import { getDownloadURL, ref } from "firebase/storage";
+import { ThreeDots } from "react-loader-spinner";
 // import { Dangerous } from "@mui/icons-material";
 
 export default function Search({ openSearch }) {
   // Définir les etats
   const [userName, setUserName] = useState(); // L'user qu'on cherche
   const [user, setUser] = useState(null); // L'user trouvé
+  // eslint-disable-next-line
   const [err, setErr] = useState(false); // Gestion de des erreurs éventuelles
   const [searchResult, setSearchResult] = useState();
   const [closeSearch, setCloseSearch] = useState(false);
@@ -111,7 +113,7 @@ export default function Search({ openSearch }) {
           [combinedId + ".userInfo"]: {
             uid: currentUser.uid,
             displayName: currentUser.displayName,
-            // photoURL: currentUser.photoURL,
+            // photoURL: currentUser.photoURL...,
           },
           [combinedId + ".date"]: serverTimestamp(),
         });
@@ -158,9 +160,24 @@ export default function Search({ openSearch }) {
           </div>
         </div>
       ) : (
-        <span className="text-danger ms-2 fs-6 pb-2">
-          Pas de résultat(s) ...
-        </span>
+        userName && (
+          <span className="text-danger ps-2 ms-2 fs-6 pb-2">
+            <ThreeDots
+              visible={true}
+              height="40"
+              width="40"
+              color="#4fa94d"
+              radius="9"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+              style={{
+                marginLeft: "10px",
+                bagroundColor: "red",
+              }}
+            />
+          </span>
+        )
       )}
     </div>
   );
