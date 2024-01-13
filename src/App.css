@@ -1004,6 +1004,9 @@ body {
   height: 60px;
   border-radius: 100%;
 }
+.mes-input input,textarea:focus{
+  outline: none;
+}
 /*   Fin Mariama Css */
 /*  */
 
