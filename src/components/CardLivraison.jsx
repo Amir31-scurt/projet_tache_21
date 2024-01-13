@@ -25,11 +25,12 @@ import { Dialog } from "primereact/dialog";
 import "firebase/firestore";
 import { AuthContext } from "../contexte/AuthContext";
 import { Galleria } from "primereact/galleria";
+import { TiDelete } from "react-icons/ti";
+import { MdDelete } from "react-icons/md";
 
 export default function CardLivraison() {
-  // eslint-disable-next-line
   const [currentUser, setCurrentUser] = useState(null);
-  const [userRole, setUserRole] = useState("");
+  const [userRole, setUserRole] = useState("Rôle inconnu");
 
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
@@ -40,20 +41,17 @@ export default function CardLivraison() {
 
   const { uid } = useContext(AuthContext);
   const UserUid = uid;
-// eslint-disable-next-line
-  const [coach, setCoach] = useState("");
-  // eslint-disable-next-line
-  const [days, setDays] = useState("1");
-  // eslint-disable-next-line
-  const [role, setRole] = useState("Coach");
-  const [date, setDate] = useState("");
+
   const [apprenant, setApprenat] = useState("");
+  const [coach, setCoach] = useState("");
+  const [date, setDate] = useState("");
+  const [days, setDays] = useState("1");
+  const [role, setRole] = useState("Coach");
 
   const [images, setImages] = useState([]);
   const [visible, setVisible] = useState(false);
 
   // Fonction pour récupérer les informations de l'étudiant depuis Firestore
-   // eslint-disable-next-line
   const fetchStudentInfo = async () => {
     try {
       const studentRef = collection(db, "publication");
@@ -124,29 +122,22 @@ export default function CardLivraison() {
   );
 
   // Effet pour récupérer les informations de l'étudiant lors du montage du composant
-   // eslint-disable-next-line
-  
+  useEffect(() => {
+    fetchStudentInfo();
+    fetchImagesFromFirestore();
+    fetchComments();
+  }, []);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    const unsubscribeUser = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setCurrentUser(user); // Mettre à jour l'état currentUser avec l'utilisateur actuel
+        setCurrentUser(user);
         const docRef = doc(db, "utilisateurs", user.uid);
         try {
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             const userData = docSnap.data();
-            console.log("userData:", userData); // Vérifier les données récupérées de Firestore
-            const role =
-              userData && userData.role ? userData.role : "Role par défaut";
-            setUserRole(role);
-            console.log("Le rôle de l'utilisateur est :" + role);
-
-            // Mettre à jour le currentUser avec le rôle récupéré
-            setCurrentUser((prevUser) => ({
-              ...prevUser,
-              role: role,
-            }));
+            console.log("userData:", userData);
           } else {
             console.log(
               "Aucune donnée utilisateur trouvée pour cet utilisateur"
@@ -158,34 +149,57 @@ export default function CardLivraison() {
       }
     });
 
-    return () => unsubscribe();
+    const unsubscribeComments = onSnapshot(
+      collection(db, "commentaires"),
+      (snapshot) => {
+        const commentsData = [];
+        snapshot.forEach((doc) => {
+          const { userName, userID } = doc.data();
+          // Ajoutez ici la logique pour filtrer les commentaires par utilisateur si nécessaire
+          // par exemple, vous pourriez vérifier si userID correspond à l'utilisateur actuel
+          commentsData.push({
+            id: doc.id,
+            userName,
+            userID,
+            ...doc.data(),
+          });
+        });
+
+        commentsData.sort((a, b) => b.timestamp - a.timestamp);
+
+        setComments(commentsData);
+
+        const visible = commentsData.slice(0, 3);
+        const hidden = commentsData.slice(3);
+
+        setVisibleComments(visible);
+        setHiddenComments(hidden);
+      }
+    );
+
+    return () => {
+      unsubscribeUser();
+      unsubscribeComments();
+    };
   }, []);
 
-  useEffect(() => {
-    fetchStudentInfo();
-    fetchImagesFromFirestore();
-    fetchComments();
-  }, []);
-
+  // Ajout de la fonction fetchComments
   function fetchComments() {
     const commentsRef = collection(db, "commentaires");
 
     onSnapshot(commentsRef, (snapshot) => {
       const commentsData = [];
       snapshot.forEach((doc) => {
-        const { userName, userRole, commentContent } = doc.data();
+        const { userName, userID } = doc.data();
         commentsData.push({
           id: doc.id,
           userName,
-          userRole,
-          commentContent,
+          userID,
           ...doc.data(),
         });
       });
 
-      commentsData.sort((a, b) => {
-        return b.timestamp - a.timestamp;
-      });
+      commentsData.sort((a, b) => b.timestamp - a.timestamp);
 
       setComments(commentsData);
 
@@ -233,8 +247,8 @@ export default function CardLivraison() {
     const commentsRef = collection(db, "commentaires");
 
     addDoc(commentsRef, {
-      userName: currentUser ? currentUser.displayName : "Utilisateur inconnu",
-      userRole: userRole,
+      userID: currentUser.uid,
+      userName: currentUser.displayName || "Utilisateur inconnu",
       commentContent: comment,
       timestamp: serverTimestamp(),
     })
@@ -322,6 +336,7 @@ export default function CardLivraison() {
                       <span className="">
                         <span className="fw-bolder">{comment.userName}</span>
                         <span className="text-light bg-info rounded-pill px-2 mx-3 pb-0 mainBackgrounColor">
+                          role
                         </span>
                         <span>
                           <span>{getTimeDifference(comment.timestamp)}</span>
@@ -330,9 +345,19 @@ export default function CardLivraison() {
                       <span
                         className="supCom"
                         style={{ cursor: "pointer" }}
-                        onClick={() => deleteComment(comment.id)}
+                        // onClick={() => deleteComment(comment.id)}
                       >
-                        X
+                        {comment.userID === currentUser.uid && (
+                          <TiDelete
+                            className="delete"
+                            style={{
+                              cursor: "pointer",
+                              width: "20px",
+                              height: "20px",
+                            }}
+                            onClick={() => deleteComment(comment.id)}
+                          />
+                        )}
                       </span>
                     </p>
                   </div>
@@ -348,13 +373,14 @@ export default function CardLivraison() {
             {visibleComments.map((comment) => (
               <div
                 key={comment.id}
-                className="rowborder rounded-2 m-0 my-2 boxshado"
+                className="row border rounded-2 m-0 my-2 boxshado"
               >
                 <div className="col-12 py-1">
                   <p className=" d-flex justify-content-between">
                     <span className="">
                       <span className="fw-bolder">{comment.userName}</span>
                       <span className="text-light bg-info rounded-pill px-2 mx-3 pb-0 mainBackgrounColor">
+                        {/* {comment.userRole} */}
                       </span>
                       <span>
                         <span>{getTimeDifference(comment.timestamp)}</span>
@@ -363,9 +389,19 @@ export default function CardLivraison() {
                     <span
                       className="supCom"
                       style={{ cursor: "pointer" }}
-                      onClick={() => deleteComment(comment.id)}
+                      // onClick={() => deleteComment(comment.id)}
                     >
-                      X
+                      {comment.userID === currentUser.uid && (
+                        <TiDelete
+                          className="delete"
+                          style={{
+                            cursor: "pointer",
+                            width: "20px",
+                            height: "20px",
+                          }}
+                          onClick={() => deleteComment(comment.id)}
+                        />
+                      )}
                     </span>
                   </p>
                 </div>
@@ -382,10 +418,10 @@ export default function CardLivraison() {
                 src={commenter}
                 alt=""
                 className=""
-                style={{ width: "30px", height: "30px" }}
+                style={{ cursor: "pointer", width: "30px", height: "30px" }}
               />
-              <p className="px-2 m-0 sizeHover" style={{ fontSize: "12px" }}>
-                Plus de commentaires
+              <p className="m-0 sizeHover" style={{ fontSize: "12px" }}>
+                <span className="px-2">voir plus</span>
               </p>
             </div>
 

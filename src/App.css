@@ -468,6 +468,12 @@ body {
   opacity: 0.5;
   background-color: #ccc;
 }
+.delete{
+  display: none;
+}
+.boxshado:hover .delete {
+  display: block;
+}
 /* Fin Cheikh CSS */
 
 /* Mariama CSS */
