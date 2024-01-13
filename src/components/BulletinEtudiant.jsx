@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const BulletinEtudiant = () => {
+  // États du composant
   const [students, setStudents] = useState([]);
   const [selectedStudentData, setSelectedStudentData] = useState(null);
   const [selectedDomain, setSelectedDomain] = useState(null);
@@ -14,6 +15,7 @@ const BulletinEtudiant = () => {
     appreciation: "",
   });
 
+  // Effet de chargement des étudiants depuis la base de données Firestore
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -38,6 +40,7 @@ const BulletinEtudiant = () => {
     fetchStudents();
   }, []);
 
+  // Effet de chargement des domaines depuis la base de données Firestore
   useEffect(() => {
     const fetchDomains = async () => {
       try {
@@ -59,6 +62,7 @@ const BulletinEtudiant = () => {
     fetchDomains();
   }, []);
 
+  // Fonction pour récupérer les sous-domaines d'un domaine spécifique
   const getSousDomaines = (domainId) => {
     const selectedDomainObj = domains.find((domain) => domain.id === domainId);
     return selectedDomainObj
@@ -66,6 +70,7 @@ const BulletinEtudiant = () => {
       : [];
   };
 
+  // Gestionnaire de changement de domaine
   const handleChangeDomain = (e) => {
     const domainId = e.target.value;
     setSelectedDomain(domainId);
@@ -81,19 +86,20 @@ const BulletinEtudiant = () => {
     }));
   };
 
+  // Gestionnaire de changement d'étudiant
   const handleChangeStudent = (e) => {
     const selectedValue = e.target.value;
     const selectedStudentData = students.find(
       (student) => student.userId === selectedValue
     );
 
-    console.log("ID :", selectedValue);
-    console.log("Nom:", selectedStudentData?.name);
+    console.log("ID de l'étudiant sélectionné :", selectedValue);
+    console.log("Nom de l'étudiant sélectionné :", selectedStudentData?.name);
 
     setSelectedStudentData(selectedStudentData);
 
     setBulletinInfo({
-      sousDomaines:[],
+      sousDomaines: [],
       appreciation: "",
       address: selectedStudentData?.address || "",
       email: selectedStudentData?.email || "",
@@ -101,6 +107,7 @@ const BulletinEtudiant = () => {
     });
   };
 
+  // Gestionnaire de changement des notes et de l'appréciation
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "appreciation") {
@@ -116,10 +123,10 @@ const BulletinEtudiant = () => {
           [name]: parseInt(value, 10),
         },
       }));
-      
     }
   };
 
+  // Gestionnaire de sauvegarde du bulletin
   const handleSave = async () => {
     try {
       const studentUid = selectedStudentData?.userId;
@@ -138,7 +145,7 @@ const BulletinEtudiant = () => {
         return;
       }
 
-      // Récupérez les informations de l'étudiant sélectionné
+      // Récupérer les informations de l'étudiant sélectionné
       const studentName = selectedStudentData?.name || "Nom inconnu";
       const studentAddress = selectedStudentData?.address || "Adresse inconnue";
       const studentEmail = selectedStudentData?.email || "Email inconnu";
@@ -153,18 +160,16 @@ const BulletinEtudiant = () => {
       bulletinInfo.sousDomaines.forEach((subject) => {
         notes[subject] = bulletinInfo.notes[subject] || 0;
       });
-  
-   
+
       const bulletinData = {
         studentId: studentUid,
         studentName: studentName,
         address: studentAddress,
         email: studentEmail,
         number: studentNumber,
-        notes: notes, 
+        notes: notes,
         appreciation: bulletinInfo.appreciation,
       };
-      
 
       console.log("Données du bulletin à enregistrer :", bulletinData);
 
@@ -176,7 +181,7 @@ const BulletinEtudiant = () => {
       // Réinitialisez les états après la soumission réussie
       setSelectedStudentData(null);
       setBulletinInfo({
-       sousDomaines:[],
+        sousDomaines: [],
         appreciation: "",
         address: "",
         email: "",
@@ -298,4 +303,5 @@ const BulletinEtudiant = () => {
     </div>
   );
 };
+
 export default BulletinEtudiant;

@@ -63,6 +63,7 @@ const RenduBulletinEtudiant = () => {
     fetchStudentData();
   }, [user]);
 
+  // Fonction pour calculer la moyenne générale
   const calculateOverallGrade = () => {
     if (
       !studentData ||
@@ -80,6 +81,7 @@ const RenduBulletinEtudiant = () => {
     return parseFloat(average.toFixed(2));
   };
 
+  // Fonction pour déterminer l'appréciation
   const determineAppreciation = (average) => {
     if (average >= 16) {
       return "Excellent Travail";
@@ -92,6 +94,7 @@ const RenduBulletinEtudiant = () => {
     }
   };
 
+  // Fonction pour télécharger le bulletin au format PDF
   const downloadPdf = () => {
     if (!studentData) return;
 
