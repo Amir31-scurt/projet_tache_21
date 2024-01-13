@@ -54,31 +54,3 @@ export const menuSidebar = [
   },
 ];
 
-// export const ContenuCardDsb = [
-//   {
-//     ChiffreCardDsb: '26',
-//     IconeCardDsb: (
-//       <FaUsers style={{ fontSize: '68px', opacity: '1', color: '#fff' }} />
-//     ),
-//     TextCardDsb: 'Professeurs',
-//     couleurCarte: 'CouleurA',
-//   },
-//   {
-//     ChiffreCardDsb: '134',
-//     IconeCardDsb: (
-//       <PiUsersFourFill
-//         style={{ fontSize: '68px', opacity: '1', color: '#fff' }}
-//       />
-//     ),
-//     TextCardDsb: 'Etudiants',
-//     couleurCarte: 'CouleurB',
-//   },
-//   {
-//     ChiffreCardDsb: '32',
-//     IconeCardDsb: (
-//       <MdTask style={{ fontSize: '68px', opacity: '1', color: '#fff' }} />
-//     ),
-//     TextCardDsb: 'Taches',
-//     couleurCarte: 'CouleurC',
-//   },
-// ];
