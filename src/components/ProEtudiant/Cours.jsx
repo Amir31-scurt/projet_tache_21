@@ -37,7 +37,7 @@ export default function Cours() {
   const [currentDocRef, setCurrentDocRef] = useState(null);
   const { currentUser, uid } = useContext(AuthContext);
   const [LeNom, setLeNom] = useState('');
-  const [docPubRef, setDocPubRef] = useState([]);
+  const [docPubRef, setDocPubRef] = useState({});
   const [loadingStates, setLoadingStates] = useState({});
   const [timeoutIds, setTimeoutIds] = useState({});
   const [isButtonsDisabled, setIsButtonsDisabled] = useState(false);
@@ -245,6 +245,7 @@ export default function Cours() {
   const handleDisplay = async (courseIndex) => {
     const course = courses[courseIndex];
 
+    // Set the loading state for this specific course to true
     setLoadingStates((prev) => ({ ...prev, [course.id]: true }));
 
     const publicationCollectionRef = collection(db, 'publication');
@@ -256,60 +257,66 @@ export default function Cours() {
     const publicationQuerySnapshot = await getDocs(publicationQuery);
 
     if (publicationQuerySnapshot.empty) {
-      // Créer un nouveau document s'il n'y a pas de document existant
-      setDocPubRef(
-        await addDoc(collection(db, 'publication'), {
-          userID: UserUid,
-          cours: course.title,
-          nom: UserName,
-          profile: profileImage,
-          images: imageUrls,
-          date: serverTimestamp(),
-          email: UserEmail || '',
-          start: true,
-          finish: false,
-          livree: false,
-          duree: 0,
-        })
-      );
-      toast.success('Cours debuté', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
+      // If there's no existing document, create a new one
+      const newDocRef = await addDoc(collection(db, 'publication'), {
+        userID: UserUid,
+        cours: course.title,
+        nom: UserName,
+        profile: profileImage,
+        images: imageUrls, // Make sure this is the array of image URLs
+        date: serverTimestamp(),
+        email: UserEmail || '',
+        start: true,
+        finish: false,
+        livree: false,
+        duree: 0,
       });
+
+      toast.success(
+        'Vous avez démarré le cours, compte à rebours de 2 minutes',
+        {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        }
+      );
+
+      // Store the new document reference in docPubRef
+      setDocPubRef((prevRefs) => ({
+        ...prevRefs,
+        [course.title]: newDocRef,
+      }));
+    } else {
+      // If a document exists, store its reference
+      const existingDocRef = publicationQuerySnapshot.docs[0].ref;
+      setDocPubRef((prevRefs) => ({
+        ...prevRefs,
+        [course.title]: existingDocRef,
+      }));
     }
 
+    // Update the courses state
     setCourses((courses) =>
-      courses.map((course, index) => {
+      courses.map((c, index) => {
         if (index === courseIndex) {
           return {
-            ...course,
+            ...c,
             display: true,
             changement: true,
             livraison: false,
           };
         }
-        return course;
+        return c;
       })
     );
-    const completionTimer = setTimeout(() => {
-      handleChangement(courseIndex);
-    }, 30000);
 
+    // Reset the loading state for this course
     setLoadingStates((prev) => ({ ...prev, [course.id]: false }));
-
-    // Corrected way to update setTimeoutIds using functional update
-    setTimeoutIds((prevIds) => ({
-      ...prevIds,
-      [courseIndex]: completionTimer,
-    }));
-
-    setCurrentDocRef(docPubRef);
   };
 
   const handleChangement = async (courseIndex) => {
