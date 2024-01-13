@@ -1,5 +1,4 @@
-
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import {
   addDoc,
   collection,
@@ -11,153 +10,84 @@ import {
   onSnapshot,
   getDocs,
   serverTimestamp,
-} from "firebase/firestore";
-import { db, auth } from "../config/firebase-config";
-import { onAuthStateChanged } from "firebase/auth";
+} from 'firebase/firestore';
+import { db, auth } from '../config/firebase-config';
+import { onAuthStateChanged } from 'firebase/auth';
 import { format } from 'date-fns';
 
-import { toast } from "react-hot-toast";
-import commenter from "../assets/images/commenter.png";
-import envoi from "../assets/images/envoi.png";
+import { toast } from 'react-hot-toast';
+import commenter from '../assets/images/commenter.png';
+import envoi from '../assets/images/envoi.png';
 
-import React, { useState, useEffect, useContext } from "react";
-import userProfile from "../assets/images/userProfile.png";
-import { Dialog } from "primereact/dialog";
-import "firebase/firestore";
-import { AuthContext } from "../contexte/AuthContext";
-import { Galleria } from "primereact/galleria";
+import React, { useState, useEffect, useContext } from 'react';
+import { Dialog } from 'primereact/dialog';
+import 'firebase/firestore';
+import { AuthContext } from '../contexte/AuthContext';
+import { Galleria } from 'primereact/galleria';
 
-export default function CardLivraison({ date, apprenant, titreCourEtudiant, }) {
+export default function CardLivraison({
+  date,
+  apprenant,
+  titreCourEtudiant,
+  images,
+  userProfile,
+}) {
   const [currentUser, setCurrentUser] = useState(null);
-  const [userRole, setUserRole] = useState("Rôle inconnu");
-
+  const [userRole, setUserRole] = useState('Rôle inconnu');
+  const [imagesData, setImages] = useState([]);
   const [comments, setComments] = useState([]);
-  const [comment, setComment] = useState("");
-
+  const [comment, setComment] = useState('');
   const [visibleComments, setVisibleComments] = useState([]);
   const [hiddenComments, setHiddenComments] = useState([]);
-  const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
 
   const { uid } = useContext(AuthContext);
   const UserUid = uid;
 
-  const [coach, setCoach] = useState("");
-  const [role, setRole] = useState("Coach");
+  const navigate = useNavigate();
 
-  const [images, setImages] = useState([]);
-  const [visible, setVisible] = useState(false);
+  // Fonction pour extraire les données d'images à partir des URLs
+  const fetchImagesFromProps = (images) => {
+    // Mapper sur les URLs des images pour créer un tableau d'objets
+    const imagesData = images.map((url, index) => ({
+      itemImageSrc: url,
+      thumbnailImageSrc: url,
+      alt: `Image ${index + 1}`,
+      title: `Titre ${index + 1}`,
+    }));
 
-  const fetchImagesFromFirestore = async () => {
-    try {
-      const publicationRef = collection(db, "publish");
-      const q = query(publicationRef);
-      const querySnapshot = await getDocs(q);
-
-      const imagesArray = [];
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        imagesArray.push(...data.images);
-      });
-
-      setImages(
-        imagesArray.map((url, index) => ({
-          itemImageSrc: url,
-          thumbnailImageSrc: url,
-          alt: `Image ${index + 1}`,
-          title: `Title ${index + 1}`,
-        }))
-      );
-    } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des images depuis Firestore",
-        error
-      );
-    }
+    // Mettre à jour l'état local avec les données d'images
+    setImages(imagesData);
   };
 
-  //Fonction pour définir le template d'un item dans le composant Galleria
-  
-  
-  // const fetchImagesFromFirestore = async () => {
-  //   try {
-  //     // Récupérer le document de l'utilisateur
-  //     const userDocumentRef = doc(db, "utilisateurs", UserUid);
-  //     const userDocumentSnap = await getDoc(userDocumentRef);
-  //     const userDocumentData = userDocumentSnap.data();
+  // Effet de chargement initial et chaque fois que les images changent
+  useEffect(() => {
+    //extraire les données d'images à partir des images actuelles
+    fetchImagesFromProps(images);
+  }, [images]);
 
-  //     if (userDocumentData) {
-  //       // Récupérer la valeur du champ "cours" du document de l'utilisateur
-  //       const selectedCourse = userDocumentData.cours;
-
-  //       // Si une valeur de cours est présente, continuer
-  //       if (selectedCourse) {
-  //         // Référence à la collection "publication" avec un filtre sur le cours
-  //         const publicationRef = collection(db, "publication");
-  //         const q = query(publicationRef, where("cours", "==", selectedCourse));
-  //         const querySnapshot = await getDocs(q);
-
-  //         // Initialiser un tableau pour stocker les images du cours sélectionné
-  //         const imagesArray = [];
-
-  //         // Récupération des images du document correspondant au cours sélectionné
-  //         querySnapshot.forEach((doc) => {
-  //           const data = doc.data();
-  //           imagesArray.push(...data.images);
-  //         });
-
-  //         // Transformation des images en un format adapté pour le composant Galleria
-  //         setImages(
-  //           imagesArray.map((url, index) => ({
-  //             itemImageSrc: url,
-  //             thumbnailImageSrc: url,
-  //             alt: `Image ${index + 1}`,
-  //             title: `Title ${index + 1}`,
-  //           }))
-  //         );
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error(
-  //       "Erreur lors de la récupération des images depuis Firestore",
-  //       error
-  //     );
-  //   }
-  // };
-
-
-
-
-
-  
-  
-  
+  // Fonction de rendu pour un élément individuel dans la galerie d'images
   const itemTemplate = (item) => (
     <img
       src={item.itemImageSrc}
       alt={item.alt}
-      style={{ width: "100%", height: "100%" }}
+      style={{ width: '100%', height: '100%' }}
     />
   );
 
-  // Fonction pour définir le template d'un thumbnail dans le composant Galleria
+  // Fonction de rendu pour une miniature dans la galerie d'images
   const thumbnailTemplate = (item) => (
     <img
       src={item.thumbnailImageSrc}
       alt={item.alt}
-      style={{ width: "140px", height: "100px" }}
+      style={{ width: '140px', height: '100px' }}
     />
   );
-
-  // Effet pour récupérer les informations de l'étudiant lors du montage du composant
-  useEffect(() => {
-    // fetchStudentInfo();
-    fetchImagesFromFirestore();
-  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const docRef = doc(db, "utilisateurs", user.uid);
+        const docRef = doc(db, 'utilisateurs', user.uid);
         try {
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
@@ -167,11 +97,11 @@ export default function CardLivraison({ date, apprenant, titreCourEtudiant, }) {
             console.log(role);
           } else {
             console.log(
-              "Aucune donnée utilisateur trouvée pour cet utilisateur"
+              'Aucune donnée utilisateur trouvée pour cet utilisateur'
             );
           }
         } catch (error) {
-          console.error("Erreur lors de la récupération du rôle :", error);
+          console.error('Erreur lors de la récupération du rôle :', error);
         }
       }
     });
@@ -187,22 +117,22 @@ export default function CardLivraison({ date, apprenant, titreCourEtudiant, }) {
 
   function handleSend() {
     addComment(); // Appel de la fonction addComment sans publicationId
-    toast.success("Commentaire envoyé");
-    setComment(""); // Réinitialisation du champ de commentaire après l'envoi
+    toast.success('Commentaire envoyé');
+    setComment(''); // Réinitialisation du champ de commentaire après l'envoi
   }
 
   // Fonction pour supprimer un commentaire
   function deleteComment(commentId) {
-    const commentRef = doc(db, "commentaires", commentId);
+    const commentRef = doc(db, 'commentaires', commentId);
 
     deleteDoc(commentRef)
       .then(() => {
-        toast.success("Comment deleted successfully");
+        toast.success('Comment deleted successfully');
         fetchComments(); // Mise à jour de l'affichage après la suppression du commentaire
       })
       .catch((error) => {
-        console.error("Error deleting comment: ", error);
-        toast.error("Erreur lors de la suppression du commentaire");
+        console.error('Error deleting comment: ', error);
+        toast.error('Erreur lors de la suppression du commentaire');
       });
   }
 
@@ -217,28 +147,28 @@ export default function CardLivraison({ date, apprenant, titreCourEtudiant, }) {
 
   // Ajout d'un commentaire à la base de données
   function addComment() {
-    const commentsRef = collection(db, "commentaires");
+    const commentsRef = collection(db, 'commentaires');
 
     addDoc(commentsRef, {
-      userName: currentUser ? currentUser.displayName : "Utilisateur inconnu",
-      userRole: currentUser ? currentUser.role : "Rôle inconnu",
+      userName: currentUser ? currentUser.displayName : 'Utilisateur inconnu',
+      userRole: currentUser ? currentUser.role : 'Rôle inconnu',
       commentContent: comment,
       timestamp: serverTimestamp(),
     })
       .then(() => {
-        console.log("New document created with comment");
-        setComment("");
+        console.log('New document created with comment');
+        setComment('');
         fetchComments(); // Mise à jour de l'affichage après l'ajout du commentaire
       })
       .catch((error) => {
-        console.error("Error adding document: ", error);
-        toast.error("Erreur lors de la création du document");
+        console.error('Error adding document: ', error);
+        toast.error('Erreur lors de la création du document');
       });
   }
 
   // Fonction pour récupérer et afficher les commentaires depuis Firebase
   function fetchComments() {
-    const commentsRef = collection(db, "commentaires");
+    const commentsRef = collection(db, 'commentaires');
 
     onSnapshot(commentsRef, (snapshot) => {
       const commentsData = [];
@@ -263,7 +193,7 @@ export default function CardLivraison({ date, apprenant, titreCourEtudiant, }) {
 
   function getTimeDifference(timestamp) {
     if (!timestamp) {
-      return ""; // Ou tout autre traitement que vous souhaitez appliquer pour les commentaires sans timestamp
+      return ''; // Ou tout autre traitement que vous souhaitez appliquer pour les commentaires sans timestamp
     }
 
     const currentTime = new Date();
@@ -277,13 +207,13 @@ export default function CardLivraison({ date, apprenant, titreCourEtudiant, }) {
     const days = Math.floor(hours / 24);
 
     if (days > 0) {
-      return `${days} jour${days > 1 ? "s" : ""} ago`;
+      return `${days} jour${days > 1 ? 's' : ''} ago`;
     } else if (hours > 0) {
-      return `${hours} heure${hours > 1 ? "s" : ""} ago`;
+      return `${hours} heure${hours > 1 ? 's' : ''} ago`;
     } else if (minutes > 0) {
-      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
     } else {
-      return `${seconds} seconde${seconds !== 1 ? "s" : ""} ago`;
+      return `${seconds} seconde${seconds !== 1 ? 's' : ''} ago`;
     }
   }
 
@@ -291,12 +221,12 @@ export default function CardLivraison({ date, apprenant, titreCourEtudiant, }) {
     auth
       .signOut()
       .then(() => {
-        toast.success("Utilisateur déconnecté avec succès.");
+        toast.success('Utilisateur déconnecté avec succès.');
         // Ici tu peux ajouter d'autres actions après la déconnexion si nécessaire
-        navigate("/connexion");
+        navigate('/connexion');
       })
       .catch((error) => {
-        console.error("Erreur lors de la déconnexion :", error);
+        console.error('Erreur lors de la déconnexion :', error);
       });
   };
 
@@ -307,21 +237,21 @@ export default function CardLivraison({ date, apprenant, titreCourEtudiant, }) {
           <div className="col-md-12 d-flex colApprenant my-3">
             <img src={userProfile} alt="" className="icon" />
             <div className="mySpan">
-              <h6 className=" px-3 pt-2 dark">{apprenant}</h6>
-              <p className="m-0 px-3 pt-2 dark">{date}</p>
+              <h6 className=" px-3 pt-1 fs-5 fst-italic dark">{apprenant}</h6>
+              <p className="m-0 fst-italic px-3 pt-1 dark">{date}</p>
             </div>
           </div>
 
-          <div className="col-md-12 d-flex justify-content-center py-2">
+          <div className="col-md-12 d-flex justify-content-center  fst-italic fw-bold fs-6 py-2">
             <p>{titreCourEtudiant}</p>
           </div>
 
           {/* Galleria pour afficher les images */}
-          <div className="col-12 my-2">
+          <div className="col-12 my-1">
             <Galleria
-              value={images}
+              value={imagesData}
               numVisible={5}
-              style={{ width: "52rem", margin: "auto" }}
+              style={{ width: '52rem', margin: 'auto' }}
               item={itemTemplate}
               thumbnail={thumbnailTemplate}
               className="publication rounded-2"
@@ -334,7 +264,7 @@ export default function CardLivraison({ date, apprenant, titreCourEtudiant, }) {
               header="Commentaires"
               visible={visible}
               maximizable
-              style={{ width: "50vw" }}
+              style={{ width: '50vw' }}
               onHide={() => setVisible(false)}
             >
               {hiddenComments.map((comment) => (
@@ -355,7 +285,7 @@ export default function CardLivraison({ date, apprenant, titreCourEtudiant, }) {
                       </span>
                       <span
                         className="supCom"
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: 'pointer' }}
                         onClick={() => deleteComment(comment.id)}
                       >
                         X
@@ -389,7 +319,7 @@ export default function CardLivraison({ date, apprenant, titreCourEtudiant, }) {
                     </span>
                     <span
                       className="supCom"
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: 'pointer' }}
                       onClick={() => deleteComment(comment.id)}
                     >
                       X
@@ -409,9 +339,9 @@ export default function CardLivraison({ date, apprenant, titreCourEtudiant, }) {
                 src={commenter}
                 alt=""
                 className=""
-                style={{ width: "30px", height: "30px" }}
+                style={{ width: '30px', height: '30px' }}
               />
-              <p className="px-2 m-0 sizeHover" style={{ fontSize: "12px" }}>
+              <p className="px-2 m-0 sizeHover" style={{ fontSize: '12px' }}>
                 Plus de commentaires
               </p>
             </div>
@@ -424,7 +354,7 @@ export default function CardLivraison({ date, apprenant, titreCourEtudiant, }) {
                 value={comment} // Liaison de la valeur du champ de commentaire
                 onChange={(e) => setComment(e.target.value)} // Gestion des modifications du champ de commentaire
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") {
+                  if (e.key === 'Enter') {
                     handleSend(); // Appel à la fonction handleSend lorsque la touche "Entrée" est pressée
                   }
                 }}
@@ -434,7 +364,7 @@ export default function CardLivraison({ date, apprenant, titreCourEtudiant, }) {
                 <img
                   src={envoi}
                   alt="send"
-                  style={{ width: "30px", height: "30px" }}
+                  style={{ width: '30px', height: '30px' }}
                 />
               </span>
             </div>

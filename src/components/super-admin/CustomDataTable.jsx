@@ -8,6 +8,7 @@ import SearchSharpIcon from '@mui/icons-material/SearchSharp';
 import { Box, InputAdornment, TextField } from '@mui/material';
 
 const CustomDataTable = ({ data }) => {
+   // eslint-disable-next-line
   const [selectedRows, setSelectedRows] = useState([]);
   const columns = [
     {

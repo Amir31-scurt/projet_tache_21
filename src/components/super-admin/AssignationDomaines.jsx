@@ -157,6 +157,7 @@ const AssignationDomaines = () => {
         "Erreur: La base de données Firebase n'est pas initialisée."
       );
     }
+     // eslint-disable-next-line
   }, [db]);
 
   // Création des options pour le composant MultiCascader
@@ -164,6 +165,7 @@ const AssignationDomaines = () => {
     label: domaine.domaine,
     value: domaine.domaine,
     children: Object.keys(domaine.sousDomaines).map((sousDomaineKey) => {
+       // eslint-disable-next-line
       const sousDomaines = domaine.sousDomaines[sousDomaineKey];
       const coachsForSousDomaine = users.filter(
         (coach) => coach.role === "Coach"

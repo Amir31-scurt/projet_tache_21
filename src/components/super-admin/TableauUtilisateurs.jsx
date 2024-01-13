@@ -9,7 +9,6 @@ import {
   collection,
   doc,
   getDocs,
-  getDoc,
   addDoc,
   onSnapshot,
   updateDoc,
@@ -313,6 +312,7 @@ export default function TableauUtilisateurs() {
       ),
       className: utilisateur.archived ? "tableRowArchived bg-info" : "",
     }));
+     // eslint-disable-next-line
   }, [filteredData]);
 
   // Utilisation du hook pour la gestion du tableau

@@ -6,7 +6,8 @@ import { db, storage } from '../../config/firebase-config';
 import { getDoc, doc, collection, addDoc, serverTimestamp, onSnapshot, getDocs, where, updateDoc, query } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { AuthContext } from '../../contexte/AuthContext';
-import { format } from 'date-fns';
+import { ToastContainer, toast } from 'react-toastify';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export default function Cours() {
   const { domaineId, sousDomaineName } = useParams();
@@ -20,8 +21,6 @@ export default function Cours() {
   // eslint-disable-next-line
   const [files, setFiles] = useState();
   const [previews, setPreviews] = useState();
-  const [timers, setTimers] = useState({}); // Timer state as an object
-  const [intervalIds, setIntervalIds] = useState({}); // To store interval IDs
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedCourseTitle, setSelectedCourseTitle] = useState('');
   const [currentDocRef, setCurrentDocRef] = useState(null);
@@ -537,7 +536,7 @@ export default function Cours() {
                 <button
                   type="submit"
                   onClick={handleUpload}
-                  className="inputStyle"
+                  className="inputStyle btn"
                 >
                   Envoyer
                 </button>
@@ -546,6 +545,7 @@ export default function Cours() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }
