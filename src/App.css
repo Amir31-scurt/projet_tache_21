@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 * {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 body {
@@ -53,7 +53,7 @@ body {
   text-align: left !important;
 }
 
-.module-container input[type='radio'] {
+.module-container input[type="radio"] {
   --webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -641,9 +641,8 @@ body {
   justify-content: right;
 }
 .ProfilSpace {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  width: 50px !important;
+  height: 50px !important;
   border: 1px solid #3084b5;
   cursor: pointer;
 }
@@ -687,6 +686,7 @@ body {
 }
 .ProfilUser {
   border-radius: 50%;
+  object-fit: cover !important;
 }
 .Mod {
   cursor: pointer;
@@ -1100,7 +1100,7 @@ body {
 /* CSS pour la certification */
 .certificate-display {
   color: #333;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
 
 .card {
@@ -1135,10 +1135,10 @@ body {
   width: 100px;
 }
 /* CSS EtudiantAssgnTable */
-.tete{
-  background:  #3084b5 !important;
+.tete {
+  background: #3084b5 !important;
 }
-.petit{
+.petit {
   display: flex !important;
   align-items: center !important;
   width: 110px;

@@ -1,16 +1,19 @@
-import React, { useRef } from 'react';
-import { format } from 'date-fns';
-import signature from '../../assets/images/signature.png';
-import codeqr from '../../assets/images/codeqr.png';
-import gandal from '../../assets/images/logo2.png';
+import React, { useRef } from "react";
+import { format } from "date-fns";
+import signature from "../../assets/images/signature.png";
+import gandal from "../../assets/images/logo2.png";
+import QRCode from "qrcode.react";
 
 // Méthode principale
 const CertificateDisplay = ({ formData }) => {
   const certificateRef = useRef();
 
   const formattedDate = formData.date
-    ? format(formData.date, 'dd/MM/yyyy')
-    : '';
+    ? format(formData.date, "dd/MM/yyyy")
+    : "";
+
+  // COde QR
+  const qrCodeValue = "https://projet-tache-21-5thn.vercel.app";
 
   // L'affichage
   return (
@@ -27,10 +30,10 @@ const CertificateDisplay = ({ formData }) => {
                 <div className="text-center">
                   <h3>Certificat de fin de formation</h3>
                   <div className="d-flex flex-column justify-content-center align-items-center">
-                    {' '}
+                    {" "}
                     <div className="mb-4">
                       <img className="reduct" src={gandal} alt="Gaandal-Logo" />
-                      <h3 className="NomDeLecole" style={{ color: '#3084b5' }}>
+                      <h3 className="NomDeLecole" style={{ color: "#3084b5" }}>
                         Gaandal
                       </h3>
                     </div>
@@ -41,15 +44,15 @@ const CertificateDisplay = ({ formData }) => {
                     {formData.role}
                   </h3>
                   <p className="card-text">
-                    A terminé avec succès le programme de{' '}
+                    A terminé avec succès le programme de{" "}
                     <span className="fw-bold">{formData.domain}</span>
                   </p>
                   <p className="card-text">
-                    Terminant ainsi avec la mention{' '}
+                    Terminant ainsi avec la mention{" "}
                     <span className="fw-bold">{formData.mention}</span>
                   </p>
                   <p className="card-text">
-                    Certification obtenue le{' '}
+                    Certification obtenue le{" "}
                     <span className="fw-bold">{formattedDate}</span>
                   </p>
                   <p className="card-text">
@@ -68,11 +71,7 @@ const CertificateDisplay = ({ formData }) => {
                     <h5 className="fw-bold">Amadou Oury Bah</h5>
                   </div>
                   <div>
-                    <img
-                      className="img-fluid ajout"
-                      src={codeqr}
-                      alt="QR Code"
-                    />
+                    <QRCode value={qrCodeValue} className="ajout" />
                   </div>
                 </div>
               </div>
