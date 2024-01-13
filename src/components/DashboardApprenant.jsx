@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState, useContext } from 'react';
-import DashboardCompo from './programmes/Single_Programmes/DashboardCompo';
+import DashboardCompo from '../components/programmes/Single_Programmes/DashboardCompo';
 import CardLivraison from '../components/CardLivraison';
 import {
   collection,
@@ -24,26 +24,7 @@ export default function DashboardApprenant() {
   // Extraction des informations actuelles de l'utilisateur
   const { currentUser, uid } = useContext(AuthContext);
   const UserUid = uid;
-  const [profileImage, setProfileImage] = useState(UserProfil);
-  // Utilisez useEffect pour mettre à jour l'image de profil après la reconnexion
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // Mettez à jour l'image de profil après la reconnexion
-        const storageRef = ref(storage, `profile_images/${user.uid}`);
-        getDownloadURL(storageRef)
-          .then((url) => {
-            setProfileImage(url);
-            localStorage.setItem('profileImage', url);
-          })
-          .catch((error) => {
-            console.error('Error loading profile image:', error.message);
-          });
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
+  const students = users.filter((user) => user.role === 'Étudiant');
 
   // Effet de chargement initial pour récupérer les livraisons
   useEffect(() => {
@@ -88,7 +69,7 @@ export default function DashboardApprenant() {
                 apprenant: data.nom,
                 titreCourEtudiant: data.cours,
                 images: data.images || [],
-                userProfile: profileImage,
+                userProfile: data.profile,
               });
             });
           }
