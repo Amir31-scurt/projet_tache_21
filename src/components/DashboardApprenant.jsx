@@ -83,7 +83,10 @@ export default function DashboardApprenant() {
               const data = livraisonDoc.data();
               nouvellesLivraisons.push({
                 key: livraisonDoc.id,
-                date: serverTimestamp(data.date),
+                date: format(
+                  new Date(data.date.seconds * 1000),
+                  'dd/MM/yyyy - HH:mm:ss'
+                ),
                 apprenant: data.nom,
                 titreCourEtudiant: data.cours,
                 images: data.images || [],
