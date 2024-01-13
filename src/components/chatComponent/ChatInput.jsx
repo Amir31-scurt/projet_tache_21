@@ -24,6 +24,8 @@ export default function ChatInput({ activeBtn }) {
         messages: arrayUnion({
           id: uuidv4(),
           text,
+          jour: jourSemaine + " " + date + " " + mois,
+          heures: heures + ":" + minutes,
           senderId: currentUser.uid,
           date: Timestamp.now(),
         }),
