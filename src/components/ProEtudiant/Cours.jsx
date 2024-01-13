@@ -300,6 +300,18 @@ export default function Cours() {
       }));
     }
 
+    const completionTimer = setTimeout(() => {
+      handleChangement(courseIndex);
+    }, 120000);
+
+    setLoadingStates((prev) => ({ ...prev, [course.id]: false }));
+
+    // Corrected way to update setTimeoutIds using functional update
+    setTimeoutIds((prevIds) => ({
+      ...prevIds,
+      [courseIndex]: completionTimer,
+    }));
+
     // Update the courses state
     setCourses((courses) =>
       courses.map((c, index) => {
