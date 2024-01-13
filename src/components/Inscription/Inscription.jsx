@@ -1,4 +1,3 @@
-
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
@@ -145,8 +144,8 @@ const Inscription = ({ onRegisterSuccess }) => {
         className="p-button-text"
         autoFocus
         onClick={() => {
-          setShowMessage(false); // Cacher le dialogue
-          onRegisterSuccess(); // Appeler onRegisterSuccess() ici
+          setShowMessage(false);
+          onRegisterSuccess();
         }}
       />
     </div>
@@ -175,7 +174,7 @@ const Inscription = ({ onRegisterSuccess }) => {
         footer={dialogFooter}
         showHeader={false}
         breakpoints={{ "960px": "80vw" }}
-        // style={{ width: "30vw" }}
+        style={{ width: "30vw" }}
       >
         <div className="flex justify-content-center flex-column pt-6 px-3">
           <i
