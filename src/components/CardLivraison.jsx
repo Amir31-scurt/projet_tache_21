@@ -5,15 +5,11 @@ import {
   deleteDoc,
   getDoc,
   doc,
-  query,
-  where,
   onSnapshot,
-  getDocs,
   serverTimestamp,
 } from 'firebase/firestore';
 import { db, auth } from '../config/firebase-config';
 import { onAuthStateChanged } from 'firebase/auth';
-import { format } from 'date-fns';
 
 import { toast } from 'react-hot-toast';
 import commenter from '../assets/images/commenter.png';
@@ -24,7 +20,6 @@ import { Dialog } from 'primereact/dialog';
 import 'firebase/firestore';
 import { AuthContext } from '../contexte/AuthContext';
 import { Galleria } from 'primereact/galleria';
-import { width } from '@mui/system';
 import { MdOutlineDelete } from 'react-icons/md';
 import { FaCircleXmark } from 'react-icons/fa6';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
@@ -94,7 +89,7 @@ export default function CardLivraison({
     <img
       src={item.thumbnailImageSrc}
       alt={item.alt}
-      style={{ width: '140px', height: '100px' }}
+      style={{ width: '100%', height: '100px' }}
     />
   );
 
