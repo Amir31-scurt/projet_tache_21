@@ -7,6 +7,7 @@ import Card from '../utils/cards_reusable';
 import logo from '../assets/images/logo.png';
 import { EmailContext } from '../contexte/EmailContexte';
 import ChatHome from '../components/chatComponent/ChatHome';
+import '../assets/css/quizz.css';
 
 export default function Template() {
   const { currentUser } = useContext(AuthContext);
@@ -50,9 +51,9 @@ export default function Template() {
         </div>
         <div className="bodyContent col d-flex">
           <div className="col">
-            <Outlet />
-            {/* <ChatHome /> */}
             {/* Outlet Position */}
+            <Outlet />
+            <ChatHome />
           </div>
           {isDashboard && (
             <div className="col-3 d-none d-lg-block">

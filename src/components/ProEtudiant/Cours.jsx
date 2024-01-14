@@ -87,11 +87,10 @@ export default function Cours() {
         console.error('Error fetching user data:', error);
       }
     };
-
+    fetchUserData();
     return () => {
       isSubscribed = false; // Component is unmounting, no longer subscribed
     };
-    fetchUserData();
   }, [UserUid]);
 
   const UserName = LeNom || currentUser.displayName;

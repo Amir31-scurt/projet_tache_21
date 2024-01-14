@@ -16,21 +16,26 @@ const Quiz = ({ quizData }) => {
   const [remainingAttempts, setRemainingAttempts] = useState(3);
   const [showSubmitButton, setShowSubmitButton] = useState(true);
 
-
   useEffect(() => {
-    // Obtenez le nom de l'étudiant 
+    // Obtenez le nom de l'étudiant
     const studentName = authContext.currentUser.displayName;
 
-    // Vérifiez le nombre de tentatives restantes 
+    // Vérifiez le nombre de tentatives restantes
     const checkRemainingAttempts = async () => {
       try {
-        const resultsQuery = query(collection(db, 'scorequizz'), where('studentName', '==', studentName));
+        const resultsQuery = query(
+          collection(db, 'scorequizz'),
+          where('studentName', '==', studentName)
+        );
         const resultsSnapshot = await getDocs(resultsQuery);
         const attemptsCount = resultsSnapshot.size;
         const remainingAttempts = Math.max(0, 3 - attemptsCount);
         setRemainingAttempts(remainingAttempts);
       } catch (error) {
-        console.error('Erreur lors de la vérification du nombre de tentatives restantes:', error);
+        console.error(
+          'Erreur lors de la vérification du nombre de tentatives restantes:',
+          error
+        );
       }
     };
 
@@ -39,12 +44,12 @@ const Quiz = ({ quizData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (remainingAttempts <= 0) {
       alert('Vous avez atteint le nombre maximal de tentatives pour ce quiz.');
       return;
     }
-  
+
     // Calcul du score de l'étudiant
     let newScore = 0;
     userAnswers.forEach((answer, index) => {
@@ -53,10 +58,10 @@ const Quiz = ({ quizData }) => {
       }
     });
     setScore(newScore);
-  
+
     // Obtenez le nom de l'étudiant
     const studentName = authContext.currentUser.displayName;
-  
+
     try {
       // Mise à jour du nombre de tentatives
       await addDoc(collection(db, 'scorequizz'), {
@@ -64,17 +69,21 @@ const Quiz = ({ quizData }) => {
         scoreMessage: `Vous avez obtenu ${newScore}/${questions.length} sur ce quiz.`,
         tentativesRestantes: remainingAttempts - 1,
       });
-  
-      console.log('Score et nombre de tentatives ajoutés à Firestore avec succès!');
+
+      console.log(
+        'Score et nombre de tentatives ajoutés à Firestore avec succès!'
+      );
     } catch (error) {
-      console.error('Erreur lors de l\'ajout du score et du nombre de tentatives à Firestore:', error);
+      console.error(
+        "Erreur lors de l'ajout du score et du nombre de tentatives à Firestore:",
+        error
+      );
     }
-  
+
     setQuizSubmitted(true);
 
     setShowSubmitButton(false);
 
-  
     const questionElements = document.querySelectorAll('.question');
     questionElements.forEach((questionElement, index) => {
       if (userAnswers[index] === correctAnswers[index]) {
@@ -83,10 +92,9 @@ const Quiz = ({ quizData }) => {
         questionElement.classList.add('wrong');
       }
     });
-  
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  
 
   const handleOptionChange = (indexQuestion, value) => {
     if (!quizSubmitted) {
@@ -102,16 +110,16 @@ const Quiz = ({ quizData }) => {
   const handleRetry = () => {
     setUserAnswers(Array(correctAnswers.length).fill(''));
     setScore(null);
-    setIsFormValid(false); 
+    setIsFormValid(false);
     setQuizSubmitted(false);
     setShowSubmitButton(true);
-  
+
     const questionElements = document.querySelectorAll('.question');
     questionElements.forEach((questionElement) => {
       questionElement.classList.remove('correct', 'wrong');
     });
   };
-  
+
   return (
     <main>
       <section className="quiz">
@@ -142,10 +150,10 @@ const Quiz = ({ quizData }) => {
                       score !== null
                         ? userAnswers[index] === option
                           ? userAnswers[index] === correctAnswers[index]
-                            ? "correct"
-                            : "wrong"
-                          : ""
-                        : ""
+                            ? 'correct'
+                            : 'wrong'
+                          : ''
+                        : ''
                     }`}
                   >
                     <input
@@ -156,7 +164,7 @@ const Quiz = ({ quizData }) => {
                       checked={userAnswers[index] === option}
                       onChange={() => handleOptionChange(index, option)}
                       className="module"
-                    />{" "}
+                    />{' '}
                     &nbsp;
                     <label htmlFor={`q${index + 1}${optionIndex}`}>
                       {option}
@@ -168,7 +176,7 @@ const Quiz = ({ quizData }) => {
             <div className="submit">
               {showSubmitButton && !quizSubmitted && (
                 <button
-                  className="btn btn-success"
+                  className="btn btn-success px-2 py-2"
                   type="submit"
                   disabled={!isFormValid}
                 >
