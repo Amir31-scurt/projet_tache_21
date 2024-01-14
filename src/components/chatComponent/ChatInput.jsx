@@ -12,7 +12,6 @@ import { db } from "../../config/firebase-config";
 import { v4 as uuidv4 } from "uuid";
 
 export default function ChatInput({ activeBtn }) {
-  console.log(activeBtn);
   const [text, setText] = useState();
   const [jourSemaine, setJourSemaine] = useState("");
   const [date, setDate] = useState("");
@@ -98,7 +97,6 @@ export default function ChatInput({ activeBtn }) {
         placeholder="Envoyer.."
         onKeyDown={handleKeyEnter}
       />
-      {/* <div className="send bg-danger"> */}
       <button
         className="btn text-white rounded-circle"
         onClick={handleSend}
@@ -106,7 +104,6 @@ export default function ChatInput({ activeBtn }) {
       >
         <i class="bi bi-send-fill"></i>
       </button>
-      {/* </div> */}
     </div>
   );
 }

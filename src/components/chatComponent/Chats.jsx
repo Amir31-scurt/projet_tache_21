@@ -49,7 +49,6 @@ export default function Chats() {
   const handleSelect = (u) => {
     dispatch({ type: "CHANGE_USER", payload: u });
   };
-  console.log(Object.entries(chats)[1]);
   return (
     <div className="chats d-flex px-2 pt-2">
       {chats
@@ -101,7 +100,6 @@ export default function Chats() {
                     </div>
                   </div>
                 )
-              // }
             )
         : null}
     </div>

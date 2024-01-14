@@ -16,12 +16,7 @@ export default function ChatHome() {
       <ChatContextProvider>
         <div className="chatHomeContainer text-white">
           {openChat && (
-            <div
-              className="chatHome shadow-lg rounded"
-              // className={`chatHome shadow-lg rounded ${
-              //   openChat ? "chatHomeDisplayYes" : "chatHomeDisplay"
-              // }`}
-            >
+            <div className="chatHome shadow-lg rounded">
               <div className="chatContainer">
                 <ChatHeader />
                 <Chat />
