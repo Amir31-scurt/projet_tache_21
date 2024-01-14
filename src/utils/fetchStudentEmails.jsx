@@ -1,6 +1,7 @@
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
 
+ // eslint-disable-next-line
 export const fetchStudentEmails = async () => {
   const usersRef = collection(db, 'utilisateurs');
   const studentQuery = query(usersRef, where('role', '==', 'Étudiant'));

@@ -43,13 +43,26 @@ function Notifications() {
   const handleMenuClose = () => {
     setAnchorElNotif(null);
     setNewNotificationsCount(0);
-    // Stocker les notifications lues dans le stockage local
-    const readNotifications = notifs.map((notif) => notif.id);
+  
+    // Get the existing read notifications from localStorage
+    const existingReadNotifications = JSON.parse(localStorage.getItem("readNotifications")) || [];
+  
+    // Map the IDs of the current notifications and merge with existing read notifications
+    const updatedReadNotifications = [
+      ...existingReadNotifications,
+      ...notifs.map((notif) => notif.id),
+    ];
+  
+    // Remove duplicates by converting the array to a Set and back to an array
+    const uniqueReadNotifications = [...new Set(updatedReadNotifications)];
+  
+    // Store the updated read notifications in localStorage
     localStorage.setItem(
       "readNotifications",
-      JSON.stringify(readNotifications)
+      JSON.stringify(uniqueReadNotifications)
     );
   };
+  
 
   // Supprimer une notification
   const handleDeleteSelectedNotif = useCallback(async () => {
@@ -64,9 +77,8 @@ function Notifications() {
           setNotifs((prevNotifs) =>
             prevNotifs.filter((notif) => notif.id !== selectedNotification.id)
           );
-          setSelectedNotification(null); // Clear the selected notification after deletion
-          setShowDeleteButton(false); // Hide the delete button after deletion
-          console.log(`Notification "${title}" supprimée avec succès!`);
+          setSelectedNotification(null);
+          setShowDeleteButton(false); 
         } else {
           console.log(`Document not found with ID: ${selectedNotification.id}`);
         }
@@ -105,6 +117,7 @@ function Notifications() {
   useEffect(() => {
     loadNotifications();
   }, [loadNotifications]);
+  
 
   useEffect(() => {
     // Récupérer les notifications lues depuis le stockage local
@@ -150,7 +163,7 @@ function Notifications() {
         <h6 className="text-center fw-bold">Notifications</h6>
         <hr style={{backgroundColor: "#000 !important" , border: "1px solid #000"}}/>
         <div className="menuItem">
-          {notifs.map((notif, index) => (
+          {notifs.length > 0 ? (notifs.map((notif, index) => (
             <MenuItem
               key={notif.id}
               onClick={() => {
@@ -190,7 +203,7 @@ function Notifications() {
                 </p>
               )}
             </MenuItem>
-          ))}
+          ))): <MenuItem>Aucune notification</MenuItem>}
         </div>
       </div>
     </Menu>

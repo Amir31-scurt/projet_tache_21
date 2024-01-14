@@ -72,6 +72,7 @@ const FormikDoc = () => {
         console.error('Error updating book:', error);
       }
     },
+     // eslint-disable-next-line
     [domaines, selectedDomaine, setDomaines, loadDomaines]
   );
 
@@ -121,6 +122,7 @@ const FormikDoc = () => {
         domaine: domain,
         sousDomaines: domainesData,
       });
+      setIsAdding(true);
 
       setDomaines((prevDomaines) =>
         prevDomaines.map((dom) =>
@@ -167,19 +169,17 @@ const FormikDoc = () => {
     },
     validate: (data) => {
       let errors = {};
-      if (isAdding && !isAdding) {
+      if (isAdding) {
         if (!data.sousDomaines && !data.name) {
           errors.sousDomaines = 'Sous domaines is required.';
           errors.name = 'Name is required.';
         }
       }
-
       return errors;
     },
     onSubmit: async (data) => {
       if (isAdding) {
         data && show();
-        console.log(formik.values.fileUrl);
         formik.setValues({ name: '', sousDomaines: '' });
         setShowSousDomainesInput(false);
         formik.resetForm();

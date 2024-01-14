@@ -1,18 +1,17 @@
 // Importation des bibliothèques et composants nécessaires depuis les modules externes et les fichiers locaux
 import { useForm } from 'react-hook-form';
 import { MultiSelect } from 'primereact/multiselect';
-import { Button } from 'primereact/button';
 import { ToastContainer, toast } from 'react-toastify';
 import { useEffect, useState, useRef } from 'react';
 import {
   collection,
   getDocs,
   updateDoc,
+  addDoc,
+  serverTimestamp,
   where,
   query,
   arrayUnion,
-  serverTimestamp,
-  addDoc,
 } from 'firebase/firestore';
 import { db } from '../../config/firebase-config';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,6 +19,8 @@ import 'rsuite/dist/rsuite.css';
 import { PulseLoader } from 'react-spinners';
 import React from 'react';
 import SpinnerIcon from '@rsuite/icons/legacy/Spinner';
+import FirebaseTable from './EtudiantsAssignTable';
+import EtudiantsAssignTable from './EtudiantsAssignTable';
 
 export const AssignationEtudiant = () => {
   // Initialisation des états pour stocker les données et le statut de chargement
@@ -29,9 +30,14 @@ export const AssignationEtudiant = () => {
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
+   // eslint-disable-next-line
   const [dataLoading, setDataLoading] = useState(false);
+  const [notificationsCollection] = useState(
+    collection(db, "notifications")
+  );
 
   // Utilisation de useRef pour la gestion des toasts
+   // eslint-disable-next-line
   const toastRef = useRef(null);
 
   // Fonction pour afficher un toast de succès
@@ -40,15 +46,21 @@ export const AssignationEtudiant = () => {
   };
 
   // Utilisation du hook useForm pour gérer le formulaire
+   // eslint-disable-next-line
   const {
+     // eslint-disable-next-line
     control,
+     // eslint-disable-next-line
     formState: { errors },
+     // eslint-disable-next-line
     handleSubmit,
+     // eslint-disable-next-line
     getValues,
     reset,
   } = useForm();
 
   // Fonction appelée lors de la soumission du formulaire
+   // eslint-disable-next-line
   const onSubmit = (data) => {
     handleAssign();
   };
@@ -136,6 +148,19 @@ export const AssignationEtudiant = () => {
               etudiants: arrayUnion(...etudiantsSelectionnes.filter(Boolean)),
             });
 
+            let notificationMessage;
+            if(etudiantsSelectionnes.length > 1){
+              notificationMessage = `Les étudiants ${etudiantsSelectionnes} vous ont étés assignés`
+            }else{
+              notificationMessage = `L'étudiant ${etudiantsSelectionnes} vous a été assigné`
+            }
+            await addDoc(notificationsCollection, {
+              messageForAdmin: notificationMessage,
+              timestamp: serverTimestamp(),
+              newNotif: true,
+              email: selectedCoachEmail,
+            });
+
             // Afficher le toast de succès
             showSuccessToast(`Assignation à ${coachDoc.data().name}`);
           } else {
@@ -207,6 +232,7 @@ export const AssignationEtudiant = () => {
         "Erreur: La base de données Firebase n'est pas initialisée."
       );
     }
+     // eslint-disable-next-line
   }, [db]);
 
   // Rendu de la composante
@@ -243,7 +269,7 @@ export const AssignationEtudiant = () => {
                 Sélectionner un ou des étudiants
               </label>
               <MultiSelect
-                style={{ width: '100%' }}
+                style={{ width: '100%' }}  
                 value={selectedStudents}
                 options={etudiants.map((etudiant) => ({
                   label: etudiant.name,
@@ -287,6 +313,7 @@ export const AssignationEtudiant = () => {
         {/* Conteneur pour les toasts de notification */}
         <ToastContainer />
       </div>
+      <EtudiantsAssignTable />
     </div>
   );
 };
