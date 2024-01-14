@@ -14,7 +14,7 @@ export default function Template() {
   const { setEmail } = useContext(EmailContext);
   // const [currentUser, setCurrentUser] = useState(initialUser);
   const location = useLocation();
-   // eslint-disable-next-line
+  // eslint-disable-next-line
   const navigate = useNavigate();
   const timelinePath = '/etudiant/dashboard';
   const isDashboard = location.pathname === timelinePath;
@@ -53,7 +53,7 @@ export default function Template() {
         <div className="bodyContent col d-flex">
           <div className="col">
             <Outlet />
-            <ChatHome />
+            {/* <ChatHome /> */}
             {/* Outlet Position */}
           </div>
           {isDashboard && (
