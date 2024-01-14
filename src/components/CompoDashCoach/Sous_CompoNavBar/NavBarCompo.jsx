@@ -85,6 +85,12 @@ export const NavBarCompo = () => {
                   src={profileImage}
                   className="ProfilSpace"
                   alt=""
+                  style={{
+                    width: "58px",
+                    height: "60px",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                  }}
                 />
               }
               placement="bottomEnd"
