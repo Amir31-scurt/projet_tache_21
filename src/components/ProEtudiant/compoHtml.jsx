@@ -1,7 +1,13 @@
 import React from 'react';
 // import html from '../assets/images/htmlcss.jpg'
 import { Link } from 'react-router-dom';
-export default function CompoHtml({ title, url, sousDomaineName, domaineId }) {
+export default function CompoHtml({
+  title,
+  url,
+  sousDomaineName,
+  domaineId,
+  progress,
+}) {
   const link = `/etudiant/programme-apprenant/cours/${domaineId}/${sousDomaineName}`;
   return (
     <Link to={link} className="text-decoration-none col">
@@ -14,8 +20,11 @@ export default function CompoHtml({ title, url, sousDomaineName, domaineId }) {
               alt="img"
             />
           </div>
-          <div className="card-body border-top">
-            <h4>{title}</h4>
+          <div className="card-body border-top" style={{ height: '130px' }}>
+            <h5>{title}</h5>
+          </div>
+          <div className="card-footer">
+            <p>Progress: {progress}%</p>
           </div>
         </div>
       </div>

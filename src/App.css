@@ -382,7 +382,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* width: 100px; */
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 25px;
 }
@@ -976,7 +975,6 @@ textarea:focus {
   outline: none;
 }
 /*   Fin Mariama Css */
-/*  */
 
 /* Css ajout de l'utilisateur côté admin par oury */
 .form-demo {

@@ -9,18 +9,18 @@ import {
   collection,
   addDoc,
   serverTimestamp,
-  onSnapshot,
   getDocs,
   where,
   updateDoc,
   query,
 } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { AuthContext } from '../../contexte/AuthContext';
-import { format } from 'date-fns';
 import { onAuthStateChanged } from 'firebase/auth';
 import UserProfil from '../../assets/images/user.png';
 import { ToastContainer, toast } from 'react-toastify';
+import ProgressBar from './ProgressBar';
+
 
 export default function Cours() {
   const { domaineId, sousDomaineName } = useParams();
@@ -67,6 +67,7 @@ export default function Cours() {
   }, []);
 
   useEffect(() => {
+    let isSubscribed = true; // Traquer si le composant
     const fetchUserData = async () => {
       try {
         const usersCollectionRef = collection(db, 'utilisateurs');
@@ -85,8 +86,10 @@ export default function Cours() {
         console.error('Error fetching user data:', error);
       }
     };
-
     fetchUserData();
+    return () => {
+      isSubscribed = false; // Component is unmounting, no longer subscribed
+    };
   }, [UserUid]);
 
   const UserName = LeNom || currentUser.displayName;
@@ -475,6 +478,24 @@ export default function Cours() {
     fetchCourses();
   }, [domaineId, sousDomaineName]);
 
+  // Progress Bar
+  // Part of Cours component
+  const calculateCompletionProgress = () => {
+    const totalCourses = courses.length;
+    const completedCourses = courses.filter(
+      (course) => course.isCompleted
+    ).length;
+    return (completedCourses / totalCourses) * 100;
+  };
+
+  // Use this function to get the progress value
+  const completionProgress = calculateCompletionProgress();
+  useEffect(() => {
+    // Recalculate the completion progress whenever courses data changes
+    const newProgress = calculateCompletionProgress();
+    // Optionally, you can use a state to store this progress if needed elsewhere
+  }, [courses]);
+
   const handleClose = () => setOpen(false);
 
   // File preview logic
@@ -563,9 +584,13 @@ export default function Cours() {
 
   return (
     <div className="bg-cours p-2">
-      <h2>Course List</h2>
+      <h2>Liste des cours</h2>
       <div className="container">
         <div className="row">
+          <div className="my-5 w-50">
+            <h3>Cours Complets :</h3>{' '}
+            <ProgressBar progress={completionProgress} />
+          </div>
           {courses.map((course, index) => {
             const videoId = getYouTubeVideoId(course.link);
             const isYouTubeLink = videoId !== null;

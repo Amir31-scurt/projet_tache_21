@@ -11,8 +11,10 @@ import {
 import { db } from '../config/firebase-config';
 import { AuthContext } from '../contexte/AuthContext';
 import format from 'date-fns/format';
-import { MdTask } from 'react-icons/md';
-import { PiUsersFourFill } from 'react-icons/pi';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth, storage } from '../../src/config/firebase-config';
+import { getDownloadURL, ref } from 'firebase/storage';
+import UserProfil from '../assets/images/user.png';
 
 export default function DashboardApprenant() {
   // État local pour stocker les livraisons et les utilisateurs
@@ -118,20 +120,12 @@ export default function DashboardApprenant() {
   // Contenu des cartes du tableau de bord
   const ContenuCardDsb = [
     {
-      ChiffreCardDsb: students.length,
-      IconeCardDsb: (
-        <PiUsersFourFill
-          style={{ fontSize: '68px', opacity: '1', color: '#fff' }}
-        />
-      ),
+      ChiffreCardDsb: users.filter((user) => user.role === 'Étudiant').length,
       TextCardDsb: 'Etudiants',
       couleurCarte: 'CouleurB',
     },
     {
       ChiffreCardDsb: '52',
-      IconeCardDsb: (
-        <MdTask style={{ fontSize: '68px', opacity: '1', color: '#fff' }} />
-      ),
       TextCardDsb: 'Taches',
       couleurCarte: 'CouleurC',
     },
