@@ -27,7 +27,7 @@ const MenuProps = {
   },
 };
 
-export default function FilterStudents() {
+export default function FilterStudents({handleDisplay}) {
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
   const [studentNames, setStudentNames] = React.useState([]);
@@ -58,6 +58,8 @@ export default function FilterStudents() {
       }
     })};
     
+    handleDisplay(value)
+
   };
 
    const loadUsers = useCallback(() => {

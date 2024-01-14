@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 * {
   font-family: "Montserrat", sans-serif;
 }
@@ -6,9 +7,10 @@
 body {
   margin: 0;
   padding: 0;
-  box-sizing: 0;
+  box-sizing: border-box;
   background-color: #fff;
 }
+
 .SmallMsg {
   color: red;
   margin-top: 10px;
@@ -29,7 +31,6 @@ body {
 }
 
 .module-container .sidebar {
-  /* width: 25%;  */
   background-color: #f0f2f5;
   height: 100vh;
   position: fixed;
@@ -61,7 +62,6 @@ body {
   border-radius: 50%;
   width: 16px;
   height: 16px;
-  /* background-color: #48a93c !important;  */
   border: 2px solid #999;
 }
 
@@ -77,7 +77,6 @@ body {
   width: 100%;
   cursor: pointer;
   border-left: 5px solid #48a93c !important;
-  /* Blue border for active item */
 }
 
 .content-block {
@@ -117,7 +116,6 @@ body {
 }
 
 .dig {
-  /* background-color: #3084b5;  */
   color: black;
   font-size: 16px;
   width: 100%;
@@ -163,7 +161,6 @@ body {
 @media (max-width: 1024px) {
   .module-container {
     flex-direction: column;
-    /* width: 100%; */
   }
 
   .module-container .sidebar {
@@ -182,7 +179,6 @@ body {
     padding: 10px;
     width: 50%;
     border-left: 5px solid #e16d07;
-    /* Blue border for active item */
   }
 
   .module-container .content-block {
@@ -206,18 +202,18 @@ body {
 }
 .img-container {
   width: 100%;
-  height: 180px; /* Set a fixed height */
-  overflow: hidden; /* Hide any overflow */
-  display: flex; /* Use flexbox to center the image */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  height: 180px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .img-container img {
-  height: 100%; /* Set image height to fill the container */
-  width: auto; /* Set width to auto to maintain aspect ratio */
-  min-width: 100%; /* Ensure it covers the width */
-  object-fit: cover; /* Cover the container without stretching the image */
+  height: 100%;
+  width: auto;
+  min-width: 100%;
+  object-fit: cover;
 }
 
 .cardpcc .card-body {
@@ -243,7 +239,7 @@ body {
   border: 1px solid #ccc;
   padding: 16px;
   border-radius: 8px;
-  width: 300px; /* or any desired width */
+  width: 300px;
   margin: 8px;
 }
 .program-card1 {
@@ -251,14 +247,14 @@ body {
   background: linear-gradient(to bottom, #3084b5, #1a638e);
 
   border-radius: 8px;
-  width: 290px; /* or any desired width */
+  width: 290px;
   margin: 5px;
 }
 .program-card2 {
   border: 1px solid #ccc;
   padding: 16px;
   border-radius: 8px;
-  margin-top: 20px; /* or any desired width */
+  margin-top: 20px;
   width: max-content;
 }
 .program-card img {
@@ -367,11 +363,6 @@ body {
 .category-description {
   color: #666;
 }
-/* cartes : Navy Blue #05445E */
-/*  Navbar : Blue Grotto  #189AB4 */
-/*  Button : Blue Green  #189AB4 */
-/* Button:hover : Grotto Blue #189AB4 */
-/* Background: baby blue #D4F1F4 */
 
 /* Cheikh CSS */
 .body {
@@ -391,7 +382,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* width: 100px; */
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 25px;
 }
@@ -408,10 +398,6 @@ body {
 }
 .colApprenant {
   display: flex;
-  /* flex-direction: column; */
-  /* flex-wrap: wrap; */
-  /* justify-content: center; */
-  /* align-items: center; */
 }
 .cardSpan {
   flex-wrap: wrap;
@@ -420,8 +406,6 @@ body {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  /* justify-content: center; */
-  /* align-items: center; */
   justify-content: space-around;
 }
 .icon {
@@ -433,7 +417,6 @@ body {
 .publication {
   width: 100%;
   height: 100%;
-  /* padding: 10% 10%; */
 }
 
 .textarea {
@@ -538,14 +521,13 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  max-width: 200px; /* Adjust width as needed */
+  max-width: 200px;
   margin: 10px;
 }
 
 .category-icon {
-  /* Assuming you are using an icon library like Font Awesome */
-  font-size: 2rem; /* Adjust size as needed */
-  color: #4c9aff; /* Adjust icon color as needed */
+  font-size: 2rem;
+  color: #4c9aff;
   margin-bottom: 10px;
 }
 
@@ -559,7 +541,6 @@ body {
   color: #666666;
   font-size: 0.875rem;
 }
-/* Background: baby Blue #D4F1F4 */
 
 /*============ Le Dashboard CSS Debut =========*/
 
@@ -721,15 +702,11 @@ body {
 
 /* =============== Je crée ici le CSS que je vais Utilisé Fin =============== */
 
-/* Buttons :  #6B240C */
-/*  Navbar :   #994D1C */
-/*  Button :   #E48F45 */
-/* Cartes :  #F5CCA0 */
 .program-card {
   border: 1px solid #ccc;
   padding: 16px;
   border-radius: 8px;
-  width: 300px; /* or any desired width */
+  width: 300px;
   margin: 8px;
 }
 
@@ -768,16 +745,12 @@ body {
   justify-content: center;
 }
 
-/* CardLivraison */
-/* .cardLivraison{
-  margin-left: 200px;
-}
-
 @media (min-width: 412px) {
-  .cardLivraison{
-  margin-left: 40px;
+  .cardLivraison {
+    margin-left: 40px;
+  }
 }
-} */
+*/
 
 /*-----------------------Sidebar---------------------*/
 .sidebar {
@@ -802,7 +775,6 @@ body {
   color: #fff !important;
   font-weight: bold;
   border-right: 10px solid #3e9133 !important;
-  /* transition: 0.5s; */
 }
 
 .sidebar .icon {
@@ -824,9 +796,6 @@ body {
 }
 
 /*------------------------Carte de livraison des etudiants--------------------*/
-/* .BigContainer {
-  background-color: #d4f1f4;
-} */
 
 #viewDetails {
   color: #ca6206;
@@ -861,7 +830,6 @@ body {
     display: none;
   }
   .height-form {
-    /* width: 40% !important; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -887,8 +855,6 @@ body {
   }
   .sidebar .list-group-item:hover {
     border-radius: 10%;
-    /* transform: scale(1.1); */
-    /* transition: 1s; */
   }
 
   .sidebar .list-group-item {
@@ -1004,20 +970,20 @@ body {
   height: 60px;
   border-radius: 100%;
 }
-.mes-input input,textarea:focus{
+.mes-input input,
+textarea:focus {
   outline: none;
 }
 /*   Fin Mariama Css */
-/*  */
 
 /* Css ajout de l'utilisateur côté admin par oury */
 .form-demo {
   display: flex;
   margin-top: 20px;
 }
+
 .form-demo .card {
-  min-width: 500px;
-  border: none !important;
+  min-width: 450px;
 }
 .form-demo .card form {
   margin-top: 2rem;
@@ -1025,9 +991,16 @@ body {
 .form-demo .card .field {
   margin-bottom: 1.5rem;
 }
-.form-demo .inscributton {
-  background-color: #3084b5;
-  border-radius: 9px;
+@media screen and (max-width: 960px) {
+  .form-demo .card {
+    width: 80%;
+  }
+}
+@media screen and (max-width: 640px) {
+  .form-demo .card {
+    width: 100%;
+    min-width: 0;
+  }
 }
 .boutonAssign {
   background-color: #3084b5;
@@ -1090,7 +1063,6 @@ body {
 }
 
 @media (max-width: 1024px) {
-  /* Adjust the min-width as needed for 'large screens' */
   .myTable {
     overflow: scroll;
     max-width: 90vw;
