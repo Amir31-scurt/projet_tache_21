@@ -8,6 +8,9 @@
 }
 
 body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   background-color: #fff;
 }
 
@@ -946,9 +949,9 @@ textarea:focus {
   display: flex;
   margin-top: 20px;
 }
+
 .form-demo .card {
-  min-width: 500px;
-  border: none !important;
+  min-width: 450px;
 }
 .form-demo .card form {
   margin-top: 2rem;
@@ -956,9 +959,16 @@ textarea:focus {
 .form-demo .card .field {
   margin-bottom: 1.5rem;
 }
-.form-demo .inscributton {
-  background-color: #3084b5;
-  border-radius: 9px;
+@media screen and (max-width: 960px) {
+  .form-demo .card {
+    width: 80%;
+  }
+}
+@media screen and (max-width: 640px) {
+  .form-demo .card {
+    width: 100%;
+    min-width: 0;
+  }
 }
 .boutonAssign {
   background-color: #3084b5;
