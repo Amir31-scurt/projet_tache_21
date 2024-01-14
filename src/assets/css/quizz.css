@@ -57,13 +57,13 @@
   background-color: #ffd1d1;
 }
 
-.quiz .submit {
+.submit {
   text-align: center;
   margin: 30px 0px;
 }
 
-.quiz .submit input {
-  background-color: #04AA6D;
+.submit input {
+  background-color: #04aa6d;
   padding: 5px 25px;
   color: #ffffff;
   font-size: 22px;
@@ -72,13 +72,13 @@
   border: 0px;
 }
 
-.quiz .submit input:hover {
+.submit input:hover {
   background-color: #03a369;
   cursor: pointer;
 }
 
-.quiz .reload button {
-  background-color: #04AA6D;
+.reload button {
+  background-color: #04aa6d;
   color: #ffffff;
   padding: 10px 20px;
   border-radius: 0px 0px 5px 5px;
@@ -86,7 +86,7 @@
   border: 0px;
 }
 
-.quiz .reload button:hover {
+.reload button:hover {
   background-color: #03a369;
   cursor: pointer;
 }

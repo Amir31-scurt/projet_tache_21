@@ -23,9 +23,9 @@ export default function CompoHtml({
           <div className="card-body border-top" style={{ height: '130px' }}>
             <h5>{title}</h5>
           </div>
-          <div className="card-footer">
+          {/* <div className="card-footer">
             <p>Progress: {progress}%</p>
-          </div>
+          </div> */}
         </div>
       </div>
     </Link>

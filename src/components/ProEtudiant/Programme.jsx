@@ -104,9 +104,9 @@ export default function Programme() {
         </div>
       </div>
       <Link to={validLinks}>
-        <div className="btn-dash mt-5 pt-5">
+        <div className="btn-dash mt-5 pt-5 d-flex align-items-center justify-content-center text-center">
           {validLinks ? (
-            <button type="button" className="btn-quiz">
+            <button type="button" className="btn btn-success btn-quiz">
               Démarrer le Quiz
             </button>
           ) : (
