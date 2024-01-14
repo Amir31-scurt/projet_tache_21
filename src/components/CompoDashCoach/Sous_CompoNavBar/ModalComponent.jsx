@@ -28,6 +28,7 @@ const ModalComponent = ({ onProfileImageChange }) => {
   const [newPassword, setNewPassword] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
 
+  // Récupérer les identifiants de l'utilisateur connecté
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {

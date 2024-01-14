@@ -1,26 +1,21 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useState, useContext, useEffect } from 'react';
-import { CiMail } from 'react-icons/ci';
-import { RiLockPasswordFill } from 'react-icons/ri';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { ToastContainer, toast } from 'react-toastify';
-import { auth, db } from '../../config/firebase-config';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import { EmailContext } from '../../contexte/EmailContexte';
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-} from 'firebase/firestore';
-import 'react-toastify/dist/ReactToastify.css';
-import Restaurer from './Restaurer';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
+import { CiMail } from "react-icons/ci";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { ToastContainer, toast } from "react-toastify";
+import { auth, db } from "../../config/firebase-config";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import { EmailContext } from "../../contexte/EmailContexte";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import "react-toastify/dist/ReactToastify.css";
+import Restaurer from "./Restaurer";
 
 export default function FormConnect() {
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [adminEmails, setAdminEmails] = useState([]);
   const [coachEmails, setCoachEmails] = useState([]);
@@ -45,8 +40,8 @@ export default function FormConnect() {
 
   // Recuperer les emails de l'admin
   const fetchAdminEmails = async () => {
-    const usersRef = collection(db, 'utilisateurs');
-    const q = query(usersRef, where('role', '==', 'Administrateur'));
+    const usersRef = collection(db, "utilisateurs");
+    const q = query(usersRef, where("role", "==", "Administrateur"));
     const querySnapshot = await getDocs(q);
     const adminEmails = [];
 
@@ -59,8 +54,8 @@ export default function FormConnect() {
   };
   // Recuperer les emails de coach
   const fetchCoachEmails = async () => {
-    const usersRef = collection(db, 'utilisateurs');
-    const coachQuery = query(usersRef, where('role', '==', 'Coach'));
+    const usersRef = collection(db, "utilisateurs");
+    const coachQuery = query(usersRef, where("role", "==", "Coach"));
     const querySnapshot = await getDocs(coachQuery);
     const coachEmails = [];
 
@@ -72,8 +67,8 @@ export default function FormConnect() {
   };
   // Recuperer les emails des etudiants
   const fetchStudentEmails = async () => {
-    const usersRef = collection(db, 'utilisateurs');
-    const studentQuery = query(usersRef, where('role', '==', 'Étudiant'));
+    const usersRef = collection(db, "utilisateurs");
+    const studentQuery = query(usersRef, where("role", "==", "Étudiant"));
     const querySnapshot = await getDocs(studentQuery);
     const studentEmails = [];
 
@@ -86,8 +81,8 @@ export default function FormConnect() {
 
   // Nouvelle fonction pour récupérer les détails de l'utilisateur
   const getUserDetails = async (userEmail) => {
-    const usersRef = collection(db, 'utilisateurs');
-    const userQuery = query(usersRef, where('email', '==', userEmail));
+    const usersRef = collection(db, "utilisateurs");
+    const userQuery = query(usersRef, where("email", "==", userEmail));
     const querySnapshot = await getDocs(userQuery);
 
     if (querySnapshot.size === 0) {
@@ -136,23 +131,23 @@ export default function FormConnect() {
 
       // Vérifier si l'utilisateur n'existe pas ou est archivé
       if (!userDetails || userDetails.archived) {
-        toast.error('Impossible de se connecter. Utilisateur archivé.', {
-          position: 'top-right',
+        toast.error("Impossible de se connecter. Utilisateur archivé.", {
+          position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: 'light',
+          theme: "light",
         });
         setLoading(false);
         return;
       }
 
-      localStorage.setItem('userName', user.displayName || '');
+      localStorage.setItem("userName", user.displayName || "");
       setEmail(userEmail);
-      setPassword('');
+      setPassword("");
 
       // Vérifier si l'utilisateur est un admin, un coach ou un étudiant
       const isAdmin = adminEmails.includes(userEmail);
@@ -161,24 +156,24 @@ export default function FormConnect() {
 
       // Rédirectionner en fonction de l'utilisateur connecté
       if (isAdmin) {
-        navigate('admin/dashboard');
+        navigate("admin/dashboard");
       } else if (isCoach) {
-        navigate('/coach/dashboard');
+        navigate("/coach/dashboard");
       } else if (isStudent) {
-        navigate('/etudiant/dashboard');
+        navigate("/etudiant/dashboard");
       }
     } catch (error) {
       toast.error(
-        'Échec de la connexion. Veuillez vérifier vos informations.',
+        "Échec de la connexion. Veuillez vérifier vos informations.",
         {
-          position: 'top-right',
+          position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: 'light',
+          theme: "light",
         }
       );
       console.error(error);
@@ -187,6 +182,7 @@ export default function FormConnect() {
     }
   };
 
+  // Affichage
   return (
     <div className="m-0">
       {showRestaurerModal && (
@@ -232,13 +228,13 @@ export default function FormConnect() {
               className="btn d-flex justify-content-center align-items-center fs-6 btn-lg btn-block col-7 text-white log"
               disabled={loading}
             >
-              {loading ? 'Chargement...' : 'Se connecter'}
+              {loading ? "Chargement..." : "Se connecter"}
             </button>
           </center>
         </div>
       </form>
       <p className="mt-3 mx-5 p-0 text-end fw-bold">
-        Mot de passe oublié ?{' '}
+        Mot de passe oublié ?{" "}
         <span className="oubli" onClick={openRestaurerModal}>
           restaurer le ici !
         </span>
