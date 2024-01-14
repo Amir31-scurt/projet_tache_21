@@ -1,296 +1,135 @@
-import React, { useState, useEffect, useContext } from "react";
-import CardLivraison from "./CompoDashCoach/CardLivraison";
-import FilterStudents from "./CompoDashCoach/FiterStudents";
-import { EmailContext } from "../contexte/EmailContexte";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { db } from "../config/firebase-config";
-import { queries } from "@testing-library/react";
+import React, { useState, useEffect, useContext } from 'react';
+import CardLivraison from './CompoDashCoach/CardLivraison';
+import FilterStudents from './CompoDashCoach/FiterStudents';
+import { EmailContext } from '../contexte/EmailContexte';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { db } from '../config/firebase-config';
 import {
   differenceInDays,
   differenceInHours,
   differenceInMinutes,
-} from "date-fns";
+} from 'date-fns';
 
 function ContentCardLivraison() {
   const [users, setUsers] = useState([]);
   const { email } = useContext(EmailContext);
-  const [publication, setPublication] = useState([]);
-  const [userFiltrer, setUserFiltrer] = useState()
-  const [filtreActive, setFiltreActive ] = useState(false)
-  const [coachs, setCoachs] = useState([]);
+  const [publications, setPublications] = useState([]);
+  const [userFiltrer, setUserFiltrer] = useState([]);
+  const [filtreActive, setFiltreActive] = useState(false);
 
   useEffect(() => {
-    const usersStudentsUnsub = onSnapshot(
-      collection(db, "utilisateurs"),
+    const unsubUsers = onSnapshot(
+      collection(db, 'utilisateurs'),
       (snapshot) => {
-        const updatedStudents = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setUsers(updatedStudents);
+        setUsers(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
       }
     );
-    const publications = onSnapshot(
-      collection(db, "publication"),
+
+    const unsubPublications = onSnapshot(
+      collection(db, 'publication'),
       (snapshot) => {
-        const updatedPublication = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setPublication(updatedPublication);
+        setPublications(
+          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+        );
       }
     );
-    const coachsData = onSnapshot(
-      query(collection(db, "utilisateurs"), where("role", "==" , "Coach")),
-      (snapshot) => {
-        const updatedUsers = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setCoachs(updatedUsers);
-      }
-    );
-    
 
     return () => {
-      usersStudentsUnsub();
-      publications();
-      coachsData();
+      unsubUsers();
+      unsubPublications();
     };
   }, []);
 
   const roleUser = users.find((user) => user.email === email);
-  const coachStudents = roleUser && roleUser.role === "Coach" ? roleUser.etudiants : [];
-  const filteredPublications = publication.filter((pubs) => coachStudents.includes(pubs.nom));
-  const coachName = roleUser && roleUser.role === "Coach" ? roleUser.name : "";
-
-  const renderedCards = filteredPublications.map((pub) => {
-    const dateToCompare = pub.date && pub.date.toDate && pub.date.toDate() instanceof Date
-      ? pub.date.toDate()
-      : null;
-    const daysDifference = dateToCompare
-      ? differenceInDays(new Date(), dateToCompare)
-      : null;
-  
-    let displayDifference;
-  
-    if (daysDifference > 0) {
-      displayDifference = `${daysDifference} jour${daysDifference !== 1 ? "s" : ""}`;
-    } else {
-      const hoursDifference = Math.abs(differenceInHours(new Date(), dateToCompare));
-      const minutesDifference = Math.abs(differenceInMinutes(new Date(), dateToCompare));
-  
-      if (hoursDifference > 0) {
-        displayDifference = `${hoursDifference} heure${hoursDifference !== 1 ? "s" : ""}`;
-      } else {
-        displayDifference = `${minutesDifference} minute${minutesDifference !== 1 ? "s" : ""}`;
+  const coachStudents = roleUser?.etudiants ?? [];
+  const filteredPublications = publications.filter((pub) =>
+    coachStudents.includes(pub.nom)
+  );
   const handleDisplay = (valeur) => {
-    if(valeur){
-    const q = query(collection(db, "publication"), where("nom", "==", valeur));
-    console.log("Essaie d'affichage de la valeur: ", valeur)
-    console.log("Essaie d'affichage du type de la valeur: ", typeof valeur)
-    try{
-      onSnapshot(q, (snapshot) => {
-        const queries = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setUserFiltrer(queries);
-      setFiltreActive(true);
-      })
-    } catch{
-        setFiltreActive(false)
+    if (valeur) {
+      const q = query(
+        collection(db, 'publication'),
+        where('nom', '==', valeur)
+      );
+      onSnapshot(
+        q,
+        (snapshot) => {
+          const filteredData = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setUserFiltrer(filteredData);
+          setFiltreActive(true);
+        },
+        (error) => {
+          console.error('Error fetching filtered data: ', error);
+          setFiltreActive(false);
+        }
+      );
+    } else {
+      setFiltreActive(false);
+    }
+  };
+
+  const renderCards = (publicationData) => {
+    return publicationData.map((pub) => {
+      const dateToCompare =
+        pub.date?.toDate instanceof Function
+          ? pub.date.toDate()
+          : new Date(pub.date);
+      const daysDifference = differenceInDays(new Date(), dateToCompare);
+      let displayDifference;
+      if (daysDifference > 0) {
+        displayDifference = `${daysDifference} jour${
+          daysDifference > 1 ? 's' : ''
+        }`;
+      } else {
+        const hoursDifference = differenceInHours(new Date(), dateToCompare);
+        if (hoursDifference > 0) {
+          displayDifference = `${hoursDifference} heure${
+            hoursDifference > 1 ? 's' : ''
+          }`;
+        } else {
+          const minutesDifference = differenceInMinutes(
+            new Date(),
+            dateToCompare
+          );
+          displayDifference = `${minutesDifference} minute${
+            minutesDifference > 1 ? 's' : ''
+          }`;
+        }
       }
-    } 
-    // else if(valeur === null)
-    else{
-      console.log("La valeur est indéfinie")
-      setFiltreActive(false)
-    }  
-    return pub.images && pub.images.length > 0 && (
-      <CardLivraison
-        role={roleUser}
-        name={pub.nom}
-        title={pub.cours}
-        defaultImg={pub.images[0]}
-        images={pub.images}
-        validation={pub.finish}
-        emailStudent={pub.email}
-        nomCoach={coachName}
-        date={displayDifference}
-        idDoc={pub.id}
-        valid={pub.valider}
-      />
-    );
-  });
-  
 
-  }
+      return (
+        <CardLivraison
+          key={pub.id}
+          role={roleUser}
+          name={pub.nom}
+          title={pub.cours}
+          defaultImg={pub.images[0]}
+          images={pub.images}
+          validation={pub.finish}
+          emailStudent={pub.email}
+          date={displayDifference}
+          idDoc={pub.id}
+          valid={pub.valider}
+        />
+      );
+    });
+  };
 
-  const roleUser = users.find((user) => user.email === email);
-  return ( 
+  return (
     <div>
-      {roleUser && roleUser.role === "Coach" ? <FilterStudents handleDisplay={handleDisplay} /> : ""}
-     { console.log("Queries Dans le composant ContentCardLivraison",queries) }
-     { console.log("UserFiltrer Dans le composant ContentCardLivraison",userFiltrer) }
+      {roleUser?.role === 'Coach' && (
+        <FilterStudents handleDisplay={handleDisplay} />
+      )}
       <div className="d-flex justify-content-center flex-wrap">
-        {roleUser && roleUser.role === "Coach"
-          ? 
-          !filtreActive ?
-          publication.map((pub) => {
-              const dateToCompare =
-                pub.date && pub.date.toDate && pub.date.toDate() instanceof Date
-                  ? pub.date.toDate()
-                  : null; 
-              const daysDifference = dateToCompare
-                ? differenceInDays(new Date(), dateToCompare)
-                : null;
-
-              let displayDifference;
-
-              if (daysDifference > 0) {
-                displayDifference = `${daysDifference} jour${
-                  daysDifference !== 1 ? "s" : ""
-                }`;
-              } else {
-                const hoursDifference = Math.abs(
-                  differenceInHours(new Date(), dateToCompare)
-                );
-                const minutesDifference = Math.abs(
-                  differenceInMinutes(new Date(), dateToCompare)
-                );
-
-                if (hoursDifference > 0) {
-                  displayDifference = `${hoursDifference} heure${
-                    hoursDifference !== 1 ? "s" : ""
-                  }`;
-                } else {
-                  displayDifference = `${minutesDifference} minute${
-                    minutesDifference !== 1 ? "s" : ""
-                  }`;
-                }
-              }
-
-              return (
-                <CardLivraison
-                  role={roleUser}
-                  name={pub.nom}
-                  title={pub.cours}
-                  defaultImg={pub.images[0]}
-                  images={pub.images}
-                  validation={pub.finish}
-                  date={displayDifference}
-                />      
-              );
-            }) :
-            userFiltrer.map((pub) => {
-              const dateToCompare =
-                pub.date && pub.date.toDate && pub.date.toDate() instanceof Date
-                  ? pub.date.toDate()
-                  : null;
-              const daysDifference = dateToCompare
-                ? differenceInDays(new Date(), dateToCompare)
-                : null;
-
-              let displayDifference;
-
-              if (daysDifference > 0) {
-                displayDifference = `${daysDifference} jour${
-                  daysDifference !== 1 ? "s" : ""
-                }`;
-              } else {
-                const hoursDifference = Math.abs(
-                  differenceInHours(new Date(), dateToCompare)
-                );
-                const minutesDifference = Math.abs(
-                  differenceInMinutes(new Date(), dateToCompare)
-                );
-
-                if (hoursDifference > 0) {
-                  displayDifference = `${hoursDifference} heure${
-                    hoursDifference !== 1 ? "s" : ""
-                  }`;
-                } else {
-                  displayDifference = `${minutesDifference} minute${
-                    minutesDifference !== 1 ? "s" : ""
-                  }`;
-                }
-              }
-
-              return (
-                <CardLivraison
-                  role={roleUser}
-                  name={pub.nom}
-                  title={pub.cours}
-                  defaultImg={pub.images[0]}
-                  images={pub.images}
-                  validation={pub.finish}
-                  date={displayDifference}
-                />   
-              );
-            })
-          : roleUser &&
-            roleUser.role === "Étudiant" &&
-            (publication.filter((pubs) => pubs.email === roleUser.email)
-              .length > 0 ? (
-              publication
-                .filter((pubs) => pubs.email === roleUser.email)
-                .map((pub) => {
-                  const dateToCompare =
-                    pub.date &&
-                    pub.date.toDate &&
-                    pub.date.toDate() instanceof Date
-                      ? pub.date.toDate()
-                      : null;
-                  const daysDifference = dateToCompare
-                    ? differenceInDays(new Date(), dateToCompare)
-                    : null;
-
-                  let displayDifference;
-
-                  if (daysDifference > 0) {
-                    displayDifference = `${daysDifference} jour${
-                      daysDifference !== 1 ? "s" : ""
-                    }`;
-                  } else {
-                    const hoursDifference = Math.abs(
-                      differenceInHours(new Date(), dateToCompare)
-                    );
-                    const minutesDifference = Math.abs(
-                      differenceInMinutes(new Date(), dateToCompare)
-                    );
-
-                    if (hoursDifference > 0) {
-                      displayDifference = `${hoursDifference} heure${
-                        hoursDifference !== 1 ? "s" : ""
-                      }`;
-                    } else {
-                      displayDifference = `${minutesDifference} minute${
-                        minutesDifference !== 1 ? "s" : ""
-                      }`;
-                    }
-                  }
-
-                  return pub.images.length > 0 ? (
-                    <CardLivraison
-                      role={roleUser}
-                      name={pub.nom}
-                      title={pub.cours}
-                      defaultImg={pub.images[0]}
-                      images={pub.images}
-                      validation={pub.finish}
-                      emailStudent={pub.email}
-                      nomCoach={coachName}
-
-                      date={displayDifference}
-                      idDoc={pub.id}
-                      valid={pub.valider}
-                    />
-                  ) : "";
-                })
-            ) : (
-              <h2>Aucune livraison enregistrée</h2>
-            ))}
+        {roleUser?.role === 'Coach'
+          ? filtreActive
+            ? renderCards(userFiltrer)
+            : renderCards(filteredPublications)
+          : roleUser?.role === 'Étudiant' &&
+            renderCards(publications.filter((pub) => pub.email === email))}
       </div>
     </div>
   );
