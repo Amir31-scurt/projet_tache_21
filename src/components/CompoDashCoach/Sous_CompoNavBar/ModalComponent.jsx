@@ -28,6 +28,7 @@ const ModalComponent = ({ onProfileImageChange }) => {
   const [newPassword, setNewPassword] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
 
+  // Récupérer les identifiants de l'utilisateur connecté
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -52,7 +53,10 @@ const ModalComponent = ({ onProfileImageChange }) => {
   const handleProfileImageChange = (event) => {
     const file = event.target.files[0];
 
-    // Stocker temporairement l'image de profil
+    if (!file) {
+      return;
+    }
+
     setTempProfileImage(profileImage);
 
     // Charger l'image vers Firebase Storage
@@ -60,7 +64,6 @@ const ModalComponent = ({ onProfileImageChange }) => {
     uploadBytes(storageRef, file)
       .then(() => {
         getDownloadURL(storageRef).then((url) => setProfileImage(url));
-        toast.success("Photo de profil mise à jour avec succès !");
       })
       .catch((error) => {
         console.error("Error uploading profile image:", error.message);
@@ -69,8 +72,22 @@ const ModalComponent = ({ onProfileImageChange }) => {
   };
 
   const handleCancelChanges = () => {
-    setProfileImage(tempProfileImage);
-    setTempProfileImage(null);
+    // Vérifier s'il y a eu des modifications
+    const isProfileImageChanged = tempProfileImage !== profileImage;
+    const isNameChanged = newDisplayName.trim() !== "";
+    const isPasswordChanged =
+      newPassword.trim() !== "" || currentPassword.trim() !== "";
+
+    // Vérifier si les données du profil ont changé
+    if (isProfileImageChanged || isNameChanged || isPasswordChanged) {
+      setTempProfileImage(null);
+      setNewDisplayName("");
+      setCurrentPassword("");
+      setNewPassword("");
+      handleCloseModal();
+    } else {
+      handleCloseModal();
+    }
   };
 
   // Mettre à jour le profil
@@ -81,12 +98,24 @@ const ModalComponent = ({ onProfileImageChange }) => {
         return;
       }
 
-      // Mettre à jour le nom
-      await updateProfile(user, { displayName: newDisplayName });
-      toast.success("Nom mis à jour avec succès !");
+      // Vérifier s'il y a des modifications à apporter
+      const isNameChanged = newDisplayName.trim() !== "";
+      const isPasswordChanged =
+        newPassword.trim() !== "" && currentPassword.trim() !== "";
+
+      // Si aucune modification n'est nécessaire, fermer simplement le modal
+      if (!isNameChanged && !isPasswordChanged) {
+        handleCloseModal();
+        return;
+      }
+
+      // Mettre à jour le nom si le champ est rempli
+      if (isNameChanged) {
+        await updateProfile(user, { displayName: newDisplayName });
+      }
 
       // Re-authentifier l'utilisateur seulement si le mot de passe est modifié
-      if (newPassword) {
+      if (isPasswordChanged) {
         const credentials = EmailAuthProvider.credential(
           user.email,
           currentPassword
@@ -95,7 +124,6 @@ const ModalComponent = ({ onProfileImageChange }) => {
 
         // Mettre à jour le mot de passe
         await updatePassword(user, newPassword);
-        toast.success("Mot de passe mis à jour avec succès !");
       }
 
       // Fermer le modal
@@ -115,7 +143,6 @@ const ModalComponent = ({ onProfileImageChange }) => {
         updatedUser.email === user.email
       ) {
         // Mise à jour effectuée dans Firebase
-        toast.success("Profil mis à jour avec succès !");
       } else {
         const userDocRef = doc(db, "utilisateurs", user.uid);
         const userDocSnapshot = await getDoc(userDocRef);
@@ -124,7 +151,6 @@ const ModalComponent = ({ onProfileImageChange }) => {
             displayName: newDisplayName,
             newPassword: newPassword,
           });
-          toast.success("Profil mis à jour dans Firebase avec succès !");
         } else {
           toast.error("Document utilisateur non trouvé !");
         }
@@ -149,6 +175,7 @@ const ModalComponent = ({ onProfileImageChange }) => {
     fileInputRef.current?.click();
   };
 
+  // Affichage
   return (
     <div>
       <ToastContainer />
@@ -158,7 +185,7 @@ const ModalComponent = ({ onProfileImageChange }) => {
             style={{ color: "#3084b5" }}
             className="text-center fw-bold fst-italic"
           >
-            Modifier le Profile
+            Modifier le Profil
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
