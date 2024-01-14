@@ -21,7 +21,6 @@ import UserProfil from '../../assets/images/user.png';
 import { ToastContainer, toast } from 'react-toastify';
 import ProgressBar from './ProgressBar';
 
-
 export default function Cours() {
   const { domaineId, sousDomaineName } = useParams();
   const [courses, setCourses] = useState([]);
@@ -431,7 +430,7 @@ export default function Cours() {
         const data = doc.data();
         setCourses((prevCourses) =>
           prevCourses.map((course) => {
-            if (course.title === data.cours) {
+            if (course.title === data.cours && data.email === UserEmail) {
               return {
                 ...course,
                 display: data.start,

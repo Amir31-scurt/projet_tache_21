@@ -1,10 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 body {
@@ -54,7 +54,7 @@ body {
   text-align: left !important;
 }
 
-.module-container input[type="radio"] {
+.module-container input[type='radio'] {
   --webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -250,13 +250,6 @@ body {
   width: 290px;
   margin: 5px;
 }
-.program-card2 {
-  border: 1px solid #ccc;
-  padding: 16px;
-  border-radius: 8px;
-  margin-top: 20px;
-  width: max-content;
-}
 .program-card img {
   width: 100%;
   height: auto;
@@ -287,34 +280,6 @@ body {
 }
 .program-card1 button:hover {
   background-color: #4c9aff;
-}
-.program-card2 img {
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-}
-
-.program-card2 h3 {
-  font-size: 1.2rem;
-  margin-top: 8px;
-}
-
-.program-card2 p {
-  font-size: 1rem;
-  color: #666;
-}
-
-.program-card2 button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.program-card2 button:hover {
-  background-color: #0056b3;
 }
 
 .program-list {
@@ -1065,7 +1030,7 @@ textarea:focus {
 /* CSS pour la certification */
 .certificate-display {
   color: #333;
-  font-family: Georgia, "Times New Roman", Times, serif;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .card {
@@ -1107,4 +1072,40 @@ textarea:focus {
   display: flex !important;
   align-items: center !important;
   width: 110px;
+}
+
+.card-container2 {
+  width: 269px; /* Adjust the width as needed */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+  overflow: hidden;
+}
+.card-image2 {
+  border-radius: 50%;
+}
+
+.card-image2 img {
+  display: block;
+  height: 60px;
+  width: 60px;
+  object-fit: cover;
+}
+
+.card-content2 {
+  padding: 16px;
+}
+
+.card-title2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.card-description2 {
+  font-size: 14px;
+  color: #666;
+  padding: 0;
+  margin: 0;
 }
