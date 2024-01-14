@@ -55,7 +55,7 @@ export default function Template() {
           <div className="col">
             {/* Outlet Position */}
             <Outlet />
-            <ChatHome />
+            {/* <ChatHome /> */}
           </div>
           {isDashboard && (
             <div className="col-3 d-none d-lg-block">
