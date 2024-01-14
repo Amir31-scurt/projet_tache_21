@@ -104,13 +104,14 @@ export default function Programme() {
         </div>
       </div>
       <Link to={validLinks}>
-        <div className="btn-dash mt-5 pt-5 mx-auto">
-          <button
-            type="button"
-            className="btn-quiz btn btn-success text-center"
-          >
-            Demarrer le Quiz
-          </button>
+        <div className="btn-dash mt-5 pt-5">
+          {validLinks ? (
+            <button type="button" className="btn-quiz">
+              Démarrer le Quiz
+            </button>
+          ) : (
+            <span className="text-muted">Aucun quiz disponible</span>
+          )}
         </div>
       </Link>
     </div>
