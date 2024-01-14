@@ -40,7 +40,6 @@ function Notifications() {
   const handleProfileMenuOpenNotif = (event) => {
     setAnchorElNotif(event.currentTarget);
   };
-  
   const handleMenuClose = () => {
     setAnchorElNotif(null);
     setNewNotificationsCount(0);
@@ -117,10 +116,10 @@ function Notifications() {
 
   useEffect(() => {
     loadNotifications();
-    notifsRead();
-  }, [loadNotifications, notifsRead, notifs]);
+  }, [loadNotifications]);
   
-  const notifsRead = () => {
+
+  useEffect(() => {
     // Récupérer les notifications lues depuis le stockage local
     const readNotifications =
       JSON.parse(localStorage.getItem("readNotifications")) || [];
@@ -129,9 +128,10 @@ function Notifications() {
     const newUnreadNotifications = notifs.filter(
       (notif) => !readNotifications.includes(notif.id)
     );
+
     // Mettre à jour le compteur de nouvelles notifications
     setNewNotificationsCount(newUnreadNotifications.length);
-  }
+  }, [notifs]);
 
   const signalNewNotif = async (date) => {
     // Récupérez la première notification non lue

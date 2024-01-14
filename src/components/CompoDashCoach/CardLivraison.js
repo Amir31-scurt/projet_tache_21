@@ -103,7 +103,7 @@ function CardLivraison({role, title, name, date, defaultImg, images, validation,
             <Button className="bg-danger border-0" onClick={handleRejectedTask}>Rejeter</Button>
           </>
         ) : (
-          <Button className="bg-secondary border-0 pe-auto " disabled>Terminée</Button>
+          <Button className="bg-secondary border-0 pe-auto " disabled><Icon.Check2Square className="fs-4 me-1" /> Validée</Button>
         )}
       </Modal.Footer> : ""}
       </Modal>
