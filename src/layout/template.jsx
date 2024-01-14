@@ -7,6 +7,7 @@ import Card from '../utils/cards_reusable';
 import logo from '../assets/images/logo.png';
 import { EmailContext } from '../contexte/EmailContexte';
 import ChatHome from '../components/chatComponent/ChatHome';
+import { ToastContainer } from 'react-toastify';
 
 export default function Template() {
   const { currentUser } = useContext(AuthContext);
@@ -41,6 +42,7 @@ export default function Template() {
 
   return (
     <div className="BigContainer">
+      <ToastContainer />
       <div className="NavSide fixed-top">
         <NavBarCompo />
       </div>

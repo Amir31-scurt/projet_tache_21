@@ -34,10 +34,8 @@ const Quiz = ({ quizData }) => {
     return () => {
       usersStudentsUnsub();
     };
+    
   }, []);
-
-  
-
 
   useEffect(() => {
     // Obtenez le nom de l'étudiant 

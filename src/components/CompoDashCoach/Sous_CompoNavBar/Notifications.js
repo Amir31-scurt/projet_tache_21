@@ -40,16 +40,30 @@ function Notifications() {
   const handleProfileMenuOpenNotif = (event) => {
     setAnchorElNotif(event.currentTarget);
   };
+  
   const handleMenuClose = () => {
     setAnchorElNotif(null);
     setNewNotificationsCount(0);
-    // Stocker les notifications lues dans le stockage local
-    const readNotifications = notifs.map((notif) => notif.id);
+  
+    // Get the existing read notifications from localStorage
+    const existingReadNotifications = JSON.parse(localStorage.getItem("readNotifications")) || [];
+  
+    // Map the IDs of the current notifications and merge with existing read notifications
+    const updatedReadNotifications = [
+      ...existingReadNotifications,
+      ...notifs.map((notif) => notif.id),
+    ];
+  
+    // Remove duplicates by converting the array to a Set and back to an array
+    const uniqueReadNotifications = [...new Set(updatedReadNotifications)];
+  
+    // Store the updated read notifications in localStorage
     localStorage.setItem(
       "readNotifications",
-      JSON.stringify(readNotifications)
+      JSON.stringify(uniqueReadNotifications)
     );
   };
+  
 
   // Supprimer une notification
   const handleDeleteSelectedNotif = useCallback(async () => {
@@ -66,7 +80,6 @@ function Notifications() {
           );
           setSelectedNotification(null);
           setShowDeleteButton(false); 
-          console.log(`Notification "${title}" supprimée avec succès!`);
         } else {
           console.log(`Document not found with ID: ${selectedNotification.id}`);
         }
@@ -104,10 +117,10 @@ function Notifications() {
 
   useEffect(() => {
     loadNotifications();
-  }, [loadNotifications]);
+    notifsRead();
+  }, [loadNotifications, notifsRead, notifs]);
   
-
-  useEffect(() => {
+  const notifsRead = () => {
     // Récupérer les notifications lues depuis le stockage local
     const readNotifications =
       JSON.parse(localStorage.getItem("readNotifications")) || [];
@@ -116,10 +129,9 @@ function Notifications() {
     const newUnreadNotifications = notifs.filter(
       (notif) => !readNotifications.includes(notif.id)
     );
-
     // Mettre à jour le compteur de nouvelles notifications
     setNewNotificationsCount(newUnreadNotifications.length);
-  }, [notifs]);
+  }
 
   const signalNewNotif = async (date) => {
     // Récupérez la première notification non lue

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import CardLivraison from "./CompoDashCoach/CardLivraison";
 import FilterStudents from "./CompoDashCoach/FiterStudents";
 import { EmailContext } from "../contexte/EmailContexte";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { collection, onSnapshot, query, where} from "firebase/firestore";
 import { db } from "../config/firebase-config";
 import {
   differenceInDays,
@@ -37,7 +37,7 @@ function ContentCardLivraison() {
         setPublication(updatedPublication);
       }
     );
-    const coachs = onSnapshot(
+    const coachsData = onSnapshot(
       query(collection(db, "utilisateurs"), where("role", "==" , "Coach")),
       (snapshot) => {
         const updatedUsers = snapshot.docs.map((doc) => ({
@@ -47,13 +47,15 @@ function ContentCardLivraison() {
         setCoachs(updatedUsers);
       }
     );
+    
 
     return () => {
       usersStudentsUnsub();
       publications();
-      coachs();
+      coachsData();
     };
   }, []);
+
   const roleUser = users.find((user) => user.email === email);
   const coachStudents = roleUser && roleUser.role === "Coach" ? roleUser.etudiants : [];
   const filteredPublications = publication.filter((pubs) => coachStudents.includes(pubs.nom));
@@ -154,6 +156,8 @@ function ContentCardLivraison() {
                       defaultImg={pub.images[0]}
                       images={pub.images}
                       validation={pub.finish}
+                      emailStudent={pub.email}
+                      nomCoach={coachStudents.name}
                       date={displayDifference}
                     />
                   );
