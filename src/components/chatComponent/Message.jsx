@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import pp from "../../assets/images/user.png";
-// import messageTexto from "../../assets/images/affiche.jpg";
 import { ChatAuthCtx } from "../../contexte/ChatAuthCtx";
 import { ChatContext } from "../../contexte/ChatContext";
+import { auth, storage } from "../../config/firebase-config";
+import { getDownloadURL, ref } from "firebase/storage";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function Message({ message }) {
   const { currentUser } = useContext(ChatAuthCtx);
