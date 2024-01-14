@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { db } from '../../config/firebase-config';
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import { addDoc, collection, getDocs, query, where, serverTimestamp, onSnapshot} from 'firebase/firestore';
 import { AuthContext } from '../../contexte/AuthContext';
 
 const Quiz = ({ quizData }) => {
   const { questions, correctAnswers } = quizData;
   const authContext = useContext(AuthContext);
-
+  const [users, setUsers] = useState([]);
   const [userAnswers, setUserAnswers] = useState(
     Array(correctAnswers.length).fill('')
   );
@@ -15,7 +15,27 @@ const Quiz = ({ quizData }) => {
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [remainingAttempts, setRemainingAttempts] = useState(3);
   const [showSubmitButton, setShowSubmitButton] = useState(true);
+  const [notificationsCollection] = useState(
+    collection(db, "notifications")
+  );
 
+  useEffect(() => {
+    const usersStudentsUnsub = onSnapshot(
+      query(collection(db, "utilisateurs"), where("email", "==" , authContext.currentUser.email)),
+      (snapshot) => {
+        const updatedStudents = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setUsers(updatedStudents);
+      }
+    );
+
+    return () => {
+      usersStudentsUnsub();
+    };
+    
+  }, []);
 
   useEffect(() => {
     // Obtenez le nom de l'étudiant 
@@ -56,7 +76,7 @@ const Quiz = ({ quizData }) => {
   
     // Obtenez le nom de l'étudiant
     const studentName = authContext.currentUser.displayName;
-  
+    const coachEmail = users.length > 0 ? users[0].emailCoach : '';
     try {
       // Mise à jour du nombre de tentatives
       await addDoc(collection(db, 'scorequizz'), {
@@ -64,6 +84,16 @@ const Quiz = ({ quizData }) => {
         scoreMessage: `Vous avez obtenu ${newScore}/${questions.length} sur ce quiz.`,
         tentativesRestantes: remainingAttempts - 1,
       });
+
+      if(users && coachEmail) {
+        await addDoc(notificationsCollection, {
+          messageForAdmin: `Votre étudiant ${studentName} a terminé le quizz avec un score de ${newScore}/${questions.length}`,
+          timestamp: serverTimestamp(),
+          newNotif: true,
+          email: coachEmail,
+        });
+      }
+
   
       console.log('Score et nombre de tentatives ajoutés à Firestore avec succès!');
     } catch (error) {
