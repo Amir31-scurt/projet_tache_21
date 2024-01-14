@@ -104,9 +104,12 @@ export default function Programme() {
         </div>
       </div>
       <Link to={validLinks}>
-        <div className="btn-dash mt-5 pt-5">
-          <button type="button" className="btn-quiz btn btn-success">
-            Demarrer Quiz
+        <div className="btn-dash mt-5 pt-5 mx-auto">
+          <button
+            type="button"
+            className="btn-quiz btn btn-success text-center"
+          >
+            Demarrer le Quiz
           </button>
         </div>
       </Link>

@@ -105,6 +105,12 @@ Vert
 .search .userChatContainer {
   cursor: pointer;
 }
+.search .userChatContainer .imgFind{
+  width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
 
 /* ================================================== 
                     CHATS 
@@ -164,7 +170,7 @@ Vert
 }
 .chats .userChat {
   cursor: pointer;
-  width: 75px;
+  min-width: 75px;
   overflow-x: hidden;
   position: relative;
   /* flex-wrap: nowrap; */
@@ -219,7 +225,8 @@ Vert
                 MESSAGES
    ================================================== */
 .messages {
-  height: 250px;
+  /* height: 250px; */
+  height: 150px;
   overflow-y: auto;
   overflow-x: hidden;
 }

@@ -18,6 +18,11 @@ import format from "date-fns/format";
 import { MdTask } from "react-icons/md";
 import { PiUsersFourFill } from "react-icons/pi";
 import { ToastContainer, toast } from "react-toastify";
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth, storage } from '../../src/config/firebase-config';
+import { getDownloadURL, ref } from 'firebase/storage';
+import UserProfil from '../assets/images/user.png';
+
 
 export default function DashboardApprenant() {
   // État local pour stocker les livraisons et les utilisateurs

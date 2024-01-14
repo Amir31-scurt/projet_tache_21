@@ -6,10 +6,10 @@ import {
   Dropdown,
   IconButton,
   Progress,
-} from 'rsuite';
-import MoreIcon from '@rsuite/icons/legacy/More';
-import { mockUsers } from './Mock';
-import { useState } from 'react';
+} from "rsuite";
+import MoreIcon from "@rsuite/icons/legacy/More";
+import { mockUsers } from "./Mock";
+import { useState } from "react";
 
 const { Column, HeaderCell, Cell } = Table;
 const data = mockUsers(8);
@@ -47,11 +47,11 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
       style={{
         width: 40,
         height: 40,
-        background: '#f5f5f5',
+        background: "#f5f5f5",
         borderRadius: 6,
         marginTop: 2,
-        overflow: 'hidden',
-        display: 'inline-block',
+        overflow: "hidden",
+        display: "inline-block",
       }}
     >
       <img src={rowData.avatar} alt="" width="40" />
@@ -61,7 +61,7 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 
 const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => (
   <Cell {...props} style={{ padding: 0 }}>
-    <div style={{ lineHeight: '46px' }}>
+    <div style={{ lineHeight: "46px" }}>
       <Checkbox
         value={rowData[dataKey]}
         inline
@@ -113,7 +113,7 @@ const StudentTable = () => {
   } else if (checkedKeys.length > 0 && checkedKeys.length < data.length) {
     indeterminate = true;
   }
-   // eslint-disable-next-line
+  // eslint-disable-next-line
   const handleCheckAll = (value, checked) => {
     const keys = checked ? data.map((item) => item.id) : [];
     setCheckedKeys(keys);
@@ -128,10 +128,10 @@ const StudentTable = () => {
   return (
     <div className="mx-5 my-3">
       <h3>Base de données étudiants</h3>
-      <Table height={300} data={data} id="table" width={'75vw'}>
+      <Table height={300} data={data} id="table" width={"75vw"}>
         <Column width={50} align="center">
           <HeaderCell style={{ padding: 0 }}>
-            <div style={{ lineHeight: '40px' }}>
+            <div style={{ lineHeight: "40px" }}>
               <Checkbox
                 inline
                 checked={checked}
@@ -158,7 +158,7 @@ const StudentTable = () => {
 
         <Column width={230}>
           <HeaderCell>Progression</HeaderCell>
-          <Cell style={{ padding: '10px 0' }}>
+          <Cell style={{ padding: "10px 0" }}>
             {(rowData) => (
               <Progress percent={rowData.progress} showInfo={false} />
             )}
