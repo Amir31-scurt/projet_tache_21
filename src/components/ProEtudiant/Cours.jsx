@@ -21,7 +21,6 @@ import UserProfil from '../../assets/images/user.png';
 import { ToastContainer, toast } from 'react-toastify';
 import ProgressBar from './ProgressBar';
 
-
 export default function Cours() {
   const { domaineId, sousDomaineName } = useParams();
   const [courses, setCourses] = useState([]);
@@ -41,6 +40,9 @@ export default function Cours() {
   const [loadingStates, setLoadingStates] = useState({});
   const [timeoutIds, setTimeoutIds] = useState({});
   const [isButtonsDisabled, setIsButtonsDisabled] = useState(false);
+  const [livraisonDescription, setLivraisonDescription] = useState('');
+  const [loading, setLoading] = useState(false);
+
 
   const UserUid = uid;
   const UserEmail = currentUser.email;
@@ -137,8 +139,13 @@ export default function Cours() {
     };
   }, [selectedFiles]);
 
+  const handleDescription = (e) => {
+    setLivraisonDescription(e.target.value); return
+  }
+
   const imageUrls = [];
   const handleUpload = async () => {
+    setLoading(true);
     try {
       // Boucler à travers les fichiers sélectionnés et les télécharger sur Firebase Storage
       await Promise.all(
@@ -179,11 +186,24 @@ export default function Cours() {
         await updateDoc(existingDocRef, {
           date: serverTimestamp(),
           images: imagesMisesAJour,
+          description: livraisonDescription,
         });
       }
     } catch (error) {
       console.error('Erreur lors du traitement du téléchargement :', error);
     }
+    setLivraisonDescription("");
+    toast.success("Livraison Réussie  !", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -273,6 +293,7 @@ export default function Cours() {
         finish: false,
         livree: false,
         duree: 0,
+        valider: false
       });
 
       toast.success(
@@ -431,7 +452,7 @@ export default function Cours() {
         const data = doc.data();
         setCourses((prevCourses) =>
           prevCourses.map((course) => {
-            if (course.title === data.cours) {
+            if (course.title === data.cours && data.email === UserEmail) {
               return {
                 ...course,
                 display: data.start,
@@ -600,7 +621,7 @@ export default function Cours() {
 
             return (
               <div key={index} className="col-12 col-md-6 col-lg-4">
-                <Card style={{ padding: '20px' }}>
+                <Card style={{ padding: "20px" }}>
                   <h5>
                     Cours {index + 1} : {course.title}
                   </h5>
@@ -637,31 +658,35 @@ export default function Cours() {
               open={open}
               onClose={() => {
                 handleClose();
-                setSelectedCourseTitle(''); // Reset the selected course title when closing the modal
+                setSelectedCourseTitle(""); // Reset the selected course title when closing the modal
               }}
             >
               <Modal.Header>
-                <Modal.Title>Envoyer mon travail</Modal.Title>
+                <Modal.Title className="text-center fst-italic mb-3 fs-5">
+                  Envoyer mon travail
+                </Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <div className="mb-3">
-                  <div className="mb-3">
-                    <label htmlFor="courseTitle" className="form-label">
-                      Titre
+                  <div className="mb-3 d-flex">
+                    <label htmlFor="courseTitle" className="pt-1 fw-bold">
+                      Titre :
                     </label>
                     <input
                       type="text"
-                      className="form-control"
+                      className=" border border-none text-center TitreRecup"
                       id="courseTitle"
                       value={selectedCourseTitle}
-                      readOnly // Makes the input read-only
+                      readOnly
                     />
                   </div>
                   <textarea
-                    placeholder="description"
-                    className="form-control"
+                    placeholder=" Mettez une description ..."
+                    className="AreaDesc ms-3 p-3"
                     id="exampleFormControlTextarea1"
-                    rows="3"
+                    rows=""
+                    value={livraisonDescription}
+                    onChange={handleDescription}
                   ></textarea>
                 </div>
                 {previews &&
@@ -674,7 +699,8 @@ export default function Cours() {
                   <label
                     htmlFor="formFileLg"
                     id="myfiles"
-                    className="form-label inputStyle btn text-white"
+                    className="form-label inputStyle text-white"
+                    style={{ cursor: "pointer" }}
                   >
                     Choisir Fichiers
                   </label>
@@ -689,13 +715,19 @@ export default function Cours() {
                 </div>
               </Modal.Body>
               <Modal.Footer>
-                <button
-                  type="submit"
-                  onClick={handleUpload}
-                  className="inputStyle"
-                >
-                  Envoyer
-                </button>
+                {loading ? (
+                  <div className="spinner-border text-light bg-success me-5 pe-2 " role="status">
+                    <span className="visually-hidden">loading</span>
+                  </div>
+                ) : (
+                  <button
+                    type="submit"
+                    onClick={handleUpload}
+                    className="inputStyle me-3"
+                  >
+                    Envoyer
+                  </button>
+                )}
               </Modal.Footer>
             </Modal>
           </div>
