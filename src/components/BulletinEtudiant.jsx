@@ -5,7 +5,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const BulletinEtudiant = () => {
-  // États du composant
   const [students, setStudents] = useState([]);
   const [selectedStudentData, setSelectedStudentData] = useState(null);
   const [selectedDomain, setSelectedDomain] = useState(null);
@@ -15,7 +14,6 @@ const BulletinEtudiant = () => {
     appreciation: "",
   });
 
-  // Effet de chargement des étudiants depuis la base de données Firestore
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -40,7 +38,6 @@ const BulletinEtudiant = () => {
     fetchStudents();
   }, []);
 
-  // Effet de chargement des domaines depuis la base de données Firestore
   useEffect(() => {
     const fetchDomains = async () => {
       try {
@@ -52,8 +49,6 @@ const BulletinEtudiant = () => {
           sousDomaines: doc.data().sousDomaines || [],
         }));
         setDomains(domainList);
-
-        console.log("Domaines et sous-domaines :", domainList);
       } catch (error) {
         console.error("Erreur :", error);
       }
@@ -62,7 +57,6 @@ const BulletinEtudiant = () => {
     fetchDomains();
   }, []);
 
-  // Fonction pour récupérer les sous-domaines d'un domaine spécifique
   const getSousDomaines = (domainId) => {
     const selectedDomainObj = domains.find((domain) => domain.id === domainId);
     return selectedDomainObj
@@ -70,7 +64,6 @@ const BulletinEtudiant = () => {
       : [];
   };
 
-  // Gestionnaire de changement de domaine
   const handleChangeDomain = (e) => {
     const domainId = e.target.value;
     setSelectedDomain(domainId);
@@ -86,15 +79,11 @@ const BulletinEtudiant = () => {
     }));
   };
 
-  // Gestionnaire de changement d'étudiant
   const handleChangeStudent = (e) => {
     const selectedValue = e.target.value;
     const selectedStudentData = students.find(
       (student) => student.userId === selectedValue
     );
-
-    console.log("ID de l'étudiant sélectionné :", selectedValue);
-    console.log("Nom de l'étudiant sélectionné :", selectedStudentData?.name);
 
     setSelectedStudentData(selectedStudentData);
 
@@ -107,7 +96,6 @@ const BulletinEtudiant = () => {
     });
   };
 
-  // Gestionnaire de changement des notes et de l'appréciation
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "appreciation") {
@@ -126,12 +114,9 @@ const BulletinEtudiant = () => {
     }
   };
 
-  // Gestionnaire de sauvegarde du bulletin
   const handleSave = async () => {
     try {
       const studentUid = selectedStudentData?.userId;
-
-      console.log("UID de l'étudiant sélectionné :", studentUid);
 
       const existingBulletinQuery = query(
         collection(db, "bulletins"),
@@ -145,16 +130,10 @@ const BulletinEtudiant = () => {
         return;
       }
 
-      // Récupérer les informations de l'étudiant sélectionné
       const studentName = selectedStudentData?.name || "Nom inconnu";
       const studentAddress = selectedStudentData?.address || "Adresse inconnue";
       const studentEmail = selectedStudentData?.email || "Email inconnu";
       const studentNumber = selectedStudentData?.number || "Numéro inconnu";
-
-      console.log("Nom de l'étudiant sélectionné :", studentName);
-      console.log("Adresse de l'étudiant sélectionné :", studentAddress);
-      console.log("Email de l'étudiant sélectionné :", studentEmail);
-      console.log("Numéro de l'étudiant sélectionné :", studentNumber);
 
       const notes = {};
       bulletinInfo.sousDomaines.forEach((subject) => {
@@ -171,14 +150,10 @@ const BulletinEtudiant = () => {
         appreciation: bulletinInfo.appreciation,
       };
 
-      console.log("Données du bulletin à enregistrer :", bulletinData);
-
-      // Ajoutez les données du bulletin à la collection "bulletins"
       await addDoc(collection(db, "bulletins"), bulletinData);
 
       toast.success("Bulletin enregistré avec succès!");
 
-      // Réinitialisez les états après la soumission réussie
       setSelectedStudentData(null);
       setBulletinInfo({
         sousDomaines: [],

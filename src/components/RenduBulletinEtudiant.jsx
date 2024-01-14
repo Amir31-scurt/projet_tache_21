@@ -13,11 +13,8 @@ const RenduBulletinEtudiant = () => {
     const fetchStudentData = async () => {
       try {
         if (!user) {
-          console.log("Pas d'utilisateur connecté");
           return;
         }
-
-        console.log("ID Utilisateur :", user.uid);
 
         const bulletinQuery = query(
           collection(db, "bulletins"),
@@ -26,9 +23,7 @@ const RenduBulletinEtudiant = () => {
         const bulletinSnapshot = await getDocs(bulletinQuery);
 
         if (!bulletinSnapshot.empty) {
-          console.log("Bulletin Snapshot:", bulletinSnapshot.docs[0]);
           const bulletinData = bulletinSnapshot.docs[0].data();
-          console.log("Bulletin Data:", bulletinData);
 
           if (
             bulletinData &&
@@ -39,18 +34,9 @@ const RenduBulletinEtudiant = () => {
               "Notes de chaque sous-domaine :",
               bulletinData.notes.sousDomaines
             );
-          } else {
-            console.log(
-              "Aucune note de sous-domaine trouvée dans les données du bulletin"
-            );
           }
 
           setStudentData(bulletinData);
-        } else {
-          console.log(
-            "Aucun bulletin trouvé pour l'ID utilisateur :",
-            user.uid
-          );
         }
       } catch (error) {
         console.error(
@@ -63,7 +49,6 @@ const RenduBulletinEtudiant = () => {
     fetchStudentData();
   }, [user]);
 
-  // Fonction pour calculer la moyenne générale
   const calculateOverallGrade = () => {
     if (
       !studentData ||
@@ -81,7 +66,6 @@ const RenduBulletinEtudiant = () => {
     return parseFloat(average.toFixed(2));
   };
 
-  // Fonction pour déterminer l'appréciation
   const determineAppreciation = (average) => {
     if (average >= 16) {
       return "Excellent Travail";
@@ -94,7 +78,6 @@ const RenduBulletinEtudiant = () => {
     }
   };
 
-  // Fonction pour télécharger le bulletin au format PDF
   const downloadPdf = () => {
     if (!studentData) return;
 
