@@ -1,7 +1,6 @@
-
-import React, { useEffect, useCallback, useState, useContext } from "react";
-import DashboardCompo from "../components/programmes/Single_Programmes/DashboardCompo";
-import CardLivraison from "../components/CardLivraison";
+import React, { useEffect, useCallback, useState, useContext } from 'react';
+import DashboardCompo from '../components/programmes/Single_Programmes/DashboardCompo';
+import CardLivraison from '../components/CardLivraison';
 import {
   collection,
   onSnapshot,
@@ -11,18 +10,13 @@ import {
   doc,
   getDoc,
   updateDoc,
-} from "firebase/firestore";
-import { db } from "../config/firebase-config";
-import { AuthContext } from "../contexte/AuthContext";
-import format from "date-fns/format";
-import { MdTask } from "react-icons/md";
-import { PiUsersFourFill } from "react-icons/pi";
-import { ToastContainer, toast } from "react-toastify";
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth, storage } from '../../src/config/firebase-config';
-import { getDownloadURL, ref } from 'firebase/storage';
-import UserProfil from '../assets/images/user.png';
-
+} from 'firebase/firestore';
+import { db } from '../config/firebase-config';
+import { AuthContext } from '../contexte/AuthContext';
+import format from 'date-fns/format';
+import { MdTask } from 'react-icons/md';
+import { PiUsersFourFill } from 'react-icons/pi';
+import { toast } from 'react-toastify';
 
 export default function DashboardApprenant() {
   // État local pour stocker les livraisons et les utilisateurs
@@ -32,30 +26,30 @@ export default function DashboardApprenant() {
   // Fonction pour mettre à jour la description dans la base de données
   const handleUpdateDescription = async (livraisonId, newDescription) => {
     try {
-      const livraisonDocRef = doc(db, "publication", livraisonId);
+      const livraisonDocRef = doc(db, 'publication', livraisonId);
       await updateDoc(livraisonDocRef, {
         description: newDescription, // Mettre à jour la description avec la nouvelle valeur
       });
 
-      toast.success("Description mise à jour avec succès !", {
-        position: "top-right",
+      toast.success('Description mise à jour avec succès !', {
+        position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored",
+        theme: 'colored',
       });
     } catch (error) {
-      console.error("Erreur lors de la mise à jour de la description :", error);
-      toast.error("Erreur lors de la mise à jour de la description");
+      console.error('Erreur lors de la mise à jour de la description :', error);
+      toast.error('Erreur lors de la mise à jour de la description');
     }
   };
 
   const handleDeleteLivraison = async (livraisonId) => {
     try {
-      const livraisonDocRef = doc(db, "publication", livraisonId);
+      const livraisonDocRef = doc(db, 'publication', livraisonId);
       const livraisonDocSnapshot = await getDoc(livraisonDocRef);
 
       if (livraisonDocSnapshot.exists()) {
@@ -69,31 +63,31 @@ export default function DashboardApprenant() {
           setLivraisons((prevLivraisons) =>
             prevLivraisons.filter((liv) => liv.key !== livraisonId)
           );
-          toast.success("Livraison supprimée !", {
-            position: "top-right",
+          toast.success('Livraison supprimée !', {
+            position: 'top-right',
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "light",
+            theme: 'light',
           });
         }
       }
     } catch (error) {
-      console.error("Erreur lors de la mise à jour de la livraison", error);
+      console.error('Erreur lors de la mise à jour de la livraison', error);
     }
   };
 
-  const { currentUser, uid } = useContext(AuthContext);
+  const { uid } = useContext(AuthContext);
   const UserUid = uid;
-  const students = users.filter((user) => user.role === "Étudiant");
+  const students = users.filter((user) => user.role === 'Étudiant');
 
   useEffect(() => {
     const fetchLivraisons = async () => {
       try {
-        const publicationCollectionRef = collection(db, "publication");
+        const publicationCollectionRef = collection(db, 'publication');
         const publicationQuery = query(publicationCollectionRef);
         const querySnapshot = await getDocs(publicationQuery);
 
@@ -106,11 +100,11 @@ export default function DashboardApprenant() {
         if (!querySnapshot.empty) {
           for (const doc of querySnapshot.docs) {
             const userCours = doc.data().cours;
-            const livraisonCollectionRef = collection(db, "publication");
+            const livraisonCollectionRef = collection(db, 'publication');
 
             const livraisonQuery = query(
               livraisonCollectionRef,
-              where("cours", "==", userCours)
+              where('cours', '==', userCours)
             );
 
             const livraisonQuerySnapshot = await getDocs(livraisonQuery);
@@ -127,7 +121,7 @@ export default function DashboardApprenant() {
                   key: livraisonDoc.id,
                   date: format(
                     new Date(data.date.seconds * 1000),
-                    "dd/MM/yyyy - HH:mm:ss"
+                    'dd/MM/yyyy - HH:mm:ss'
                   ),
                   apprenant: data.nom,
                   titreCourEtudiant: data.cours,
@@ -146,7 +140,7 @@ export default function DashboardApprenant() {
           // Récupérer les données des livraisons de manière asynchrone
           const livraisonsDataPromises = livraisonsArray.map(
             async (livraisonId) => {
-              const livraisonDocRef = doc(db, "publication", livraisonId);
+              const livraisonDocRef = doc(db, 'publication', livraisonId);
               const livraisonDocSnapshot = await getDoc(livraisonDocRef);
 
               if (livraisonDocSnapshot.exists()) {
@@ -155,7 +149,7 @@ export default function DashboardApprenant() {
                   key: livraisonId,
                   date: format(
                     new Date(data.date.seconds * 1000),
-                    "dd/MM/yyyy - HH:mm:ss"
+                    'dd/MM/yyyy - HH:mm:ss'
                   ),
                   apprenant: data.nom,
                   titreCourEtudiant: data.cours,
@@ -184,10 +178,10 @@ export default function DashboardApprenant() {
           // Mettre à jour l'état local avec les nouvelles livraisons
           setLivraisons(livraisonsFiltered);
         } else {
-          console.log("Aucun document publication trouvé.");
+          console.log('Aucun document publication trouvé.');
         }
       } catch (error) {
-        console.error("Erreur lors de la récupération des livraisons", error);
+        console.error('Erreur lors de la récupération des livraisons', error);
       }
     };
 
@@ -196,7 +190,7 @@ export default function DashboardApprenant() {
 
   const loadUsers = useCallback(() => {
     const unsubscribe = onSnapshot(
-      collection(db, "utilisateurs"),
+      collection(db, 'utilisateurs'),
       (snapshot) => {
         const updatedUsers = snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -220,24 +214,24 @@ export default function DashboardApprenant() {
       ChiffreCardDsb: students.length,
       IconeCardDsb: (
         <PiUsersFourFill
-          style={{ fontSize: "68px", opacity: "1", color: "#fff" }}
+          style={{ fontSize: '68px', opacity: '1', color: '#fff' }}
         />
       ),
-      TextCardDsb: "Etudiants",
-      couleurCarte: "CouleurB",
+      TextCardDsb: 'Etudiants',
+      couleurCarte: 'CouleurB',
     },
     {
-      ChiffreCardDsb: "52",
+      ChiffreCardDsb: '52',
       IconeCardDsb: (
-        <MdTask style={{ fontSize: "68px", opacity: "1", color: "#fff" }} />
+        <MdTask style={{ fontSize: '68px', opacity: '1', color: '#fff' }} />
       ),
-      TextCardDsb: "Taches",
-      couleurCarte: "CouleurC",
+      TextCardDsb: 'Taches',
+      couleurCarte: 'CouleurC',
     },
   ];
 
   return (
-    <div className="d-flex flex-column flex-wrap ms-3 justify-content-center">
+    <div className="d-flex flex-column flex-wrap ms-0 ms-lg-3 justify-content-center">
       <h1 className="fst-italic text-secondary fs-3 fw-bold ps-2 pt-3">
         Dashboard
       </h1>
@@ -246,7 +240,7 @@ export default function DashboardApprenant() {
           <DashboardCompo {...elem} key={index} />
         ))}
       </div>
-      <div className="d-flex flex-column ms-3 justify-content-center">
+      <div className="d-flex flex-column justify-content-center">
         {livraisons.map((livraison) => (
           <CardLivraison
             key={livraison.key}
