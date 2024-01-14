@@ -30,7 +30,6 @@ export const NavBarCompo = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // Mettez à jour l'image de profil après la reconnexion
         const storageRef = ref(storage, `profile_images/${user.uid}`);
         getDownloadURL(storageRef)
           .then((url) => {
@@ -53,11 +52,9 @@ export const NavBarCompo = () => {
       setEmail("");
       localStorage.removeItem("userEmail");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
-
-  // Fin Deconnexion
 
   return (
     <NavBarContext.Provider value={{ open, handleOpen, handleClose }}>

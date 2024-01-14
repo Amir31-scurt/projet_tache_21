@@ -9,19 +9,18 @@ import {
   collection,
   addDoc,
   serverTimestamp,
-  onSnapshot,
   getDocs,
   where,
   updateDoc,
   query,
 } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { AuthContext } from '../../contexte/AuthContext';
-import { format } from 'date-fns';
 import { onAuthStateChanged } from 'firebase/auth';
 import UserProfil from '../../assets/images/user.png';
 import { ToastContainer, toast } from 'react-toastify';
 import ProgressBar from './ProgressBar';
+
 
 export default function Cours() {
   const { domaineId, sousDomaineName } = useParams();

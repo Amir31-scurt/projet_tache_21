@@ -78,6 +78,7 @@ const ReactHookFormDemo = () => {
 
     fetchCertifications();
   }, []);
+
   // Création de la collection "certifications" pour stocker les données de la certification
   const createCertification = async (certificationData) => {
     try {
