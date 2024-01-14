@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 * {
   font-family: "Montserrat", sans-serif;
 }
@@ -23,8 +23,6 @@ body {
   border-radius: 20px;
   margin: 45px 0;
 }
-
-/* Quizzs CSS */
 
 .module-container {
   display: flex;
@@ -261,6 +259,7 @@ body {
   padding: 16px;
   border-radius: 8px;
   margin-top: 20px; /* or any desired width */
+  width: max-content;
 }
 .program-card img {
   width: 100%;
@@ -642,9 +641,8 @@ body {
   justify-content: right;
 }
 .ProfilSpace {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  width: 50px !important;
+  height: 50px !important;
   border: 1px solid #3084b5;
   cursor: pointer;
 }
@@ -688,6 +686,7 @@ body {
 }
 .ProfilUser {
   border-radius: 50%;
+  object-fit: cover !important;
 }
 .Mod {
   cursor: pointer;
@@ -999,10 +998,14 @@ body {
 .divard {
   display: flex !important;
 }
-.nicePic,.nicePic img{
+.nicePic,
+.nicePic img {
   width: 60px;
   height: 60px;
   border-radius: 100%;
+}
+.mes-input input,textarea:focus{
+  outline: none;
 }
 /*   Fin Mariama Css */
 /*  */
@@ -1130,4 +1133,13 @@ body {
 
 .ajout {
   width: 100px;
+}
+/* CSS EtudiantAssgnTable */
+.tete {
+  background: #3084b5 !important;
+}
+.petit {
+  display: flex !important;
+  align-items: center !important;
+  width: 110px;
 }

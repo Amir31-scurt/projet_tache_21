@@ -17,6 +17,7 @@ function ContentCardLivraison() {
   const [publication, setPublication] = useState([]);
   const [userFiltrer, setUserFiltrer] = useState()
   const [filtreActive, setFiltreActive ] = useState(false)
+  const [coachs, setCoachs] = useState([]);
 
   useEffect(() => {
     const usersStudentsUnsub = onSnapshot(
@@ -39,10 +40,22 @@ function ContentCardLivraison() {
         setPublication(updatedPublication);
       }
     );
+    const coachsData = onSnapshot(
+      query(collection(db, "utilisateurs"), where("role", "==" , "Coach")),
+      (snapshot) => {
+        const updatedUsers = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setCoachs(updatedUsers);
+      }
+    );
+    
 
     return () => {
       usersStudentsUnsub();
       publications();
+      coachsData();
     };
   }, []);
 
