@@ -73,7 +73,7 @@ export const NavBarCompo = () => {
           <div className="LogoConta d-flex align-items-center justify-content-center">
             <div className="LogoConta2 ">
               <div className="img-logo d-flex align-items-center justify-content-center">
-                  <img src={LogoTech} className="img-fluid " alt="" />
+                <img src={LogoTech} className="img-fluid " alt="" />
                 <h3 className="GandalTitle" style={{ color: "#3084b5" }}>
                   Gaandal
                 </h3>
@@ -92,6 +92,12 @@ export const NavBarCompo = () => {
                   src={profileImage}
                   className="img-fluid ProfilSpace"
                   alt=""
+                  style={{
+                    width: "58px",
+                    height: "60px",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                  }}
                 />
               }
               placement="bottomEnd"

@@ -16,6 +16,70 @@ body {
   font-weight: bold;
   text-align: center;
 }
+.MargeLivraison{
+  width: 100%;
+  height: 5px;
+  background-color: #1a638e95;
+  border-radius: 30px;
+}
+
+.AreaModifDesc {
+  width: 60%;
+  min-height: 70px;
+  border: 2px solid rgba(176, 64, 64, 0.667);
+  border-radius: 15px;
+  resize: none;
+  padding: 12px;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.AreaModifDesc:focus {
+  outline: none;
+  border: 2px solid #066e41ca;
+}
+
+
+/* Style de la barre de défilement verticale */
+.AreaModifTextPub::-webkit-scrollbar {
+  width: 10px;
+  display: none;
+}
+.AreaModifDesc::-webkit-scrollbar{
+  width: 10px;
+}
+
+.AreaModifDesc::-webkit-scrollbar-thumb {
+  background-color: #92a3ac; /* Couleur de la barre de défilement */
+  border-radius: 15px; /* Coins arrondis */
+}
+
+
+.AreaModifDesc::-webkit-scrollbar-track {
+  background-color: #ffffff00; /* Couleur de la piste de défilement */
+}
+
+.SaveBtnModif {
+  background-color: #ffffffca;
+  border: none;
+  border-radius: 15px;
+  margin-top: 5px;
+  margin-left: 20px;
+  color: #01bd7b;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.cancelBtnModif {
+  background-color: #ffffffca;
+  border: none;
+  border-radius: 15px;
+  margin-left: 20px;
+  color: #fff;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .AdmLineDif {
   width: 100%;
   height: 2px;
@@ -519,14 +583,38 @@ body {
 }
 .inputStyle {
   border: 1px solid #3084b5;
-  padding: 3px;
+  padding:  8px 14px;
   color: white;
-  background-color: #3084b5 !important;
+  background-color: #3084b5 ;
   border-radius: 6px;
+  font-size: 18px;
+}
+
+.inputStyle:hover{
+  background-color: #28a745;
+}
+.AreaDesc{
+  height: 80px ;
+  width: 94%;
+  margin: auto;
+  border: 2px solid #4f504fa9;
+  border-radius: 15px;
+}
+.TitreRecup:focus{
+  outline: none;
+  border: none !important;;
+}
+.TitreRecup{
+  width: 90%;
+  border: none !important;
+  font-size: 18px;
 }
 .output {
-  height: 100px;
-  width: 100px;
+  width: 240px;
+  height:120px;
+  border: 2px solid #0056b3;
+  border-radius: 20px;
+
 }
 /* Suivi du programme */
 .category-card {
