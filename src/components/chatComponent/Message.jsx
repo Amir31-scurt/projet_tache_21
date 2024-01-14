@@ -1,51 +1,39 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import pp from "../../assets/images/user.png";
-// import messageTexto from "../../assets/images/affiche.jpg";
 import { ChatAuthCtx } from "../../contexte/ChatAuthCtx";
+import { ChatContext } from "../../contexte/ChatContext";
+import { auth, storage } from "../../config/firebase-config";
+import { getDownloadURL, ref } from "firebase/storage";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function Message({ message }) {
   const { currentUser } = useContext(ChatAuthCtx);
+  const { data } = useContext(ChatContext);
+
+  const [userAuthImgPP, setUserAuthImgPP] = useState(null);
 
   const mess = useRef();
 
-  const [jourSemaine, setJourSemaine] = useState("");
-  const [date, setDate] = useState("");
-  const [mois, setMois] = useState("");
-  const [heures, setHeures] = useState("");
-  const [minutes, setMinutes] = useState("");
+  // _______Récupération du PP de l'user authentifé_________
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (userAuth) => {
+      if (userAuth) {
+        const storageRef = ref(storage, `profile_images/${userAuth.uid}`);
+        getDownloadURL(storageRef)
+          .then((url) => {
+            setUserAuthImgPP(url);
+          })
+          .catch((error) => {
+            console.error("Error loading profile image:", error.message);
+          });
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+  // ________________________________________________________
 
   useEffect(() => {
-     // eslint-disable-next-line
-    const myDate = new Date();
-    const moisAnnee = [
-      "Jan",
-      "Fev",
-      "Mar",
-      "Avr",
-      "Mai",
-      "Juin",
-      "Juil",
-      "Aout",
-      "Sept",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const joursSemaine = [
-      "Dimanche",
-      "Lundi",
-      "Mardi",
-      "Mercredi",
-      "Jeudi",
-      "Vendredi",
-      "Samedi",
-    ];
-    setJourSemaine(joursSemaine[myDate.getDay()]);
-    setDate(myDate.getDate());
-    setMois(moisAnnee[myDate.getMonth() + 1]);
-    setHeures(myDate.getHours());
-    setMinutes(myDate.getMinutes());
-
     // Faire scroller vers le bas à chaq nouveau message
     mess.current?.scrollIntoView({ behavior: "smooth" });
   }, [message]);
@@ -58,13 +46,21 @@ export default function Message({ message }) {
       }`}
     >
       <div className="messageInfo d-flex flex-column">
+        <img
+          src={
+            message && message?.senderId !== currentUser?.uid
+              ? userAuthImgPP
+              : data?.user?.photoURL
+          }
+          alt=""
+        />
         <img src={pp} alt="" />
       </div>
       <div className="messageContent">
-        <span className="text-dark">{`${jourSemaine} ${date} ${mois} `}</span>
+        <span className="text-dark">{message?.jour}</span>
         <p className="bg-primary text-white text-wrap px-2 pt-2 pb-3">
           {message?.text}
-          <span className="">{`${heures}:${minutes}`}</span>
+          <span className="">{message?.heures}</span>
         </p>
         {/* <img src={messageTexto} alt="" /> */}
       </div>

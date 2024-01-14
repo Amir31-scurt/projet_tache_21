@@ -14,17 +14,15 @@ export default function ChatHome() {
   return (
     <ChatAuthCtxProvider>
       <ChatContextProvider>
-        <div className="chatHomeContainer text-white d-none">
-          <div
-            className={`chatHome shadow-lg rounded ${
-              openChat ? "chatHomeDisplayYes" : "chatHomeDisplay"
-            }`}
-          >
-            <div className="chatContainer">
-              <ChatHeader />
-              <Chat />
+        <div className="chatHomeContainer text-white">
+          {openChat && (
+            <div className="chatHome shadow-lg rounded">
+              <div className="chatContainer">
+                <ChatHeader />
+                <Chat />
+              </div>
             </div>
-          </div>
+          )}
           <button className="btn mt-2 rounded-circle" id="btn-toggle">
             {!openChat ? (
               <i

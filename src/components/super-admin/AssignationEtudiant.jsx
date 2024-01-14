@@ -7,6 +7,8 @@ import {
   collection,
   getDocs,
   updateDoc,
+  addDoc,
+  serverTimestamp,
   where,
   query,
   arrayUnion,
@@ -30,6 +32,9 @@ export const AssignationEtudiant = () => {
   const [loading, setLoading] = useState(false);
    // eslint-disable-next-line
   const [dataLoading, setDataLoading] = useState(false);
+  const [notificationsCollection] = useState(
+    collection(db, "notifications")
+  );
 
   // Utilisation de useRef pour la gestion des toasts
    // eslint-disable-next-line
@@ -141,6 +146,19 @@ export const AssignationEtudiant = () => {
             // Mettre à jour le document du coach avec la liste des étudiants assignés
             await updateDoc(coachDoc.ref, {
               etudiants: arrayUnion(...etudiantsSelectionnes.filter(Boolean)),
+            });
+
+            let notificationMessage;
+            if(etudiantsSelectionnes.length > 1){
+              notificationMessage = `Les étudiants ${etudiantsSelectionnes} vous ont étés assignés`
+            }else{
+              notificationMessage = `L'étudiant ${etudiantsSelectionnes} vous a été assigné`
+            }
+            await addDoc(notificationsCollection, {
+              messageForAdmin: notificationMessage,
+              timestamp: serverTimestamp(),
+              newNotif: true,
+              email: selectedCoachEmail,
             });
 
             // Afficher le toast de succès
