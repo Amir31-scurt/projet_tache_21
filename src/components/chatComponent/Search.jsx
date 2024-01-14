@@ -20,6 +20,7 @@ export default function Search({ openSearch }) {
   // Définir les etats
   const [userName, setUserName] = useState(); // L'user qu'on cherche
   const [user, setUser] = useState(null); // L'user trouvé
+  // eslint-disable-next-line
   const [err, setErr] = useState(false); // Gestion de des erreurs éventuelles
   const [searchResult, setSearchResult] = useState();
   const [closeSearch, setCloseSearch] = useState(false);
