@@ -59,6 +59,31 @@ function ContentCardLivraison() {
     };
   }, []);
 
+  const roleUser = users.find((user) => user.email === email);
+  const coachStudents = roleUser && roleUser.role === "Coach" ? roleUser.etudiants : [];
+  const filteredPublications = publication.filter((pubs) => coachStudents.includes(pubs.nom));
+  const coachName = roleUser && roleUser.role === "Coach" ? roleUser.name : "";
+
+  const renderedCards = filteredPublications.map((pub) => {
+    const dateToCompare = pub.date && pub.date.toDate && pub.date.toDate() instanceof Date
+      ? pub.date.toDate()
+      : null;
+    const daysDifference = dateToCompare
+      ? differenceInDays(new Date(), dateToCompare)
+      : null;
+  
+    let displayDifference;
+  
+    if (daysDifference > 0) {
+      displayDifference = `${daysDifference} jour${daysDifference !== 1 ? "s" : ""}`;
+    } else {
+      const hoursDifference = Math.abs(differenceInHours(new Date(), dateToCompare));
+      const minutesDifference = Math.abs(differenceInMinutes(new Date(), dateToCompare));
+  
+      if (hoursDifference > 0) {
+        displayDifference = `${hoursDifference} heure${hoursDifference !== 1 ? "s" : ""}`;
+      } else {
+        displayDifference = `${minutesDifference} minute${minutesDifference !== 1 ? "s" : ""}`;
   const handleDisplay = (valeur) => {
     if(valeur){
     const q = query(collection(db, "publication"), where("nom", "==", valeur));
@@ -81,8 +106,25 @@ function ContentCardLivraison() {
     else{
       console.log("La valeur est indéfinie")
       setFiltreActive(false)
-    }
-    console.log(userFiltrer)
+    }  
+    return pub.images && pub.images.length > 0 && (
+      <CardLivraison
+        role={roleUser}
+        name={pub.nom}
+        title={pub.cours}
+        defaultImg={pub.images[0]}
+        images={pub.images}
+        validation={pub.finish}
+        emailStudent={pub.email}
+        nomCoach={coachName}
+        date={displayDifference}
+        idDoc={pub.id}
+        valid={pub.valider}
+      />
+    );
+  });
+  
+
   }
 
   const roleUser = users.find((user) => user.email === email);
@@ -229,7 +271,7 @@ function ContentCardLivraison() {
                     }
                   }
 
-                  return (
+                  return pub.images.length > 0 ? (
                     <CardLivraison
                       role={roleUser}
                       name={pub.nom}
@@ -237,9 +279,14 @@ function ContentCardLivraison() {
                       defaultImg={pub.images[0]}
                       images={pub.images}
                       validation={pub.finish}
+                      emailStudent={pub.email}
+                      nomCoach={coachName}
+
                       date={displayDifference}
+                      idDoc={pub.id}
+                      valid={pub.valider}
                     />
-                  );
+                  ) : "";
                 })
             ) : (
               <h2>Aucune livraison enregistrée</h2>

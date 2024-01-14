@@ -272,6 +272,7 @@ export default function Cours() {
         finish: false,
         livree: false,
         duree: 0,
+        valider: false
       });
 
       toast.success(
