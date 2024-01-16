@@ -1,8 +1,5 @@
 import { PiFilesBold } from 'react-icons/pi';
-import {
-  MdOutlineSpaceDashboard,
-  MdOutlineLibraryBooks,
-} from 'react-icons/md';
+import { MdOutlineSpaceDashboard, MdOutlineLibraryBooks } from 'react-icons/md';
 import { TbCertificate } from 'react-icons/tb';
 import { GrDomain } from 'react-icons/gr';
 import { PiCertificateDuotone } from 'react-icons/pi';
@@ -125,7 +122,7 @@ export const GetSidebarMenu = () => {
           id: 'link5',
           link: 'etudiant/certificat',
         },
-       
+
         // ... other items for regular users
       ];
     }
@@ -140,31 +137,31 @@ export const GetSidebarMenu = () => {
   ) : (
     <div className="mx-4 holder">
       <Placeholder.Paragraph
-        style={{ marginTop: 30 }}
+        style={{ marginTop: 30, opacity: 0.4 }}
         rows={1}
         graph="square"
         active
       />
       <Placeholder.Paragraph
-        style={{ marginTop: 30 }}
+        style={{ marginTop: 30, opacity: 0.4 }}
         rows={1}
         graph="square"
         active
       />
       <Placeholder.Paragraph
-        style={{ marginTop: 30 }}
+        style={{ marginTop: 30, opacity: 0.4 }}
         rows={1}
         graph="square"
         active
       />
       <Placeholder.Paragraph
-        style={{ marginTop: 30 }}
+        style={{ marginTop: 30, opacity: 0.4 }}
         rows={1}
         graph="square"
         active
       />
       <Placeholder.Paragraph
-        style={{ marginTop: 30 }}
+        style={{ marginTop: 30, opacity: 0.4 }}
         rows={1}
         graph="square"
         active

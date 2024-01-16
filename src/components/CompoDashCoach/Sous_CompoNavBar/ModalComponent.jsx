@@ -195,6 +195,12 @@ const ModalComponent = ({ onProfileImageChange }) => {
                 src={profileImage || UserProfil}
                 className="ProfilUser img-fluid"
                 alt="Profil de l'utilisateur"
+                style={{
+                  width: "75px",
+                  height: "75px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                }}
               />
               {isEditing ? (
                 <input
