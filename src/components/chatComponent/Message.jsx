@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import pp from "../../assets/images/user.png";
-// import messageTexto from "../../assets/images/affiche.jpg";
 import { ChatAuthCtx } from "../../contexte/ChatAuthCtx";
 import { ChatContext } from "../../contexte/ChatContext";
 import { onAuthStateChanged } from "@firebase/auth";
@@ -51,7 +50,6 @@ export default function Message({ message }) {
           src={
             message && message?.senderId == currentUser?.uid
               ? userAuthImgPP
-                ? userAuthImgPP
                 : pp
               : data?.user?.photoURL
           }

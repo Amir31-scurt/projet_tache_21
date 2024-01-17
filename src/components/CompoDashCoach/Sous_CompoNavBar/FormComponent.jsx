@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import NavBarContext from "./context";
 import { Input, InputGroup } from "rsuite";
 import AvatarIcon from "@rsuite/icons/legacy/Avatar";
-import { MdAlternateEmail, MdOutlinePassword } from "react-icons/md";
+import {MdOutlinePassword } from "react-icons/md";
 import EyeIcon from "@rsuite/icons/legacy/Eye";
 import EyeSlashIcon from "@rsuite/icons/legacy/EyeSlash";
 

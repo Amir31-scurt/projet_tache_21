@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where, serverTimestamp } from "firebase/firestore";
 import { db } from "../config/firebase-config";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,6 +13,9 @@ const BulletinEtudiant = () => {
     sousDomaines: [],
     appreciation: "",
   });
+  const [notificationsCollection] = useState(
+    collection(db, "notifications")
+  );
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -49,8 +52,6 @@ const BulletinEtudiant = () => {
           sousDomaines: doc.data().sousDomaines || [],
         }));
         setDomains(domainList);
-
-        console.log("Domaines et sous-domaines :", domainList);
       } catch (error) {
         console.error("Erreur :", error);
       }
@@ -87,13 +88,10 @@ const BulletinEtudiant = () => {
       (student) => student.userId === selectedValue
     );
 
-    console.log("ID :", selectedValue);
-    console.log("Nom:", selectedStudentData?.name);
-
     setSelectedStudentData(selectedStudentData);
 
     setBulletinInfo({
-      sousDomaines:[],
+      sousDomaines: [],
       appreciation: "",
       address: selectedStudentData?.address || "",
       email: selectedStudentData?.email || "",
@@ -116,15 +114,12 @@ const BulletinEtudiant = () => {
           [name]: parseInt(value, 10),
         },
       }));
-      
     }
   };
 
   const handleSave = async () => {
     try {
       const studentUid = selectedStudentData?.userId;
-
-      console.log("UID de l'étudiant sélectionné :", studentUid);
 
       const existingBulletinQuery = query(
         collection(db, "bulletins"),
@@ -138,45 +133,41 @@ const BulletinEtudiant = () => {
         return;
       }
 
-      // Récupérez les informations de l'étudiant sélectionné
       const studentName = selectedStudentData?.name || "Nom inconnu";
       const studentAddress = selectedStudentData?.address || "Adresse inconnue";
       const studentEmail = selectedStudentData?.email || "Email inconnu";
       const studentNumber = selectedStudentData?.number || "Numéro inconnu";
 
-      console.log("Nom de l'étudiant sélectionné :", studentName);
-      console.log("Adresse de l'étudiant sélectionné :", studentAddress);
-      console.log("Email de l'étudiant sélectionné :", studentEmail);
-      console.log("Numéro de l'étudiant sélectionné :", studentNumber);
-
       const notes = {};
       bulletinInfo.sousDomaines.forEach((subject) => {
         notes[subject] = bulletinInfo.notes[subject] || 0;
       });
-  
-   
+
       const bulletinData = {
         studentId: studentUid,
         studentName: studentName,
         address: studentAddress,
         email: studentEmail,
         number: studentNumber,
-        notes: notes, 
+        notes: notes,
         appreciation: bulletinInfo.appreciation,
       };
-      
 
-      console.log("Données du bulletin à enregistrer :", bulletinData);
-
-      // Ajoutez les données du bulletin à la collection "bulletins"
       await addDoc(collection(db, "bulletins"), bulletinData);
+
+      let notificationMessage= `Votre bulletin de notes est disponible vous pouvez le vérifier dans vos bulletins`
+      await addDoc(notificationsCollection, {
+        messageForAdmin: notificationMessage,
+        timestamp: serverTimestamp(),
+        newNotif: true,
+        email: studentEmail,
+      });
 
       toast.success("Bulletin enregistré avec succès!");
 
-      // Réinitialisez les états après la soumission réussie
       setSelectedStudentData(null);
       setBulletinInfo({
-       sousDomaines:[],
+        sousDomaines: [],
         appreciation: "",
         address: "",
         email: "",
@@ -298,4 +289,5 @@ const BulletinEtudiant = () => {
     </div>
   );
 };
+
 export default BulletinEtudiant;

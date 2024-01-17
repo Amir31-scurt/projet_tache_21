@@ -7,12 +7,15 @@ import Card from '../utils/cards_reusable';
 import logo from '../assets/images/logo.png';
 import { EmailContext } from '../contexte/EmailContexte';
 import ChatHome from '../components/chatComponent/ChatHome';
+import '../assets/css/quizz.css';
+import { ToastContainer } from 'react-toastify';
 
 export default function Template() {
   const { currentUser } = useContext(AuthContext);
   const { setEmail } = useContext(EmailContext);
   // const [currentUser, setCurrentUser] = useState(initialUser);
   const location = useLocation();
+  // eslint-disable-next-line
   const navigate = useNavigate();
   const timelinePath = '/etudiant/dashboard';
   const isDashboard = location.pathname === timelinePath;
@@ -40,6 +43,7 @@ export default function Template() {
 
   return (
     <div className="BigContainer">
+      <ToastContainer />
       <div className="NavSide fixed-top">
         <NavBarCompo />
       </div>
@@ -49,9 +53,9 @@ export default function Template() {
         </div>
         <div className="bodyContent col d-flex">
           <div className="col">
+            {/* Outlet Position */}
             <Outlet />
             <ChatHome />
-            {/* Outlet Position */}
           </div>
           {isDashboard && (
             <div className="col-3 d-none d-lg-block">

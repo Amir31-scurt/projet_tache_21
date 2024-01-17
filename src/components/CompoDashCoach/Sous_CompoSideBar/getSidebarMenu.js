@@ -1,15 +1,6 @@
-import { PiFilesBold, PiStudentBold } from 'react-icons/pi';
-import {
-  MdOutlineAssignment,
-  MdOutlineSpaceDashboard,
-  MdOutlineLibraryBooks,
-  MdTask,
-} from 'react-icons/md';
+import { PiFilesBold } from 'react-icons/pi';
+import { MdOutlineSpaceDashboard, MdOutlineLibraryBooks } from 'react-icons/md';
 import { TbCertificate } from 'react-icons/tb';
-import { LuSettings } from 'react-icons/lu';
-import { RiMiniProgramFill } from 'react-icons/ri';
-import { PiStudent } from 'react-icons/pi';
-import { FaChalkboardTeacher } from 'react-icons/fa';
 import { GrDomain } from 'react-icons/gr';
 import { PiCertificateDuotone } from 'react-icons/pi';
 import { fetchAdminEmails } from '../../../utils/fetchAdminEmails';
@@ -19,8 +10,6 @@ import { fetchCoachEmails } from '../../../utils/fetchCoachEmails';
 import { fetchStudentEmails } from '../../../utils/fetchStudentEmails';
 import SidebarCompo from './SidebarCompo';
 import { Placeholder } from 'rsuite';
-import { width } from '@mui/system';
-import { BsFillSignIntersectionFill } from 'react-icons/bs';
 import { MdAssignmentAdd } from 'react-icons/md';
 
 export const GetSidebarMenu = () => {
@@ -72,7 +61,7 @@ export const GetSidebarMenu = () => {
           link: '/admin/assignation',
         },
         {
-          title: 'Certificats',
+          title: 'Certificat',
           id: 'admin-link6',
           icon: <PiCertificateDuotone />,
           link: '/admin/certificats',
@@ -128,17 +117,12 @@ export const GetSidebarMenu = () => {
           link: 'etudiant/livrable',
         },
         {
-          title: 'Certificats',
+          title: 'Bulletin',
           icon: <TbCertificate />,
           id: 'link5',
           link: 'etudiant/certificat',
         },
-        {
-          title: 'Quizz',
-          icon: <TbCertificate />,
-          id: 'link6',
-          link: 'etudiant/quizz',
-        },
+
         // ... other items for regular users
       ];
     }
@@ -153,31 +137,31 @@ export const GetSidebarMenu = () => {
   ) : (
     <div className="mx-4 holder">
       <Placeholder.Paragraph
-        style={{ marginTop: 30 }}
+        style={{ marginTop: 30, opacity: 0.4 }}
         rows={1}
         graph="square"
         active
       />
       <Placeholder.Paragraph
-        style={{ marginTop: 30 }}
+        style={{ marginTop: 30, opacity: 0.4 }}
         rows={1}
         graph="square"
         active
       />
       <Placeholder.Paragraph
-        style={{ marginTop: 30 }}
+        style={{ marginTop: 30, opacity: 0.4 }}
         rows={1}
         graph="square"
         active
       />
       <Placeholder.Paragraph
-        style={{ marginTop: 30 }}
+        style={{ marginTop: 30, opacity: 0.4 }}
         rows={1}
         graph="square"
         active
       />
       <Placeholder.Paragraph
-        style={{ marginTop: 30 }}
+        style={{ marginTop: 30, opacity: 0.4 }}
         rows={1}
         graph="square"
         active

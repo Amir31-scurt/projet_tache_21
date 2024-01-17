@@ -1,136 +1,102 @@
-
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import {
   addDoc,
   collection,
   deleteDoc,
   getDoc,
   doc,
-  query,
-  where,
   onSnapshot,
-  getDocs,
   serverTimestamp,
-} from "firebase/firestore";
-import { db, auth } from "../config/firebase-config";
-import { onAuthStateChanged } from "firebase/auth";
+} from 'firebase/firestore';
+import { db, auth } from '../config/firebase-config';
+import { onAuthStateChanged } from 'firebase/auth';
 
-import { toast } from "react-hot-toast";
-import commenter from "../assets/images/commenter.png";
-import envoi from "../assets/images/envoi.png";
+import { toast } from 'react-hot-toast';
+import commenter from '../assets/images/commenter.png';
+import envoi from '../assets/images/envoi.png';
 
-import React, { useState, useEffect, useContext } from "react";
-import userProfile from "../assets/images/userProfile.png";
-import { Dialog } from "primereact/dialog";
-import "firebase/firestore";
-import { AuthContext } from "../contexte/AuthContext";
-import { Galleria } from "primereact/galleria";
+import React, { useState, useEffect, useContext } from 'react';
+import { Dialog } from 'primereact/dialog';
+import 'firebase/firestore';
+import { AuthContext } from '../contexte/AuthContext';
+import { Galleria } from 'primereact/galleria';
+import { MdOutlineDelete } from 'react-icons/md';
+import { FaCircleXmark } from 'react-icons/fa6';
+import { BsFillCheckCircleFill } from 'react-icons/bs';
+import { FiAlertTriangle, FiEdit3 } from 'react-icons/fi';
 
-export default function CardLivraison() {
+export default function CardLivraison({
+  date,
+  apprenant,
+  titreCourEtudiant,
+  images,
+  userProfile,
+  descriptLivraison,
+  UserID,
+  handleDeleteLivraison,
+  livraison,
+  handleUpdateDescription,
+}) {
   const [currentUser, setCurrentUser] = useState(null);
-  const [userRole, setUserRole] = useState("Rôle inconnu");
-
+  const [userRole, setUserRole] = useState('Rôle inconnu');
+  const [imagesData, setImages] = useState([]);
   const [comments, setComments] = useState([]);
-  const [comment, setComment] = useState("");
-
-
+  const [comment, setComment] = useState('');
   const [visibleComments, setVisibleComments] = useState([]);
   const [hiddenComments, setHiddenComments] = useState([]);
-  const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
+  const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
+  const [livraisonToDelete, setLivraisonToDelete] = useState(null);
 
   const { uid } = useContext(AuthContext);
   const UserUid = uid;
 
-  const [apprenant, setApprenat] = useState("");
-  const [coach, setCoach] = useState("");
-  const [date, setDate] = useState("");
-  const [days, setDays] = useState("1");
-  const [role, setRole] = useState("Coach");
+  const navigate = useNavigate();
 
-  const [images, setImages] = useState([]);
-  const [visible, setVisible] = useState(false);
-
-  // Fonction pour récupérer les informations de l'étudiant depuis Firestore
-  const fetchStudentInfo = async () => {
-    try {
-      const studentRef = collection(db, "publication");
-
-      // Création de la requête pour récupérer le document de l'étudiant
-      const studentQuery = query(studentRef, where("userID", "==", UserUid));
-      const studentSnapshot = await getDocs(studentQuery);
-
-      // Vérification s'il y a des documents
-      if (!studentSnapshot.empty) {
-        const studentData = studentSnapshot.docs[0].data();
-        setApprenat(studentData.nom);
-        setCoach(studentData.coach);
-        setDate(studentData.date);
-      }
-    } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des informations de l'étudiant depuis Firestore",
-        error
-      );
-    }
+  const handleDelete = (livraisonId) => {
+    handleDeleteLivraison(livraisonId);
   };
 
-  const fetchImagesFromFirestore = async () => {
-    try {
-      const publicationRef = collection(db, "publication");
-      const q = query(publicationRef);
-      const querySnapshot = await getDocs(q);
+  // Fonction pour extraire les données d'images à partir des URLs
+  const fetchImagesFromProps = (images) => {
+    const imagesData = images.map((url, index) => ({
+      itemImageSrc: url,
+      thumbnailImageSrc: url,
+      alt: `Image ${index + 1}`,
+      title: `Titre ${index + 1}`,
+    }));
 
-      const imagesArray = [];
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        imagesArray.push(...data.images);
-      });
-
-      setImages(
-        imagesArray.map((url, index) => ({
-          itemImageSrc: url,
-          thumbnailImageSrc: url,
-          alt: `Image ${index + 1}`,
-          title: `Title ${index + 1}`,
-        }))
-      );
-    } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des images depuis Firestore",
-        error
-      );
-    }
+    // Mettre à jour l'état local avec les données d'images
+    setImages(imagesData);
   };
 
-  // Fonction pour définir le template d'un item dans le composant Galleria
+  useEffect(() => {
+    //extraire les données d'images à partir des images actuelles
+    fetchImagesFromProps(images);
+  }, [images]);
+
+  // Fonction de rendu pour un élément individuel dans la galerie d'images
   const itemTemplate = (item) => (
     <img
       src={item.itemImageSrc}
       alt={item.alt}
-      style={{ width: "100%", height: "100%" }}
+      style={{ width: '100%', height: '100%' }}
     />
   );
 
-  // Fonction pour définir le template d'un thumbnail dans le composant Galleria
+  // Fonction de rendu pour une miniature dans la galerie d'images
   const thumbnailTemplate = (item) => (
     <img
       src={item.thumbnailImageSrc}
       alt={item.alt}
-      style={{ width: "140px", height: "100px" }}
+      style={{ width: '100%', height: '100px' }}
     />
   );
-
-  // Effet pour récupérer les informations de l'étudiant lors du montage du composant
-  useEffect(() => {
-    fetchStudentInfo();
-    fetchImagesFromFirestore();
-  }, []);
-
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const docRef = doc(db, "utilisateurs", user.uid);
+        const docRef = doc(db, 'utilisateurs', user.uid);
         try {
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
@@ -140,11 +106,11 @@ export default function CardLivraison() {
             console.log(role);
           } else {
             console.log(
-              "Aucune donnée utilisateur trouvée pour cet utilisateur"
+              'Aucune donnée utilisateur trouvée pour cet utilisateur'
             );
           }
         } catch (error) {
-          console.error("Erreur lors de la récupération du rôle :", error);
+          console.error('Erreur lors de la récupération du rôle :', error);
         }
       }
     });
@@ -160,25 +126,24 @@ export default function CardLivraison() {
 
   function handleSend() {
     addComment(); // Appel de la fonction addComment sans publicationId
-    toast.success("Commentaire envoyé");
-    setComment(""); // Réinitialisation du champ de commentaire après l'envoi
+    toast.success('Commentaire envoyé');
+    setComment(''); // Réinitialisation du champ de commentaire après l'envoi
   }
 
   // Fonction pour supprimer un commentaire
   function deleteComment(commentId) {
-    const commentRef = doc(db, "commentaires", commentId);
+    const commentRef = doc(db, 'commentaires', commentId);
 
     deleteDoc(commentRef)
       .then(() => {
-        toast.success("Comment deleted successfully");
+        toast.success('Comment deleted successfully');
         fetchComments(); // Mise à jour de l'affichage après la suppression du commentaire
       })
       .catch((error) => {
-        console.error("Error deleting comment: ", error);
-        toast.error("Erreur lors de la suppression du commentaire");
+        console.error('Error deleting comment: ', error);
+        toast.error('Erreur lors de la suppression du commentaire');
       });
   }
-
 
   useEffect(() => {
     // Séparer les commentaires en deux listes distinctes
@@ -191,28 +156,28 @@ export default function CardLivraison() {
 
   // Ajout d'un commentaire à la base de données
   function addComment() {
-    const commentsRef = collection(db, "commentaires");
+    const commentsRef = collection(db, 'commentaires');
 
     addDoc(commentsRef, {
-      userName: currentUser ? currentUser.displayName : "Utilisateur inconnu",
-      userRole: currentUser ? currentUser.role : "Rôle inconnu",
+      userName: currentUser ? currentUser.displayName : 'Utilisateur inconnu',
+      userRole: currentUser ? currentUser.role : 'Rôle inconnu',
       commentContent: comment,
       timestamp: serverTimestamp(),
     })
       .then(() => {
-        console.log("New document created with comment");
-        setComment("");
+        console.log('New document created with comment');
+        setComment('');
         fetchComments(); // Mise à jour de l'affichage après l'ajout du commentaire
       })
       .catch((error) => {
-        console.error("Error adding document: ", error);
-        toast.error("Erreur lors de la création du document");
+        console.error('Error adding document: ', error);
+        toast.error('Erreur lors de la création du document');
       });
   }
 
   // Fonction pour récupérer et afficher les commentaires depuis Firebase
   function fetchComments() {
-    const commentsRef = collection(db, "commentaires");
+    const commentsRef = collection(db, 'commentaires');
 
     onSnapshot(commentsRef, (snapshot) => {
       const commentsData = [];
@@ -237,7 +202,7 @@ export default function CardLivraison() {
 
   function getTimeDifference(timestamp) {
     if (!timestamp) {
-      return ""; // Ou tout autre traitement que vous souhaitez appliquer pour les commentaires sans timestamp
+      return ''; // Ou tout autre traitement que vous souhaitez appliquer pour les commentaires sans timestamp
     }
 
     const currentTime = new Date();
@@ -251,13 +216,13 @@ export default function CardLivraison() {
     const days = Math.floor(hours / 24);
 
     if (days > 0) {
-      return `${days} jour${days > 1 ? "s" : ""} ago`;
+      return `${days} jour${days > 1 ? 's' : ''} ago`;
     } else if (hours > 0) {
-      return `${hours} heure${hours > 1 ? "s" : ""} ago`;
+      return `${hours} heure${hours > 1 ? 's' : ''} ago`;
     } else if (minutes > 0) {
-      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
     } else {
-      return `${seconds} seconde${seconds !== 1 ? "s" : ""} ago`;
+      return `${seconds} seconde${seconds !== 1 ? 's' : ''} ago`;
     }
   }
 
@@ -265,42 +230,166 @@ export default function CardLivraison() {
     auth
       .signOut()
       .then(() => {
-        toast.success("Utilisateur déconnecté avec succès.");
+        toast.success('Utilisateur déconnecté avec succès.');
         // Ici tu peux ajouter d'autres actions après la déconnexion si nécessaire
-        navigate("/connexion");
+        navigate('/connexion');
       })
       .catch((error) => {
-        console.error("Erreur lors de la déconnexion :", error);
+        console.error('Erreur lors de la déconnexion :', error);
       });
+  };
+
+  const [hovered, setHovered] = useState(false);
+  const [newDescription, setNewDescription] = useState(descriptLivraison);
+  const [originalDescription, setOriginalDescription] =
+    useState(descriptLivraison);
+  const [editStart, setEditStart] = useState(false);
+  const handleEditing = () => {
+    setEditStart(true);
+    setOriginalDescription(newDescription);
+  };
+
+  const handleCancelEditing = () => {
+    // Restaurer la description à partir de l'état local
+    setNewDescription(originalDescription);
+    setEditStart(false);
+  };
+
+  // Fonction pour mettre à jour la description
+  const handleUpdate = () => {
+    // Appeler la fonction de mise à jour avec le nouvel état de la description
+    handleUpdateDescription(livraison.key, newDescription);
+    setEditStart(false); // Désactiver le mode édition
   };
 
   return (
     <div className="">
       <div className="container d-flex justify-content-center flex-wrap containerApprenant my-5">
         <div className="row rowAppenant align-items-center">
-          <div className="col-md-12 d-flex colApprenant my-3">
-            <img src={userProfile} alt="" className="icon" />
-            <div className="mySpan">
-              <h6 className=" px-3 pt-2 dark">{apprenant}</h6>
-              <p className="m-0 px-3 pt-2 dark">{date}</p>
+          <div className="col-md-12 d-flex justify-content-between">
+            <div className=" d-flex colApprenant my-3">
+              <img
+                src={userProfile}
+                alt="user-Profile"
+                style={{
+                  width: '58px',
+                  height: '60px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                }}
+              />
+              <div className="mySpan">
+                <h6 className=" px-3 pt-1 fs-5 fst-italic dark">{apprenant}</h6>
+                <p className="m-0 fst-italic px-3 pt-1 dark">{date}</p>
+              </div>
             </div>
+
+            {UserUid === UserID && (
+              <div
+                className="d-flex justify-content-end align-items-center"
+                style={{ width: '20%' }}
+              >
+                <button
+                  className="bg-transparent"
+                  onClick={() => {
+                    setLivraisonToDelete(livraison.key);
+                    setConfirmDialogVisible(true);
+                  }}
+                >
+                  <MdOutlineDelete style={{ color: 'red', fontSize: '30px' }} />
+                </button>
+              </div>
+            )}
           </div>
 
-          <div className="col-md-12 d-flex justify-content-center py-2">
-            <p>Titre de la publication de l'apprenant</p>
+          <div className="col-md-12 d-flex justify-content-center  fst-italic fw-bold fs-6 py-2">
+            <p>{titreCourEtudiant}</p>
           </div>
 
           {/* Galleria pour afficher les images */}
-          <div className="col-12 my-2">
+          <div className="col-12 my-1">
             <Galleria
-              value={images}
+              value={imagesData}
               numVisible={5}
-              style={{ width: "52rem", margin: "auto" }}
+              style={{ width: '100%', margin: 'auto' }}
               item={itemTemplate}
               thumbnail={thumbnailTemplate}
               className="publication rounded-2"
             />
           </div>
+
+          <div style={{ width: '90%', margin: 'auto' }}>
+            <div
+              className={` d-flex ${
+                editStart ? 'd-block ' : 'd-none'
+              } justify-content-center`}
+            >
+              <textarea
+                className="AreaModifDesc"
+                name="area"
+                id="ModifArea"
+                value={newDescription}
+                onChange={(e) => setNewDescription(e.target.value)}
+              ></textarea>
+
+              <div className="d-flex flex-column ">
+                <button
+                  className="cancelBtnModif"
+                  onClick={handleCancelEditing}
+                >
+                  <FaCircleXmark className="text-danger fs-1" />
+                </button>
+                <button
+                  className="SaveBtnModif p-2"
+                  onClick={() => {
+                    handleUpdate();
+                    toast.success('Modification Reussie !', {
+                      position: 'top-right',
+                      autoClose: 3000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: 'colored',
+                    });
+                  }}
+                >
+                  <BsFillCheckCircleFill className="fs-1" />
+                </button>
+              </div>
+            </div>
+            <div
+              className="d-flex justify-content-center align-items-center pb-2"
+              onMouseEnter={() => setHovered(true)}
+              onMouseLeave={() => setHovered(false)}
+              style={{ cursor: 'pointer' }}
+            >
+              <div>
+                <h3
+                  style={{ lineHeight: '22px' }}
+                  className={`${
+                    editStart ? 'd-none ' : 'd-block'
+                  } text-center px-6 fst-italic fw-light text-secondary fs-6 text-break my-1`}
+                >
+                  {newDescription}
+                </h3>
+              </div>
+              {UserUid === UserID && (
+                <div className={` ${hovered ? 'd-block' : 'd-none'} ms-6`}>
+                  <button
+                    className={`${
+                      editStart ? 'd-none ' : 'd-block'
+                    } bg-transparent`}
+                    onClick={handleEditing}
+                  >
+                    <FiEdit3 className="fs-4" style={{ color: '#3084b5' }} />
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="MargeLivraison"></div>
 
           <div>
             <Dialog
@@ -308,7 +397,7 @@ export default function CardLivraison() {
               header="Commentaires"
               visible={visible}
               maximizable
-              style={{ width: "50vw" }}
+              style={{ width: '50vw' }}
               onHide={() => setVisible(false)}
             >
               {hiddenComments.map((comment) => (
@@ -329,7 +418,7 @@ export default function CardLivraison() {
                       </span>
                       <span
                         className="supCom"
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: 'pointer' }}
                         onClick={() => deleteComment(comment.id)}
                       >
                         X
@@ -363,7 +452,7 @@ export default function CardLivraison() {
                     </span>
                     <span
                       className="supCom"
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: 'pointer' }}
                       onClick={() => deleteComment(comment.id)}
                     >
                       X
@@ -383,9 +472,9 @@ export default function CardLivraison() {
                 src={commenter}
                 alt=""
                 className=""
-                style={{ width: "30px", height: "30px" }}
+                style={{ width: '30px', height: '30px' }}
               />
-              <p className="px-2 m-0 sizeHover" style={{ fontSize: "12px" }}>
+              <p className="px-2 m-0 sizeHover" style={{ fontSize: '12px' }}>
                 Plus de commentaires
               </p>
             </div>
@@ -395,11 +484,11 @@ export default function CardLivraison() {
                 className="form-control textarea"
                 placeholder="Leave a comment here"
                 id="floatingTextarea2"
-                value={comment} // Liaison de la valeur du champ de commentaire
-                onChange={(e) => setComment(e.target.value)} // Gestion des modifications du champ de commentaire
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleSend(); // Appel à la fonction handleSend lorsque la touche "Entrée" est pressée
+                  if (e.key === 'Enter') {
+                    handleSend();
                   }
                 }}
               ></input>
@@ -408,13 +497,49 @@ export default function CardLivraison() {
                 <img
                   src={envoi}
                   alt="send"
-                  style={{ width: "30px", height: "30px" }}
+                  style={{ width: '30px', height: '30px' }}
                 />
               </span>
             </div>
           </div>
         </div>
       </div>
+
+      <Dialog
+        header={
+          <h3 className="fst-italic" style={{ color: '#3086d8' }}>
+            Confirmation <FiAlertTriangle className="fs-1 text-danger pb-2" />
+          </h3>
+        }
+        visible={confirmDialogVisible}
+        style={{ width: 'auto', textAlign: 'center' }}
+        onHide={() => setConfirmDialogVisible(false)}
+      >
+        <div className="">
+          {/*  */}
+          <p className="fst-italic pb-4 text-danger fw-bold px-3">
+            Êtes-vous sûr de vouloir supprimer cette livraison ?
+          </p>
+          <div className="">
+            <button
+              className="btn btn-danger px-4 fst-italic me-3"
+              onClick={() => {
+                handleDelete(livraisonToDelete);
+                setConfirmDialogVisible(false);
+              }}
+            >
+              Oui
+            </button>
+            <button
+              className="btn  px-4 fst-italic  text-white "
+              style={{ backgroundColor: '#3086d8' }}
+              onClick={() => setConfirmDialogVisible(false)}
+            >
+              Non
+            </button>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 }
