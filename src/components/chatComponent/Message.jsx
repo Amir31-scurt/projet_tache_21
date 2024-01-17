@@ -51,11 +51,15 @@ export default function Message({ message }) {
           src={
             message && message?.senderId == currentUser?.uid
               ? userAuthImgPP
+                ? userAuthImgPP
+                : pp
               : data?.user?.photoURL
           }
           alt=""
         />
-        <img src={pp} alt="" />
+        {console.log("message?.senderId => ", message?.senderId)}
+        {console.log("currentUser?.uid => ", currentUser?.uid)}
+        {/* <img src={pp} alt="" /> */}
       </div>
       <div className="messageContent">
         <span className="text-dark">{message?.jour}</span>
