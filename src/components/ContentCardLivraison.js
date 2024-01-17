@@ -43,10 +43,10 @@ function ContentCardLivraison() {
   const roleUser = users.find((user) => user.email === email);
   const coachStudents = roleUser?.etudiants ?? [];
   const coachName = roleUser && roleUser.role === "Coach" ? roleUser.name : "";
-
   const filteredPublications = publications.filter((pub) =>
     coachStudents.includes(pub.nom)
   );
+  
   const handleDisplay = (valeur) => {
     if (valeur) {
       const q = query(
@@ -138,3 +138,4 @@ function ContentCardLivraison() {
 }
 
 export default ContentCardLivraison;
+
