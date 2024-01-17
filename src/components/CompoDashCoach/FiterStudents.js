@@ -6,9 +6,10 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { useCallback, useEffect} from "react";
+import { useCallback, useEffect, useContext} from "react";
 import Chip from "@mui/material/Chip";
-  import { getFirestore, onSnapshot, collection} from "firebase/firestore";
+import { getFirestore, onSnapshot, collection, where, query} from "firebase/firestore";
+import { EmailContext } from "../../contexte/EmailContexte";
 
 
 
@@ -31,6 +32,7 @@ export default function FilterStudents({handleDisplay}) {
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
   const [studentNames, setStudentNames] = React.useState([]);
+  const { email, setEmail } = React.useContext(EmailContext);
 
   const handleChange = (event) => {
     const {
@@ -63,7 +65,7 @@ export default function FilterStudents({handleDisplay}) {
   };
 
    const loadUsers = useCallback(() => {
-     const unsubscribe = onSnapshot(collection(db, "utilisateurs"), (snapshot) => {
+     const unsubscribe = onSnapshot(query( collection(db, "utilisateurs"), where("role", "==", "Étudiant")), (snapshot) => {
        const updatedUsers = snapshot.docs.map((doc) => ({
          id: doc.id,
          ...doc.data(),
@@ -108,8 +110,7 @@ export default function FilterStudents({handleDisplay}) {
           )}
           MenuProps={MenuProps}
         >
-          {studentNames
-            .filter((user) => user.role === "Étudiant")
+          {studentNames.filter((names) => names.emailCoach === email)
             .map((name) => (
               <MenuItem
                 key={name}
