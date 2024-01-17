@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import pp from "../../assets/images/user.png";
 import { ChatAuthCtx } from "../../contexte/ChatAuthCtx";
 import {
@@ -12,19 +12,41 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { db, storage } from "../../config/firebase-config";
+import { auth, db, storage } from "../../config/firebase-config";
 import { getDownloadURL, ref } from "firebase/storage";
-// import { Dangerous } from "@mui/icons-material";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function Search({ openSearch }) {
   // Définir les etats
   const [userName, setUserName] = useState(); // L'user qu'on cherche
   const [user, setUser] = useState(null); // L'user trouvé
+  // eslint-disable-next-line
   const [err, setErr] = useState(false); // Gestion de des erreurs éventuelles
   const [searchResult, setSearchResult] = useState();
   const [closeSearch, setCloseSearch] = useState(false);
+  const [profileImage, setProfileImage] = useState(null);
+  const [userAuthImgPP, setUserAuthImgPP] = useState(null);
   // Récupérer le contexte
   const { currentUser } = useContext(ChatAuthCtx);
+
+  // _______Récupération du PP de l'user authentifé_________
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (userAuth) => {
+      if (userAuth) {
+        const storageRef = ref(storage, `profile_images/${userAuth.uid}`);
+        getDownloadURL(storageRef)
+          .then((url) => {
+            setUserAuthImgPP(url);
+          })
+          .catch((error) => {
+            console.error("Error loading profile image:", error.message);
+          });
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+  // ________________________________________________________
 
   // Définir la fonction handleSearch
   const handleSearch = async () => {
@@ -36,13 +58,22 @@ export default function Search({ openSearch }) {
     // Gestion de la réponse
     try {
       const querySnapchot = await getDocs(q);
-      querySnapchot.forEach((doc) => {
+      querySnapchot.forEach(async (doc) => {
         setUser((prevUser) => ({ ...prevUser, ...doc.data() }));
+        // ___________________________
+        // Récupérer l'URL de l'image de profil
+        const storageRef = ref(storage, `profile_images/${doc.data().userId}`);
+        try {
+          const url = await getDownloadURL(storageRef);
+          setProfileImage(url);
+        } catch (error) {
+          console.error("Error loading profile image:", error.message);
+          setProfileImage(null);
+        }
+        // ________________________________
       });
       const resultat = user === null;
       setSearchResult(resultat);
-      console.log(searchResult);
-      console.log("searchResult");
     } catch (err) {
       setErr(true);
     }
@@ -102,6 +133,7 @@ export default function Search({ openSearch }) {
             displayName: user.name,
             role: user.role,
             archived: false,
+            photoURL: profileImage,
           },
           [combinedId + ".date"]: serverTimestamp(),
         });
@@ -111,7 +143,7 @@ export default function Search({ openSearch }) {
           [combinedId + ".userInfo"]: {
             uid: currentUser.uid,
             displayName: currentUser.displayName,
-            // photoURL: currentUser.photoURL,
+            photoURL: userAuthImgPP,
           },
           [combinedId + ".date"]: serverTimestamp(),
         });
@@ -147,20 +179,22 @@ export default function Search({ openSearch }) {
       {user ? (
         <div className="d-flex p-2 userChatContainer" onClick={handleSelect}>
           <div className="userChat">
-            {user.photoURL ? (
-              <img src={user.photoURL} alt="" className="d-block mx-auto" />
-            ) : (
-              <img src={pp} alt="" className="d-block mx-auto" />
-            )}
+            <img
+              src={profileImage ? profileImage : pp}
+              alt=""
+              className="d-block mx-auto imgFind rounded-circle"
+            />
             <div className="userChatInfo">
               <span className="userChatInfoName">{user.name}</span>
             </div>
           </div>
         </div>
       ) : (
-        <span className="text-danger ms-2 fs-6 pb-2">
-          Pas de résultat(s) ...
-        </span>
+        userName && (
+          <span className="text-danger ms-2 fs-6 pb-2">
+            Pas de résultat(s) ...
+          </span>
+        )
       )}
     </div>
   );
