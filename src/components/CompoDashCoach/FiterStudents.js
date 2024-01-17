@@ -102,11 +102,6 @@ export default function FilterStudents({handleDisplay}) {
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
               {selected && <Chip key={selected} label={selected} />}
             </Box>
-            // <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-            //   {selected.map((value) => (
-            //     <Chip key={value} label={value} />
-            //   ))}
-            // </Box>
           )}
           MenuProps={MenuProps}
         >
