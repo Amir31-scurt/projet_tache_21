@@ -49,7 +49,7 @@ export default function Message({ message }) {
       <div className="messageInfo d-flex flex-column">
         <img
           src={
-            message && message?.senderId !== currentUser?.uid
+            message && message?.senderId == currentUser?.uid
               ? userAuthImgPP
               : data?.user?.photoURL
           }
