@@ -104,7 +104,6 @@ function ContentCardLivraison() {
 
       return pub.images.length > 0 ? (
         <CardLivraison
-          key={pub.id}
           role={roleUser}
           name={pub.nom}
           title={pub.cours}
@@ -117,7 +116,7 @@ function ContentCardLivraison() {
           idDoc={pub.id}
           valid={pub.valider}
         />
-      ) : "";
+      ) : publications.length === 0 ?  <h3 className='pt-5'>Aucune livraison enrégistrer</h3> : "";
     });
   };
 
@@ -139,4 +138,6 @@ function ContentCardLivraison() {
 }
 
 export default ContentCardLivraison;
+
+
 
