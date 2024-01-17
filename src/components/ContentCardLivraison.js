@@ -116,7 +116,7 @@ function ContentCardLivraison() {
           idDoc={pub.id}
           valid={pub.valider}
         />
-      ) : <h3 className='pt-5'>Aucune livraison enrégistrer</h3>;
+      ) : publications.length === 0 ?  <h3 className='pt-5'>Aucune livraison enrégistrer</h3> : "";
     });
   };
 
