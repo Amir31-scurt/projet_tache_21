@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
-import pp from '../../assets/images/user.png';
-import { ChatAuthCtx } from '../../contexte/ChatAuthCtx';
-import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
-import { db } from '../../config/firebase-config';
-import { ChatContext } from '../../contexte/ChatContext';
-import { AuthContext } from '../../contexte/AuthContext';
+import React, { useContext, useEffect, useState } from "react";
+import pp from "../../assets/images/user.png";
+import { ChatAuthCtx } from "../../contexte/ChatAuthCtx";
+import { doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { db } from "../../config/firebase-config";
+import { ChatContext } from "../../contexte/ChatContext";
+import { AuthContext } from "../../contexte/AuthContext";
+
 
 export default function Chats() {
   const [chats, setChats] = useState([]);
