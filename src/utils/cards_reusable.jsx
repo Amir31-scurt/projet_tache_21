@@ -30,14 +30,23 @@ export default function Card() {
   console.log(roleUser, userCoach);
 
   return (
-    <div className="card-container2 d-flex flex-column mt-5 pt-3 text-center align-items-center justify-content-center gap-2">
-      <h2>Coach</h2>
+    <div className="card-container2 d-flex flex-column mt-5 pt-3 text-center align-items-center justify-content-center gap-1">
       <div className="card-image2">
         <img src={defaultUser} alt="Photo Profile" />
       </div>
-      <div className="card-content2">
-        <h2 className="card-title2">{userCoach ? userCoach.name : ''}</h2>
-        <p className="card-description2">{userCoach ? userCoach.email : ''}</p>
+      <div className="card-content2 text-start">
+        <h2 className="card-title2">
+          Coach: {userCoach ? userCoach.name : ''}
+        </h2>
+        <p className="card-description2">
+          <strong>Email:</strong> {userCoach ? userCoach.email : ''}
+        </p>
+        <p className="card-description2 ">
+          <strong>Téléphone:</strong> {userCoach ? userCoach.number : ''}
+        </p>
+        <p className="card-description2 ">
+          <strong>Domaine:</strong> {userCoach ? userCoach.domaine : ''}
+        </p>
       </div>
     </div>
   );

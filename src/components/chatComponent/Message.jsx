@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import pp from "../../assets/images/user.png";
-import { ChatAuthCtx } from "../../contexte/ChatAuthCtx";
-import { ChatContext } from "../../contexte/ChatContext";
-import { onAuthStateChanged } from "@firebase/auth";
-import { auth, storage } from "../../config/firebase-config";
-import { getDownloadURL, ref } from "@firebase/storage";
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import pp from '../../assets/images/user.png';
+import { ChatAuthCtx } from '../../contexte/ChatAuthCtx';
+import { ChatContext } from '../../contexte/ChatContext';
+import { onAuthStateChanged } from '@firebase/auth';
+import { auth, storage } from '../../config/firebase-config';
+import { getDownloadURL, ref } from '@firebase/storage';
 
 export default function Message({ message }) {
   const { currentUser } = useContext(ChatAuthCtx);
@@ -24,7 +24,7 @@ export default function Message({ message }) {
             setUserAuthImgPP(url);
           })
           .catch((error) => {
-            console.error("Error loading profile image:", error.message);
+            console.error('Error loading profile image:', error.message);
           });
       }
     });
@@ -35,28 +35,27 @@ export default function Message({ message }) {
 
   useEffect(() => {
     // Faire scroller vers le bas à chaq nouveau message
-    mess.current?.scrollIntoView({ behavior: "smooth" });
+    mess.current?.scrollIntoView({ behavior: 'smooth' });
   }, [message]);
 
   return (
     <div
       ref={mess}
       className={`message my-3 d-flex ${
-        message ? message?.senderId !== currentUser?.uid && "owner" : ""
+        message ? message?.senderId !== currentUser?.uid && 'owner' : ''
       }`}
     >
       <div className="messageInfo d-flex flex-column">
         <img
           src={
             message && message?.senderId == currentUser?.uid
-              ? userAuthImgPP
-                : pp
+              ? pp
               : data?.user?.photoURL
           }
           alt=""
         />
-        {console.log("message?.senderId => ", message?.senderId)}
-        {console.log("currentUser?.uid => ", currentUser?.uid)}
+        {console.log('message?.senderId => ', message?.senderId)}
+        {console.log('currentUser?.uid => ', currentUser?.uid)}
         {/* <img src={pp} alt="" /> */}
       </div>
       <div className="messageContent">
