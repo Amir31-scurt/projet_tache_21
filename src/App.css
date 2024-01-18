@@ -460,6 +460,12 @@ body {
   display: block;
 }
 
+.supCom{
+  display: none;
+}
+.boxshado:hover .supCom{
+  display: block;
+}
 /* Pour afficher l'icône par défaut, si le champ textarea est déjà en focus au chargement de la page */
 #floatingTextarea2:focus + label + .send {
   display: block;
