@@ -17,7 +17,7 @@ export default function Messages() {
         unsub();
       };
     }
-     // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [data?.chatId]);
 
   return (

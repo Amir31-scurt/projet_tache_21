@@ -6,7 +6,6 @@ import { db } from "../../config/firebase-config";
 import { ChatContext } from "../../contexte/ChatContext";
 import { AuthContext } from "../../contexte/AuthContext";
 
-
 export default function Chats() {
   const [chats, setChats] = useState([]);
 
