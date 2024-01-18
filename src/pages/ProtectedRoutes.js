@@ -164,7 +164,7 @@ export default function ProtectedRoutes() {
         },
         {
           path: 'etudiant/programme-apprenant/quizmarketing',
-          element: <QuizMarketing/>,
+          element: <QuizMarketing />,
         },
         {
           path: 'etudiant/programme-apprenant/quizfinance',

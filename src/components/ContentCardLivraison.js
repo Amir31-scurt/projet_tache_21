@@ -42,9 +42,11 @@ function ContentCardLivraison() {
 
   const roleUser = users.find((user) => user.email === email);
   const coachStudents = roleUser?.etudiants ?? [];
+  const coachName = roleUser && roleUser.role === "Coach" ? roleUser.name : "";
   const filteredPublications = publications.filter((pub) =>
     coachStudents.includes(pub.nom)
   );
+  
   const handleDisplay = (valeur) => {
     if (valeur) {
       const q = query(
@@ -100,9 +102,8 @@ function ContentCardLivraison() {
         }
       }
 
-      return (
+      return pub.images.length > 0 ? (
         <CardLivraison
-          key={pub.id}
           role={roleUser}
           name={pub.nom}
           title={pub.cours}
@@ -110,11 +111,12 @@ function ContentCardLivraison() {
           images={pub.images}
           validation={pub.finish}
           emailStudent={pub.email}
+          nomCoach={coachName}
           date={displayDifference}
           idDoc={pub.id}
           valid={pub.valider}
         />
-      );
+      ) : publications.length === 0 ?  <h3 className='pt-5'>Aucune livraison enrégistrer</h3> : "";
     });
   };
 
@@ -136,3 +138,6 @@ function ContentCardLivraison() {
 }
 
 export default ContentCardLivraison;
+
+
+

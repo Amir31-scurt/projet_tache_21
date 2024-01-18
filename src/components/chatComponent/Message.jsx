@@ -6,6 +6,7 @@ import { onAuthStateChanged } from "@firebase/auth";
 import { auth, storage } from "../../config/firebase-config";
 import { getDownloadURL, ref } from "@firebase/storage";
 
+
 export default function Message({ message }) {
   const { currentUser } = useContext(ChatAuthCtx);
   const { data } = useContext(ChatContext);
@@ -24,7 +25,7 @@ export default function Message({ message }) {
             setUserAuthImgPP(url);
           })
           .catch((error) => {
-            console.error("Error loading profile image:", error.message);
+            console.error('Error loading profile image:', error.message);
           });
       }
     });
@@ -35,14 +36,14 @@ export default function Message({ message }) {
 
   useEffect(() => {
     // Faire scroller vers le bas à chaq nouveau message
-    mess.current?.scrollIntoView({ behavior: "smooth" });
+    mess.current?.scrollIntoView({ behavior: 'smooth' });
   }, [message]);
 
   return (
     <div
       ref={mess}
       className={`message my-3 d-flex ${
-        message ? message?.senderId !== currentUser?.uid && "owner" : ""
+        message ? message?.senderId !== currentUser?.uid && 'owner' : ''
       }`}
     >
       <div className="messageInfo d-flex flex-column">
