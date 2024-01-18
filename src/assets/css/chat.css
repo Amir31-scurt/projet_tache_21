@@ -16,21 +16,25 @@ Vert
   right: 20px;
   z-index: 1000000000000;
 }
+
 .chatHomeContainer #btn-toggle {
   float: right;
   outline: none !important;
   background-color: #0071bd;
 }
+
 .chatHomeDisplay {
   transition: 0.9s ease;
   transform: translateY(-1000%);
   display: none;
 }
+
 .chatHomeDisplayYes {
   transition: 0.4s ease;
   transform: translateY(0%);
   display: block;
 }
+
 .chatHome {
   /* border: 0.01rem solid #333; */
   overflow: hidden;
@@ -38,14 +42,17 @@ Vert
   transition: 0.2s ease-in-out;
   border-bottom: 3px solid #48a93c;
 }
+
 .chatHomeDisplay {
   transition: 0.9s ease;
   transform: translateY(-1000%);
 }
+
 .chatHomeDisplayYes {
   transition: 0.4s ease;
   transform: translateY(0%);
 }
+
 /* ================================================== 
                     CHAT HEADER
    ================================================== */
@@ -53,9 +60,11 @@ Vert
 .chatHeader #openSearch {
   cursor: pointer;
 }
+
 .chatHeader {
   transition: all 0.3s ease;
 }
+
 .chatHeader .chatHeaderBtnContainer {
   background-color: #0071bd;
 }
@@ -98,19 +107,26 @@ Vert
   font-size: 12px;
   color: #333;
 }
+
 .search .searchForm #searchFormBtn {
   color: #333;
 }
+
 .search .searchForm #searchFormBtn,
 .search .userChatContainer {
   cursor: pointer;
 }
-.search .userChatContainer .imgFind{
+.search .userChatContainer .imgFind {
   width: 40px;
-    height: 40px;
-    object-fit: cover;
+  height: 40px;
+  object-fit: cover;
 }
 
+.search .userChatContainer .imgFind {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
 
 /* ================================================== 
                     CHATS 
@@ -118,6 +134,7 @@ Vert
 .chats {
   overflow-x: scroll;
 }
+
 .chatHomeContainer {
   width: 400px;
   position: absolute;
@@ -145,29 +162,35 @@ Vert
   outline: none !important;
   background-color: #0071bd;
 }
+
 .chatHomeContainer {
   width: 400px;
   position: fixed;
   bottom: 30px;
   right: 20px;
 }
+
 .chats {
   overflow-x: scroll;
 }
+
 .chatHomeContainer #btn-toggle {
   float: right;
   outline: none !important;
   background-color: #0071bd;
   color: white;
 }
+
 .chatHome .chatHeader .chatNavbar .user img {
   width: 40px;
 }
+
 .userChat img {
   width: 40px;
   height: 40px;
   object-fit: cover;
 }
+
 .chats .userChat {
   cursor: pointer;
   min-width: 75px;
@@ -175,14 +198,17 @@ Vert
   position: relative;
   /* flex-wrap: nowrap; */
 }
+
 .chats .userChat .btnArchived {
   top: 0;
   right: 0;
   color: #333;
 }
+
 .chats .userChat .btnArchived:hover {
   color: #f21414;
 }
+
 /* .chats .admin:hover{
   background-color: rgba(255, 215, 0, 0.3);
 }
@@ -196,10 +222,12 @@ Vert
   font-size: 12px;
   color: #333;
 }
+
 .userChat .userChatInfo .userChatInfolastMessage {
   font-size: 10px;
   color: #333;
 }
+
 /* ================================================== 
                 
    ================================================== */
@@ -214,62 +242,75 @@ Vert
   background-color: #0071bd;
   color: #333;
 }
+
 #crown {
   color: #ffd700;
   /* box-shadow: 2px 2px 24px #FFD700; */
 }
+
 #teacher {
   color: #c0c0c0;
 }
+
 /* ================================================== 
                 MESSAGES
    ================================================== */
 .messages {
   /* height: 250px; */
-  height: 150px;
+  height: 200px;
   overflow-y: auto;
   overflow-x: hidden;
 }
+
 .messages .owner {
   flex-direction: row-reverse;
 }
+
 .messages .owner .messageContent {
   /* d-flex flex-column align-items-end */
   display: flex;
   flex-direction: column;
   align-items: flex-end;
 }
+
 .messages .message .messageInfo {
   margin-right: 10px;
 }
+
 .messages .owner .messageInfo {
   margin-left: 10px;
 }
+
 .messages .message .messageInfo img,
 .messages .owner .messageInfo img {
   width: 25px;
 }
+
 .messages .message span,
 .messages .owner span {
   font-size: 9px;
 }
+
 .messages .message .messageContent img,
 .messages .owner .messageContent img {
   width: 40%;
   object-fit: cover;
 }
+
 .messages .message .messageContent p {
   position: relative;
   max-width: fit-content;
   border-radius: 0 10px 10px 10px;
   background-color: #3084b5 !important;
 }
+
 .messages .message .messageContent p span,
 .messages .owner .messageContent p span {
   position: absolute;
   bottom: 2px;
   right: 10px;
 }
+
 .messages .owner .messageContent p {
   position: relative;
   max-width: fit-content;
@@ -307,27 +348,34 @@ Vert
   background-color: transparent;
   border: 1px solid #0071bd;
 }
+
 .chatInput input:focus {
   background-color: transparent;
   box-shadow: none;
   border: 1px solid #0071bd;
 }
+
 .chatInput input::placeholder {
   color: #333;
 }
+
 .chatInput .btn {
   background-color: #0071bd;
 }
+
 .chatInput .btn:hover {
   background-color: #0071bd;
 }
+
 .chatInput .btn:disabled {
   background-color: #0071bd;
   border: #3084b5 !important;
 }
+
 .chatInput .btn {
   background-color: #0071bd;
 }
+
 .chatInput .btn:hover {
   background-color: #0071bd;
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useId } from 'react';
 import { Card } from 'primereact/card';
 import { Modal } from 'rsuite';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { db, auth, storage } from '../../config/firebase-config';
 import {
   getDoc,
@@ -22,7 +22,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import ProgressBar from './ProgressBar';
 
 export default function Cours() {
-  const { domaineId, sousDomaineName } = useParams();
+  const { domaineId, sousDomaineName, progress } = useParams();
+  const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [backdrop, setBackdrop] = useState('static');
@@ -42,7 +43,6 @@ export default function Cours() {
   const [isButtonsDisabled, setIsButtonsDisabled] = useState(false);
   const [livraisonDescription, setLivraisonDescription] = useState('');
   const [loading, setLoading] = useState(false);
-
 
   const UserUid = uid;
   const UserEmail = currentUser.email;
@@ -140,8 +140,9 @@ export default function Cours() {
   }, [selectedFiles]);
 
   const handleDescription = (e) => {
-    setLivraisonDescription(e.target.value); return
-  }
+    setLivraisonDescription(e.target.value);
+    return;
+  };
 
   const imageUrls = [];
   const handleUpload = async () => {
@@ -192,16 +193,16 @@ export default function Cours() {
     } catch (error) {
       console.error('Erreur lors du traitement du téléchargement :', error);
     }
-    setLivraisonDescription("");
-    toast.success("Livraison Réussie  !", {
-      position: "top-right",
+    setLivraisonDescription('');
+    toast.success('Livraison Réussie  !', {
+      position: 'top-right',
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      theme: "light",
+      theme: 'light',
     });
     setLoading(false);
   };
@@ -293,7 +294,7 @@ export default function Cours() {
         finish: false,
         livree: false,
         duree: 0,
-        valider: false
+        valider: false,
       });
 
       toast.success(
@@ -619,9 +620,12 @@ export default function Cours() {
               ? `https://www.youtube.com/embed/${videoId}`
               : null;
 
+            const cardStyle = course.isCompleted
+              ? { padding: '20px', backgroundColor: '#b2e8bf4b' }
+              : { padding: '20px' };
             return (
               <div key={index} className="col-12 col-md-6 col-lg-4">
-                <Card style={{ padding: "20px" }}>
+                <Card style={cardStyle}>
                   <h5>
                     Cours {index + 1} : {course.title}
                   </h5>
@@ -658,7 +662,7 @@ export default function Cours() {
               open={open}
               onClose={() => {
                 handleClose();
-                setSelectedCourseTitle(""); // Reset the selected course title when closing the modal
+                setSelectedCourseTitle(''); // Reset the selected course title when closing the modal
               }}
             >
               <Modal.Header>
@@ -700,7 +704,7 @@ export default function Cours() {
                     htmlFor="formFileLg"
                     id="myfiles"
                     className="form-label inputStyle text-white"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: 'pointer' }}
                   >
                     Choisir Fichiers
                   </label>
@@ -716,7 +720,10 @@ export default function Cours() {
               </Modal.Body>
               <Modal.Footer>
                 {loading ? (
-                  <div className="spinner-border text-light bg-success me-5 pe-2 " role="status">
+                  <div
+                    className="spinner-border text-light bg-success me-5 pe-2 "
+                    role="status"
+                  >
                     <span className="visually-hidden">loading</span>
                   </div>
                 ) : (

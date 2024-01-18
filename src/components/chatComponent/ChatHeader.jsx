@@ -1,12 +1,12 @@
 import React, { useContext, useState } from "react";
 import Chats from "./Chats";
 import Search from "./Search";
-import { AuthContext } from "../../contexte/AuthContext";
+import { ChatAuthCtx } from "../../contexte/ChatAuthCtx";
 
 export default function ChatHeader() {
   const [openSearch, setOpenSearch] = useState(false);
 
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser } = useContext(ChatAuthCtx);
 
   return (
     <div className="chatHeader position-relative">

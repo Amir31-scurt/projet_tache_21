@@ -1,29 +1,33 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import {
   addDoc,
   collection,
   deleteDoc,
   getDoc,
+  getDocs,
+  query,
+  where,
   doc,
   onSnapshot,
   serverTimestamp,
-} from 'firebase/firestore';
-import { db, auth } from '../config/firebase-config';
-import { onAuthStateChanged } from 'firebase/auth';
+} from "firebase/firestore";
+import { db, auth } from "../config/firebase-config";
+import { onAuthStateChanged } from "firebase/auth";
 
-import { toast } from 'react-hot-toast';
-import commenter from '../assets/images/commenter.png';
-import envoi from '../assets/images/envoi.png';
+import { toast } from "react-hot-toast";
+import commenter from "../assets/images/commenter.png";
+import envoi from "../assets/images/envoi.png";
 
-import React, { useState, useEffect, useContext } from 'react';
-import { Dialog } from 'primereact/dialog';
-import 'firebase/firestore';
-import { AuthContext } from '../contexte/AuthContext';
-import { Galleria } from 'primereact/galleria';
-import { MdOutlineDelete } from 'react-icons/md';
-import { FaCircleXmark } from 'react-icons/fa6';
-import { BsFillCheckCircleFill } from 'react-icons/bs';
-import { FiAlertTriangle, FiEdit3 } from 'react-icons/fi';
+import React, { useState, useEffect, useContext } from "react";
+import { Dialog } from "primereact/dialog";
+import "firebase/firestore";
+import { AuthContext } from "../contexte/AuthContext";
+import { Galleria } from "primereact/galleria";
+import { MdOutlineDelete } from "react-icons/md";
+import { FaCircleXmark } from "react-icons/fa6";
+import { BsFillCheckCircleFill } from "react-icons/bs";
+import { FiAlertTriangle, FiEdit3 } from "react-icons/fi";
+import { TiDelete } from "react-icons/ti";
 
 export default function CardLivraison({
   date,
@@ -37,11 +41,11 @@ export default function CardLivraison({
   livraison,
   handleUpdateDescription,
 }) {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [userRole, setUserRole] = useState('Rôle inconnu');
+  // const [userRole, setUserRole] = useState("Rôle inconnu"); 
+  const [NameUser, setNameUser] = useState("");
   const [imagesData, setImages] = useState([]);
   const [comments, setComments] = useState([]);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const [visibleComments, setVisibleComments] = useState([]);
   const [hiddenComments, setHiddenComments] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -80,7 +84,7 @@ export default function CardLivraison({
     <img
       src={item.itemImageSrc}
       alt={item.alt}
-      style={{ width: '100%', height: '100%' }}
+      style={{ width: "100%", height: "100%" }}
     />
   );
 
@@ -89,34 +93,9 @@ export default function CardLivraison({
     <img
       src={item.thumbnailImageSrc}
       alt={item.alt}
-      style={{ width: '100%', height: '100px' }}
+      style={{ width: "100%", height: "100px" }}
     />
   );
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const docRef = doc(db, 'utilisateurs', user.uid);
-        try {
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            const userData = docSnap.data();
-            const role = userData.role;
-            setUserRole(role);
-            console.log(role);
-          } else {
-            console.log(
-              'Aucune donnée utilisateur trouvée pour cet utilisateur'
-            );
-          }
-        } catch (error) {
-          console.error('Erreur lors de la récupération du rôle :', error);
-        }
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   // * FONCTIONNALITER POUR LES COMMENTAIRES * //
   // Utilisez useEffect pour charger les commentaires dès le chargement du composant
@@ -126,22 +105,23 @@ export default function CardLivraison({
 
   function handleSend() {
     addComment(); // Appel de la fonction addComment sans publicationId
-    toast.success('Commentaire envoyé');
-    setComment(''); // Réinitialisation du champ de commentaire après l'envoi
+    toast.success("Commentaire envoyé");
+    setComment(""); // Réinitialisation du champ de commentaire après l'envoi
+    fetchComments(); // Ajoutez cet appel pour mettre à jour les commentaires après l'ajout
   }
 
   // Fonction pour supprimer un commentaire
   function deleteComment(commentId) {
-    const commentRef = doc(db, 'commentaires', commentId);
+    const commentRef = doc(db, "commentaires", commentId);
 
     deleteDoc(commentRef)
       .then(() => {
-        toast.success('Comment deleted successfully');
+        toast.success("Commentaire supprimer");
         fetchComments(); // Mise à jour de l'affichage après la suppression du commentaire
       })
       .catch((error) => {
-        console.error('Error deleting comment: ', error);
-        toast.error('Erreur lors de la suppression du commentaire');
+        console.error("Error deleting comment: ", error);
+        toast.error("Erreur lors de la suppression du commentaire");
       });
   }
 
@@ -154,41 +134,71 @@ export default function CardLivraison({
     setHiddenComments(hidden);
   }, [comments]);
 
+  // FONCTION RECUPERATION ROLE
+  const [roleUser, setRoleUser] = useState("");
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const usersCollectionRef = collection(db, "utilisateurs");
+        const q = query(usersCollectionRef, where("userId", "==", UserUid));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          // Il y a au moins un document correspondant à UserUid
+          const userData = querySnapshot.docs[0].data();
+          setNameUser(userData.name);
+          const studentRole = userData.role;
+          setRoleUser(studentRole);
+        } else {
+          console.log("Le user ID n'existe pas :", UserUid);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUserData();
+  }, [UserUid]);
+
   // Ajout d'un commentaire à la base de données
   function addComment() {
-    const commentsRef = collection(db, 'commentaires');
+    const commentsRef = collection(db, "commentaires");
 
     addDoc(commentsRef, {
-      userName: currentUser ? currentUser.displayName : 'Utilisateur inconnu',
-      userRole: currentUser ? currentUser.role : 'Rôle inconnu',
+      userID: UserUid,
+      userName: NameUser || "Utilisateur inconnu",
+      userRole: roleUser,
       commentContent: comment,
       timestamp: serverTimestamp(),
     })
       .then(() => {
-        console.log('New document created with comment');
-        setComment('');
+        console.log("New document created with comment");
+        setComment("");
         fetchComments(); // Mise à jour de l'affichage après l'ajout du commentaire
       })
       .catch((error) => {
-        console.error('Error adding document: ', error);
-        toast.error('Erreur lors de la création du document');
+        console.error("Error adding document: ", error);
+        toast.error("Erreur lors de la création du document");
       });
   }
 
   // Fonction pour récupérer et afficher les commentaires depuis Firebase
   function fetchComments() {
-    const commentsRef = collection(db, 'commentaires');
+    const commentsRef = collection(db, "commentaires");
 
     onSnapshot(commentsRef, (snapshot) => {
       const commentsData = [];
       snapshot.forEach((doc) => {
-        const { userName, userRole } = doc.data();
-        commentsData.push({ id: doc.id, userName, userRole, ...doc.data() });
+        const { userName, userID } = doc.data();
+        commentsData.push({
+          id: doc.id,
+          userName,
+          userID,
+          ...doc.data(),
+        });
       });
 
-      commentsData.sort((a, b) => {
-        return b.timestamp - a.timestamp;
-      });
+      commentsData.sort((a, b) => b.timestamp - a.timestamp);
 
       setComments(commentsData);
 
@@ -202,7 +212,7 @@ export default function CardLivraison({
 
   function getTimeDifference(timestamp) {
     if (!timestamp) {
-      return ''; // Ou tout autre traitement que vous souhaitez appliquer pour les commentaires sans timestamp
+      return ""; // Ou tout autre traitement que vous souhaitez appliquer pour les commentaires sans timestamp
     }
 
     const currentTime = new Date();
@@ -216,28 +226,15 @@ export default function CardLivraison({
     const days = Math.floor(hours / 24);
 
     if (days > 0) {
-      return `${days} jour${days > 1 ? 's' : ''} ago`;
+      return `${days} jour${days > 1 ? "s" : ""} ago`;
     } else if (hours > 0) {
-      return `${hours} heure${hours > 1 ? 's' : ''} ago`;
+      return `${hours} heure${hours > 1 ? "s" : ""} ago`;
     } else if (minutes > 0) {
-      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
     } else {
-      return `${seconds} seconde${seconds !== 1 ? 's' : ''} ago`;
+      return `${seconds} seconde${seconds !== 1 ? "s" : ""} ago`;
     }
   }
-
-  const handleLogout = () => {
-    auth
-      .signOut()
-      .then(() => {
-        toast.success('Utilisateur déconnecté avec succès.');
-        // Ici tu peux ajouter d'autres actions après la déconnexion si nécessaire
-        navigate('/connexion');
-      })
-      .catch((error) => {
-        console.error('Erreur lors de la déconnexion :', error);
-      });
-  };
 
   const [hovered, setHovered] = useState(false);
   const [newDescription, setNewDescription] = useState(descriptLivraison);
@@ -272,10 +269,10 @@ export default function CardLivraison({
                 src={userProfile}
                 alt="user-Profile"
                 style={{
-                  width: '58px',
-                  height: '60px',
-                  borderRadius: '50%',
-                  objectFit: 'cover',
+                  width: "58px",
+                  height: "60px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
                 }}
               />
               <div className="mySpan">
@@ -287,7 +284,7 @@ export default function CardLivraison({
             {UserUid === UserID && (
               <div
                 className="d-flex justify-content-end align-items-center"
-                style={{ width: '20%' }}
+                style={{ width: "20%" }}
               >
                 <button
                   className="bg-transparent"
@@ -296,7 +293,7 @@ export default function CardLivraison({
                     setConfirmDialogVisible(true);
                   }}
                 >
-                  <MdOutlineDelete style={{ color: 'red', fontSize: '30px' }} />
+                  <MdOutlineDelete style={{ color: "red", fontSize: "30px" }} />
                 </button>
               </div>
             )}
@@ -311,17 +308,17 @@ export default function CardLivraison({
             <Galleria
               value={imagesData}
               numVisible={5}
-              style={{ width: '100%', margin: 'auto' }}
+              style={{ width: "100%", margin: "auto" }}
               item={itemTemplate}
               thumbnail={thumbnailTemplate}
               className="publication rounded-2"
             />
           </div>
 
-          <div style={{ width: '90%', margin: 'auto' }}>
+          <div style={{ width: "90%", margin: "auto" }}>
             <div
               className={` d-flex ${
-                editStart ? 'd-block ' : 'd-none'
+                editStart ? "d-block " : "d-none"
               } justify-content-center`}
             >
               <textarea
@@ -343,15 +340,15 @@ export default function CardLivraison({
                   className="SaveBtnModif p-2"
                   onClick={() => {
                     handleUpdate();
-                    toast.success('Modification Reussie !', {
-                      position: 'top-right',
+                    toast.success("Modification Reussie !", {
+                      position: "top-right",
                       autoClose: 3000,
                       hideProgressBar: false,
                       closeOnClick: true,
                       pauseOnHover: true,
                       draggable: true,
                       progress: undefined,
-                      theme: 'colored',
+                      theme: "colored",
                     });
                   }}
                 >
@@ -363,27 +360,27 @@ export default function CardLivraison({
               className="d-flex justify-content-center align-items-center pb-2"
               onMouseEnter={() => setHovered(true)}
               onMouseLeave={() => setHovered(false)}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             >
               <div>
                 <h3
-                  style={{ lineHeight: '22px' }}
+                  style={{ lineHeight: "22px" }}
                   className={`${
-                    editStart ? 'd-none ' : 'd-block'
+                    editStart ? "d-none " : "d-block"
                   } text-center px-6 fst-italic fw-light text-secondary fs-6 text-break my-1`}
                 >
                   {newDescription}
                 </h3>
               </div>
               {UserUid === UserID && (
-                <div className={` ${hovered ? 'd-block' : 'd-none'} ms-6`}>
+                <div className={` ${hovered ? "d-block" : "d-none"} ms-6`}>
                   <button
                     className={`${
-                      editStart ? 'd-none ' : 'd-block'
+                      editStart ? "d-none " : "d-block"
                     } bg-transparent`}
                     onClick={handleEditing}
                   >
-                    <FiEdit3 className="fs-4" style={{ color: '#3084b5' }} />
+                    <FiEdit3 className="fs-4" style={{ color: "#3084b5" }} />
                   </button>
                 </div>
               )}
@@ -397,7 +394,7 @@ export default function CardLivraison({
               header="Commentaires"
               visible={visible}
               maximizable
-              style={{ width: '50vw' }}
+              style={{ width: "50vw" }}
               onHide={() => setVisible(false)}
             >
               {hiddenComments.map((comment) => (
@@ -418,10 +415,20 @@ export default function CardLivraison({
                       </span>
                       <span
                         className="supCom"
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => deleteComment(comment.id)}
+                        style={{ cursor: "pointer" }}
+                        // onClick={() => deleteComment(comment.id)}
                       >
-                        X
+                        {comment.userID === UserUid && (
+                          <TiDelete
+                            className="delete"
+                            style={{
+                              cursor: "pointer",
+                              width: "20px",
+                              height: "20px",
+                            }}
+                            onClick={() => deleteComment(comment.id)}
+                          />
+                        )}
                       </span>
                     </p>
                   </div>
@@ -437,7 +444,7 @@ export default function CardLivraison({
             {visibleComments.map((comment) => (
               <div
                 key={comment.id}
-                className="rowborder rounded-2 m-0 my-2 boxshado"
+                className="row border rounded-2 m-0 my-2 boxshado"
               >
                 <div className="col-12 py-1">
                   <p className=" d-flex justify-content-between">
@@ -452,10 +459,20 @@ export default function CardLivraison({
                     </span>
                     <span
                       className="supCom"
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => deleteComment(comment.id)}
+                      style={{ cursor: "pointer" }}
+                      // onClick={() => deleteComment(comment.id)}
                     >
-                      X
+                      {comment.userID === UserUid && (
+                        <TiDelete
+                          className="delete"
+                          style={{
+                            cursor: "pointer",
+                            width: "20px",
+                            height: "20px",
+                          }}
+                          onClick={() => deleteComment(comment.id)}
+                        />
+                      )}
                     </span>
                   </p>
                 </div>
@@ -472,9 +489,9 @@ export default function CardLivraison({
                 src={commenter}
                 alt=""
                 className=""
-                style={{ width: '30px', height: '30px' }}
+                style={{ width: "30px", height: "30px" }}
               />
-              <p className="px-2 m-0 sizeHover" style={{ fontSize: '12px' }}>
+              <p className="px-2 m-0 sizeHover" style={{ fontSize: "12px" }}>
                 Plus de commentaires
               </p>
             </div>
@@ -487,7 +504,7 @@ export default function CardLivraison({
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
+                  if (e.key === "Enter") {
                     handleSend();
                   }
                 }}
@@ -497,7 +514,7 @@ export default function CardLivraison({
                 <img
                   src={envoi}
                   alt="send"
-                  style={{ width: '30px', height: '30px' }}
+                  style={{ width: "30px", height: "30px" }}
                 />
               </span>
             </div>
@@ -507,12 +524,12 @@ export default function CardLivraison({
 
       <Dialog
         header={
-          <h3 className="fst-italic" style={{ color: '#3086d8' }}>
+          <h3 className="fst-italic" style={{ color: "#3086d8" }}>
             Confirmation <FiAlertTriangle className="fs-1 text-danger pb-2" />
           </h3>
         }
         visible={confirmDialogVisible}
-        style={{ width: 'auto', textAlign: 'center' }}
+        style={{ width: "auto", textAlign: "center" }}
         onHide={() => setConfirmDialogVisible(false)}
       >
         <div className="">
@@ -532,7 +549,7 @@ export default function CardLivraison({
             </button>
             <button
               className="btn  px-4 fst-italic  text-white "
-              style={{ backgroundColor: '#3086d8' }}
+              style={{ backgroundColor: "#3086d8" }}
               onClick={() => setConfirmDialogVisible(false)}
             >
               Non

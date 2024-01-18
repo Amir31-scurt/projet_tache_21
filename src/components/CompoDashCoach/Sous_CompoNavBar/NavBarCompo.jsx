@@ -1,20 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import LogoTech from '../../../assets/images/logo.png';
-import UserProfil from '../../../assets/images/user.png';
-import { Dropdown } from 'rsuite';
-import { FaUserCog } from 'react-icons/fa';
-import { IoMdLogOut } from 'react-icons/io';
-import ModalComponent from './ModalComponent';
-import NavBarContext from './context';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth, storage } from '../../../config/firebase-config';
-import { signOut } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
-import { EmailContext } from '../../../contexte/EmailContexte';
-import Notifications from './Notifications';
-import { getDownloadURL, ref } from 'firebase/storage';
-import { Avatar } from 'rsuite';
+import React, { useContext, useEffect, useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import LogoTech from "../../../assets/images/logo.png";
+import UserProfil from "../../../assets/images/user.png";
+import { Dropdown } from "rsuite";
+import { FaUserCog } from "react-icons/fa";
+import { IoMdLogOut } from "react-icons/io";
+import ModalComponent from "./ModalComponent";
+import NavBarContext from "./context";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, storage } from "../../../config/firebase-config";
+import { signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { EmailContext } from "../../../contexte/EmailContexte";
+import Notifications from "./Notifications";
+import { getDownloadURL, ref } from "firebase/storage";
+import { Avatar } from "rsuite";
 
 export const NavBarCompo = () => {
   // eslint-disable-next-line
@@ -34,10 +34,10 @@ export const NavBarCompo = () => {
         getDownloadURL(storageRef)
           .then((url) => {
             setProfileImage(url);
-            localStorage.setItem('profileImage', url);
+            localStorage.setItem("profileImage", url);
           })
           .catch((error) => {
-            console.error('Error loading profile image:', error.message);
+            console.error("Error loading profile image:", error.message);
           });
       }
     });
@@ -48,9 +48,9 @@ export const NavBarCompo = () => {
   const logOut = async () => {
     try {
       await signOut(auth);
-      navigate('/');
-      setEmail('');
-      localStorage.removeItem('userEmail');
+      navigate("/");
+      setEmail("");
+      localStorage.removeItem("userEmail");
     } catch (error) {
       console.error(error);
     }
@@ -65,7 +65,7 @@ export const NavBarCompo = () => {
             <div className="LogoConta2 ">
               <div className="img-logo d-flex align-items-center justify-content-center">
                 <img src={LogoTech} className="img-fluid " alt="" />
-                <h3 className="GandalTitle" style={{ color: '#3084b5' }}>
+                <h3 className="GandalTitle" style={{ color: "#3084b5" }}>
                   Gaandal
                 </h3>
               </div>
@@ -86,10 +86,10 @@ export const NavBarCompo = () => {
                   className="ProfilSpace"
                   alt=""
                   style={{
-                    width: '58px',
-                    height: '60px',
-                    borderRadius: '50%',
-                    objectFit: 'cover',
+                    width: "58px",
+                    height: "60px",
+                    borderRadius: "50%",
+                    objectFit: "cover",
                   }}
                 />
               }
@@ -101,7 +101,7 @@ export const NavBarCompo = () => {
             >
               {/*===============Bouton Accès Profil=========*/}
               <Dropdown.Item onClick={handleOpen} className="fw-bold">
-                <FaUserCog className="fs-5 IcoColor mx-1" /> Profile
+                <FaUserCog className="fs-5 IcoColor mx-1" /> Profil
               </Dropdown.Item>
               {/*===============Bouton Deconnexion=============== */}
               <Dropdown.Item className="fw-bold" onClick={logOut}>
@@ -114,7 +114,7 @@ export const NavBarCompo = () => {
           <ModalComponent
             onProfileImageChange={(newProfileImage) => {
               setProfileImage(newProfileImage);
-              localStorage.setItem('profileImage', newProfileImage);
+              localStorage.setItem("profileImage", newProfileImage);
             }}
           />
 

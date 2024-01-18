@@ -3,7 +3,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../config/firebase-config';
 import CompoHtml from './compoHtml';
 import { EmailContext } from '../../contexte/EmailContexte';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 export default function Programme() {
   const [domaines, setDomaines] = useState([]);
