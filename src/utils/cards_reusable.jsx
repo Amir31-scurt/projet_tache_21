@@ -26,7 +26,10 @@ export default function Card() {
   }, []); // Removed roleUser from the dependency array
 
   const roleUser = users.find((user) => user.email === email);
-  const userCoach = users.find((user) => user.email === roleUser.emailCoach);
+  const userCoach = roleUser
+    ? users.find((user) => user.email === roleUser.emailCoach)
+    : null;
+
   console.log(roleUser, userCoach);
 
   return (
