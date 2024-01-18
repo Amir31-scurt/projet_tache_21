@@ -25,10 +25,9 @@ const SpecificPro = () => {
   const [newCourseTitle, setNewCourseTitle] = useState("");
   const [newCourseDescription, setNewCourseDescription] = useState("");
   const [selectedSousDomaine, setSelectedSousDomaine] = useState();
-  // const coachEmail = localStorage.getItem('userEmail');
   const [notificationsCollection] = useState(collection(db, "notifications"));
   const [coachDoc, setCoachDoc] = useState([]);
-  const [adminDoc, setAdminDoc] = useState([]);
+  const [adminDoc, setAdminDoc] = useState("");
   const [coachSousDomaine, setCoachSousDomaine] = useState("");
   const { email, setEmail } = useContext(EmailContext);
   const [coachName, setCoachName] = useState([]);
@@ -90,7 +89,7 @@ const SpecificPro = () => {
       const unsubscribeAdmin = onSnapshot(
         query(usersCollection, where("role", "==", "Administrateur")),
         (snapshot) => {
-          const adminEmails = snapshot.docs.map((doc) => doc.data().email);
+          const adminEmails = snapshot.docs.find((doc) => doc.data().email);
           setAdminDoc(adminEmails);
         }
       );

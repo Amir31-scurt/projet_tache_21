@@ -107,6 +107,14 @@ export default function FilterStudents({handleDisplay}) {
         >
           {studentNames.filter((names) => names.emailCoach === email)
             .map((name) => (
+              <div>
+              <MenuItem
+                key={name}
+                value={name.name}
+                style={getStyles(name.name, personName, theme)}
+              >
+                Tous les étudiants
+              </MenuItem>
               <MenuItem
                 key={name}
                 value={name.name}
@@ -114,6 +122,7 @@ export default function FilterStudents({handleDisplay}) {
               >
                 {name.name}
               </MenuItem>
+              </div>
             ))}
         </Select>
       </FormControl>
