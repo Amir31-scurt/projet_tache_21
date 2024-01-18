@@ -18,7 +18,7 @@ export default function Chat() {
   }, [data.user]);
   console.log('Contenu data du composant Chat 5', data);
   return (
-    <div className="chat d-none">
+    <div className="chat">
       <div className="chatInfo p-1">
         <div className="d-flex justify-content-between text-white">
           <span className="fst-italic" ref={correspondant}>
