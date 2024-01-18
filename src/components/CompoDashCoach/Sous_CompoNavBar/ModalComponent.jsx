@@ -28,6 +28,7 @@ const ModalComponent = ({ onProfileImageChange }) => {
   const [newPassword, setNewPassword] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
 
+  // Récupérer les identifiants de l'utilisateur connecté
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -194,6 +195,12 @@ const ModalComponent = ({ onProfileImageChange }) => {
                 src={profileImage || UserProfil}
                 className="ProfilUser img-fluid"
                 alt="Profil de l'utilisateur"
+                style={{
+                  width: "75px",
+                  height: "75px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                }}
               />
               {isEditing ? (
                 <input
@@ -251,13 +258,14 @@ const ModalComponent = ({ onProfileImageChange }) => {
           <button
             onClick={handleUpdateProfile}
             style={{ backgroundColor: "#3084b5" }}
-            className="btn py-2 px-3 me-2"
+            className="btn py-2 px-3 me-2 text-light fw-bold"
           >
             Modifier
           </button>
           <button
             onClick={handleCancelChanges}
-            className="btn btn-secondary py-2 px-3"
+            className="btn btn-secondary py-2 px-3 fw-bold"
+            style={{ backgroundColor: "#92a3ac" }}
           >
             Annuler
           </button>

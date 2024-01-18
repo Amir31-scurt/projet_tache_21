@@ -30,7 +30,6 @@ export const NavBarCompo = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // Mettez à jour l'image de profil après la reconnexion
         const storageRef = ref(storage, `profile_images/${user.uid}`);
         getDownloadURL(storageRef)
           .then((url) => {
@@ -53,11 +52,9 @@ export const NavBarCompo = () => {
       setEmail("");
       localStorage.removeItem("userEmail");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
-
-  // Fin Deconnexion
 
   return (
     <NavBarContext.Provider value={{ open, handleOpen, handleClose }}>
@@ -83,11 +80,17 @@ export const NavBarCompo = () => {
             <Dropdown
               title={
                 <Avatar
-                  size="md"
+                  size="lg"
                   circle
                   src={profileImage}
                   className="ProfilSpace"
                   alt=""
+                  style={{
+                    width: "58px",
+                    height: "60px",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                  }}
                 />
               }
               placement="bottomEnd"
@@ -98,7 +101,7 @@ export const NavBarCompo = () => {
             >
               {/*===============Bouton Accès Profil=========*/}
               <Dropdown.Item onClick={handleOpen} className="fw-bold">
-                <FaUserCog className="fs-5 IcoColor mx-1" /> Profile
+                <FaUserCog className="fs-5 IcoColor mx-1" /> Profil
               </Dropdown.Item>
               {/*===============Bouton Deconnexion=============== */}
               <Dropdown.Item className="fw-bold" onClick={logOut}>

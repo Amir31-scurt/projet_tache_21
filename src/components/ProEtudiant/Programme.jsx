@@ -3,7 +3,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../config/firebase-config';
 import CompoHtml from './compoHtml';
 import { EmailContext } from '../../contexte/EmailContexte';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 export default function Programme() {
   const [domaines, setDomaines] = useState([]);
@@ -104,10 +104,14 @@ export default function Programme() {
         </div>
       </div>
       <Link to={validLinks}>
-        <div className="btn-dash mt-5 pt-5">
-          <button type="button" className="btn-quiz btn btn-success">
-            Demarrer Quiz
-          </button>
+        <div className="btn-dash mt-5 pt-5 d-flex align-items-center justify-content-center text-center">
+          {validLinks ? (
+            <button type="button" className="btn btn-success btn-quiz">
+              Démarrer le Quiz
+            </button>
+          ) : (
+            <span className="text-muted">Aucun quiz disponible</span>
+          )}
         </div>
       </Link>
     </div>

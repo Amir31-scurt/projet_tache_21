@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useId } from 'react';
 import { Card } from 'primereact/card';
 import { Modal } from 'rsuite';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { db, auth, storage } from '../../config/firebase-config';
 import {
   getDoc,
@@ -9,21 +9,21 @@ import {
   collection,
   addDoc,
   serverTimestamp,
-  onSnapshot,
   getDocs,
   where,
   updateDoc,
   query,
 } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { AuthContext } from '../../contexte/AuthContext';
-import { format } from 'date-fns';
 import { onAuthStateChanged } from 'firebase/auth';
 import UserProfil from '../../assets/images/user.png';
 import { ToastContainer, toast } from 'react-toastify';
+import ProgressBar from './ProgressBar';
 
 export default function Cours() {
-  const { domaineId, sousDomaineName } = useParams();
+  const { domaineId, sousDomaineName, progress } = useParams();
+  const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [backdrop, setBackdrop] = useState('static');
@@ -41,6 +41,8 @@ export default function Cours() {
   const [loadingStates, setLoadingStates] = useState({});
   const [timeoutIds, setTimeoutIds] = useState({});
   const [isButtonsDisabled, setIsButtonsDisabled] = useState(false);
+  const [livraisonDescription, setLivraisonDescription] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const UserUid = uid;
   const UserEmail = currentUser.email;
@@ -67,6 +69,7 @@ export default function Cours() {
   }, []);
 
   useEffect(() => {
+    let isSubscribed = true; // Traquer si le composant
     const fetchUserData = async () => {
       try {
         const usersCollectionRef = collection(db, 'utilisateurs');
@@ -85,8 +88,10 @@ export default function Cours() {
         console.error('Error fetching user data:', error);
       }
     };
-
     fetchUserData();
+    return () => {
+      isSubscribed = false; // Component is unmounting, no longer subscribed
+    };
   }, [UserUid]);
 
   const UserName = LeNom || currentUser.displayName;
@@ -134,8 +139,14 @@ export default function Cours() {
     };
   }, [selectedFiles]);
 
+  const handleDescription = (e) => {
+    setLivraisonDescription(e.target.value);
+    return;
+  };
+
   const imageUrls = [];
   const handleUpload = async () => {
+    setLoading(true);
     try {
       // Boucler à travers les fichiers sélectionnés et les télécharger sur Firebase Storage
       await Promise.all(
@@ -176,11 +187,24 @@ export default function Cours() {
         await updateDoc(existingDocRef, {
           date: serverTimestamp(),
           images: imagesMisesAJour,
+          description: livraisonDescription,
         });
       }
     } catch (error) {
       console.error('Erreur lors du traitement du téléchargement :', error);
     }
+    setLivraisonDescription('');
+    toast.success('Livraison Réussie  !', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -270,6 +294,7 @@ export default function Cours() {
         finish: false,
         livree: false,
         duree: 0,
+        valider: false,
       });
 
       toast.success(
@@ -428,7 +453,7 @@ export default function Cours() {
         const data = doc.data();
         setCourses((prevCourses) =>
           prevCourses.map((course) => {
-            if (course.title === data.cours) {
+            if (course.title === data.cours && data.email === UserEmail) {
               return {
                 ...course,
                 display: data.start,
@@ -474,6 +499,24 @@ export default function Cours() {
 
     fetchCourses();
   }, [domaineId, sousDomaineName]);
+
+  // Progress Bar
+  // Part of Cours component
+  const calculateCompletionProgress = () => {
+    const totalCourses = courses.length;
+    const completedCourses = courses.filter(
+      (course) => course.isCompleted
+    ).length;
+    return (completedCourses / totalCourses) * 100;
+  };
+
+  // Use this function to get the progress value
+  const completionProgress = calculateCompletionProgress();
+  useEffect(() => {
+    // Recalculate the completion progress whenever courses data changes
+    const newProgress = calculateCompletionProgress();
+    // Optionally, you can use a state to store this progress if needed elsewhere
+  }, [courses]);
 
   const handleClose = () => setOpen(false);
 
@@ -563,9 +606,13 @@ export default function Cours() {
 
   return (
     <div className="bg-cours p-2">
-      <h2>Course List</h2>
+      <h2>Liste des cours</h2>
       <div className="container">
         <div className="row">
+          <div className="my-5 w-50">
+            <h3>Cours Complets :</h3>{' '}
+            <ProgressBar progress={completionProgress} />
+          </div>
           {courses.map((course, index) => {
             const videoId = getYouTubeVideoId(course.link);
             const isYouTubeLink = videoId !== null;
@@ -573,9 +620,12 @@ export default function Cours() {
               ? `https://www.youtube.com/embed/${videoId}`
               : null;
 
+            const cardStyle = course.isCompleted
+              ? { padding: '20px', backgroundColor: '#b2e8bf4b' }
+              : { padding: '20px' };
             return (
               <div key={index} className="col-12 col-md-6 col-lg-4">
-                <Card style={{ padding: '20px' }}>
+                <Card style={cardStyle}>
                   <h5>
                     Cours {index + 1} : {course.title}
                   </h5>
@@ -616,27 +666,31 @@ export default function Cours() {
               }}
             >
               <Modal.Header>
-                <Modal.Title>Envoyer mon travail</Modal.Title>
+                <Modal.Title className="text-center fst-italic mb-3 fs-5">
+                  Envoyer mon travail
+                </Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <div className="mb-3">
-                  <div className="mb-3">
-                    <label htmlFor="courseTitle" className="form-label">
-                      Titre
+                  <div className="mb-3 d-flex">
+                    <label htmlFor="courseTitle" className="pt-1 fw-bold">
+                      Titre :
                     </label>
                     <input
                       type="text"
-                      className="form-control"
+                      className=" border border-none text-center TitreRecup"
                       id="courseTitle"
                       value={selectedCourseTitle}
-                      readOnly // Makes the input read-only
+                      readOnly
                     />
                   </div>
                   <textarea
-                    placeholder="description"
-                    className="form-control"
+                    placeholder=" Mettez une description ..."
+                    className="AreaDesc ms-3 p-3"
                     id="exampleFormControlTextarea1"
-                    rows="3"
+                    rows=""
+                    value={livraisonDescription}
+                    onChange={handleDescription}
                   ></textarea>
                 </div>
                 {previews &&
@@ -649,7 +703,8 @@ export default function Cours() {
                   <label
                     htmlFor="formFileLg"
                     id="myfiles"
-                    className="form-label inputStyle btn text-white"
+                    className="form-label inputStyle text-white"
+                    style={{ cursor: 'pointer' }}
                   >
                     Choisir Fichiers
                   </label>
@@ -664,13 +719,22 @@ export default function Cours() {
                 </div>
               </Modal.Body>
               <Modal.Footer>
-                <button
-                  type="submit"
-                  onClick={handleUpload}
-                  className="inputStyle"
-                >
-                  Envoyer
-                </button>
+                {loading ? (
+                  <div
+                    className="spinner-border text-light bg-success me-5 pe-2 "
+                    role="status"
+                  >
+                    <span className="visually-hidden">loading</span>
+                  </div>
+                ) : (
+                  <button
+                    type="submit"
+                    onClick={handleUpload}
+                    className="inputStyle me-3"
+                  >
+                    Envoyer
+                  </button>
+                )}
               </Modal.Footer>
             </Modal>
           </div>

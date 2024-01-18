@@ -5,15 +5,11 @@ import {
   deleteDoc,
   getDoc,
   doc,
-  query,
-  where,
   onSnapshot,
-  getDocs,
   serverTimestamp,
 } from 'firebase/firestore';
 import { db, auth } from '../config/firebase-config';
 import { onAuthStateChanged } from 'firebase/auth';
-import { format } from 'date-fns';
 
 import { toast } from 'react-hot-toast';
 import commenter from '../assets/images/commenter.png';
@@ -24,6 +20,10 @@ import { Dialog } from 'primereact/dialog';
 import 'firebase/firestore';
 import { AuthContext } from '../contexte/AuthContext';
 import { Galleria } from 'primereact/galleria';
+import { MdOutlineDelete } from 'react-icons/md';
+import { FaCircleXmark } from 'react-icons/fa6';
+import { BsFillCheckCircleFill } from 'react-icons/bs';
+import { FiAlertTriangle, FiEdit3 } from 'react-icons/fi';
 
 export default function CardLivraison({
   date,
@@ -31,6 +31,11 @@ export default function CardLivraison({
   titreCourEtudiant,
   images,
   userProfile,
+  descriptLivraison,
+  UserID,
+  handleDeleteLivraison,
+  livraison,
+  handleUpdateDescription,
 }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [userRole, setUserRole] = useState('Rôle inconnu');
@@ -40,15 +45,20 @@ export default function CardLivraison({
   const [visibleComments, setVisibleComments] = useState([]);
   const [hiddenComments, setHiddenComments] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
+  const [livraisonToDelete, setLivraisonToDelete] = useState(null);
 
   const { uid } = useContext(AuthContext);
   const UserUid = uid;
 
   const navigate = useNavigate();
 
+  const handleDelete = (livraisonId) => {
+    handleDeleteLivraison(livraisonId);
+  };
+
   // Fonction pour extraire les données d'images à partir des URLs
   const fetchImagesFromProps = (images) => {
-    // Mapper sur les URLs des images pour créer un tableau d'objets
     const imagesData = images.map((url, index) => ({
       itemImageSrc: url,
       thumbnailImageSrc: url,
@@ -60,7 +70,6 @@ export default function CardLivraison({
     setImages(imagesData);
   };
 
-  // Effet de chargement initial et chaque fois que les images changent
   useEffect(() => {
     //extraire les données d'images à partir des images actuelles
     fetchImagesFromProps(images);
@@ -80,7 +89,7 @@ export default function CardLivraison({
     <img
       src={item.thumbnailImageSrc}
       alt={item.alt}
-      style={{ width: '140px', height: '100px' }}
+      style={{ width: '100%', height: '100px' }}
     />
   );
 
@@ -230,25 +239,67 @@ export default function CardLivraison({
       });
   };
 
+  const [hovered, setHovered] = useState(false);
+  const [newDescription, setNewDescription] = useState(descriptLivraison);
+  const [originalDescription, setOriginalDescription] =
+    useState(descriptLivraison);
+  const [editStart, setEditStart] = useState(false);
+  const handleEditing = () => {
+    setEditStart(true);
+    setOriginalDescription(newDescription);
+  };
+
+  const handleCancelEditing = () => {
+    // Restaurer la description à partir de l'état local
+    setNewDescription(originalDescription);
+    setEditStart(false);
+  };
+
+  // Fonction pour mettre à jour la description
+  const handleUpdate = () => {
+    // Appeler la fonction de mise à jour avec le nouvel état de la description
+    handleUpdateDescription(livraison.key, newDescription);
+    setEditStart(false); // Désactiver le mode édition
+  };
+
   return (
     <div className="">
       <div className="container d-flex justify-content-center flex-wrap containerApprenant my-5">
         <div className="row rowAppenant align-items-center">
-          <div className="col-md-12 d-flex colApprenant my-3">
-            <img
-              src={userProfile}
-              alt="user-Profile"
-              style={{
-                width: '58px',
-                height: '60px',
-                borderRadius: '50%',
-                objectFit: 'cover',
-              }}
-            />
-            <div className="mySpan">
-              <h6 className=" px-3 pt-1 fs-5 fst-italic dark">{apprenant}</h6>
-              <p className="m-0 fst-italic px-3 pt-1 dark">{date}</p>
+          <div className="col-md-12 d-flex justify-content-between">
+            <div className=" d-flex colApprenant my-3">
+              <img
+                src={userProfile}
+                alt="user-Profile"
+                style={{
+                  width: '58px',
+                  height: '60px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                }}
+              />
+              <div className="mySpan">
+                <h6 className=" px-3 pt-1 fs-5 fst-italic dark">{apprenant}</h6>
+                <p className="m-0 fst-italic px-3 pt-1 dark">{date}</p>
+              </div>
             </div>
+
+            {UserUid === UserID && (
+              <div
+                className="d-flex justify-content-end align-items-center"
+                style={{ width: '20%' }}
+              >
+                <button
+                  className="bg-transparent"
+                  onClick={() => {
+                    setLivraisonToDelete(livraison.key);
+                    setConfirmDialogVisible(true);
+                  }}
+                >
+                  <MdOutlineDelete style={{ color: 'red', fontSize: '30px' }} />
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="col-md-12 d-flex justify-content-center  fst-italic fw-bold fs-6 py-2">
@@ -260,12 +311,85 @@ export default function CardLivraison({
             <Galleria
               value={imagesData}
               numVisible={5}
-              style={{ width: '52rem', margin: 'auto' }}
+              style={{ width: '100%', margin: 'auto' }}
               item={itemTemplate}
               thumbnail={thumbnailTemplate}
               className="publication rounded-2"
             />
           </div>
+
+          <div style={{ width: '90%', margin: 'auto' }}>
+            <div
+              className={` d-flex ${
+                editStart ? 'd-block ' : 'd-none'
+              } justify-content-center`}
+            >
+              <textarea
+                className="AreaModifDesc"
+                name="area"
+                id="ModifArea"
+                value={newDescription}
+                onChange={(e) => setNewDescription(e.target.value)}
+              ></textarea>
+
+              <div className="d-flex flex-column ">
+                <button
+                  className="cancelBtnModif"
+                  onClick={handleCancelEditing}
+                >
+                  <FaCircleXmark className="text-danger fs-1" />
+                </button>
+                <button
+                  className="SaveBtnModif p-2"
+                  onClick={() => {
+                    handleUpdate();
+                    toast.success('Modification Reussie !', {
+                      position: 'top-right',
+                      autoClose: 3000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: 'colored',
+                    });
+                  }}
+                >
+                  <BsFillCheckCircleFill className="fs-1" />
+                </button>
+              </div>
+            </div>
+            <div
+              className="d-flex justify-content-center align-items-center pb-2"
+              onMouseEnter={() => setHovered(true)}
+              onMouseLeave={() => setHovered(false)}
+              style={{ cursor: 'pointer' }}
+            >
+              <div>
+                <h3
+                  style={{ lineHeight: '22px' }}
+                  className={`${
+                    editStart ? 'd-none ' : 'd-block'
+                  } text-center px-6 fst-italic fw-light text-secondary fs-6 text-break my-1`}
+                >
+                  {newDescription}
+                </h3>
+              </div>
+              {UserUid === UserID && (
+                <div className={` ${hovered ? 'd-block' : 'd-none'} ms-6`}>
+                  <button
+                    className={`${
+                      editStart ? 'd-none ' : 'd-block'
+                    } bg-transparent`}
+                    onClick={handleEditing}
+                  >
+                    <FiEdit3 className="fs-4" style={{ color: '#3084b5' }} />
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="MargeLivraison"></div>
 
           <div>
             <Dialog
@@ -360,11 +484,11 @@ export default function CardLivraison({
                 className="form-control textarea"
                 placeholder="Leave a comment here"
                 id="floatingTextarea2"
-                value={comment} // Liaison de la valeur du champ de commentaire
-                onChange={(e) => setComment(e.target.value)} // Gestion des modifications du champ de commentaire
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
-                    handleSend(); // Appel à la fonction handleSend lorsque la touche "Entrée" est pressée
+                    handleSend();
                   }
                 }}
               ></input>
@@ -380,6 +504,42 @@ export default function CardLivraison({
           </div>
         </div>
       </div>
+
+      <Dialog
+        header={
+          <h3 className="fst-italic" style={{ color: '#3086d8' }}>
+            Confirmation <FiAlertTriangle className="fs-1 text-danger pb-2" />
+          </h3>
+        }
+        visible={confirmDialogVisible}
+        style={{ width: 'auto', textAlign: 'center' }}
+        onHide={() => setConfirmDialogVisible(false)}
+      >
+        <div className="">
+          {/*  */}
+          <p className="fst-italic pb-4 text-danger fw-bold px-3">
+            Êtes-vous sûr de vouloir supprimer cette livraison ?
+          </p>
+          <div className="">
+            <button
+              className="btn btn-danger px-4 fst-italic me-3"
+              onClick={() => {
+                handleDelete(livraisonToDelete);
+                setConfirmDialogVisible(false);
+              }}
+            >
+              Oui
+            </button>
+            <button
+              className="btn  px-4 fst-italic  text-white "
+              style={{ backgroundColor: '#3086d8' }}
+              onClick={() => setConfirmDialogVisible(false)}
+            >
+              Non
+            </button>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 }

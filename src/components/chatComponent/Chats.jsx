@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import pp from '../../assets/images/user.png';
-import { doc, onSnapshot} from 'firebase/firestore';
+import { ChatAuthCtx } from '../../contexte/ChatAuthCtx';
+import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase-config';
 import { ChatContext } from '../../contexte/ChatContext';
 import { AuthContext } from '../../contexte/AuthContext';
@@ -48,7 +49,6 @@ export default function Chats() {
   const handleSelect = (u) => {
     dispatch({ type: 'CHANGE_USER', payload: u });
   };
-  console.log(Object.entries(chats)[1]);
   return (
     <div className="chats d-flex px-2 pt-2">
       {chats
@@ -60,7 +60,7 @@ export default function Chats() {
                 chat[1]?.userInfo.uid !== currentUser?.uid && (
                   <div
                     className={`
-                      userChat text-center me-2 py-1
+                      userChat text-center me-2 py-1 bg-white
                       ${
                         chat[1]?.userInfo?.role === 'Coach'
                           ? 'coach'
@@ -80,18 +80,18 @@ export default function Chats() {
                       data-bs-placement="top"
                       data-bs-title="Archiver"
                     ></i> */}
+                    {console.log(chat[1]?.userInfo?.photoURL)}
                     <img
                       src={
                         chat[1]?.userInfo?.photoURL
-                          ? 'https://firebasestorage.googleapis.com/v0/b/tache21-c134b.appspot.com/o/profile_images%2F4FEGNUHDZOYnv4WvJvyr2TxLha82?alt=media&token=588074b8-639a-42de-bd4b-0199e30150d6'
+                          ? chat[1]?.userInfo.photoURL
                           : pp
                       }
                       alt=""
                       className="rounded-circle img-fluid"
                     />
-
                     <div className="userChatInfo">
-                      <span className="text-center text-nowrap">
+                      <span className="text-center fw-bold text-nowrap">
                         {chat[1]?.userInfo.displayName}{' '}
                       </span>
                       <p className="userChatInfolastMessage text-nowrap">
@@ -100,7 +100,6 @@ export default function Chats() {
                     </div>
                   </div>
                 )
-              // }
             )
         : null}
     </div>

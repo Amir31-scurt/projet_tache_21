@@ -15,6 +15,7 @@ import {
   onSnapshot,
   query,
   where,
+  serverTimestamp
 } from "firebase/firestore";
 import CertificateDisplay from "./CertificatDisplay";
 import html2pdf from "html2pdf.js";
@@ -31,6 +32,11 @@ const ReactHookFormDemo = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [certificationsData, setCertificationsData] = useState([]);
   const [isCertificateDownloaded, setIsCertificateDownloaded] = useState(false);
+  const [user, setUser] = useState([]);
+  const [notificationsCollection] = useState(
+    collection(db, "notifications")
+  );
+
 
   const [formData, setFormData] = useState({
     role: "",
@@ -65,8 +71,20 @@ const ReactHookFormDemo = () => {
           setCertificationsData(certificationsData);
         });
 
+        const userData = onSnapshot(
+          query(collection(db, "utilisateurs"), where("role", "==" , "Étudiant")),
+          (snapshot) => {
+            const updatedUsers = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+            setUser(updatedUsers);
+          }
+        );
+
         return () => {
           unsubscribe();
+          userData();
         };
       } catch (error) {
         console.error(
@@ -78,6 +96,7 @@ const ReactHookFormDemo = () => {
 
     fetchCertifications();
   }, []);
+
   // Création de la collection "certifications" pour stocker les données de la certification
   const createCertification = async (certificationData) => {
     try {
@@ -90,7 +109,7 @@ const ReactHookFormDemo = () => {
   };
 
   // Soumission des champs
-  const onSubmit = (data) => {
+  const onSubmit = async(data) => {
     // Vérification si l'étudiant est déjà certifié
     const isStudentCertified = certificationsData.some(
       (certification) =>
@@ -117,6 +136,24 @@ const ReactHookFormDemo = () => {
     };
 
     createCertification(certificationData);
+
+    const studentDoc = user ? user.find((us) => us.name === data.role) : "";
+
+    const notificationMessage = `Félicitaions!! Vous venez d'être certifié dans le domaine ${data.domain}`
+    const notificationMessageCoach = `Votre étudiant ${data.role} vient d'être certifié dans le domaine ${data.domain} avec une mention ${data.mention}`
+    await addDoc(notificationsCollection, {
+      messageForAdmin: notificationMessage,
+      timestamp: serverTimestamp(),
+      newNotif: true,
+      email: studentDoc.email,
+    });
+
+    await addDoc(notificationsCollection, {
+      messageForAdmin: notificationMessageCoach,
+      timestamp: serverTimestamp(),
+      newNotif: true,
+      email: studentDoc.emailCoach,
+    });
 
     reset();
     setVisible(false);
