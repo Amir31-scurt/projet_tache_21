@@ -116,11 +116,14 @@ export default function CardLivraison({
 
     deleteDoc(commentRef)
       .then(() => {
-        toast.success("Commentaire supprimer");
-        fetchComments(); // Mise à jour de l'affichage après la suppression du commentaire
+        toast.success("Commentaire supprimé");
+        // Mettre à jour l'état des commentaires en excluant le commentaire supprimé
+        setComments((prevComments) =>
+          prevComments.filter((c) => c.id !== commentId)
+        );
       })
       .catch((error) => {
-        console.error("Error deleting comment: ", error);
+        console.error("Erreur lors de la suppression du commentaire : ", error);
         toast.error("Erreur lors de la suppression du commentaire");
       });
   }
