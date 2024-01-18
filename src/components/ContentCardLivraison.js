@@ -117,6 +117,7 @@ function ContentCardLivraison() {
           valid={pub.valider}
         />
       ) : "" ;
+
     });
   };
 
@@ -138,4 +139,6 @@ function ContentCardLivraison() {
 }
 
 export default ContentCardLivraison;
+
+
 

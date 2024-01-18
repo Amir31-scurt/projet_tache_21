@@ -50,6 +50,7 @@ function Domaine({domaines , onArchive, onUpdateDomaine}) {
                     <Icon.Eye />
                   </Button>
                   <Button className="mb-2 mx-1 text-primary border rounded bg-transparent" onClick={() => onUpdateDomaine(domaine)} >
+
                     <Icon.Pen />
                   </Button>
                   <Button
