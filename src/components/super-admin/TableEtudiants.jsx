@@ -14,42 +14,37 @@ import { FaArchive } from "react-icons/fa";
 import { Dialog } from "primereact/dialog";
 
 export default function TableEtudiants() {
-
   const [etudiantsData, setEtudiantsData] = useState([]);
   const [visible, setVisible] = useState(false);
 
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const querySnapshot = await getDocs(collection(db, "etudiants"));
-          const etudiants = [];
-          querySnapshot.forEach((doc) => {
-            etudiants.push(doc.data());
-          });
-          setEtudiantsData(etudiants);
-        } catch (error) {
-          console.error("Error fetching data:", error);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "etudiants"));
+        const etudiants = [];
+        querySnapshot.forEach((doc) => {
+          etudiants.push(doc.data());
+        });
+        setEtudiantsData(etudiants);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    const unsubscribe = onSnapshot(collection(db, "etudiants"), (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          fetchData();
         }
-      };
+      });
+    });
 
-      const unsubscribe = onSnapshot(
-        collection(db, "etudiants"),
-        (snapshot) => {
-          snapshot.docChanges().forEach((change) => {
-            if (change.type === "added") {
-              fetchData(); // Mise à jour des données lorsqu'un nouvel étudiant est ajouté
-            }
-          });
-        }
-      );
+    fetchData();
 
-      fetchData(); // Récupération initiale des données
-
-      return () => {
-        // Nettoyage du listener lors du démontage du composant
-        unsubscribe();
-      };
-    }, []);
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const columns = useMemo(
     () => [
@@ -97,7 +92,7 @@ export default function TableEtudiants() {
             className="d-flex justify-content-center align-items-center btn btn-outline-primary rounded-pill"
             onClick={() => setVisible(true)}
           >
-            <FaEye className="me-1" style={{ width: "20px", height: "20px" }} />
+            <FaEye className="me-1" style={{ width: "10px", height: "10px" }} />
             Voir
           </button>
           <button
@@ -106,7 +101,7 @@ export default function TableEtudiants() {
           >
             <FaEdit
               className="me-1"
-              style={{ width: "20px", height: "20px" }}
+              style={{ width: "10px", height: "10px" }}
             />
             Modifier
           </button>
@@ -116,7 +111,7 @@ export default function TableEtudiants() {
           >
             <FaArchive
               className="me-1"
-              style={{ width: "20px", height: "20px" }}
+              style={{ width: "10px", height: "10px" }}
             />
             Archiver
           </button>
@@ -126,8 +121,8 @@ export default function TableEtudiants() {
   });
 
   return (
-    <div className="TableEtudiants d-flex flex-column justyfy-content-center align-items-center w-100">
-      <h1 className="my-3 shadowTable">Tableaux étudiant</h1>
+    <div className="TableEtudiants d-flex flex-column justyfy-content-center align-items-center">
+      <h1 className="my-3 shadowTable">Tableau étudiants</h1>
       <Dialog
         header="Informations sur ${etudiant.Prenom"
         visible={visible}
