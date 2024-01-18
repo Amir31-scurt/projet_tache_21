@@ -41,7 +41,7 @@ export default function CardLivraison({
   livraison,
   handleUpdateDescription,
 }) {
-  // const [userRole, setUserRole] = useState("Rôle inconnu"); 
+  // const [userRole, setUserRole] = useState("Rôle inconnu");
   const [NameUser, setNameUser] = useState("");
   const [imagesData, setImages] = useState([]);
   const [comments, setComments] = useState([]);
@@ -107,7 +107,7 @@ export default function CardLivraison({
     addComment(); // Appel de la fonction addComment sans publicationId
     toast.success("Commentaire envoyé");
     setComment(""); // Réinitialisation du champ de commentaire après l'envoi
-    fetchComments(); // Ajoutez cet appel pour mettre à jour les commentaires après l'ajout
+    fetchComments(livraison.key); // Ajouter l'identifiant de la livraison lors de l'appel
   }
 
   // Fonction pour supprimer un commentaire
@@ -169,12 +169,13 @@ export default function CardLivraison({
       userName: NameUser || "Utilisateur inconnu",
       userRole: roleUser,
       commentContent: comment,
+      livraisonId: livraison.key, // Ajouter l'identifiant de la livraison au commentaire
       timestamp: serverTimestamp(),
     })
       .then(() => {
         console.log("New document created with comment");
         setComment("");
-        fetchComments(); // Mise à jour de l'affichage après l'ajout du commentaire
+        fetchComments(livraison.key); // Utiliser l'identifiant de la livraison lors de la récupération des commentaires
       })
       .catch((error) => {
         console.error("Error adding document: ", error);
@@ -183,23 +184,32 @@ export default function CardLivraison({
   }
 
   // Fonction pour récupérer et afficher les commentaires depuis Firebase
-  function fetchComments() {
+  function fetchComments(livraisonId) {
     const commentsRef = collection(db, "commentaires");
 
-    onSnapshot(commentsRef, (snapshot) => {
+    // Utilisez onSnapshot pour écouter les changements dans la collection
+    const unsubscribe = onSnapshot(commentsRef, (snapshot) => {
       const commentsData = [];
       snapshot.forEach((doc) => {
-        const { userName, userID } = doc.data();
-        commentsData.push({
-          id: doc.id,
+        const {
           userName,
           userID,
-          ...doc.data(),
-        });
+          livraisonId: commentLivraisonId,
+        } = doc.data();
+        // Filtrer les commentaires uniquement en fonction de livraisonId
+        if (commentLivraisonId === livraisonId) {
+          commentsData.push({
+            id: doc.id,
+            userName,
+            userID,
+            ...doc.data(),
+          });
+        }
       });
 
       commentsData.sort((a, b) => b.timestamp - a.timestamp);
 
+      // Mettre à jour les variables d'état spécifiques à la carte
       setComments(commentsData);
 
       const visible = commentsData.slice(0, 3);
@@ -208,7 +218,18 @@ export default function CardLivraison({
       setVisibleComments(visible);
       setHiddenComments(hidden);
     });
+
+    // Retournez la fonction unsubscribe pour arrêter d'écouter lors du démontage du composant
+    return unsubscribe;
   }
+
+  useEffect(() => {
+    // Appeler la fonction fetchComments avec l'identifiant de la livraison
+    const unsubscribe = fetchComments(livraison.key);
+
+    // Assurez-vous de vous désabonner lors du démontage du composant
+    return () => unsubscribe();
+  }, [livraison.key]); // Ajouter livraison.key à la liste de dépendances
 
   function getTimeDifference(timestamp) {
     if (!timestamp) {
