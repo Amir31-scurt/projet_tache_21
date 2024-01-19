@@ -139,7 +139,7 @@ const ReactHookFormDemo = () => {
 
     const studentDoc = user ? user.find((us) => us.name === data.role) : "";
 
-    const notificationMessage = `Félicitaions!! Vous venez d'être certifié dans le domaine ${data.domain}`;
+    const notificationMessage = `Félicitaions!! Vous avez terminé votre programme avec succès ${data.domain}`;
     const notificationMessageCoach = `Votre étudiant ${data.role} vient d'être certifié dans le domaine ${data.domain} avec une mention ${data.mention}`;
     await addDoc(notificationsCollection, {
       messageForAdmin: notificationMessage,

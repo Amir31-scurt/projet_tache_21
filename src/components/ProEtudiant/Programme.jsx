@@ -62,9 +62,6 @@ export default function Programme() {
   }, [users, email, domaines]);
 
   const domaineExactly = domaines.find((dom) => dom.domaine === studentDomaine);
-
-  console.log(studentDomaine);
-
   const isMarketing = studentDomaine === 'Marketing';
   const isFinance = studentDomaine === 'Finance';
   const isGestionEntreprise = studentDomaine === `Gestion d'entreprise`;
@@ -84,7 +81,6 @@ export default function Programme() {
 
   return (
     <div className="bg-cours">
-      *
       <div className="container ">
         <h2 className="text-start pb-4">Mon Programme - {studentDomaine}</h2>
         <div className="row d-flex m-0">
