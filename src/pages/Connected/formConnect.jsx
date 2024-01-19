@@ -228,7 +228,7 @@ export default function FormConnect() {
               className="btn d-flex justify-content-center align-items-center fw-bold fs-6 btn-lg btn-block col-7 text-white log"
               disabled={loading}
             >
-              {loading ? "Chargement..." : "Se connecter"}
+              {loading ? "Connexion..." : "Se connecter"}
             </button>
           </center>
         </div>
