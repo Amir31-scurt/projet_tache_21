@@ -15,7 +15,7 @@ import {
   onSnapshot,
   query,
   where,
-  serverTimestamp
+  serverTimestamp,
 } from "firebase/firestore";
 import CertificateDisplay from "./CertificatDisplay";
 import html2pdf from "html2pdf.js";
@@ -33,10 +33,7 @@ const ReactHookFormDemo = () => {
   const [certificationsData, setCertificationsData] = useState([]);
   const [isCertificateDownloaded, setIsCertificateDownloaded] = useState(false);
   const [user, setUser] = useState([]);
-  const [notificationsCollection] = useState(
-    collection(db, "notifications")
-  );
-
+  const [notificationsCollection] = useState(collection(db, "notifications"));
 
   const [formData, setFormData] = useState({
     role: "",
@@ -72,7 +69,10 @@ const ReactHookFormDemo = () => {
         });
 
         const userData = onSnapshot(
-          query(collection(db, "utilisateurs"), where("role", "==" , "Étudiant")),
+          query(
+            collection(db, "utilisateurs"),
+            where("role", "==", "Étudiant")
+          ),
           (snapshot) => {
             const updatedUsers = snapshot.docs.map((doc) => ({
               id: doc.id,
@@ -109,7 +109,7 @@ const ReactHookFormDemo = () => {
   };
 
   // Soumission des champs
-  const onSubmit = async(data) => {
+  const onSubmit = async (data) => {
     // Vérification si l'étudiant est déjà certifié
     const isStudentCertified = certificationsData.some(
       (certification) =>
@@ -139,8 +139,8 @@ const ReactHookFormDemo = () => {
 
     const studentDoc = user ? user.find((us) => us.name === data.role) : "";
 
-    const notificationMessage = `Félicitaions!! Vous avez terminé votre programme avec succès ${data.domain}`
-    const notificationMessageCoach = `Votre étudiant ${data.role} vient d'être certifié dans le domaine ${data.domain} avec une mention ${data.mention}`
+    const notificationMessage = `Félicitaions!! Vous avez terminé votre programme avec succès ${data.domain}`;
+    const notificationMessageCoach = `Votre étudiant ${data.role} vient d'être certifié dans le domaine ${data.domain} avec une mention ${data.mention}`;
     await addDoc(notificationsCollection, {
       messageForAdmin: notificationMessage,
       timestamp: serverTimestamp(),

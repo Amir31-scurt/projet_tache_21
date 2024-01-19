@@ -19,6 +19,7 @@ emailjs.init("iyzQvt6sAJkX_ndas");
 const Inscription = ({ onRegisterSuccess }) => {
   const roles = ["Administrateur", "Coach", "Étudiant"];
   const [showMessage, setShowMessage] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Fonction pour générer un mot de passe aléatoire
   const generateRandomPassword = () => {
@@ -76,6 +77,7 @@ const Inscription = ({ onRegisterSuccess }) => {
   // Soummission du formulaire pour inscrire
   const onSubmit = async (data) => {
     try {
+      setLoading(true);
       const randomPassword = generateRandomPassword();
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -110,11 +112,13 @@ const Inscription = ({ onRegisterSuccess }) => {
       setShowMessage(true);
       reset();
 
+      setLoading(false);
+
       // Envoyer les identifiants par e-mail
       const templateParams = {
         to_email: data.email,
         subject: "Vos identifiants",
-        message: `Bonjour ${data.name}, \n\nVotre compte a été créé avec succès. Vos identifiants sont: \nEmail: ${data.email} \nMot de passe: ${formData.password} \n\nCliquez sur le lien suivant pour accéder à notre site: https://projet-tache-21-5thn.vercel.app/`,
+        message: `Bonjour ${data.name}, \n\nVotre compte a été créé avec succès. Vos identifiants sont: \nEmail: ${data.email} \nMot de passe: ${formData.password} \n\nCliquez sur le lien suivant pour accéder à notre site: https://projet-tache-21-5thn.vercel.app/ \n\nNote importante: Nous vous recommandons vivement de changer votre mot de passe dès votre première connexion pour des raisons de sécurité.`,
       };
 
       emailjs
@@ -127,6 +131,7 @@ const Inscription = ({ onRegisterSuccess }) => {
         });
     } catch (error) {
       console.error("Error creating user:", error.message);
+      setLoading(false);
     }
   };
 
@@ -339,8 +344,9 @@ const Inscription = ({ onRegisterSuccess }) => {
             </div>
             <Button
               type="submit"
-              label="Inscrire"
+              label={loading ? "Inscription..." : "Inscrire"}
               className="mt-2 inscributton text-light "
+              disabled={loading}
             />
           </form>
         </div>
