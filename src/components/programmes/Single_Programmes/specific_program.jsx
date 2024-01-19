@@ -62,6 +62,7 @@ const SpecificPro = () => {
     };
 
     fetchCoachDetails();
+     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
