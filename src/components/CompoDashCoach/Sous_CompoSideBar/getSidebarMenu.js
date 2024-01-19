@@ -11,27 +11,45 @@ import { fetchStudentEmails } from '../../../utils/fetchStudentEmails';
 import SidebarCompo from './SidebarCompo';
 import { Placeholder } from 'rsuite';
 import { MdAssignmentAdd } from 'react-icons/md';
+import { db } from '../../../config/firebase-config'; // Update this path according to your project structure
+import { collection, query, where, getDocs } from 'firebase/firestore';
 
 export const GetSidebarMenu = () => {
   const { email } = useContext(EmailContext);
   const [adminEmails, setAdminEmails] = useState([]);
   const [coachEmails, setCoachEmails] = useState([]);
   const [studentEmails, setStudentEmails] = useState([]);
+  const [studentDomaine, setStudentDomaine] = useState('');
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     const getEmails = async () => {
+      // Fetch emails
       const admins = await fetchAdminEmails();
       const coaches = await fetchCoachEmails();
       const students = await fetchStudentEmails();
       setAdminEmails(admins);
       setCoachEmails(coaches);
       setStudentEmails(students);
+    };
+    getEmails();
+    const fetchStudentDomaine = async () => {
+      if (studentEmails.includes(email)) {
+        const q = query(
+          collection(db, 'utilisateurs'),
+          where('email', '==', email)
+        );
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          const data = querySnapshot.docs[0].data();
+          setStudentDomaine(data.domaine); // Assuming 'domaine' is the field name
+        }
+      }
       setIsReady(true);
     };
 
-    getEmails();
-  }, []);
+    fetchStudentDomaine();
+  }, [studentEmails, email]);
 
   const isAdmin = adminEmails.includes(email);
   const isCoach = coachEmails.includes(email);
@@ -97,7 +115,7 @@ export const GetSidebarMenu = () => {
       ];
     } else if (isStudent) {
       // Return regular user menu items
-      return [
+      const studentMenu = [
         {
           title: 'Dashboard',
           icon: <MdOutlineSpaceDashboard />,
@@ -122,12 +140,44 @@ export const GetSidebarMenu = () => {
           id: 'link5',
           link: 'etudiant/certificat',
         },
-
         // ... other items for regular users
       ];
+      // Dynamically add quiz link based on studentDomaine
+      let quizTitle = '';
+      let quizLink = '';
+
+      switch (studentDomaine) {
+        case 'Marketing':
+          quizTitle = 'Quiz Marketing';
+          quizLink = 'etudiant/programme-apprenant/quizmarketing';
+          break;
+        case 'Gestion Internationale':
+          quizTitle = 'Quiz Gestion Internationale';
+          quizLink = 'etudiant/programme-apprenant/quizgestioninternationale';
+          break;
+        case `Gestion d'entreprise`:
+          quizTitle = "Quiz Gestion d'Entreprise";
+          quizLink = 'etudiant/programme-apprenant/quizgestionentreprise';
+          break;
+        case 'Finance':
+          quizTitle = 'Quiz Finance';
+          quizLink = 'etudiant/programme-apprenant/quizfinance';
+          break;
+      }
+
+      if (quizTitle && quizLink) {
+        studentMenu.push({
+          title: quizTitle,
+          icon: <MdOutlineLibraryBooks />, // Use an appropriate icon
+          id: 'link6',
+          link: quizLink,
+        });
+      }
+
+      return studentMenu;
     }
   };
-  const menuItems = getMenuItems();
+  const menuItems = getMenuItems() || [];
   return isReady ? (
     <div id="contentSidebar">
       {menuItems.map((item, index) => (

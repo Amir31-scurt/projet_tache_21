@@ -18,19 +18,19 @@ export default function Chats() {
   useEffect(() => {
     const getChats = () => {
       const unsub = onSnapshot(
-        doc(db, "userChats", currentUser?.uid),
+        doc(db, 'userChats', currentUser?.uid),
         (doc) => {
           const data = doc.data();
-          if (data && typeof data === "object") {
+          if (data && typeof data === 'object') {
             setChats(data);
           } else {
             // Handle the case where data is not an object
-            console.error("Chats data is not an object:", data);
+            console.error('Chats data is not an object:', data);
           }
         },
         (error) => {
           // Handle the error case
-          console.error("Error fetching chats:", error);
+          console.error('Error fetching chats:', error);
         }
       );
       return () => {
@@ -48,7 +48,7 @@ export default function Chats() {
   // }
 
   const handleSelect = (u) => {
-    dispatch({ type: "CHANGE_USER", payload: u });
+    dispatch({ type: 'CHANGE_USER', payload: u });
   };
   return (
     <div className="chats d-flex px-2 pt-2">
@@ -63,13 +63,13 @@ export default function Chats() {
                     className={`
                       userChat text-center me-2 py-1 bg-white
                       ${
-                        chat[1]?.userInfo?.role === "Coach"
-                          ? "coach"
-                          : chat[1]?.userInfo?.role === "Administrateutr"
-                          ? "admin"
-                          : chat[1]?.userInfo?.role === "Étudiant"
-                          ? "etudiant"
-                          : ""
+                        chat[1]?.userInfo?.role === 'Coach'
+                          ? 'coach'
+                          : chat[1]?.userInfo?.role === 'Administrateutr'
+                          ? 'admin'
+                          : chat[1]?.userInfo?.role === 'Étudiant'
+                          ? 'etudiant'
+                          : ''
                       }`}
                     key={chat[0]}
                     onClick={() => handleSelect(chat[1]?.userInfo)}
@@ -93,10 +93,10 @@ export default function Chats() {
                     />
                     <div className="userChatInfo">
                       <span className="text-center fw-bold text-nowrap">
-                        {chat[1]?.userInfo.displayName}{" "}
+                        {chat[1]?.userInfo.displayName}{' '}
                       </span>
                       <p className="userChatInfolastMessage text-nowrap">
-                        {chat[1].lastMessage?.text}{" "}
+                        {chat[1].lastMessage?.text}{' '}
                       </p>
                     </div>
                   </div>

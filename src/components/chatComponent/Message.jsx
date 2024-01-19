@@ -50,9 +50,7 @@ export default function Message({ message }) {
           src={
             message && message?.senderId === currentUser?.uid
               ? userAuthImgPP
-                ? userAuthImgPP
-                : pp
-              : data?.user?.photoURL
+              : pp
           }
           alt=""
         />
