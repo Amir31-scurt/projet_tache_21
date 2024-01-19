@@ -180,7 +180,6 @@ const FormikDoc = () => {
     onSubmit: async (data) => {
       if (isAdding) {
         data && show();
-        console.log(formik.values.fileUrl);
         formik.setValues({ name: '', sousDomaines: '' });
         setShowSousDomainesInput(false);
         formik.resetForm();

@@ -1,113 +1,85 @@
-
 import { useNavigate } from "react-router-dom";
 import {
   addDoc,
   collection,
   deleteDoc,
   getDoc,
-  doc,
+  getDocs,
   query,
   where,
+  doc,
   onSnapshot,
-  getDocs,
   serverTimestamp,
 } from "firebase/firestore";
 import { db, auth } from "../config/firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
-import { format } from 'date-fns';
 
 import { toast } from "react-hot-toast";
 import commenter from "../assets/images/commenter.png";
 import envoi from "../assets/images/envoi.png";
 
 import React, { useState, useEffect, useContext } from "react";
-import userProfile from "../assets/images/userProfile.png";
 import { Dialog } from "primereact/dialog";
 import "firebase/firestore";
 import { AuthContext } from "../contexte/AuthContext";
 import { Galleria } from "primereact/galleria";
+import { MdOutlineDelete } from "react-icons/md";
+import { FaCircleXmark } from "react-icons/fa6";
+import { BsFillCheckCircleFill } from "react-icons/bs";
+import { FiAlertTriangle, FiEdit3 } from "react-icons/fi";
+import { TiDelete } from "react-icons/ti";
 
-export default function CardLivraison() {
-  // eslint-disable-next-line
-  const [currentUser, setCurrentUser] = useState(null);
-  // eslint-disable-next-line
-  const [userRole, setUserRole] = useState("Rôle inconnu");
+export default function CardLivraison({
+  date,
+  apprenant,
+  titreCourEtudiant,
+  images,
+  userProfile,
+  descriptLivraison,
+  UserID,
+  handleDeleteLivraison,
+  livraison,
+  handleUpdateDescription,
+}) {
+  // const [userRole, setUserRole] = useState("Rôle inconnu"); 
+  const [NameUser, setNameUser] = useState("");
+  const [imagesData, setImages] = useState([]);
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
-
-
   const [visibleComments, setVisibleComments] = useState([]);
   const [hiddenComments, setHiddenComments] = useState([]);
-  const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
+  const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
+  const [livraisonToDelete, setLivraisonToDelete] = useState(null);
 
   const { uid } = useContext(AuthContext);
   const UserUid = uid;
-// eslint-disable-next-line
-  const [coach, setCoach] = useState("");
-  // eslint-disable-next-line
-  const [days, setDays] = useState("1");
-  // eslint-disable-next-line
-  const [role, setRole] = useState("Coach");
-  const [date, setDate] = useState("");
-  const [apprenant, setApprenat] = useState("");
 
-  const [images, setImages] = useState([]);
-  const [visible, setVisible] = useState(false);
+  const navigate = useNavigate();
 
-  // Fonction pour récupérer les informations de l'étudiant depuis Firestore
-   // eslint-disable-next-line
-  const fetchStudentInfo = async () => {
-    try {
-      const studentRef = collection(db, "publication");
-
-      // Création de la requête pour récupérer le document de l'étudiant
-      const studentQuery = query(studentRef, where("userID", "==", UserUid));
-      const studentSnapshot = await getDocs(studentQuery);
-
-      // Vérification s'il y a des documents
-      if (!studentSnapshot.empty) {
-        const studentData = studentSnapshot.docs[0].data();
-        setApprenat(studentData.nom);
-        setCoach(studentData.coach);
-        setDate(format(studentData.date.toDate(), 'dd/MM/yyyy - HH:mm:ss'));
-      }
-    } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des informations de l'étudiant depuis Firestore",
-        error
-      );
-    }
+  const handleDelete = (livraisonId) => {
+    handleDeleteLivraison(livraisonId);
   };
 
-  const fetchImagesFromFirestore = async () => {
-    try {
-      const publicationRef = collection(db, "publication");
-      const q = query(publicationRef);
-      const querySnapshot = await getDocs(q);
+  // Fonction pour extraire les données d'images à partir des URLs
+  const fetchImagesFromProps = (images) => {
+    const imagesData = images.map((url, index) => ({
+      itemImageSrc: url,
+      thumbnailImageSrc: url,
+      alt: `Image ${index + 1}`,
+      title: `Titre ${index + 1}`,
+    }));
 
-      const imagesArray = [];
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        imagesArray.push(...data.images);
-      });
-
-      setImages(
-        imagesArray.map((url, index) => ({
-          itemImageSrc: url,
-          thumbnailImageSrc: url,
-          alt: `Image ${index + 1}`,
-          title: `Title ${index + 1}`,
-        }))
-      );
-    } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des images depuis Firestore",
-        error
-      );
-    }
+    // Mettre à jour l'état local avec les données d'images
+    setImages(imagesData);
   };
 
-  // Fonction pour définir le template d'un item dans le composant Galleria
+  useEffect(() => {
+    //extraire les données d'images à partir des images actuelles
+    fetchImagesFromProps(images);
+  }, [images]);
+
+  // Fonction de rendu pour un élément individuel dans la galerie d'images
   const itemTemplate = (item) => (
     <img
       src={item.itemImageSrc}
@@ -116,47 +88,14 @@ export default function CardLivraison() {
     />
   );
 
-  // Fonction pour définir le template d'un thumbnail dans le composant Galleria
+  // Fonction de rendu pour une miniature dans la galerie d'images
   const thumbnailTemplate = (item) => (
     <img
       src={item.thumbnailImageSrc}
       alt={item.alt}
-      style={{ width: "140px", height: "100px" }}
+      style={{ width: "100%", height: "100px" }}
     />
   );
-
-  // Effet pour récupérer les informations de l'étudiant lors du montage du composant
-   // eslint-disable-next-line
-  useEffect(() => {
-    fetchStudentInfo();
-    fetchImagesFromFirestore();
-     // eslint-disable-next-line
-  }, []);
-   // eslint-disable-next-line
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const docRef = doc(db, "utilisateurs", user.uid);
-        try {
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            const userData = docSnap.data();
-            const role = userData.role;
-            setUserRole(role);
-            console.log(role);
-          } else {
-            console.log(
-              "Aucune donnée utilisateur trouvée pour cet utilisateur"
-            );
-          }
-        } catch (error) {
-          console.error("Erreur lors de la récupération du rôle :", error);
-        }
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   // * FONCTIONNALITER POUR LES COMMENTAIRES * //
   // Utilisez useEffect pour charger les commentaires dès le chargement du composant
@@ -168,6 +107,7 @@ export default function CardLivraison() {
     addComment(); // Appel de la fonction addComment sans publicationId
     toast.success("Commentaire envoyé");
     setComment(""); // Réinitialisation du champ de commentaire après l'envoi
+    fetchComments(); // Ajoutez cet appel pour mettre à jour les commentaires après l'ajout
   }
 
   // Fonction pour supprimer un commentaire
@@ -176,7 +116,7 @@ export default function CardLivraison() {
 
     deleteDoc(commentRef)
       .then(() => {
-        toast.success("Comment deleted successfully");
+        toast.success("Commentaire supprimer");
         fetchComments(); // Mise à jour de l'affichage après la suppression du commentaire
       })
       .catch((error) => {
@@ -184,7 +124,6 @@ export default function CardLivraison() {
         toast.error("Erreur lors de la suppression du commentaire");
       });
   }
-
 
   useEffect(() => {
     // Séparer les commentaires en deux listes distinctes
@@ -195,13 +134,40 @@ export default function CardLivraison() {
     setHiddenComments(hidden);
   }, [comments]);
 
+  // FONCTION RECUPERATION ROLE
+  const [roleUser, setRoleUser] = useState("");
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const usersCollectionRef = collection(db, "utilisateurs");
+        const q = query(usersCollectionRef, where("userId", "==", UserUid));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          // Il y a au moins un document correspondant à UserUid
+          const userData = querySnapshot.docs[0].data();
+          setNameUser(userData.name);
+          const studentRole = userData.role;
+          setRoleUser(studentRole);
+        } else {
+          console.log("Le user ID n'existe pas :", UserUid);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUserData();
+  }, [UserUid]);
+
   // Ajout d'un commentaire à la base de données
   function addComment() {
     const commentsRef = collection(db, "commentaires");
 
     addDoc(commentsRef, {
-      userName: currentUser ? currentUser.displayName : "Utilisateur inconnu",
-      userRole: currentUser ? currentUser.role : "Rôle inconnu",
+      userID: UserUid,
+      userName: NameUser || "Utilisateur inconnu",
+      userRole: roleUser,
       commentContent: comment,
       timestamp: serverTimestamp(),
     })
@@ -223,13 +189,16 @@ export default function CardLivraison() {
     onSnapshot(commentsRef, (snapshot) => {
       const commentsData = [];
       snapshot.forEach((doc) => {
-        const { userName, userRole } = doc.data();
-        commentsData.push({ id: doc.id, userName, userRole, ...doc.data() });
+        const { userName, userID } = doc.data();
+        commentsData.push({
+          id: doc.id,
+          userName,
+          userID,
+          ...doc.data(),
+        });
       });
 
-      commentsData.sort((a, b) => {
-        return b.timestamp - a.timestamp;
-      });
+      commentsData.sort((a, b) => b.timestamp - a.timestamp);
 
       setComments(commentsData);
 
@@ -266,47 +235,158 @@ export default function CardLivraison() {
       return `${seconds} seconde${seconds !== 1 ? "s" : ""} ago`;
     }
   }
-   // eslint-disable-next-line
-  const handleLogout = () => {
-    auth
-      .signOut()
-      .then(() => {
-        toast.success("Utilisateur déconnecté avec succès.");
-        // Ici tu peux ajouter d'autres actions après la déconnexion si nécessaire
-        navigate("/connexion");
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la déconnexion :", error);
-      });
+
+  const [hovered, setHovered] = useState(false);
+  const [newDescription, setNewDescription] = useState(descriptLivraison);
+  const [originalDescription, setOriginalDescription] =
+    useState(descriptLivraison);
+  const [editStart, setEditStart] = useState(false);
+  const handleEditing = () => {
+    setEditStart(true);
+    setOriginalDescription(newDescription);
+  };
+
+  const handleCancelEditing = () => {
+    // Restaurer la description à partir de l'état local
+    setNewDescription(originalDescription);
+    setEditStart(false);
+  };
+
+  // Fonction pour mettre à jour la description
+  const handleUpdate = () => {
+    // Appeler la fonction de mise à jour avec le nouvel état de la description
+    handleUpdateDescription(livraison.key, newDescription);
+    setEditStart(false); // Désactiver le mode édition
   };
 
   return (
     <div className="">
       <div className="container d-flex justify-content-center flex-wrap containerApprenant my-5">
         <div className="row rowAppenant align-items-center">
-          <div className="col-md-12 d-flex colApprenant my-3">
-            <img src={userProfile} alt="" className="icon" />
-            <div className="mySpan">
-              <h6 className=" px-3 pt-2 dark">{apprenant}</h6>
-              <p className="m-0 px-3 pt-2 dark">{date}</p>
+          <div className="col-md-12 d-flex justify-content-between">
+            <div className=" d-flex colApprenant my-3">
+              <img
+                src={userProfile}
+                alt="user-Profile"
+                style={{
+                  width: "58px",
+                  height: "60px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                }}
+              />
+              <div className="mySpan">
+                <h6 className=" px-3 pt-1 fs-5 fst-italic dark">{apprenant}</h6>
+                <p className="m-0 fst-italic px-3 pt-1 dark">{date}</p>
+              </div>
             </div>
+
+            {UserUid === UserID && (
+              <div
+                className="d-flex justify-content-end align-items-center"
+                style={{ width: "20%" }}
+              >
+                <button
+                  className="bg-transparent"
+                  onClick={() => {
+                    setLivraisonToDelete(livraison.key);
+                    setConfirmDialogVisible(true);
+                  }}
+                >
+                  <MdOutlineDelete style={{ color: "red", fontSize: "30px" }} />
+                </button>
+              </div>
+            )}
           </div>
 
-          <div className="col-md-12 d-flex justify-content-center py-2">
-            <p>Titre de la publication de l'apprenant</p>
+          <div className="col-md-12 d-flex justify-content-center  fst-italic fw-bold fs-6 py-2">
+            <p>{titreCourEtudiant}</p>
           </div>
 
           {/* Galleria pour afficher les images */}
-          <div className="col-12 my-2">
+          <div className="col-12 my-1">
             <Galleria
-              value={images}
+              value={imagesData}
               numVisible={5}
-              style={{ width: "52rem", margin: "auto" }}
+              style={{ width: "100%", margin: "auto" }}
               item={itemTemplate}
               thumbnail={thumbnailTemplate}
               className="publication rounded-2"
             />
           </div>
+
+          <div style={{ width: "90%", margin: "auto" }}>
+            <div
+              className={` d-flex ${
+                editStart ? "d-block " : "d-none"
+              } justify-content-center`}
+            >
+              <textarea
+                className="AreaModifDesc"
+                name="area"
+                id="ModifArea"
+                value={newDescription}
+                onChange={(e) => setNewDescription(e.target.value)}
+              ></textarea>
+
+              <div className="d-flex flex-column ">
+                <button
+                  className="cancelBtnModif"
+                  onClick={handleCancelEditing}
+                >
+                  <FaCircleXmark className="text-danger fs-1" />
+                </button>
+                <button
+                  className="SaveBtnModif p-2"
+                  onClick={() => {
+                    handleUpdate();
+                    toast.success("Modification Reussie !", {
+                      position: "top-right",
+                      autoClose: 3000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "colored",
+                    });
+                  }}
+                >
+                  <BsFillCheckCircleFill className="fs-1" />
+                </button>
+              </div>
+            </div>
+            <div
+              className="d-flex justify-content-center align-items-center pb-2"
+              onMouseEnter={() => setHovered(true)}
+              onMouseLeave={() => setHovered(false)}
+              style={{ cursor: "pointer" }}
+            >
+              <div>
+                <h3
+                  style={{ lineHeight: "22px" }}
+                  className={`${
+                    editStart ? "d-none " : "d-block"
+                  } text-center px-6 fst-italic fw-light text-secondary fs-6 text-break my-1`}
+                >
+                  {newDescription}
+                </h3>
+              </div>
+              {UserUid === UserID && (
+                <div className={` ${hovered ? "d-block" : "d-none"} ms-6`}>
+                  <button
+                    className={`${
+                      editStart ? "d-none " : "d-block"
+                    } bg-transparent`}
+                    onClick={handleEditing}
+                  >
+                    <FiEdit3 className="fs-4" style={{ color: "#3084b5" }} />
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="MargeLivraison"></div>
 
           <div>
             <Dialog
@@ -336,9 +416,19 @@ export default function CardLivraison() {
                       <span
                         className="supCom"
                         style={{ cursor: "pointer" }}
-                        onClick={() => deleteComment(comment.id)}
+                        // onClick={() => deleteComment(comment.id)}
                       >
-                        X
+                        {comment.userID === UserUid && (
+                          <TiDelete
+                            className="delete"
+                            style={{
+                              cursor: "pointer",
+                              width: "20px",
+                              height: "20px",
+                            }}
+                            onClick={() => deleteComment(comment.id)}
+                          />
+                        )}
                       </span>
                     </p>
                   </div>
@@ -354,7 +444,7 @@ export default function CardLivraison() {
             {visibleComments.map((comment) => (
               <div
                 key={comment.id}
-                className="rowborder rounded-2 m-0 my-2 boxshado"
+                className="row border rounded-2 m-0 my-2 boxshado"
               >
                 <div className="col-12 py-1">
                   <p className=" d-flex justify-content-between">
@@ -370,9 +460,19 @@ export default function CardLivraison() {
                     <span
                       className="supCom"
                       style={{ cursor: "pointer" }}
-                      onClick={() => deleteComment(comment.id)}
+                      // onClick={() => deleteComment(comment.id)}
                     >
-                      X
+                      {comment.userID === UserUid && (
+                        <TiDelete
+                          className="delete"
+                          style={{
+                            cursor: "pointer",
+                            width: "20px",
+                            height: "20px",
+                          }}
+                          onClick={() => deleteComment(comment.id)}
+                        />
+                      )}
                     </span>
                   </p>
                 </div>
@@ -401,11 +501,11 @@ export default function CardLivraison() {
                 className="form-control textarea"
                 placeholder="Leave a comment here"
                 id="floatingTextarea2"
-                value={comment} // Liaison de la valeur du champ de commentaire
-                onChange={(e) => setComment(e.target.value)} // Gestion des modifications du champ de commentaire
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    handleSend(); // Appel à la fonction handleSend lorsque la touche "Entrée" est pressée
+                    handleSend();
                   }
                 }}
               ></input>
@@ -421,6 +521,42 @@ export default function CardLivraison() {
           </div>
         </div>
       </div>
+
+      <Dialog
+        header={
+          <h3 className="fst-italic" style={{ color: "#3086d8" }}>
+            Confirmation <FiAlertTriangle className="fs-1 text-danger pb-2" />
+          </h3>
+        }
+        visible={confirmDialogVisible}
+        style={{ width: "auto", textAlign: "center" }}
+        onHide={() => setConfirmDialogVisible(false)}
+      >
+        <div className="">
+          {/*  */}
+          <p className="fst-italic pb-4 text-danger fw-bold px-3">
+            Êtes-vous sûr de vouloir supprimer cette livraison ?
+          </p>
+          <div className="">
+            <button
+              className="btn btn-danger px-4 fst-italic me-3"
+              onClick={() => {
+                handleDelete(livraisonToDelete);
+                setConfirmDialogVisible(false);
+              }}
+            >
+              Oui
+            </button>
+            <button
+              className="btn  px-4 fst-italic  text-white "
+              style={{ backgroundColor: "#3086d8" }}
+              onClick={() => setConfirmDialogVisible(false)}
+            >
+              Non
+            </button>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 }
