@@ -108,7 +108,7 @@ const BulletinEtudiant = () => {
     <div className="container mt-4" id="bulletin-container">
       <div className="letter-format p-4">
         <div className="d-flex justify-content-between align-items-center">
-          <h2 className="mb-4">Bulletin de l'étudiant</h2>
+          <h2 className="mb-4 text-start">Bulletin de l'étudiant</h2>
           <button onClick={handleDownload} className="btn btn-primary mb-4">
             <FaFilePdf className="mr-2" /> Télécharger le bulletin
           </button>
