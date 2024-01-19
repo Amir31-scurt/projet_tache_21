@@ -42,12 +42,12 @@ export default function AddUser() {
       <div className="container-fluid">
         <div className="row">
           <Dialog
-            header="Nouvelle utilisateur"
             visible={visible}
             onHide={() => setVisible(false)}
             className={dialogClass} // Utiliser la classe dynamique pour ajuster la taille du Dialog
           >
-            <Inscription onRegisterSuccess={() => setVisible(false)} /> {/* Passer la fonction de fermeture du dialogue comme prop */}
+            <Inscription onRegisterSuccess={() => setVisible(false)} />{' '}
+            {/* Passer la fonction de fermeture du dialogue comme prop */}
           </Dialog>
         </div>
       </div>
