@@ -49,7 +49,8 @@ function Domaine({domaines , onArchive, onUpdateDomaine}) {
                   <Button className="mb-2 mx-1 bg-transparent text-info border rounded" onClick={() => handleShowModal(domaine)}>
                     <Icon.Eye />
                   </Button>
-                  <Button className="mb-2 mx-1 text-primary border rounded bg-transparent" onClick={() => onUpdateDomaine(domaine)}>
+                  <Button className="mb-2 mx-1 text-primary border rounded bg-transparent" onClick={() => onUpdateDomaine(domaine)} >
+
                     <Icon.Pen />
                   </Button>
                   <Button
