@@ -231,7 +231,7 @@ const SpecificPro = () => {
         messageForAdmin: notificationMessage,
         timestamp: serverTimestamp(),
         newNotif: true,
-        email: adminDoc ? adminDoc : undefined,
+        email: "thiernooury86@gmail.com",
       });
 
       setCourseData({ ...courseData, sousDomaines: updatedSousDomaines });
