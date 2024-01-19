@@ -1,6 +1,6 @@
 // Importation des composants et bibliothèques nécessaires
 import { MultiCascader } from "rsuite";
-import { useEffect, useState } from "react"; 
+import { useEffect, useState } from "react";
 import {
   collection,
   getDocs,
@@ -10,15 +10,15 @@ import {
   serverTimestamp,
   query,
   addDoc,
-} from 'firebase/firestore';
+} from "firebase/firestore";
 
-import { db } from "../../config/firebase-config"; 
-import { ToastContainer, toast } from "react-toastify"; 
+import { db } from "../../config/firebase-config";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "rsuite/dist/rsuite.css"; 
-import { PulseLoader } from "react-spinners"; 
-import { AssignationEtudiant } from "./AssignationEtudiant"; 
-import SpinnerIcon from "@rsuite/icons/legacy/Spinner"; 
+import "rsuite/dist/rsuite.css";
+import { PulseLoader } from "react-spinners";
+import { AssignationEtudiant } from "./AssignationEtudiant";
+import SpinnerIcon from "@rsuite/icons/legacy/Spinner";
 
 // Définition des entêtes pour le tableau d'assignation
 const headers = ["Domaines", "Sous-Domaines", "Coachs"];
@@ -27,15 +27,12 @@ const headers = ["Domaines", "Sous-Domaines", "Coachs"];
 const AssignationDomaines = () => {
   // Déclaration des états
   const [domaines, setDomaines] = useState([]);
-  const [notificationsCollection] = useState(
-    collection(db, "notifications")
-  );
-  const [users, setUsers] = useState([]); 
-  const [value, setValue] = useState([]); // Valeur sélectionnée dans le MultiCascader
-  const [errorMessage, setErrorMessage] = useState(null); // Message d'erreur
-  const [loading, setLoading] = useState(false); 
+  const [notificationsCollection] = useState(collection(db, "notifications"));
+  const [users, setUsers] = useState([]);
+  const [value, setValue] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [dataLoading, setDataLoading] = useState(false);
-
 
   // Fonction de gestion de l'assignation
   const handleAssign = async (e) => {
@@ -43,7 +40,7 @@ const AssignationDomaines = () => {
 
     // Vérification de la sélection d'un coach
     if (value.length > 0) {
-      setLoading(true); 
+      setLoading(true);
 
       // Extraction des informations du coach sélectionné
       const selectedCoach = value[value.length - 1];
@@ -60,7 +57,7 @@ const AssignationDomaines = () => {
 
       if (!userEmail) {
         setErrorMessage("Veuillez choisir un coach pour pouvoir assigner.");
-        setLoading(false); 
+        setLoading(false);
         return;
       }
 
@@ -76,7 +73,7 @@ const AssignationDomaines = () => {
         if (coachDocs.size > 0) {
           const coachDoc = coachDocs.docs[0];
           const notificationMessage = `Le domaine ${domaine} et les sous domaines ${sousDomaines} vous ont été assigné`;
-          const coachDocRef = doc(db, 'utilisateurs', coachDoc.id);
+          const coachDocRef = doc(db, "utilisateurs", coachDoc.id);
 
           await updateDoc(coachDocRef, {
             domaine: domaine,
@@ -89,7 +86,6 @@ const AssignationDomaines = () => {
             newNotif: true,
             email: userEmail,
           });
-
 
           setErrorMessage(null);
           toast.success(
@@ -157,7 +153,7 @@ const AssignationDomaines = () => {
         "Erreur: La base de données Firebase n'est pas initialisée."
       );
     }
-     // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [db]);
 
   // Création des options pour le composant MultiCascader
@@ -165,7 +161,7 @@ const AssignationDomaines = () => {
     label: domaine.domaine,
     value: domaine.domaine,
     children: Object.keys(domaine.sousDomaines).map((sousDomaineKey) => {
-       // eslint-disable-next-line
+      // eslint-disable-next-line
       const sousDomaines = domaine.sousDomaines[sousDomaineKey];
       const coachsForSousDomaine = users.filter(
         (coach) => coach.role === "Coach"
@@ -186,7 +182,7 @@ const AssignationDomaines = () => {
   return (
     <div
       className=" d-flex justify-content-center flex-wrap flex-column"
-      style={{ width: '100%' }}
+      style={{ width: "100%" }}
     >
       <div className=" w-100 text-center">
         <p className="fs-3 mb-2 fst-italic fw-bold text-dark">

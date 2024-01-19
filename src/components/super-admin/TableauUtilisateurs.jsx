@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useMemo, useEffect, useState } from "react";
 import {
   MaterialReactTable,
@@ -24,11 +25,10 @@ import { Button } from "primereact/button";
 import AddUser from "./AddUser";
 
 export default function TableauUtilisateurs() {
-  // États pour gérer les données et les interactions
-  const [utilisateursData, setUtilisateursData] = useState([]); // Stocke les données des utilisateurs
-  const [infoVisible, setInfoVisible] = useState(false); // Gère la visibilité du dialogue d'informations
-  const [formVisible, setFormVisible] = useState(false); // Gère la visibilité du formulaire de mise à jour
-  const [selectedUtilisateur, setSelectedUtilisateur] = useState(null); // Stocke l'utilisateur sélectionné
+  const [utilisateursData, setUtilisateursData] = useState([]);
+  const [infoVisible, setInfoVisible] = useState(false);
+  const [formVisible, setFormVisible] = useState(false);
+  const [selectedUtilisateur, setSelectedUtilisateur] = useState(null);
   const [selectedUtilisateursForUpdate, setSelectedUtilisateursForUpdate] =
     useState(null); // Stocke l'utilisateur pour la mise à jour
   const [loading, setLoading] = useState(false); // Gère l'état de chargement
@@ -168,7 +168,7 @@ export default function TableauUtilisateurs() {
         email: coachs.email,
       });
 
-      fetchData(); // Met à jour les données après l'archivage ou le désarchivage
+      fetchData();
 
       setArchiveLabel(isArchived ? "Désarchiver" : "Archiver");
       toast.success(notificationMessage, {
@@ -178,7 +178,6 @@ export default function TableauUtilisateurs() {
       console.error("Error archiving student:", error);
     }
   };
-
 
   const filteredData = useMemo(() => {
     if (roleFilter === "de bord") {
@@ -191,7 +190,6 @@ export default function TableauUtilisateurs() {
       );
     }
   }, [roleFilter, utilisateursData]);
-
 
   // Utilisez le stockage local pour sauvegarder et récupérer le filtre sélectionné
   const localStorageKey = "roleFilter";
@@ -254,8 +252,7 @@ export default function TableauUtilisateurs() {
       },
       {
         accessorKey: "actions",
-        header: "Boutons d'actions",
-        // size: 100,
+        header: "Actions",
       },
     ],
     []
@@ -312,7 +309,7 @@ export default function TableauUtilisateurs() {
       ),
       className: utilisateur.archived ? "tableRowArchived bg-info" : "",
     }));
-     // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [filteredData]);
 
   // Utilisation du hook pour la gestion du tableau
@@ -325,7 +322,6 @@ export default function TableauUtilisateurs() {
   return (
     <>
       <Toaster />
-      {/* Dialogue pour afficher les détails de l'utilisateur */}
       <Dialog
         header={`Informations sur ${
           selectedUtilisateur ? selectedUtilisateur.name : ""
@@ -351,15 +347,15 @@ export default function TableauUtilisateurs() {
                 {selectedUtilisateur.name}
               </p>
               <p>
-                <span className="fw-bold">Adresse email : </span>
+                <span className="fw-bold">Email : </span>
                 {selectedUtilisateur.email}
               </p>
               <p>
-                <span className="fw-bold">Numéro de téléphone : </span>
+                <span className="fw-bold">Téléphone : </span>
                 {selectedUtilisateur.number}
               </p>
               <p>
-                <span className="fw-bold">Adresse de domicile : </span>
+                <span className="fw-bold">Adresse : </span>
                 {selectedUtilisateur.address}
               </p>
               <p>
@@ -421,21 +417,6 @@ export default function TableauUtilisateurs() {
               />
               <label htmlFor="address">Adresse</label>
             </span>
-            {/* <span className="p-float-label my-5">
-              <select
-                className="form-select my-3"
-                aria-label="Default select example"
-                id="role"
-                value={roleValue}
-                onChange={(e) => setRoleValue(e.target.value)}
-                style={{ width: "100%" }}
-              >
-                <option value="Administrateur">Administrateur</option>
-                <option value="Coach">Coach</option>
-                <option value="Étudiant">Étudiant</option>
-              </select>
-              <label htmlFor="Role"></label>
-            </span> */}
           </div>
           <div className="card flex flex-wrap justify-content-center p-0">
             <Button
@@ -456,7 +437,7 @@ export default function TableauUtilisateurs() {
       {/* Affichage du tableau */}
       <div className="TableUtilisateurs d-flex flex-column justyfy-content-center align-items-center w-100">
         <h1 className="my-3 shadowTable">
-          Tableaux <span>{tabType}</span>
+          Tableau <span>{tabType}</span>
         </h1>
         <div className="myTable ">
           <div className="add filter d-flex justify-content-start align-items-center">
