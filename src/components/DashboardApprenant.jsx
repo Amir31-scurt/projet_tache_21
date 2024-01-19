@@ -22,6 +22,7 @@ export default function DashboardApprenant() {
   // État local pour stocker les livraisons et les utilisateurs
   const [livraisons, setLivraisons] = useState([]);
   const [users, setUsers] = useState([]);
+  const [cours, setCours] = useState([]);
 
   // Fonction pour mettre à jour la description dans la base de données
   const handleUpdateDescription = async (livraisonId, newDescription) => {
@@ -205,6 +206,25 @@ export default function DashboardApprenant() {
     };
   }, []);
 
+  const courses = useCallback(() => {
+    const unsubscribe = onSnapshot(collection(db, 'domaines'), (snapshot) => {
+      const updatedCours = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        domaine: doc.data().domaine,
+      }));
+      setCours(updatedCours);
+    });
+    console.log('bonjour cest moi', cours);
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    courses();
+  }, [courses]);
+
   useEffect(() => {
     loadUsers();
   }, [loadUsers]);
@@ -221,11 +241,11 @@ export default function DashboardApprenant() {
       couleurCarte: 'CouleurB',
     },
     {
-      ChiffreCardDsb: '52',
+      ChiffreCardDsb: cours.length,
       IconeCardDsb: (
         <MdTask style={{ fontSize: '68px', opacity: '1', color: '#fff' }} />
       ),
-      TextCardDsb: 'Taches',
+      TextCardDsb: 'Domaines',
       couleurCarte: 'CouleurC',
     },
   ];

@@ -3,7 +3,7 @@ import CustomDataTable from "./CustomDataTable";
 // Méthode principale
 const Table = ({ certificationsData }) => {
   return (
-    <div style={{ width: "80vw" }} className="px-1">
+    <div>
       <CustomDataTable data={certificationsData} />
     </div>
   );

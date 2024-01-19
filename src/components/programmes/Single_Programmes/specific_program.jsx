@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import '../../../assets/css/single-program.css'; // This is where you'd put your CSS
 import { SelectPicker } from 'rsuite';
 import { useParams } from 'react-router-dom';
@@ -10,9 +10,13 @@ import {
   query,
   collection,
   where,
+  onSnapshot,
+  serverTimestamp,
+  addDoc,
 } from 'firebase/firestore';
 import { db } from '../../../config/firebase-config';
 import { ToastContainer, toast } from 'react-toastify';
+import { EmailContext } from '../../../contexte/EmailContexte';
 
 const SpecificPro = () => {
   const { courseId } = useParams();
@@ -21,9 +25,12 @@ const SpecificPro = () => {
   const [newCourseTitle, setNewCourseTitle] = useState('');
   const [newCourseDescription, setNewCourseDescription] = useState('');
   const [selectedSousDomaine, setSelectedSousDomaine] = useState();
-  // const coachEmail = localStorage.getItem('userEmail');
-
+  const [notificationsCollection] = useState(collection(db, 'notifications'));
+  const [coachDoc, setCoachDoc] = useState([]);
+  const [adminDoc, setAdminDoc] = useState('');
   const [coachSousDomaine, setCoachSousDomaine] = useState('');
+  const { email, setEmail } = useContext(EmailContext);
+  const [coachName, setCoachName] = useState([]);
 
   useEffect(() => {
     const fetchCoachDetails = async () => {
@@ -47,6 +54,7 @@ const SpecificPro = () => {
               console.log('Document found:', userData);
               if (userData.role === 'Coach') {
                 setCoachSousDomaine(userData.sousDomaines);
+                setCoachName(userData.name); // Update the coach name state
                 console.log(coachSousDomaine);
               }
             });
@@ -63,6 +71,44 @@ const SpecificPro = () => {
 
     fetchCoachDetails();
   }, []);
+
+  const loadUsers = React.useCallback(() => {
+    try {
+      const usersCollection = collection(db, 'utilisateurs');
+      const unsubscribe = onSnapshot(
+        query(usersCollection, where('email', '==', email)),
+        (snapshot) => {
+          const userData = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setCoachDoc(userData);
+        }
+      );
+
+      const unsubscribeAdmin = onSnapshot(
+        query(usersCollection, where('role', '==', 'Administrateur')),
+        (snapshot) => {
+          const adminEmails = snapshot.docs.find((doc) => doc.data().email);
+          setAdminDoc(adminEmails);
+        }
+      );
+
+      return () => {
+        unsubscribe();
+        unsubscribeAdmin();
+      };
+    } catch (error) {
+      console.error('Error loading books:', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadUsers();
+    if (coachDoc.length > 0) {
+      setCoachName(coachDoc[0].name);
+    }
+  }, [loadUsers, coachDoc]);
 
   useEffect(() => {
     const fetchCourseData = async () => {
@@ -121,81 +167,79 @@ const SpecificPro = () => {
       description: newCourseDescription,
     };
 
-    // if (selectedSousDomaine !== coachSousDomaine) {
-    //   toast.error(
-    //     'Vous ne pouvez ajouter des cours que dans votre sous-domaine',
-    //     {
-    //       position: 'top-right',
-    //       autoClose: 5000,
-    //       hideProgressBar: false,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //       theme: 'light',
-    //     }
-    //   );
-    //   return;
-    // }
+    const docRef = doc(db, 'domaines', courseId);
+    const docSnap = await getDoc(docRef);
 
-    console.log(selectedSousDomaine);
-    console.log(coachSousDomaine);
+    if (docSnap.exists()) {
+      const domaineData = docSnap.data();
+      const sousDomaineData = domaineData.sousDomaines[selectedSousDomaine];
 
-    // Ensure sousDomaines is an object and contains the selected sousDomaine
-    const currentSousDomaines =
-      courseData.sousDomaines && typeof courseData.sousDomaines === 'object'
-        ? courseData.sousDomaines
-        : {};
+      if (sousDomaineData) {
+        const updatedCours = sousDomaineData.cours
+          ? [...sousDomaineData.cours, newCourse]
+          : [newCourse];
+        const updatedSousDomaines = {
+          ...domaineData.sousDomaines,
+          [selectedSousDomaine]: { ...sousDomaineData, cours: updatedCours },
+        };
 
-    if (!currentSousDomaines[selectedSousDomaine]) {
-      // Handle the case where the selected sousDomaine does not exist
-      toast.error("Le sous domaine sélectionné n'existe pas", {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
-      return;
-    }
+        try {
+          await updateDoc(docRef, {
+            sousDomaines: updatedSousDomaines,
+          });
 
-    // Update the cours array inside the selected sousDomaine
-    const updatedCours = currentSousDomaines[selectedSousDomaine].cours
-      ? [...currentSousDomaines[selectedSousDomaine].cours, newCourse]
-      : [newCourse];
+          // Sending notification to admin
+          // const notificationMessage = `Le coach ${coachName} vient d'ajouter un cours sur ${newCourse.title}.`;
+          // await addDoc(notificationsCollection, {
+          //   messageForAdmin: notificationMessage,
+          //   timestamp: serverTimestamp(),
+          //   newNotif: true,
+          //   email: adminDoc ? adminDoc.email : undefined,
+          // });
 
-    const updatedSousDomaines = {
-      ...currentSousDomaines,
-      [selectedSousDomaine]: {
-        ...currentSousDomaines[selectedSousDomaine],
-        cours: updatedCours,
-      },
-    };
+          // Clearing the input fields
+          setNewCourseLink('');
+          setNewCourseTitle('');
+          setNewCourseDescription('');
 
-    try {
-      await updateDoc(doc(db, 'domaines', courseId), {
-        sousDomaines: updatedSousDomaines,
-      });
-
-      setCourseData({ ...courseData, sousDomaines: updatedSousDomaines });
-      toast.success('Cours ajoutés avec succès', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
-      setNewCourseLink(''); // Clear the input field
-      setNewCourseTitle('');
-      setNewCourseDescription('');
-    } catch (error) {
-      console.error('Error updating document: ', error);
+          // Display success toast
+          toast.success('Cours ajouté avec succès', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          });
+        } catch (error) {
+          console.error('Error updating document: ', error);
+          toast.error("Erreur lors de l'ajout du cours", {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          });
+        }
+      } else {
+        toast.error('Sous-domaine non trouvé', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+      }
+    } else {
+      console.log('Document not found');
     }
   };
 
@@ -215,7 +259,7 @@ const SpecificPro = () => {
     if (typeof url !== 'string') {
       return null;
     }
-     // eslint-disable-next-line
+    // eslint-disable-next-line
     const regExp =
       /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
@@ -223,7 +267,6 @@ const SpecificPro = () => {
     return match && match[2].length === 11 ? match[2] : null;
   };
 
-  
   const [isEditing, setIsEditing] = useState(false);
   const [modifiedTitle, setModifiedTitle] = useState('');
   const [modifiedDescription, setModifiedDescription] = useState('');
@@ -243,28 +286,29 @@ const SpecificPro = () => {
 
   const handleSaveEdit = async (index) => {
     const selectedCourse = getCoursLinks()[index];
-  
+
     // Assurez-vous d'obtenir la référence correcte du document à mettre à jour
     const docRef = doc(db, 'domaines', courseId);
-  
+
     // Obtenez le snapshot actuel du document
     const docSnapshot = await getDoc(docRef);
-  
+
     if (docSnapshot.exists()) {
       // Obtenez les données actuelles
       const currentData = docSnapshot.data();
-  
+
       // Assurez-vous que vous avez les références correctes dans votre structure de données
       const currentSousDomaines = currentData.sousDomaines || {};
-      const currentCours = currentSousDomaines[selectedSousDomaine]?.cours || [];
-  
+      const currentCours =
+        currentSousDomaines[selectedSousDomaine]?.cours || [];
+
       // Mettez à jour le cours sélectionné
       currentCours[index] = {
         link: modifiedLink,
         title: modifiedTitle,
         description: modifiedDescription,
       };
-  
+
       // Mettez à jour les données sousDomaines avec le cours modifié
       const updatedSousDomaines = {
         ...currentSousDomaines,
@@ -273,16 +317,16 @@ const SpecificPro = () => {
           cours: currentCours,
         },
       };
-  
+
       try {
         // Mettez à jour le document dans Firestore
         await updateDoc(docRef, {
           sousDomaines: updatedSousDomaines,
         });
-  
+
         // Mettez à jour l'état local si nécessaire
         setCourseData({ ...currentData, sousDomaines: updatedSousDomaines });
-  
+
         // Réinitialisez les états après la sauvegarde
         setIsEditing(false);
         setModifiedTitle('');
@@ -292,11 +336,9 @@ const SpecificPro = () => {
         console.error('Erreur lors de la mise à jour du document :', error);
       }
     } else {
-      console.log('Aucun document trouvé avec l\'ID du domaine fourni');
+      console.log("Aucun document trouvé avec l'ID du domaine fourni");
     }
   };
-
-
 
   const handleArchive = async (index) => {
     const selectedCourse = getCoursLinks()[index];
@@ -313,7 +355,8 @@ const SpecificPro = () => {
 
       // Assurez-vous que vous avez les références correctes dans votre structure de données
       const currentSousDomaines = currentData.sousDomaines || {};
-      const currentCours = currentSousDomaines[selectedSousDomaine]?.cours || [];
+      const currentCours =
+        currentSousDomaines[selectedSousDomaine]?.cours || [];
 
       // Marquer le cours comme archivé
       currentCours[index].archived = true;
@@ -347,10 +390,10 @@ const SpecificPro = () => {
           theme: 'light',
         });
       } catch (error) {
-        console.error('Erreur lors de l\'archivage du cours :', error);
+        console.error("Erreur lors de l'archivage du cours :", error);
       }
     } else {
-      console.log('Aucun document trouvé avec l\'ID du domaine fourni');
+      console.log("Aucun document trouvé avec l'ID du domaine fourni");
     }
   };
   const handleUnarchive = async (index) => {
@@ -368,7 +411,8 @@ const SpecificPro = () => {
 
       // Assurez-vous que vous avez les références correctes dans votre structure de données
       const currentSousDomaines = currentData.sousDomaines || {};
-      const currentCours = currentSousDomaines[selectedSousDomaine]?.cours || [];
+      const currentCours =
+        currentSousDomaines[selectedSousDomaine]?.cours || [];
 
       // Marquer le cours comme non archivé
       currentCours[index].archived = false;
@@ -405,11 +449,9 @@ const SpecificPro = () => {
         console.error('Erreur lors du désarchivage du cours :', error);
       }
     } else {
-      console.log('Aucun document trouvé avec l\'ID du domaine fourni');
+      console.log("Aucun document trouvé avec l'ID du domaine fourni");
     }
   };
-  
-
 
   return (
     <div>
@@ -487,94 +529,96 @@ const SpecificPro = () => {
               // const videoId = getYouTubeVideoId(course.link);
               return (
                 <div key={index} className="card mx-2 my-2">
-                 <div className="card-body">
-                  
-            {isEditing && index === editedIndex ? (
-              <>
-              <div className='d-flex flex-column mes-input'>
-                  <h5 className='d-flex'>Cours{index + 1}:<input
-                className='border-none w-100 '
-                  type="text"
-                  value={modifiedTitle}
-                  onChange={(e) => setModifiedTitle(e.target.value)}
-                /> 
-                </h5>
-                <p className="card-text  d-flex ">
-                 <strong className=''>Description:</strong><textarea
-                 className='text-wrap border-none w-100 mb-2 '
-                  type="text"
-                  value={modifiedDescription}
-                  onChange={(e) => setModifiedDescription(e.target.value)}
-                /> 
-               
-                </p>
-                <a href="">
-                <input
-                 className=' border-none w-100'
-                  type="text"
-                  value={modifiedLink}
-                  onChange={(e) => setModifiedLink(e.target.value)}
-                />
-                </a>
-                <button
-                  className="btn btn-primary"
-                  onClick={() => handleSaveEdit(index)}
-                >
-                  Sauvegarder
-                </button>
-               </div>
-              </>
-            ) : (
-              <>
-                <h5>
-                  Cours {index + 1} : {course.title}
-                </h5>
-                <p className="card-text mb-2">
-                  <strong>Description : </strong>
-                  {course.description}
-                </p>
-                {course.archived ? (
-                  <div>
-                  <p className="text-danger">Archivé</p>
-                  <button
-                            type="button"
-                            className="btn btn-success"
-                            onClick={() => handleUnarchive(index)}
+                  <div className="card-body">
+                    {isEditing && index === editedIndex ? (
+                      <>
+                        <div className="d-flex flex-column mes-input">
+                          <h5 className="d-flex">
+                            Cours{index + 1}:
+                            <input
+                              className="border-none w-100 "
+                              type="text"
+                              value={modifiedTitle}
+                              onChange={(e) => setModifiedTitle(e.target.value)}
+                            />
+                          </h5>
+                          <p className="card-text  d-flex ">
+                            <strong className="">Description:</strong>
+                            <textarea
+                              className="text-wrap border-none w-100 mb-2 "
+                              type="text"
+                              value={modifiedDescription}
+                              onChange={(e) =>
+                                setModifiedDescription(e.target.value)
+                              }
+                            />
+                          </p>
+                          <a href="">
+                            <input
+                              className=" border-none w-100"
+                              type="text"
+                              value={modifiedLink}
+                              onChange={(e) => setModifiedLink(e.target.value)}
+                            />
+                          </a>
+                          <button
+                            className="btn btn-primary"
+                            onClick={() => handleSaveEdit(index)}
                           >
-                            Désarchiver
+                            Sauvegarder
                           </button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <h5>
+                          Cours {index + 1} : {course.title}
+                        </h5>
+                        <p className="card-text mb-2">
+                          <strong>Description : </strong>
+                          {course.description}
+                        </p>
+                        {course.archived ? (
+                          <div>
+                            <p className="text-danger">Archivé</p>
+                            <button
+                              type="button"
+                              className="btn btn-success"
+                              onClick={() => handleUnarchive(index)}
+                            >
+                              Désarchiver
+                            </button>
+                          </div>
+                        ) : (
+                          <>
+                            <a
+                              href={course.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {course.link}
+                            </a>
+                            <div className="mt-5 text-end">
+                              <button
+                                type="button"
+                                className="btn btn-primary mx-2"
+                                onClick={() => handleEditClick(index)}
+                              >
+                                Modifier
+                              </button>
+                              <button
+                                type="button"
+                                className="btn btn-warning mx-2"
+                                onClick={() => handleArchive(index)}
+                              >
+                                Archiver
+                              </button>
+                            </div>
+                          </>
+                        )}
+                      </>
+                    )}
                   </div>
-                ) : (
-                  <>
-                    <a
-                      href={course.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {course.link}
-                    </a>
-                    <div className="mt-5 text-end">
-                      <button
-                        type="button"
-                        className="btn btn-primary mx-2"
-                        onClick={() => handleEditClick(index)}
-                      >
-                        Modifier
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-warning mx-2"
-                        onClick={() => handleArchive(index)}
-                      >
-                        Archiver
-                      </button>
-
-                    </div>
-                  </>
-                )}
-              </>
-            )}
-          </div>
                 </div>
               );
             })}

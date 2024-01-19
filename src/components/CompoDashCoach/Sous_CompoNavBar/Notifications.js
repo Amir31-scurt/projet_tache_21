@@ -88,7 +88,7 @@ function Notifications() {
     }
   }, [selectedNotification]);
 
-  const loadNotifications = React.useCallback(() => {
+  const loadNotifications = useCallback(() => {
     try {
       const notifCollection = collection(db, "notifications");
       const unsubscribe = onSnapshot(
@@ -114,11 +114,11 @@ function Notifications() {
     }
   }, []);
 
+  
   useEffect(() => {
     loadNotifications();
   }, [loadNotifications]);
   
-
   useEffect(() => {
     // Récupérer les notifications lues depuis le stockage local
     const readNotifications =
