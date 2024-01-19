@@ -31,7 +31,7 @@ function CardLivraison({role, title, name, date, defaultImg, images, validation}
             role="button"
             style={{color: "#3084b5"}}
           ></i>
-          <span className="d-flex align-items-center">{"Il y'a un 1 jour"}</span>
+          <span className="d-flex align-items-center">Il y'a {date}</span>
         </div>
       </Card.Body>
       <Modal

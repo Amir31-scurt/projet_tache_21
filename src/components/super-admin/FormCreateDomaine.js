@@ -122,6 +122,7 @@ const FormikDoc = () => {
         domaine: domain,
         sousDomaines: domainesData,
       });
+      setIsAdding(true);
 
       setDomaines((prevDomaines) =>
         prevDomaines.map((dom) =>
@@ -168,13 +169,12 @@ const FormikDoc = () => {
     },
     validate: (data) => {
       let errors = {};
-      if (isAdding && !isAdding) {
+      if (isAdding) {
         if (!data.sousDomaines && !data.name) {
           errors.sousDomaines = 'Sous domaines is required.';
           errors.name = 'Name is required.';
         }
       }
-
       return errors;
     },
     onSubmit: async (data) => {
