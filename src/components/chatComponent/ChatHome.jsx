@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import ChatHeader from "./ChatHeader";
-import Chat from "./Chat";
-import "../../assets/css/chat.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import { ChatAuthCtxProvider } from "../../contexte/ChatAuthCtx";
-import { ChatContextProvider } from "../../contexte/ChatContext";
+import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import ChatHeader from './ChatHeader';
+import Chat from './Chat';
+import '../../assets/css/chat.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import { ChatAuthCtxProvider } from '../../contexte/ChatAuthCtx';
+import { ChatContextProvider } from '../../contexte/ChatContext';
 
 export default function ChatHome() {
   const [openChat, setOpenChat] = useState(false);
